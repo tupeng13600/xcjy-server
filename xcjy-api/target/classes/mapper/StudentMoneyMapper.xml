@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xcjy.web.mapper.StudentMoneyMapper">
+    <resultMap id="BaseResultMap" type="com.xcjy.web.bean.StudentMoney">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="school_id" jdbcType="VARCHAR" property="schoolId"/>
+        <result column="student_id" jdbcType="VARCHAR" property="studentId"/>
+        <result column="has_pay" jdbcType="INTEGER" property="hasPay"/>
+        <result column="has_back" jdbcType="INTEGER" property="hasBack"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="deleted" jdbcType="BIT" property="deleted"/>
+    </resultMap>
+
+    <sql id="baseSql">
+      id, school_id, student_id, has_pay, has_back, create_time, update_time, deleted
+    </sql>
+
+    <insert id="insert" parameterType="com.xcjy.web.bean.StudentMoney">
+    insert into student_money (id, school_id, student_id, 
+      has_pay, has_back, create_time, 
+      update_time, deleted)
+    values (#{id,jdbcType=VARCHAR}, #{schoolId,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR}, 
+      #{hasPay,jdbcType=INTEGER}, #{hasBack,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT})
+  </insert>
+
+    <update id="updateMoney" parameterType="com.xcjy.web.bean.StudentMoney">
+        UPDATE student_money SET
+        has_pay = #{hasPay},
+        has_back = #{hasBack},
+        update_time = #{updateTime}
+        WHERE id = #{id} AND deleted = FALSE;
+    </update>
+
+    <select id="getBySchoolIdAndStudentId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM student_money WHERE school_id = #{schoolId} AND student_id = #{studentId}
+    </select>
+
+</mapper>

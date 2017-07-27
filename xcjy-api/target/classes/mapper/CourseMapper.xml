@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xcjy.web.mapper.CourseMapper">
+    <resultMap id="BaseResultMap" type="com.xcjy.web.bean.Course">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="school_id" jdbcType="VARCHAR" property="schoolId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="student_num" jdbcType="INTEGER" property="studentNum"/>
+        <result column="price" jdbcType="INTEGER" property="price"/>
+        <result column="selected_num" jdbcType="INTEGER" property="selectedNum"/>
+        <result column="back_num" jdbcType="INTEGER" property="backNum"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="deleted" jdbcType="BIT" property="deleted"/>
+    </resultMap>
+
+    <sql id="baseSql">
+    id, school_id, name, type, student_num, price, selected_num, back_num, create_time, update_time, deleted
+  </sql>
+
+    <insert id="insert" parameterType="com.xcjy.web.bean.Course">
+    insert into course (id, school_id, name, type, student_num,
+      price, selected_num, back_num, 
+      create_time, update_time, deleted
+      )
+    values (#{id,jdbcType=VARCHAR}, #{schoolId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{studentNum,jdbcType=INTEGER},
+      #{price,jdbcType=INTEGER}, #{selectedNum,jdbcType=INTEGER}, #{backNum,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}
+      )
+  </insert>
+
+    <update id="update">
+      UPDATE course SET
+      name = #{course.name},
+      type = #{course.type},
+      student_num = #{course.studentNum},
+      update_time = #{course.updateTime}
+      WHERE id = #{id} AND deleted = FALSE;
+    </update>
+
+    <update id="deleteLogic">
+        UPDATE deleted = TRUE , update_time = #{updateTime} WHERE id = #{id} AND deleted = FALSE;
+    </update>
+
+    <select id="getAll" resultMap="BaseResultMap">
+        SELECT <include refid="baseSql"/> FROM course;
+    </select>
+
+    <select id="getById" resultMap="BaseResultMap">
+        SELECT <include refid="baseSql"/> FROM course WHERE id = #{id};
+    </select>
+
+</mapper>

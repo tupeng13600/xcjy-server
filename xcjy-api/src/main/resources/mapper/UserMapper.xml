@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xcjy.web.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.xcjy.web.bean.User">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="school_id" jdbcType="VARCHAR" property="schoolId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="user_type" jdbcType="VARCHAR" property="userType"/>
+        <result column="entity_id" jdbcType="VARCHAR" property="entityId"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="salt" jdbcType="VARCHAR" property="salt"/>
+        <result column="role_id" jdbcType="VARCHAR" property="roleId"/>
+        <result column="last_login_ip" jdbcType="VARCHAR" property="lastLoginIp"/>
+        <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="deleted" jdbcType="BIT" property="deleted"/>
+    </resultMap>
+
+    <sql id="BaseTemplate">
+      id, school_id, name, user_type, entity_id, phone, username,password, salt, role_id,
+      last_login_ip, last_login_time, create_time, update_time, deleted
+  </sql>
+
+    <insert id="insert" parameterType="com.xcjy.web.bean.User">
+    insert into user (id, school_id, name, user_type,
+      entity_id, phone, username, 
+      password, salt, role_id, 
+      last_login_ip, last_login_time, create_time, 
+      update_time, deleted)
+    values (#{id,jdbcType=VARCHAR}, #{schoolId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{userType,jdbcType=VARCHAR},
+      #{entityId,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, 
+      #{lastLoginIp,jdbcType=VARCHAR}, #{lastLoginTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT})
+  </insert>
+
+    <select id="getByUsername" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseTemplate"/>
+        FROM `user` WHERE username = #{username};
+    </select>
+
+    <select id="getByPhone" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseTemplate"/>
+        FROM `user` WHERE phone = #{phone};
+    </select>
+
+    <update id="updateLoginMessage">
+    UPDATE `user` SET last_login_time=#{loginTime}, last_login_ip = #{loginIp}, update_time=#{updateTime} WHERE username=#{username};
+  </update>
+
+    <select id="getByEntityId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseTemplate"/>
+        FROM `user` WHERE entity_id = #{entityId} AND user_type = #{userType};
+    </select>
+
+    <update id="updateBase">
+        UPDATE user SET
+        name = #{user.name},
+        phone = #{user.phone},
+        update_time = #{user.updateTime}
+        WHERE id = #{user.id} AND deleted = FALSE;
+    </update>
+
+    <update id="deleteLogic">
+        UPDATE deleted = TRUE , update_time = #{updateTime} WHERE id = #{id};
+    </update>
+
+</mapper>

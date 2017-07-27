@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xcjy.web.mapper.StudentPayLogMapper">
+    <resultMap id="BaseResultMap" type="com.xcjy.web.bean.StudentPayLog">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="school_id" jdbcType="VARCHAR" property="schoolId"/>
+        <result column="student_id" jdbcType="VARCHAR" property="studentId"/>
+        <result column="employee_id" jdbcType="VARCHAR" property="employeeId"/>
+        <result column="op_pay_type" jdbcType="VARCHAR" property="opPayType"/>
+        <result column="money" jdbcType="INTEGER" property="money"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.xcjy.web.bean.StudentPayLog">
+    insert into student_pay_log (id, school_id, student_id, 
+      employee_id, op_pay_type, money, 
+      remark, create_time)
+    values (#{id,jdbcType=VARCHAR}, #{schoolId,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR}, 
+      #{employeeId,jdbcType=VARCHAR}, #{opPayType,jdbcType=VARCHAR}, #{money,jdbcType=INTEGER}, 
+      #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+
+</mapper>

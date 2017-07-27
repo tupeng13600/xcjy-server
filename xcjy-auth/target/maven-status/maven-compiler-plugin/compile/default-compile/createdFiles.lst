@@ -1,0 +1,13 @@
+com\xcjy\web\auth\model\UpcUser.class
+com\xcjy\web\auth\model\UpcLoginSuccessModel.class
+com\xcjy\web\auth\filter\UpcLoginFilter.class
+com\xcjy\web\auth\model\RespModel.class
+com\xcjy\web\auth\matcher\UpcCredentialsMatcher.class
+com\xcjy\web\auth\filter\UpcAuthFilter.class
+com\xcjy\web\auth\util\UserUtil.class
+com\xcjy\web\auth\realm\UpcRealm.class
+com\xcjy\web\auth\token\UpcToken.class
+com\xcjy\web\auth\UpcFilterFactoryBean.class
+com\xcjy\web\auth\manager\UpcSecurityManager.class
+com\xcjy\web\auth\service\AuthMessageService.class
+com\xcjy\web\auth\util\UpcSecurityUtil.class
