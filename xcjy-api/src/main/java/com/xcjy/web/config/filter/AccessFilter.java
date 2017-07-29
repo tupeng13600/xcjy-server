@@ -32,7 +32,6 @@ public class AccessFilter implements Filter {
         } else {
             httpResponse.addHeader("Access-Control-Allow-Origin", origin);
         }
-
         httpResponse.setHeader("Access-Control-Allow-Methods", "POST,GET,PUT,PATCH,DELETE,OPTIONS");
         httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
         httpResponse.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept,__skcy");
@@ -42,9 +41,6 @@ public class AccessFilter implements Filter {
             httpResponse.setStatus(HttpServletResponse.SC_OK);
             return;
         }
-        System.out.println("-------------------------------------filter");
-
-
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
