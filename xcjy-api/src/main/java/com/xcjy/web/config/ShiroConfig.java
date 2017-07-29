@@ -54,7 +54,7 @@ public class ShiroConfig {
      */
     private List<String> getDefineFilterChain(){
         List<String> defineFilterChain = new ArrayList<>();
-
+        defineFilterChain.add("/swagger-resources/** = anon");
         return defineFilterChain;
     }
 

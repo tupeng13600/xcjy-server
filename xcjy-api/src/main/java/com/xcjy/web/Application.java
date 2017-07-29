@@ -3,7 +3,6 @@ package com.xcjy.web;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
  *
  */
 @SpringBootApplication
-@ComponentScan("com.xcjy.web")
 @MapperScan("com.xcjy.web.mapper")
 @RestController
 public class Application {
