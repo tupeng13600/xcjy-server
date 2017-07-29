@@ -65,6 +65,12 @@
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.knappsack</groupId>
+            <artifactId>swagger4spring-web</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>
