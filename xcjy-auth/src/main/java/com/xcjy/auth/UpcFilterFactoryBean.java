@@ -34,7 +34,7 @@ public class UpcFilterFactoryBean extends ShiroFilterFactoryBean {
                 definitionMap.put(uriList[0].trim(), uriList[1].trim());
             });
         }
-        definitionMap.put("/upc/login", "upcLogin");
+        definitionMap.put("/auth/login", "upcLogin");
         setFilterChainDefinitionMap(definitionMap);
     }
 }

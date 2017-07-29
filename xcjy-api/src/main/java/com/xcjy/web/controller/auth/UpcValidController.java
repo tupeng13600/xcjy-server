@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UpcValidController {
 
-    @PutMapping("/upc/login")
+    @PutMapping("/auth/login")
     public void valid(){
     }
 
