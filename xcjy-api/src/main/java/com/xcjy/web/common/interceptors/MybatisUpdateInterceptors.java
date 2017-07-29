@@ -1,7 +1,7 @@
 package com.xcjy.web.common.interceptors;
 
 import com.xcjy.web.common.enums.DbOperationType;
-import com.xcjy.web.util.ReflectUtil;
+import com.xcjy.web.common.util.ReflectUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;

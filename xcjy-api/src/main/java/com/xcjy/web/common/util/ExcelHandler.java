@@ -1,4 +1,4 @@
-package com.xcjy.web.util;
+package com.xcjy.web.common.util;
 
 import com.xcjy.web.common.exception.EducationException;
 import org.apache.commons.lang3.StringUtils;

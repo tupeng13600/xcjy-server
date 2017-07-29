@@ -48,6 +48,7 @@ public class UpcAuthFilter extends BasicHttpAuthenticationFilter {
         respModel.setData(getMessage());
         String json = new Gson().toJson(respModel);
         httpResponse.setContentType("application/json");
+        httpResponse.setCharacterEncoding("utf-8"); //设置编码格式为UTF-8
         httpResponse.getWriter().write(json);
         return super.onAccessDenied(request, response);
     }

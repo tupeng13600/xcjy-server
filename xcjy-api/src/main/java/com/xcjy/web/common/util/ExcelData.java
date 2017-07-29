@@ -1,4 +1,4 @@
-package com.xcjy.web.util;
+package com.xcjy.web.common.util;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

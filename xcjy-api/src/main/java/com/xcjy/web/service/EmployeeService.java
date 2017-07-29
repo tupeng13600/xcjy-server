@@ -9,7 +9,7 @@ import com.xcjy.web.controller.req.EmployeeCreateReq;
 import com.xcjy.web.controller.req.EmployeeUpdateReq;
 import com.xcjy.web.mapper.EmployeeMapper;
 import com.xcjy.web.mapper.UserMapper;
-import com.xcjy.web.util.DateUtil;
+import com.xcjy.web.common.util.DateUtil;
 import org.apache.shiro.util.SimpleByteSource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

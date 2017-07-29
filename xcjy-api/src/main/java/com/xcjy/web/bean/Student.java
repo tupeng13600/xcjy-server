@@ -3,8 +3,8 @@ package com.xcjy.web.bean;
 import com.xcjy.web.common.cache.CacheFactory;
 import com.xcjy.web.common.enums.PayStatusType;
 import com.xcjy.web.common.enums.SexType;
-import com.xcjy.web.util.DateUtil;
-import com.xcjy.web.util.ExcelData;
+import com.xcjy.web.common.util.DateUtil;
+import com.xcjy.web.common.util.ExcelData;
 
 import java.util.Date;
 

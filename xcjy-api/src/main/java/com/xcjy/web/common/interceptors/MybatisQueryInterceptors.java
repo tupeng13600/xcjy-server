@@ -1,7 +1,7 @@
 package com.xcjy.web.common.interceptors;
 
 import com.xcjy.web.common.SchoolThreadLocal;
-import com.xcjy.web.util.ReflectUtil;
+import com.xcjy.web.common.util.ReflectUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.executor.statement.RoutingStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;

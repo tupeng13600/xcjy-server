@@ -2,7 +2,7 @@ package com.xcjy.web.service;
 
 import com.xcjy.web.bean.Student;
 import com.xcjy.web.mapper.StudentMapper;
-import com.xcjy.web.util.ExcelUtil;
+import com.xcjy.web.common.util.ExcelUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;

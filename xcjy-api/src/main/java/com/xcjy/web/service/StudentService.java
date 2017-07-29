@@ -5,7 +5,7 @@ import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.controller.req.StudentCreateReq;
 import com.xcjy.web.controller.req.StudentUpdateReq;
 import com.xcjy.web.mapper.StudentMapper;
-import com.xcjy.web.util.DateUtil;
+import com.xcjy.web.common.util.DateUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
