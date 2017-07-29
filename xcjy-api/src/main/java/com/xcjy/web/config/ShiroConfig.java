@@ -44,10 +44,18 @@ public class ShiroConfig {
 
     @Bean("shiroFilter")
     public UpcFilterFactoryBean shiroFilter(UpcSecurityManager securityManager, AuthMessageService authService) {
+        return new UpcFilterFactoryBean(securityManager, authService, getDefineFilterChain());
+    }
 
+    /**
+     * 在这里添加shiro的拦截路径
+     * 例如：defineFilterChain.add("/user/info = anon");
+     * @return
+     */
+    private List<String> getDefineFilterChain(){
         List<String> defineFilterChain = new ArrayList<>();
 
-        return new UpcFilterFactoryBean(securityManager, authService, defineFilterChain);
+        return defineFilterChain;
     }
 
 
