@@ -3,7 +3,9 @@ package com.xcjy.web.controller.req;
 import com.xcjy.web.common.enums.PayStatusType;
 import com.xcjy.web.common.enums.SexType;
 import lombok.Data;
+import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -14,10 +16,13 @@ public class StudentCreateReq {
 
     private String schoolId;
 
+    @NotBlank
     private String name;
 
+    @NotBlank
     private String idCard;
 
+    @NotNull
     private SexType sex;
 
     private String orignSchool;
@@ -30,6 +35,7 @@ public class StudentCreateReq {
 
     private String source;
 
+    @NotBlank
     private String phone;
 
     private String parentName;

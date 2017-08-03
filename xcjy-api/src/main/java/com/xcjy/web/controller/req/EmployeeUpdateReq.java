@@ -2,6 +2,7 @@ package com.xcjy.web.controller.req;
 
 import com.xcjy.web.common.enums.SexType;
 import lombok.Data;
+import org.hibernate.validator.constraints.NotBlank;
 
 import java.util.Date;
 
@@ -11,16 +12,20 @@ import java.util.Date;
 @Data
 public class EmployeeUpdateReq {
 
+    @NotBlank
     private String id;
 
+    @NotBlank
     private String roleIds;
 
+    @NotBlank
     private String name;
 
     private SexType sex;
 
     private Date birthday;
 
+    @NotBlank
     private String idCard;
 
     private String education;
@@ -29,6 +34,7 @@ public class EmployeeUpdateReq {
 
     private String specialty;
 
+    @NotBlank
     private String phone;
 
     private String email;

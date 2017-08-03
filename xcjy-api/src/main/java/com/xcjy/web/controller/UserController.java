@@ -4,6 +4,7 @@ import com.xcjy.web.service.UserService;
 import com.xcjy.web.bean.User;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.controller.req.RegisterReq;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +26,7 @@ public class UserController {
      *
      * @param req
      */
+    @ApiOperation("注册用户，仅供测试使用")
     @PostMapping
     public void register(@RequestBody RegisterReq req) {
         User user = userService.getByUsernameOrPhone(req.getUsername(), req.getPhone());

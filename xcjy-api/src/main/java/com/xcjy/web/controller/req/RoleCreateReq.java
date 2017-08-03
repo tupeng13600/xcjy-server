@@ -1,10 +1,13 @@
 package com.xcjy.web.controller.req;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * Created by tupeng on 2017/7/22.
  */
 public class RoleCreateReq {
 
+    @NotBlank
     private String roleName;
 
     private String remark;

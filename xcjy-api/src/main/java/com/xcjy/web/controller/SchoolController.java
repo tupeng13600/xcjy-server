@@ -4,9 +4,11 @@ import com.xcjy.web.service.SchoolService;
 import com.xcjy.web.bean.School;
 import com.xcjy.web.controller.req.SchoolCreateReq;
 import com.xcjy.web.controller.req.SchoolUpdateReq;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -23,8 +25,9 @@ public class SchoolController {
      * 创建校区
      * @param req
      */
+    @ApiOperation("创建校区")
     @PostMapping
-    public void create(SchoolCreateReq req) {
+    public void create(@RequestBody @Valid SchoolCreateReq req) {
         schoolService.create(req);
     }
 
@@ -32,8 +35,9 @@ public class SchoolController {
      * 更新校区
      * @param req
      */
+    @ApiOperation("修改校区信息")
     @PutMapping
-    public void update(SchoolUpdateReq req) {
+    public void update(@RequestBody @Valid SchoolUpdateReq req) {
         schoolService.update(req);
     }
 
@@ -41,6 +45,7 @@ public class SchoolController {
      * 获取校区列表
      * @return
      */
+    @ApiOperation("获取校区列表")
     @GetMapping
     public List<School> list() {
         return schoolService.list();

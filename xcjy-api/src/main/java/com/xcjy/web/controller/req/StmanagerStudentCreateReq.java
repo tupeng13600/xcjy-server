@@ -1,6 +1,8 @@
 package com.xcjy.web.controller.req;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.Set;
 
@@ -10,10 +12,13 @@ import java.util.Set;
 @Data
 public class StmanagerStudentCreateReq {
 
+    @NotBlank
     private String schoolId;
 
+    @NotBlank
     private String employeeId;
 
+    @NotEmpty
     private Set<String> studentId;
 
 }
