@@ -33,4 +33,8 @@ public class RoleService {
         role.setRemark(req.getRemark());
         roleMapper.insert(role);
     }
+
+    public List<Role> listAll() {
+        return roleMapper.getAll();
+    }
 }

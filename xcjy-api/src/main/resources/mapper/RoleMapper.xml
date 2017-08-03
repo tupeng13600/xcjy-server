@@ -40,4 +40,10 @@
         FROM role WHERE name = #{name};
     </select>
 
+    <select id="getAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseSql"/>
+        FROM role
+    </select>
+
 </mapper>

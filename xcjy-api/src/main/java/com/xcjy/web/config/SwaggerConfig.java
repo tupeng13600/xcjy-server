@@ -27,10 +27,10 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("springboot利用swagger构建api文档")
-                .description("简单优雅的restfun风格，http://blog.csdn.net/saytime")
-                .termsOfServiceUrl("http://blog.csdn.net/saytime")
-                .version("1.0")
+                .title("学成教育后台管理API文档")
+                .description("该页面是学成教育系统接口文档，接口请求路径为：http://www.qianhengnet.com:8412/XXXX/... ，所有接口均可进行在线调试，所有数据均会影响到现有数据库。如有疑问可咨询相关开发人员：涂图")
+                .termsOfServiceUrl("http://www.xcjy.com")
+                .version("1.0-SNAPSHOT")
                 .build();
     }
 

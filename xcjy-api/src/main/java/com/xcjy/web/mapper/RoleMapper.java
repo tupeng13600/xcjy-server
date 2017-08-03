@@ -13,4 +13,7 @@ public interface RoleMapper {
     Set<Role> getByRoleIds(@Param("ids") List<String> ids);
 
     Role getByRoleName(@Param("name") String roleName);
+
+    List<Role> getAll();
+
 }
