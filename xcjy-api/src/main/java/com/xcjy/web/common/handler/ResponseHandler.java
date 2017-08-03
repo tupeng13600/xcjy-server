@@ -13,11 +13,14 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 @ControllerAdvice
 public class ResponseHandler implements ResponseBodyAdvice<Object> {
 
+    private static final String[] swaggerPath = {"swagger-resources", "/v2/api-docs"};
+
     public boolean supports(MethodParameter methodParameter, Class aClass) {
         return true;
     }
 
     public Object beforeBodyWrite(Object body, MethodParameter methodParameter, MediaType mediaType, Class aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
+
         if (body instanceof RespModel) {
             return body;
         }
@@ -27,8 +30,22 @@ public class ResponseHandler implements ResponseBodyAdvice<Object> {
         if (methodParameter.getMethodAnnotation(NormalResponse.class) != null) {
             return body;
         }
+
+        if (isSwagger(serverHttpRequest)) {
+            return body;
+        }
+
         RespModel respModel = new RespModel(true);
         respModel.setData(body);
         return respModel;
+    }
+
+    private Boolean isSwagger(ServerHttpRequest request) {
+        for (String path : swaggerPath) {
+            if (request.getURI().getPath().contains(path)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

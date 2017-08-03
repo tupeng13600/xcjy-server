@@ -7,6 +7,7 @@ import com.xcjy.web.controller.req.CourseUpdateReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ public class CourseController {
     private CourseService courseService;
 
     @PostMapping
-    public void create(CourseCreateReq req) {
+    public void create(@RequestBody @Valid CourseCreateReq req) {
         courseService.create(req);
     }
 

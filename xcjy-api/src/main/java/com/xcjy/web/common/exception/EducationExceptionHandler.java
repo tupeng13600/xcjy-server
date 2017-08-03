@@ -1,16 +1,22 @@
 package com.xcjy.web.common.exception;
 
 import com.xcjy.web.common.handler.RespModel;
+import com.xcjy.web.common.util.ReflectUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.util.List;
 
 /**
  * Created by tupeng on 2017/7/18.
@@ -64,8 +70,26 @@ public class EducationExceptionHandler {
     @ExceptionHandler(EducationException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
-    public RespModel demo(EducationException e) {
+    public RespModel educationException(EducationException e) {
         return new RespModel(false).setData(e.getMessage());
     }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public RespModel methodArgumentNotValidException(MethodArgumentNotValidException e) {
+        List<ObjectError> errors = e.getBindingResult().getAllErrors();
+        StringBuilder messageBuilder = new StringBuilder();
+        if(CollectionUtils.isNotEmpty(errors)) {
+            for(ObjectError error : errors) {
+                String field = (String) ReflectUtil.getProperty(error, "field");
+                String message = error.getDefaultMessage();
+                messageBuilder.append(field).append(message).append("; ");
+            }
+        }
+        return new RespModel(false).setData(messageBuilder.toString());
+    }
+
+
 
 }
