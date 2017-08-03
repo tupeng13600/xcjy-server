@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/error")
 public class ErrorController {
 
-    @ApiOperation("springboot同意错误入口，无需使用")
+    @ApiOperation("spring boot 统一错误入口，无需使用")
     @GetMapping("/404")
     public void error404(){
         throw new EducationException("资源不存在");
