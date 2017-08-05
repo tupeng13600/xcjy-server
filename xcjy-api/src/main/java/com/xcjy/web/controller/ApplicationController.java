@@ -33,7 +33,7 @@ public class ApplicationController {
     }
 
     @ApiOperation("创建转校申请")
-    @PutMapping("/school")
+    @PostMapping("/school")
     public void changeSchool(@RequestBody @Valid ChangeSchoolReq req){
         applicationService.changeSchool(req);
     }
