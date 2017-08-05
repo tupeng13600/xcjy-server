@@ -3,6 +3,7 @@ package com.xcjy.web.mapper;
 import com.xcjy.web.bean.Course;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface CourseMapper {
@@ -15,5 +16,5 @@ public interface CourseMapper {
 
     List<Course> getAll();
 
-    void deleteLogic(@Param("id") String id);
+    void deleteLogic(@Param("id") String id, @Param("updateTime") Date updateTime);
 }

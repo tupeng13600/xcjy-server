@@ -34,13 +34,14 @@
       UPDATE course SET
       name = #{course.name},
       type = #{course.type},
+      price = #{course.price},
       student_num = #{course.studentNum},
       update_time = #{course.updateTime}
-      WHERE id = #{id} AND deleted = FALSE;
+      WHERE id = #{course.id} AND deleted = FALSE;
     </update>
 
     <update id="deleteLogic">
-        UPDATE deleted = TRUE , update_time = #{updateTime} WHERE id = #{id} AND deleted = FALSE;
+        UPDATE course SET deleted = TRUE , update_time = #{updateTime} WHERE id = #{id} AND deleted = FALSE;
     </update>
 
     <select id="getAll" resultMap="BaseResultMap">

@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,7 +39,7 @@ public class CourseService {
     }
 
     public void deleteLogic(String id) {
-        courseMapper.deleteLogic(id);
+        courseMapper.deleteLogic(id, new Date());
     }
 
     public List<Course> list(){

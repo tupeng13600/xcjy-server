@@ -1,15 +1,19 @@
 package com.xcjy.web.common.interceptors;
 
 import com.xcjy.web.common.CurrentThreadLocal;
+import com.xcjy.web.common.enums.DbOperationType;
 import com.xcjy.web.common.util.ReflectUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.executor.statement.RoutingStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.plugin.*;
-import org.apache.ibatis.session.ResultHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.sql.Statement;
+import java.sql.Connection;
 import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
@@ -19,8 +23,10 @@ import java.util.UUID;
  * <p>
  * mybatis 拦截器，统一对sql进行处理
  */
-@Intercepts({@Signature(method = "query", type = StatementHandler.class, args = {Statement.class, ResultHandler.class})})
+@Intercepts({@Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class, Integer.class})})
 public class MybatisQueryInterceptors implements Interceptor {
+
+    private static Logger logger = LoggerFactory.getLogger(MybatisQueryInterceptors.class);
 
     public static final String whereCondition = " WHERE deleted = FALSE";
 
@@ -37,12 +43,21 @@ public class MybatisQueryInterceptors implements Interceptor {
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
+        Object[] args = invocation.getArgs();
         RoutingStatementHandler handler = (RoutingStatementHandler) invocation.getTarget();
         StatementHandler delegate = (StatementHandler) ReflectUtil.getProperty(handler, "delegate");
         BoundSql boundSql = delegate.getBoundSql();
         String sql = appendDeleted(appendSchoolId(boundSql.getSql()));
-        ReflectUtil.setProperty(boundSql, "sql", sql);
+        if (null != args && args.length > 0 && isSelect(sql)) {
+            ReflectUtil.setProperty(boundSql, "sql", sql);
+            logger.info("开始执行sql : {}", sql);
+        }
         return invocation.proceed();
+    }
+
+    private Boolean isSelect(String sql) {
+        String des = sql.trim().toLowerCase();
+        return des.startsWith("select");
     }
 
     private boolean insert(Invocation invocation) {
