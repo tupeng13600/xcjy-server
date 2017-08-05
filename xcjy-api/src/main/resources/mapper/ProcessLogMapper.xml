@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xcjy.web.mapper.ProcessLogMapper">
+  <resultMap id="BaseResultMap" type="com.xcjy.web.bean.ProcessLog">
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="application_id" jdbcType="VARCHAR" property="applicationId" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="handler_user_id" jdbcType="VARCHAR" property="handlerUserId" />
+    <result column="handler_status" jdbcType="VARCHAR" property="handlerStatus" />
+    <result column="handler_time" jdbcType="TIMESTAMP" property="handlerTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+  </resultMap>
+  <insert id="insert" parameterType="com.xcjy.web.bean.ProcessLog">
+    insert into process_log (id, application_id, type, 
+      handler_user_id, handler_status, handler_time, 
+      remark, create_time, update_time, 
+      deleted)
+    values (#{id,jdbcType=VARCHAR}, #{applicationId,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{handlerUserId,jdbcType=VARCHAR}, #{handlerStatus,jdbcType=VARCHAR}, #{handlerTime,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{deleted,jdbcType=BIT})
+  </insert>
+
+</mapper>
