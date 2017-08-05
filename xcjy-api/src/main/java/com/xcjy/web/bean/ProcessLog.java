@@ -1,5 +1,6 @@
 package com.xcjy.web.bean;
 
+import com.xcjy.web.common.enums.HandlerStatusType;
 import com.xcjy.web.common.enums.ProcessLogType;
 import lombok.Data;
 
@@ -16,7 +17,7 @@ public class ProcessLog {
 
     private String handlerUserId;
 
-    private String handlerStatus;
+    private HandlerStatusType handlerStatus;
 
     private Date handlerTime;
 
