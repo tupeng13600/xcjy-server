@@ -246,7 +246,7 @@ public class Student {
     }
 
     public String schoolParse(String name) {
-        return null == CacheFactory.schools.get(name.trim()) ? null : CacheFactory.schools.get(name.trim()).getId();
+        return null == CacheFactory.nameSchools.get(name.trim()) ? null : CacheFactory.nameSchools.get(name.trim()).getId();
     }
 
     public Date birthdayPares(String idCard) {

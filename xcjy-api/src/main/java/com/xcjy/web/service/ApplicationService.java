@@ -11,19 +11,26 @@ import com.xcjy.web.common.model.UserModel;
 import com.xcjy.web.common.util.CurrentUserUtil;
 import com.xcjy.web.controller.req.BackMoneyCreateReq;
 import com.xcjy.web.controller.req.ChangeSchoolReq;
+import com.xcjy.web.controller.res.AplnSimpleRes;
+import com.xcjy.web.controller.res.ProcessRes;
 import com.xcjy.web.mapper.*;
+import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.util.*;
 
 /**
  * Created by tupeng on 2017/8/5.
  */
 @Service
 public class ApplicationService {
+
+    private static Logger logger = LoggerFactory.getLogger(ApplicationService.class);
 
     @Autowired
     private AplnBackMoneyMapper aplnBackMoneyMapper;
@@ -63,7 +70,8 @@ public class ApplicationService {
         aplnBackMoney.setSchoolId(user.getSchoolId());
         aplnBackMoney.setApplicationStatus(ApplicationStatusType.AUDITING);
         aplnBackMoneyMapper.insert(aplnBackMoney);
-        createProcessLog(aplnBackMoney.getId(), 0, CacheFactory.getNextBackMoneyProcess(null), ProcessLogType.BACK_MONEY);
+        createProcessLog(aplnBackMoney.getId(), aplnBackMoney.getSchoolId(), aplnBackMoney.getStudentId(),
+                0, CacheFactory.getNextBackMoneyProcess(null), ProcessLogType.BACK_MONEY);
     }
 
     /**
@@ -73,8 +81,8 @@ public class ApplicationService {
      * @param handlerStatus
      */
     @Transactional
-    public void auditBackMoney(String processId, HandlerStatusType handlerStatus) {
-        ProcessLog processLog = updateProcessLog(processId, handlerStatus, ProcessLogType.BACK_MONEY);
+    public void auditBackMoney(String processId, HandlerStatusType handlerStatus, String remark) {
+        ProcessLog processLog = updateProcessLog(processId, handlerStatus, ProcessLogType.BACK_MONEY, remark);
         if (HandlerStatusType.AUDIT_SUCCESS.equals(handlerStatus)) {
             RoleEnum roleEnum = CacheFactory.getNextBackMoneyProcess(processLog.getProcessNum());
             if (null == roleEnum) {
@@ -87,7 +95,8 @@ public class ApplicationService {
                         aplnBackMoney.getStudentId(), aplnBackMoney.getReturnAmount());
             } else {
                 //创建下一个审核流程
-                createProcessLog(processLog.getApplicationId(), processLog.getProcessNum() + 1, roleEnum, ProcessLogType.BACK_MONEY);
+                createProcessLog(processLog.getApplicationId(), processLog.getSchoolId(), processLog.getStudentId(),
+                        processLog.getProcessNum() + 1, roleEnum, ProcessLogType.BACK_MONEY);
             }
         } else {
             updateBackMoney(processLog.getApplicationId(), ApplicationStatusType.AUDIT_FAIL);
@@ -116,7 +125,8 @@ public class ApplicationService {
         aplnChangeSchool.setApplicationStatus(ApplicationStatusType.AUDITING);
         aplnChangeSchoolMapper.insert(aplnChangeSchool);
         //创建审核流程
-        createProcessLog(aplnChangeSchool.getId(), 0, CacheFactory.getNextChangeSchoolProcess(null), ProcessLogType.CHANGE_SCHOOL);
+        createProcessLog(aplnChangeSchool.getId(), aplnChangeSchool.getFromSchoolId(), aplnChangeSchool.getStudentId(),
+                0, CacheFactory.getNextChangeSchoolProcess(null), ProcessLogType.CHANGE_SCHOOL);
     }
 
     /**
@@ -126,8 +136,8 @@ public class ApplicationService {
      * @param handlerStatus
      */
     @Transactional
-    public void auditChangeSchool(String processId, HandlerStatusType handlerStatus) {
-        ProcessLog processLog = updateProcessLog(processId, handlerStatus, ProcessLogType.CHANGE_SCHOOL);
+    public void auditChangeSchool(String processId, HandlerStatusType handlerStatus, String remark) {
+        ProcessLog processLog = updateProcessLog(processId, handlerStatus, ProcessLogType.CHANGE_SCHOOL, remark);
         if (HandlerStatusType.AUDIT_SUCCESS.equals(handlerStatus)) {
             RoleEnum roleEnum = CacheFactory.getNextBackMoneyProcess(processLog.getProcessNum());
             if (null == roleEnum) {
@@ -138,13 +148,104 @@ public class ApplicationService {
                         aplnChangeSchool.getFromSchoolId(), aplnChangeSchool.getToSchoolId());
             } else {
                 //创建下一个审核流程
-                createProcessLog(processLog.getApplicationId(), processLog.getProcessNum() + 1, roleEnum, ProcessLogType.CHANGE_SCHOOL);
+                createProcessLog(processLog.getApplicationId(), processLog.getSchoolId(), processLog.getStudentId(),
+                        processLog.getProcessNum() + 1, roleEnum, ProcessLogType.CHANGE_SCHOOL);
             }
         } else {
             updateChangeSchool(processLog.getApplicationId(), ApplicationStatusType.AUDIT_FAIL);
         }
 
     }
+
+    /**
+     * 获取审核流程列表
+     *
+     * @param handlerStatus
+     * @param processLogType
+     * @return
+     */
+    public List<ProcessRes> listProcess(HandlerStatusType handlerStatus, ProcessLogType processLogType) {
+        UserModel user = CurrentUserUtil.currentUser();
+        List<ProcessLog> processLogs = processLogMapper.getByHandlerUserId(user.getId(), processLogType, handlerStatus);
+        if (CollectionUtils.isNotEmpty(processLogs)) {
+            Set<String> studentIds = new HashSet<>();
+            Set<String> applicationIds = new HashSet<>();
+            processLogs.forEach(processLog -> {
+                studentIds.add(processLog.getStudentId());
+                applicationIds.add(processLog.getApplicationId());
+            });
+            List<Student> studentList = studentMapper.getByIds(studentIds);
+            List<AplnSimpleRes> aplnSimpleRes = getSimpleRes(processLogType, applicationIds);
+            return getResult(processLogs, studentList, aplnSimpleRes);
+        }
+        return new ArrayList<>();
+    }
+
+    private List<ProcessRes> getResult(List<ProcessLog> processLogs, List<Student> studentList, List<AplnSimpleRes> aplnSimpleRes) {
+        List<ProcessRes> result = new ArrayList<>();
+        processLogs.forEach(processLog -> {
+            ProcessRes res = new ProcessRes();
+            BeanUtils.copyProperties(processLog, res);
+            res.setSchoolName(getSchoolName(processLog.getSchoolId()));
+            res.setStudentName(getStudentName(studentList, processLog.getStudentId()));
+            aplnSimpleRes.forEach(apln -> {
+                if (processLog.getApplicationId().equals(apln.getId())) {
+                    res.setApplicationRemark(apln.getApplicationRemark());
+                    res.setApplicationTime(apln.getApplicationTime());
+                    res.setApplicationStatus(apln.getApplicationStatus());
+                    res.setReturnAmount(apln.getReturnAmount());
+                    res.setToSchoolName(getSchoolName(apln.getToSchoolId()));
+                }
+            });
+            res.setApplicationName(getApplicationName(processLog.getHandlerUserId()));
+            result.add(res);
+        });
+        return result;
+    }
+
+    private List<AplnSimpleRes> getSimpleRes(ProcessLogType processLogType, Set<String> applicationIds) {
+        List<AplnSimpleRes> aplnSimpleRes;
+        if (ProcessLogType.BACK_MONEY.equals(processLogType)) {
+            aplnSimpleRes = aplnBackMoneyMapper.getSimpleResByIds(applicationIds);
+        } else {
+            aplnSimpleRes = aplnChangeSchoolMapper.getSimpleResByIds(applicationIds);
+        }
+        return aplnSimpleRes;
+    }
+
+    private String getApplicationName(String userId) {
+        UserModel userModel = CacheFactory.userIdUsers.get(userId);
+        if (null == userModel) {
+            logger.warn("用户信息不存在 : {}", userId);
+            return "-";
+        }
+        return userModel.getName();
+    }
+
+    private String getSchoolName(String schoolId) {
+        School school = CacheFactory.idSchools.get(schoolId);
+        if (null == school) {
+            logger.warn("无法获取学校信息: {}", schoolId);
+            return "-";
+        } else {
+            return school.getName();
+        }
+    }
+
+    private String getStudentName(List<Student> studentList, String studentId) {
+        for (Student student : studentList) {
+            if (studentId.equals(student.getId())) {
+                return student.getName();
+            }
+        }
+        logger.warn("学生信息不存在：{}", studentId);
+        return "-";
+    }
+
+
+    /**
+     * 私有方法分界线------------------------------------------------------------------------------------------------------
+     */
 
     @Transactional
     private void updateStudentSchool(String studentId, String fromSchoolId, String toSchoolId) {
@@ -156,11 +257,6 @@ public class ApplicationService {
         student.setUpdateTime(new Date());
         studentMapper.updateSchoolId(student);
     }
-
-
-    /**
-     * 私有方法分界线------------------------------------------------------------------------------------------------------
-     */
 
     @Transactional
     private AplnChangeSchool updateChangeSchool(String applicationId, ApplicationStatusType applicationStatus) {
@@ -180,7 +276,7 @@ public class ApplicationService {
     }
 
     @Transactional
-    private void createProcessLog(String applicationId, Integer processNum, RoleEnum roleEnum, ProcessLogType processLogType) {
+    private void createProcessLog(String applicationId, String schoolId, String studentId, Integer processNum, RoleEnum roleEnum, ProcessLogType processLogType) {
         ProcessLog processLog = new ProcessLog();
         processLog.setApplicationId(applicationId);
         processLog.setHandlerStatus(HandlerStatusType.WAIT_AUDIT);
@@ -188,6 +284,8 @@ public class ApplicationService {
         processLog.setHandlerUserId(roleUser.getId());
         processLog.setProcessNum(processNum);
         processLog.setType(processLogType);
+        processLog.setSchoolId(schoolId);
+        processLog.setStudentId(studentId);
         processLogMapper.insert(processLog);
     }
 
@@ -208,7 +306,7 @@ public class ApplicationService {
     }
 
     @Transactional
-    private ProcessLog updateProcessLog(String processId, HandlerStatusType handlerStatus, ProcessLogType processLogType) {
+    private ProcessLog updateProcessLog(String processId, HandlerStatusType handlerStatus, ProcessLogType processLogType, String remark) {
         ProcessLog processLog = processLogMapper.getById(processId);
 
         if (null == processLog || !processLogType.equals(processLog.getType())) {
@@ -222,6 +320,7 @@ public class ApplicationService {
         processLog.setHandlerStatus(handlerStatus);
         processLog.setHandlerTime(new Date());
         processLog.setUpdateTime(new Date());
+        processLog.setRemark(remark);
         processLogMapper.updateHandler(processLog, HandlerStatusType.WAIT_AUDIT);
         return processLog;
     }

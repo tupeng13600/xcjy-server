@@ -42,4 +42,13 @@
         SELECT<include refid="baseSql"/> FROM school
     </select>
 
+    <select id="getByIds" resultMap="BaseResultMap">
+        SELECT <include refid="baseSql"/> FROM school
+        WHERE id
+        IN
+        <foreach collection="ids" open="(" separator="," close=")" item="id">
+            #{id}
+        </foreach>
+    </select>
+
 </mapper>

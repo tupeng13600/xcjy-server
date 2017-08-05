@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by tupeng on 2017/7/18.
@@ -45,5 +46,9 @@ public class UserService {
 
     public void updateLoginMessage(String currentUserName, Date loginTime, String loginIp) {
         userMapper.updateLoginMessage(currentUserName, loginTime, loginIp, new Date());
+    }
+
+    public List<User> getAll() {
+        return userMapper.getAll();
     }
 }

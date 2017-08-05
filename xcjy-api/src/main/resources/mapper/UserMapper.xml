@@ -64,6 +64,10 @@
         SELECT <include refid="BaseTemplate" /> FROM `user` WHERE role_id = #{roleCode} limit 1;
     </select>
 
+    <select id="getAll" resultMap="BaseResultMap">
+        SELECT <include refid="BaseTemplate" /> FROM `user`
+    </select>
+
     <update id="updateBase">
         UPDATE user SET
         name = #{user.name},

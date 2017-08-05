@@ -6,6 +6,8 @@ import com.xcjy.web.common.enums.RoleEnum;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.model.UserModel;
 import com.xcjy.web.service.SchoolService;
+import com.xcjy.web.service.UserService;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,7 +25,9 @@ import java.util.stream.Collectors;
 @Component
 public class CacheFactory {
 
-    public static Map<String, School> schools;
+    public static Map<String, School> idSchools;
+
+    public static Map<String, School> nameSchools;
 
     public static Map<String, UserModel> usernameUsers = new ConcurrentHashMap<>();
 
@@ -36,11 +40,22 @@ public class CacheFactory {
     @Autowired
     private SchoolService schoolService;
 
+    @Autowired
+    private UserService userService;
+
     @PostConstruct
     public void init() {
         List<School> schoolList = schoolService.list();
-        schools = schoolList.stream().collect(Collectors.toMap(School::getName, school -> school));
+        nameSchools = schoolList.stream().collect(Collectors.toMap(School::getName, school -> school));
+        idSchools = schoolList.stream().collect(Collectors.toMap(School::getId, school -> school));
         backMoneyAuditRoleChain.add(RoleEnum.SCHOOLMASTER_BOSS);
+        List<User> users = userService.getAll();
+        if(CollectionUtils.isNotEmpty(users)) {
+            users.forEach(user -> {
+                cacheIdUsers(user);
+                cacheUsernameUsers(user);
+            });
+        }
     }
 
     public static void cacheUsernameUsers(User user) {

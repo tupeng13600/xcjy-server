@@ -43,4 +43,17 @@
         <include refid="baseSql"/>
         FROM apln_change_school WHERE id = #{id};
     </select>
+
+    <select id="getSimpleResByIds" resultType="com.xcjy.web.controller.res.AplnSimpleRes">
+        SELECT
+        id,
+        application_status applicationStatus,
+        to_school_id toSchoolId,
+        application_time applicationTime,
+        remark applicationRemark
+        FROM apln_change_school WHERE id IN
+        <foreach collection="ids" open="(" separator="," close=")" item="id">
+            #{id}
+        </foreach>
+    </select>
 </mapper>

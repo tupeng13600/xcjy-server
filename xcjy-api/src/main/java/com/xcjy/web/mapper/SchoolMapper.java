@@ -4,6 +4,7 @@ import com.xcjy.web.bean.School;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Set;
 
 public interface SchoolMapper {
     int insert(School record);
@@ -13,4 +14,6 @@ public interface SchoolMapper {
     void update(@Param("school") School school);
 
     List<School> getAll();
+
+    List<School> getByIds(@Param("ids") Set<String> ids);
 }

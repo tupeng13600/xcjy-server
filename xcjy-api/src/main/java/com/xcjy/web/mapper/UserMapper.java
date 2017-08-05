@@ -6,6 +6,7 @@ import com.xcjy.web.common.enums.UserType;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
+import java.util.List;
 
 public interface UserMapper {
 
@@ -27,4 +28,7 @@ public interface UserMapper {
     void deleteLogic(@Param("id") String id, @Param("updateTime") Date updateTime);
 
     User getByRole(@Param("roleCode") RoleEnum roleCode);
+
+    List<User> getAll();
+
 }

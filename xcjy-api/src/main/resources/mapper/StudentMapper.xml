@@ -59,11 +59,15 @@
         values
         <foreach collection="students" item="student" separator=",">
             (#{student.id,jdbcType=VARCHAR}, #{student.schoolId,jdbcType=VARCHAR}, #{student.name,jdbcType=VARCHAR},
-            #{student.idCard,jdbcType=VARCHAR}, #{student.sex,jdbcType=VARCHAR}, #{student.orignSchool,jdbcType=VARCHAR},
+            #{student.idCard,jdbcType=VARCHAR}, #{student.sex,jdbcType=VARCHAR},
+            #{student.orignSchool,jdbcType=VARCHAR},
             #{student.grade,jdbcType=VARCHAR}, #{student.birthday,jdbcType=DATE}, #{student.subject,jdbcType=VARCHAR},
-            #{student.source,jdbcType=VARCHAR}, #{student.phone,jdbcType=VARCHAR}, #{student.parentName,jdbcType=VARCHAR},
-            #{student.parentSex,jdbcType=VARCHAR}, #{student.parentIdCard,jdbcType=VARCHAR}, #{student.parentPhone,jdbcType=VARCHAR},
-            #{student.address,jdbcType=VARCHAR}, #{student.remark,jdbcType=VARCHAR}, #{student.createTime,jdbcType=TIMESTAMP},
+            #{student.source,jdbcType=VARCHAR}, #{student.phone,jdbcType=VARCHAR},
+            #{student.parentName,jdbcType=VARCHAR},
+            #{student.parentSex,jdbcType=VARCHAR}, #{student.parentIdCard,jdbcType=VARCHAR},
+            #{student.parentPhone,jdbcType=VARCHAR},
+            #{student.address,jdbcType=VARCHAR}, #{student.remark,jdbcType=VARCHAR},
+            #{student.createTime,jdbcType=TIMESTAMP},
             #{student.updateTime,jdbcType=TIMESTAMP}, #{student.alreadyPaid}, #{student.deleted,jdbcType=BIT})
         </foreach>
     </insert>
@@ -102,11 +106,25 @@
     </update>
 
     <select id="listAll" resultMap="BaseResultMap">
-        SELECT <include refid="baseSql"/> FROM student;
+        SELECT
+        <include refid="baseSql"/>
+        FROM student;
     </select>
 
     <select id="getById" resultMap="BaseResultMap">
-        SELECT <include refid="baseSql"/> FROM student WHERE id = #{id};
+        SELECT
+        <include refid="baseSql"/>
+        FROM student WHERE id = #{id};
+    </select>
+
+    <select id="getByIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM student WHERE id
+        IN
+        <foreach collection="ids" open="(" separator="," close=")" item="id">
+            #{id}
+        </foreach>
     </select>
 
 </mapper>

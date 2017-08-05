@@ -2,6 +2,7 @@ package com.xcjy.web.common.util;
 
 import com.xcjy.auth.util.UserUtil;
 import com.xcjy.web.common.cache.CacheFactory;
+import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.model.UserModel;
 
 /**
@@ -10,7 +11,11 @@ import com.xcjy.web.common.model.UserModel;
 public abstract class CurrentUserUtil {
 
     public static UserModel currentUser(){
-        return CacheFactory.usernameUsers.get(UserUtil.getCurrentUserName());
+        UserModel userModel = CacheFactory.usernameUsers.get(UserUtil.getCurrentUserName());
+        if(null == userModel) {
+            throw new EducationException("当前用户信息不存在");
+        }
+        return userModel;
     }
 
 }

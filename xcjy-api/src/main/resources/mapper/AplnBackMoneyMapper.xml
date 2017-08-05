@@ -44,4 +44,17 @@
         FROM apln_back_money WHERE id = #{id};
     </select>
 
+    <select id="getSimpleResByIds" resultType="com.xcjy.web.controller.res.AplnSimpleRes">
+        SELECT
+        id AS id,
+        return_amount AS returnAmount,
+        application_status applicationStatus,
+        application_time applicationTime,
+        remark applicationRemark
+        FROM apln_back_money WHERE id IN
+        <foreach collection="ids" open="(" separator="," close=")" item="id">
+            #{id}
+        </foreach>
+    </select>
+
 </mapper>

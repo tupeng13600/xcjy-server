@@ -2,7 +2,11 @@ package com.xcjy.web.mapper;
 
 import com.xcjy.web.bean.AplnBackMoney;
 import com.xcjy.web.common.enums.ApplicationStatusType;
+import com.xcjy.web.controller.res.AplnSimpleRes;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Set;
 
 public interface AplnBackMoneyMapper {
     int insert(AplnBackMoney record);
@@ -10,4 +14,6 @@ public interface AplnBackMoneyMapper {
     AplnBackMoney getById(@Param("id") String id);
 
     void updateStatus(@Param("backMoney") AplnBackMoney aplnBackMoney, @Param("status")ApplicationStatusType status);
+
+    List<AplnSimpleRes> getSimpleResByIds(@Param("ids") Set<String> ids);
 }

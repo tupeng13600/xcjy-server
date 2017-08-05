@@ -11,6 +11,10 @@ public class ProcessLog {
 
     private String id;
 
+    private String schoolId;
+
+    private String studentId;
+
     private String applicationId;
 
     private ProcessLogType type;

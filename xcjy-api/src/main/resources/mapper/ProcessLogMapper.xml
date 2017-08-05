@@ -3,6 +3,8 @@
 <mapper namespace="com.xcjy.web.mapper.ProcessLogMapper">
     <resultMap id="BaseResultMap" type="com.xcjy.web.bean.ProcessLog">
         <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="school_id" jdbcType="VARCHAR" property="schoolId"/>
+        <result column="student_id" jdbcType="VARCHAR" property="studentId"/>
         <result column="application_id" jdbcType="VARCHAR" property="applicationId"/>
         <result column="type" jdbcType="VARCHAR" property="type"/>
         <result column="process_num" jdbcType="INTEGER" property="processNum"/>
@@ -16,15 +18,15 @@
     </resultMap>
 
     <sql id="baseSql">
-    id, application_id, type, process_num, handler_user_id, handler_status, handler_time, remark, create_time, update_time, deleted
+    id, school_id, student_id, application_id, type, process_num, handler_user_id, handler_status, handler_time, remark, create_time, update_time, deleted
   </sql>
 
     <insert id="insert" parameterType="com.xcjy.web.bean.ProcessLog">
-    insert into process_log (id, application_id, type, process_num,
+    insert into process_log (id, school_id, student_id, application_id, type, process_num,
       handler_user_id, handler_status, handler_time, 
       remark, create_time, update_time, 
       deleted)
-    values (#{id,jdbcType=VARCHAR}, #{applicationId,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{processNum},
+    values (#{id,jdbcType=VARCHAR}, #{schoolId,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR}, #{applicationId,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{processNum},
       #{handlerUserId,jdbcType=VARCHAR}, #{handlerStatus,jdbcType=VARCHAR}, #{handlerTime,jdbcType=TIMESTAMP}, 
       #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{deleted,jdbcType=BIT})
@@ -46,6 +48,7 @@
     UPDATE process_log SET
     handler_status = #{processLog.handlerStatus},
     handler_time = #{processLog.handlerTime},
+    remark = #{processLog.remark},
     update_time = #{processLog.updateTime}
     WHERE id = #{processLog.id} AND handler_status = #{handlerStatus};
     </update>
@@ -54,6 +57,12 @@
         SELECT
         <include refid="baseSql"/>
         FROM process_log WHERE id = #{id};
+    </select>
+
+    <select id="getByHandlerUserId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM process_log WHERE handler_user_id = #{handlerUserId} AND handler_status = #{handlerStatus} AND type = #{processLogType};
     </select>
 
 </mapper>
