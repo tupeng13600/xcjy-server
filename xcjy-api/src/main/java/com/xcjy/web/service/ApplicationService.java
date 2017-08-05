@@ -120,6 +120,7 @@ public class ApplicationService {
      * @param processId
      * @param handlerStatus
      */
+    @Transactional
     public void auditChangeSchool(String processId, HandlerStatusType handlerStatus) {
         ProcessLog processLog = updateProcessLog(processId, handlerStatus, ProcessLogType.CHANGE_SCHOOL);
         if (HandlerStatusType.AUDIT_SUCCESS.equals(handlerStatus)) {
@@ -140,6 +141,7 @@ public class ApplicationService {
 
     }
 
+    @Transactional
     private void updateStudentSchool(String studentId, String fromSchoolId, String toSchoolId) {
         Student student = studentMapper.getById(studentId);
         if (null == student || !fromSchoolId.equals(student.getSchoolId())) {
