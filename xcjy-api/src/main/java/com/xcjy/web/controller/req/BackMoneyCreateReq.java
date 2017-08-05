@@ -16,9 +16,6 @@ public class BackMoneyCreateReq {
     @NotBlank
     private String studentId;
 
-    @NotBlank
-    private String applicationUserId;
-
     @NotNull
     private Integer returnAmount;
 

@@ -5,7 +5,6 @@ package com.xcjy.web.common.enums;
  */
 public enum ApplicationStatusType {
 
-    WAIT_AUDIT("待审核"),
     AUDITING("审核中"),
     AUDIT_FAIL("审核不通过"),
     AUDIT_SUCCESS("审核不通过");

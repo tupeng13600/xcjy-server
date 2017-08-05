@@ -3,7 +3,7 @@ package com.xcjy.web.common;
 /**
  * Created by tupeng on 2017/7/22.
  */
-public class SchoolThreadLocal {
+public class CurrentThreadLocal {
 
     private static ThreadLocal<String> school = new ThreadLocal();
 

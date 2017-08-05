@@ -24,4 +24,6 @@ public interface UserMapper {
     void updateBase(@Param("user") User user);
 
     void deleteLogic(@Param("id") String id, @Param("updateTime") Date updateTime);
+
+    User getByRole(@Param("roleCode") String roleCode);
 }

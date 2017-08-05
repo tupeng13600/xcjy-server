@@ -60,6 +60,10 @@
         FROM `user` WHERE entity_id = #{entityId} AND user_type = #{userType};
     </select>
 
+    <select id="getByRole" resultMap="BaseResultMap">
+        SELECT <include refid="BaseTemplate" /> FROM `user` WHERE role_id = #{roleCode} limit 1;
+    </select>
+
     <update id="updateBase">
         UPDATE user SET
         name = #{user.name},

@@ -1,6 +1,6 @@
 package com.xcjy.web.common.interceptors;
 
-import com.xcjy.web.common.SchoolThreadLocal;
+import com.xcjy.web.common.CurrentThreadLocal;
 import com.xcjy.web.common.util.ReflectUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.executor.statement.RoutingStatementHandler;
@@ -62,7 +62,7 @@ public class MybatisQueryInterceptors implements Interceptor {
 
     private String appendSchoolId(String sql) {
         sql = replaceEndOfSql(sql);
-        String schoolId = SchoolThreadLocal.getSchoolId();
+        String schoolId = CurrentThreadLocal.getSchoolId();
         if (StringUtils.isNotBlank(schoolId)) {
             if (sql.toLowerCase().contains("where")) {
                 return sql + andSchoolIdCondition + "'" + schoolId + "'";

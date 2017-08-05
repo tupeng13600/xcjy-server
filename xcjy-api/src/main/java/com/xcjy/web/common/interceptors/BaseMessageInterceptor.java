@@ -3,7 +3,9 @@ package com.xcjy.web.common.interceptors;
 
 import com.xcjy.auth.util.UserUtil;
 import com.xcjy.web.bean.User;
-import com.xcjy.web.common.SchoolThreadLocal;
+import com.xcjy.web.common.CurrentThreadLocal;
+import com.xcjy.web.common.exception.EducationException;
+import com.xcjy.web.common.model.UserModel;
 import com.xcjy.web.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -15,6 +17,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import static com.xcjy.web.common.cache.CacheFactory.cache;
+import static com.xcjy.web.common.cache.CacheFactory.users;
 
 /**
  * Created by tupeng on 2017/7/22.
@@ -29,6 +34,8 @@ public class BaseMessageInterceptor implements HandlerInterceptor {
 
     /**
      * 将schoolId写进ThreadLocal
+     * 缓存用户基本信息
+     *
      * @param httpServletRequest
      * @param httpServletResponse
      * @param o
@@ -38,18 +45,36 @@ public class BaseMessageInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         String username = null;
-        try{
+        try {
             username = UserUtil.getCurrentUserName();
         } catch (Exception e) {
             logger.warn("can not get user info");
         }
         if (StringUtils.isNotBlank(username)) {
-            User user = userService.getByUsernameOrPhone(username, username);
+            UserModel user = this.getUser(username);
             if (null != user) {
-                SchoolThreadLocal.setSchoolId(user.getSchoolId());
+                CurrentThreadLocal.setSchoolId(user.getSchoolId());
             }
         }
         return true;
+    }
+
+    /**
+     * 获取用户，并且将用户缓存到缓存
+     *
+     * @param username
+     * @return
+     */
+    private UserModel getUser(String username) {
+        UserModel userModel = users.get(username);
+        if (null == userModel) {
+            User user = userService.getByUsernameOrPhone(username, username);
+            if (null == user) {
+                throw new EducationException("用户:" + username + " 不存在");
+            }
+            cache(user);
+        }
+        return users.get(username);
     }
 
     @Override
