@@ -2,9 +2,11 @@ package com.xcjy.web.service;
 
 import com.xcjy.auth.util.UpcSecurityUtil;
 import com.xcjy.web.bean.User;
+import com.xcjy.web.common.enums.RoleEnum;
 import com.xcjy.web.controller.req.RegisterReq;
 import com.xcjy.web.mapper.UserMapper;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.util.CollectionUtils;
 import org.apache.shiro.util.SimpleByteSource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +42,7 @@ public class UserService {
         regUser.setLastLoginTime(new Date());
         regUser.setSalt(UpcSecurityUtil.randomString());
         regUser.setPassword(UpcSecurityUtil.encryptPwd(req.getPassword(), new SimpleByteSource(regUser.getSalt())));
-        regUser.setRoleId("1");
+        regUser.setRoleId(getRolIdString(req.getRoleIds()));
         userMapper.insert(regUser);
     }
 
@@ -50,5 +52,14 @@ public class UserService {
 
     public List<User> getAll() {
         return userMapper.getAll();
+    }
+
+    private String getRolIdString(List<RoleEnum> roleEnums) {
+        if (CollectionUtils.isEmpty(roleEnums)) {
+            return "";
+        }
+        StringBuilder builder = new StringBuilder();
+        roleEnums.forEach(roleEnum -> builder.append(roleEnum.name()).append(","));
+        return builder.toString();
     }
 }

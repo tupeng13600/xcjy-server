@@ -1,7 +1,13 @@
 package com.xcjy.web.controller.req;
 
+import com.xcjy.web.common.enums.RoleEnum;
+import com.xcjy.web.common.enums.UserType;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * Created by tupeng on 2017/7/18.
@@ -15,10 +21,9 @@ public class RegisterReq {
     @NotBlank
     private String username;
 
-    @NotBlank
-    private String userType;
+    @NotNull
+    private UserType userType;
 
-    @NotBlank
     private String entityId;
 
     @NotBlank
@@ -27,7 +32,7 @@ public class RegisterReq {
     @NotBlank
     private String password;
 
-    @NotBlank
-    private String roleId;
+    @NotEmpty
+    private List<RoleEnum> roleIds;
 
 }
