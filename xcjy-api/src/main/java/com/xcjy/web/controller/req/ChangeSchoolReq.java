@@ -1,9 +1,7 @@
 package com.xcjy.web.controller.req;
 
-import com.xcjy.web.common.enums.ApplicationStatusType;
 import lombok.Data;
-
-import java.util.Date;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * Created by tupeng on 2017/8/5.
@@ -11,12 +9,13 @@ import java.util.Date;
 @Data
 public class ChangeSchoolReq {
 
+    @NotBlank
     private String studentId;
 
-    private String fromSchoolId;
-
+    @NotBlank
     private String toSchoolId;
 
+    @NotBlank
     private String remark;
 
 }

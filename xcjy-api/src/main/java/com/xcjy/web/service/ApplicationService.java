@@ -107,6 +107,11 @@ public class ApplicationService {
         if (null == user) {
             throw new EducationException("无法获取申请人信息");
         }
+        Student student = studentMapper.getById(req.getStudentId());
+        if (null == student) {
+            throw new EducationException("学生信息不存在");
+        }
+        aplnChangeSchool.setFromSchoolId(student.getSchoolId());
         aplnChangeSchool.setApplicationUserId(user.getId());
         aplnChangeSchool.setApplicationStatus(ApplicationStatusType.AUDITING);
         aplnChangeSchoolMapper.insert(aplnChangeSchool);
