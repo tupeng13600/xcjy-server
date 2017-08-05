@@ -1,6 +1,7 @@
 package com.xcjy.web.mapper;
 
 import com.xcjy.web.bean.User;
+import com.xcjy.web.common.enums.RoleEnum;
 import com.xcjy.web.common.enums.UserType;
 import org.apache.ibatis.annotations.Param;
 
@@ -25,5 +26,5 @@ public interface UserMapper {
 
     void deleteLogic(@Param("id") String id, @Param("updateTime") Date updateTime);
 
-    User getByRole(@Param("roleCode") String roleCode);
+    User getByRole(@Param("roleCode") RoleEnum roleCode);
 }
