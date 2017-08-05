@@ -1,22 +1,17 @@
 package com.xcjy.web.common.interceptors;
 
 import com.xcjy.web.common.CurrentThreadLocal;
-import com.xcjy.web.common.enums.DbOperationType;
 import com.xcjy.web.common.util.ReflectUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.executor.statement.RoutingStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
-import org.apache.ibatis.mapping.MappedStatement;
-import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.plugin.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
-import java.util.Map;
 import java.util.Properties;
-import java.util.UUID;
 
 /**
  * Created by tupeng on 2017/7/22.
@@ -28,13 +23,17 @@ public class MybatisQueryInterceptors implements Interceptor {
 
     private static Logger logger = LoggerFactory.getLogger(MybatisQueryInterceptors.class);
 
-    public static final String whereCondition = " WHERE deleted = FALSE";
+    private static final String whereCondition = " WHERE deleted = FALSE";
 
     private static final String andCondition = " AND deleted = FALSE";
 
-    public static final String andSchoolIdCondition = " AND school_id = ";
+    private static final String andSchoolIdCondition = " AND school_id = ";
 
-    public static final String whereSchoolIdCondition = " WHERE school_id = ";
+    private static final String whereSchoolIdCondition = " WHERE school_id = ";
+
+    private static final String orderCondition = "order by";
+
+    private static final String groupCondition = "group by";
 
     public static final String
             [] deletedMatches = new String[]{"wheredeleted=false", "anddeleted=false"};
@@ -47,8 +46,8 @@ public class MybatisQueryInterceptors implements Interceptor {
         RoutingStatementHandler handler = (RoutingStatementHandler) invocation.getTarget();
         StatementHandler delegate = (StatementHandler) ReflectUtil.getProperty(handler, "delegate");
         BoundSql boundSql = delegate.getBoundSql();
-        String sql = appendDeleted(appendSchoolId(boundSql.getSql()));
-        if (null != args && args.length > 0 && isSelect(sql)) {
+        if (isSelect(boundSql.getSql())) {
+            String sql = appendDeleted(appendSchoolId(replaceEndOfSql(boundSql.getSql())));
             ReflectUtil.setProperty(boundSql, "sql", sql);
             logger.info("开始执行sql : {}", sql);
         }
@@ -60,44 +59,62 @@ public class MybatisQueryInterceptors implements Interceptor {
         return des.startsWith("select");
     }
 
-    private boolean insert(Invocation invocation) {
-        Object[] args = invocation.getArgs();
-        if (null != args && args.length > 0) {
-            for (Object arg : args) {
-                if (arg instanceof Map) {
-                    Map<String, Object> argMap = (Map<String, Object>) arg;
-                    String id = UUID.randomUUID().toString().replaceAll("-", "");
-                    argMap.put("id", id);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     private String appendSchoolId(String sql) {
-        sql = replaceEndOfSql(sql);
+        String sqlPrefix = getPrefix(sql);
+        String sqlSuffix = getSuffix(sql);
         String schoolId = CurrentThreadLocal.getSchoolId();
         if (StringUtils.isNotBlank(schoolId)) {
-            if (sql.toLowerCase().contains("where")) {
-                return sql + andSchoolIdCondition + "'" + schoolId + "'";
-            } else {
-                return sql + whereSchoolIdCondition + "'" + schoolId + "'";
-            }
+            StringBuilder builder = new StringBuilder();
+            return sqlPrefix.toLowerCase().contains("where") ?
+                    appendEndOfSql(builder.append(sqlPrefix).append(andSchoolIdCondition).append("'")
+                            .append(schoolId).append("' ").append(sqlSuffix).toString())
+                    : appendEndOfSql(builder.append(sqlPrefix).append(whereSchoolIdCondition).append("'")
+                    .append(schoolId).append("' ").append(sqlSuffix).toString());
         }
-        return sql;
+        return sqlPrefix + sqlSuffix;
+    }
+
+    private String getSuffix(String sql) {
+        String desSql = sql.toLowerCase();
+        String suffix = "";
+        if (containsGroup(desSql)) {
+            suffix = desSql.toLowerCase().substring(desSql.indexOf(groupCondition), desSql.length());
+        } else if (containsOrder(desSql)) {
+            suffix = desSql.toLowerCase().substring(desSql.indexOf(orderCondition), desSql.length());
+        }
+        return suffix;
+    }
+
+    private String getPrefix(String sql) {
+        String prefix = replaceEndOfSql(sql).toLowerCase();
+        if (containsGroup(sql)) {
+            prefix = prefix.substring(0, prefix.indexOf(groupCondition));
+        } else if (containsOrder(sql)) {
+            prefix = prefix.substring(0, prefix.indexOf(orderCondition));
+        }
+        return prefix;
+    }
+
+    private Boolean containsGroup(String sql) {
+        String des = sql.toLowerCase();
+        return des.contains(groupCondition);
+    }
+
+    private Boolean containsOrder(String sql) {
+        String des = sql.toLowerCase();
+        return des.contains(orderCondition);
     }
 
     private String appendDeleted(String sql) {
-        sql = replaceEndOfSql(sql);
+        String sqlPrefix = getPrefix(sql);
+        String sqlSuffix = getSuffix(sql);
         if (!matches(sql)) {
-            if (sql.toLowerCase().contains("where")) {
-                sql += andCondition;
-            } else {
-                sql += whereCondition;
-            }
+            StringBuilder builder = new StringBuilder();
+            return sql.toLowerCase().contains("where") ?
+                    builder.append(sqlPrefix).append(andCondition).append(" ").append(sqlSuffix).toString()
+                    : builder.append(sqlPrefix).append(whereCondition).append(" ").append(sqlSuffix).toString();
         }
-        return appendEndOfSql(sql);
+        return appendEndOfSql(sqlPrefix + sqlSuffix);
     }
 
     private String replaceEndOfSql(String sql) {

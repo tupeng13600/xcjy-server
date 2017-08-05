@@ -45,7 +45,7 @@
     </update>
 
     <select id="getAll" resultMap="BaseResultMap">
-        SELECT <include refid="baseSql"/> FROM course;
+        SELECT <include refid="baseSql"/> FROM course ORDER BY create_time DESC;
     </select>
 
     <select id="getById" resultMap="BaseResultMap">
