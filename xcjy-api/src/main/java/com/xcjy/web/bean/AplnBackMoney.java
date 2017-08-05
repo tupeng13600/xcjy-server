@@ -10,6 +10,8 @@ public class AplnBackMoney {
 
     private String id;
 
+    private String schoolId;
+
     private String studentId;
 
     private String applicationUserId;

@@ -40,12 +40,12 @@
         </foreach>
     </insert>
 
-    <update id="updateMoney" parameterType="com.xcjy.web.bean.StmanagerStudent">
+    <update id="updateMoney">
       UPDATE stmanager_student SET
-      renew_money = #{renewMoney},
-      back_money = #{backMoney},
-      update_time = #{updateTime}
-      WHERE id = #{id} AND deleted = FALSE;
+      renew_money = #{stmanagerStudent.renewMoney},
+      back_money = #{stmanagerStudent.backMoney},
+      update_time = #{stmanagerStudent.updateTime}
+      WHERE id = #{stmanagerStudent.id} AND update_time = #{infoTime} AND deleted = FALSE;
     </update>
 
     <select id="getBySIdAndScIds" resultMap="BaseResultMap">
@@ -57,10 +57,11 @@
         </foreach>
     </select>
 
-    <select id="getSS" resultMap="BaseResultMap">
+    <select id="getBySES" resultMap="BaseResultMap">
         SELECT
         <include refid="baseSql"/>
         FROM stmanager_student WHERE school_id = #{schoolId} AND employee_id = #{employeeId} AND student_id =
         #{studentId};
     </select>
+
 </mapper>

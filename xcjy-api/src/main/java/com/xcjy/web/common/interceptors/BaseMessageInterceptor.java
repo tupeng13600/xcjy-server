@@ -18,8 +18,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.xcjy.web.common.cache.CacheFactory.cache;
-import static com.xcjy.web.common.cache.CacheFactory.users;
+import static com.xcjy.web.common.cache.CacheFactory.cacheIdUsers;
+import static com.xcjy.web.common.cache.CacheFactory.cacheUsernameUsers;
+import static com.xcjy.web.common.cache.CacheFactory.usernameUsers;
 
 /**
  * Created by tupeng on 2017/7/22.
@@ -66,15 +67,16 @@ public class BaseMessageInterceptor implements HandlerInterceptor {
      * @return
      */
     private UserModel getUser(String username) {
-        UserModel userModel = users.get(username);
+        UserModel userModel = usernameUsers.get(username);
         if (null == userModel) {
             User user = userService.getByUsernameOrPhone(username, username);
             if (null == user) {
                 throw new EducationException("用户:" + username + " 不存在");
             }
-            cache(user);
+            cacheUsernameUsers(user);
+            cacheIdUsers(user);
         }
-        return users.get(username);
+        return usernameUsers.get(username);
     }
 
     @Override

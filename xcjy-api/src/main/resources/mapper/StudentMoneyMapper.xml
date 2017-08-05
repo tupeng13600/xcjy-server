@@ -7,30 +7,32 @@
         <result column="student_id" jdbcType="VARCHAR" property="studentId"/>
         <result column="has_pay" jdbcType="INTEGER" property="hasPay"/>
         <result column="has_back" jdbcType="INTEGER" property="hasBack"/>
+        <result column="has_used" jdbcType="INTEGER" property="hasUsed"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="deleted" jdbcType="BIT" property="deleted"/>
     </resultMap>
 
     <sql id="baseSql">
-      id, school_id, student_id, has_pay, has_back, create_time, update_time, deleted
+      id, school_id, student_id, has_pay, has_back, has_used, create_time, update_time, deleted
     </sql>
 
     <insert id="insert" parameterType="com.xcjy.web.bean.StudentMoney">
     insert into student_money (id, school_id, student_id, 
-      has_pay, has_back, create_time, 
+      has_pay, has_back, has_used, create_time,
       update_time, deleted)
     values (#{id,jdbcType=VARCHAR}, #{schoolId,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR}, 
-      #{hasPay,jdbcType=INTEGER}, #{hasBack,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{hasPay,jdbcType=INTEGER}, #{hasBack,jdbcType=INTEGER}, #{hasUsed}, #{createTime,jdbcType=TIMESTAMP},
       #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT})
   </insert>
 
-    <update id="updateMoney" parameterType="com.xcjy.web.bean.StudentMoney">
+    <update id="updateMoney">
         UPDATE student_money SET
-        has_pay = #{hasPay},
-        has_back = #{hasBack},
-        update_time = #{updateTime}
-        WHERE id = #{id} AND deleted = FALSE;
+        has_pay = #{studentMoney.hasPay},
+        has_back = #{studentMoney.hasBack},
+        has_used = #{studentMoney.hasUsed},
+        update_time = #{studentMoney.updateTime}
+        WHERE id = #{studentMoney.id} AND update_time = #{infoTime} AND deleted = FALSE;
     </update>
 
     <select id="getBySchoolIdAndStudentId" resultMap="BaseResultMap">

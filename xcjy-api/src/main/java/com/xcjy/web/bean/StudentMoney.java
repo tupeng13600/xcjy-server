@@ -16,6 +16,8 @@ public class StudentMoney {
 
     private Integer hasBack;
 
+    private Integer hasUsed;
+
     private Date createTime;
 
     private Date updateTime;

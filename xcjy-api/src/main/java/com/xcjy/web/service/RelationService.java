@@ -106,13 +106,14 @@ public class RelationService {
             counselorStudent.setStatus(CounselorStudentStatusType.HAS_PAY);
             counselorStudentMapper.updateMoney(counselorStudent);
         } else if (StudentPayType.STUDENTMANAGER_PAY.equals(req.getPayType())) {
-            StmanagerStudent stmanagerStudent = stmanagerStudentMapper.getSS(req.getSchoolId(), req.getEmployeeId(), req.getStudentId());
+            StmanagerStudent stmanagerStudent = stmanagerStudentMapper.getBySES(req.getSchoolId(), req.getEmployeeId(), req.getStudentId());
             if (null == stmanagerStudent) {
                 throw new EducationException("学生未分配给改学管师");
             }
             stmanagerStudent.setRenewMoney(stmanagerStudent.getRenewMoney() + req.getMoney());
+            Date infoTime = stmanagerStudent.getUpdateTime();
             stmanagerStudent.setUpdateTime(new Date());
-            stmanagerStudentMapper.updateMoney(stmanagerStudent);
+            stmanagerStudentMapper.updateMoney(stmanagerStudent, infoTime);
         }
 
         StudentMoney studentMoney = studentMoneyMapper.getBySchoolIdAndStudentId(req.getSchoolId(), req.getStudentId());
@@ -126,8 +127,9 @@ public class RelationService {
             studentMoneyMapper.insert(studentMoney);
         } else {
             studentMoney.setHasPay(studentMoney.getHasPay() + req.getMoney());
+            Date infoTime = studentMoney.getUpdateTime();
             studentMoney.setUpdateTime(new Date());
-            studentMoneyMapper.updateMoney(studentMoney);
+            studentMoneyMapper.updateMoney(studentMoney, infoTime);
         }
         //添加学生缴费日志
         StudentPayLog studentPayLog = new StudentPayLog();

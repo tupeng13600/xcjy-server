@@ -10,7 +10,7 @@ import com.xcjy.web.common.model.UserModel;
 public abstract class CurrentUserUtil {
 
     public static UserModel currentUser(){
-        return CacheFactory.users.get(UserUtil.getCurrentUserName());
+        return CacheFactory.usernameUsers.get(UserUtil.getCurrentUserName());
     }
 
 }

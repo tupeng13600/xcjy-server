@@ -1,27 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xcjy.web.mapper.AplnBackMoneyMapper">
-  <resultMap id="BaseResultMap" type="com.xcjy.web.bean.AplnBackMoney">
-    <result column="id" jdbcType="VARCHAR" property="id" />
-    <result column="student_id" jdbcType="VARCHAR" property="studentId" />
-    <result column="application_user_id" jdbcType="VARCHAR" property="applicationUserId" />
-    <result column="return_amount" jdbcType="INTEGER" property="returnAmount" />
-    <result column="application_status" jdbcType="VARCHAR" property="applicationStatus" />
-    <result column="application_time" jdbcType="TIMESTAMP" property="applicationTime" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="deleted" jdbcType="BIT" property="deleted" />
-  </resultMap>
-  <insert id="insert" parameterType="com.xcjy.web.bean.AplnBackMoney">
-    insert into apln_back_money (id, student_id, application_user_id, 
+    <resultMap id="BaseResultMap" type="com.xcjy.web.bean.AplnBackMoney">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="school_id" jdbcType="VARCHAR" property="schoolId"/>
+        <result column="student_id" jdbcType="VARCHAR" property="studentId"/>
+        <result column="application_user_id" jdbcType="VARCHAR" property="applicationUserId"/>
+        <result column="return_amount" jdbcType="INTEGER" property="returnAmount"/>
+        <result column="application_status" jdbcType="VARCHAR" property="applicationStatus"/>
+        <result column="application_time" jdbcType="TIMESTAMP" property="applicationTime"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="deleted" jdbcType="BIT" property="deleted"/>
+    </resultMap>
+
+    <sql id="baseSql">
+    id, school_id, student_id, application_user_id, return_amount, application_status, application_time, remark, create_time, update_time, deleted
+  </sql>
+
+    <insert id="insert" parameterType="com.xcjy.web.bean.AplnBackMoney">
+    insert into apln_back_money (id, school_id, student_id, application_user_id,
       return_amount, application_status, application_time, 
       remark, create_time, update_time, 
       deleted)
-    values (#{id,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR}, #{applicationUserId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{schoolId,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR}, #{applicationUserId,jdbcType=VARCHAR},
       #{returnAmount,jdbcType=INTEGER}, #{applicationStatus,jdbcType=VARCHAR}, #{applicationTime,jdbcType=TIMESTAMP}, 
       #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{deleted,jdbcType=BIT})
   </insert>
+
+    <update id="updateStatus">
+    UPDATE apln_back_money SET
+      application_status = #{backMoney.applicationStatus},
+      application_time = #{backMoney.applicationTime},
+      update_time = #{backMoney.updateTime}
+      WHERE id = #{backMoney.id} AND application_status = #{status};
+  </update>
+
+    <select id="getById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM apln_back_money WHERE id = #{id};
+    </select>
 
 </mapper>

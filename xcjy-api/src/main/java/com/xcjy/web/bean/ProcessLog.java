@@ -15,6 +15,8 @@ public class ProcessLog {
 
     private ProcessLogType type;
 
+    private Integer processNum;
+
     private String handlerUserId;
 
     private HandlerStatusType handlerStatus;

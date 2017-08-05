@@ -25,7 +25,9 @@ public class CacheFactory {
 
     public static Map<String, School> schools;
 
-    public static Map<String, UserModel> users = new ConcurrentHashMap<>();
+    public static Map<String, UserModel> usernameUsers = new ConcurrentHashMap<>();
+
+    public static Map<String, UserModel> userIdUsers = new ConcurrentHashMap<>();
 
     public static List<RoleEnum> backMoneyAuditRoleChain = new ArrayList<>(); //退费审核链  userId_num
 
@@ -33,19 +35,36 @@ public class CacheFactory {
     private SchoolService schoolService;
 
     @PostConstruct
-    public void init(){
+    public void init() {
         List<School> schoolList = schoolService.list();
         schools = schoolList.stream().collect(Collectors.toMap(School::getName, school -> school));
         backMoneyAuditRoleChain.add(RoleEnum.SCHOOLMASTER_BOSS);
     }
 
-    public static void cache(User user) {
+    public static void cacheUsernameUsers(User user) {
         UserModel userModel = new UserModel();
-        if(null == user) {
+        if (null == user) {
             throw new EducationException("缓存的用户不可为空");
         }
         BeanUtils.copyProperties(user, userModel);
-        users.put(userModel.getUsername(), userModel);
+        usernameUsers.put(userModel.getUsername(), userModel);
+    }
+
+    public static void cacheIdUsers(User user) {
+        UserModel userModel = new UserModel();
+        if (null == user) {
+            throw new EducationException("缓存的用户不可为空");
+        }
+        BeanUtils.copyProperties(user, userModel);
+        userIdUsers.put(userModel.getId(), userModel);
+    }
+
+    public static RoleEnum getNextProcess(Integer index) {
+        try {
+            return null == index ? backMoneyAuditRoleChain.get(0) : backMoneyAuditRoleChain.get(index + 1);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }
