@@ -56,6 +56,10 @@ public class ShiroConfig {
         List<String> defineFilterChain = new ArrayList<>();
         defineFilterChain.add("/swagger-resources/** = anon");
         defineFilterChain.add("/user = anon");
+        defineFilterChain.add("/swagger-ui.html = anon");
+        defineFilterChain.add("/webjars/** = anon");
+        defineFilterChain.add("/v2/** = anon");
+        defineFilterChain.add("/** = upcAuth");
         return defineFilterChain;
     }
 
