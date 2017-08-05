@@ -38,6 +38,12 @@ public class ApplicationController {
         applicationService.changeSchool(req);
     }
 
+    @ApiOperation("退费申请审核")
+    @PutMapping("/school/{handlerStatus}/{processId}")
+    public void auditChangeSchool(@PathVariable String processId, @PathVariable HandlerStatusType handlerStatus){
+        applicationService.auditChangeSchool(processId, handlerStatus);
+    }
+
 
 
 }

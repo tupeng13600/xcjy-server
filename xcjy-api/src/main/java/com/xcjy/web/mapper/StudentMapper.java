@@ -20,4 +20,5 @@ public interface StudentMapper {
 
     int insertBatch(@Param("students") List<Student> students);
 
+    void updateSchoolId(@Param("student") Student student);
 }

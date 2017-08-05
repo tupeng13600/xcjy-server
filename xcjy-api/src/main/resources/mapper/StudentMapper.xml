@@ -94,6 +94,13 @@
         UPDATE student SET deleted = TRUE, update_time = #{updateTime} WHERE id = #{id}
     </update>
 
+    <update id="updateSchoolId">
+        UPDATE student SET
+        school_id = #{student.schoolId},
+        update_time = #{student.updateTime}
+        WHERE id = #{student.id} AND deleted = FALSE;
+    </update>
+
     <select id="listAll" resultMap="BaseResultMap">
         SELECT <include refid="baseSql"/> FROM student;
     </select>

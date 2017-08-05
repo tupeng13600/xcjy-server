@@ -1,26 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xcjy.web.mapper.AplnChangeSchoolMapper">
-  <resultMap id="BaseResultMap" type="com.xcjy.web.bean.AplnChangeSchool">
-    <result column="id" jdbcType="VARCHAR" property="id" />
-    <result column="student_id" jdbcType="VARCHAR" property="studentId" />
-    <result column="from_school_id" jdbcType="VARCHAR" property="fromSchoolId" />
-    <result column="to_school_id" jdbcType="VARCHAR" property="toSchoolId" />
-    <result column="application_user_id" jdbcType="VARCHAR" property="applicationUserId" />
-    <result column="application_status" jdbcType="VARCHAR" property="applicationStatus" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="deleted" jdbcType="BIT" property="deleted" />
-  </resultMap>
-  <insert id="insert" parameterType="com.xcjy.web.bean.AplnChangeSchool">
+    <resultMap id="BaseResultMap" type="com.xcjy.web.bean.AplnChangeSchool">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="student_id" jdbcType="VARCHAR" property="studentId"/>
+        <result column="from_school_id" jdbcType="VARCHAR" property="fromSchoolId"/>
+        <result column="to_school_id" jdbcType="VARCHAR" property="toSchoolId"/>
+        <result column="application_user_id" jdbcType="VARCHAR" property="applicationUserId"/>
+        <result column="application_status" jdbcType="VARCHAR" property="applicationStatus"/>
+        <result column="application_time" jdbcType="TIMESTAMP" property="applicationTime"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="deleted" jdbcType="BIT" property="deleted"/>
+    </resultMap>
+
+    <sql id="baseSql">
+    id, student_id, from_school_id, to_school_id, application_user_id, application_status, application_time, remark, create_time, update_time, deleted
+  </sql>
+
+    <insert id="insert" parameterType="com.xcjy.web.bean.AplnChangeSchool">
     insert into apln_change_school (id, student_id, from_school_id, 
-      to_school_id, application_user_id, application_status, 
+      to_school_id, application_user_id, application_status,  application_time
       remark, create_time, update_time, 
       deleted)
     values (#{id,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR}, #{fromSchoolId,jdbcType=VARCHAR}, 
-      #{toSchoolId,jdbcType=VARCHAR}, #{applicationUserId,jdbcType=VARCHAR}, #{applicationStatus,jdbcType=VARCHAR}, 
+      #{toSchoolId,jdbcType=VARCHAR}, #{applicationUserId,jdbcType=VARCHAR}, #{applicationStatus,jdbcType=VARCHAR}, #{applicationTime,jdbcType=TIMESTAMP},
       #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{deleted,jdbcType=BIT})
   </insert>
+
+    <update id="updateStatus">
+    UPDATE apln_change_school SET
+     application_status = #{changeSchool.applicationStatus},
+     application_time = #{changeSchool.applicationTime},
+     update_time = #{changeSchool.updateTime}
+     WHERE id = #{changeSchool.} AND application_status = #{status} AND deleted = FALSE;
+  </update>
+
+    <select id="getById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM apln_change_school WHERE id = #{id};
+    </select>
 </mapper>

@@ -20,6 +20,8 @@ public class AplnChangeSchool {
 
     private ApplicationStatusType applicationStatus;
 
+    private Date applicationTime;
+
     private String remark;
 
     private Date createTime;
