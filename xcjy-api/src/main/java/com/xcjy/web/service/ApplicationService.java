@@ -10,6 +10,7 @@ import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.model.UserModel;
 import com.xcjy.web.common.util.CurrentUserUtil;
 import com.xcjy.web.controller.req.BackMoneyCreateReq;
+import com.xcjy.web.controller.req.ChangeSchoolReq;
 import com.xcjy.web.mapper.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,9 @@ public class ApplicationService {
     @Autowired
     private StmanagerStudentMapper stmanagerStudentMapper;
 
+    @Autowired
+    private AplnChangeSchoolMapper aplnChangeSchoolMapper;
+
     /**
      * 创建退费申请
      *
@@ -56,7 +60,7 @@ public class ApplicationService {
         aplnBackMoney.setSchoolId(user.getSchoolId());
         aplnBackMoney.setApplicationStatus(ApplicationStatusType.AUDITING);
         aplnBackMoneyMapper.insert(aplnBackMoney);
-        createProcessLog(aplnBackMoney.getId(), 0, CacheFactory.getNextProcess(null));
+        createProcessLog(aplnBackMoney.getId(), 0, CacheFactory.getNextBackMoneyProcess(null), ProcessLogType.BACK_MONEY);
     }
 
     /**
@@ -68,7 +72,7 @@ public class ApplicationService {
     public void auditBackMoney(String processId, HandlerStatusType handlerStatus) {
         ProcessLog processLog = updateProcessLog(processId, handlerStatus);
         if (HandlerStatusType.AUDIT_SUCCESS.equals(handlerStatus)) {
-            RoleEnum roleEnum = CacheFactory.getNextProcess(processLog.getProcessNum());
+            RoleEnum roleEnum = CacheFactory.getNextBackMoneyProcess(processLog.getProcessNum());
             if (null == roleEnum) {
                 //审核流程完毕 更新申请表状态
                 AplnBackMoney aplnBackMoney = updateBackMoney(processLog.getApplicationId());
@@ -79,9 +83,27 @@ public class ApplicationService {
                         aplnBackMoney.getStudentId(), aplnBackMoney.getReturnAmount());
             } else {
                 //创建下一个审核流程
-                createProcessLog(processLog.getApplicationId(), processLog.getProcessNum() + 1, roleEnum);
+                createProcessLog(processLog.getApplicationId(), processLog.getProcessNum() + 1, roleEnum, ProcessLogType.BACK_MONEY);
             }
         }
+    }
+
+    /**
+     * 创建转校申请
+     * @param req
+     */
+    public void changeSchool(ChangeSchoolReq req) {
+        AplnChangeSchool aplnChangeSchool = new AplnChangeSchool();
+        BeanUtils.copyProperties(req, aplnChangeSchool);
+        UserModel user = CurrentUserUtil.currentUser();
+        if (null == user) {
+            throw new EducationException("无法获取申请人信息");
+        }
+        aplnChangeSchool.setApplicationUserId(user.getId());
+        aplnChangeSchool.setApplicationStatus(ApplicationStatusType.AUDITING);
+        aplnChangeSchoolMapper.insert(aplnChangeSchool);
+        //创建审核流程
+        createProcessLog(aplnChangeSchool.getId(), 0, CacheFactory.getNextChangeSchoolProcess(null), ProcessLogType.CHANGE_SCHOOL);
     }
 
     /**
@@ -89,14 +111,14 @@ public class ApplicationService {
      */
 
     @Transactional
-    private void createProcessLog(String applicationId, Integer processNum, RoleEnum roleEnum) {
+    private void createProcessLog(String applicationId, Integer processNum, RoleEnum roleEnum, ProcessLogType processLogType) {
         ProcessLog processLog = new ProcessLog();
         processLog.setApplicationId(applicationId);
         processLog.setHandlerStatus(HandlerStatusType.WAIT_AUDIT);
         User roleUser = userMapper.getByRole(roleEnum);
         processLog.setHandlerUserId(roleUser.getId());
         processLog.setProcessNum(processNum);
-        processLog.setType(ProcessLogType.BACK_MONEY);
+        processLog.setType(processLogType);
         processLogMapper.insert(processLog);
     }
 

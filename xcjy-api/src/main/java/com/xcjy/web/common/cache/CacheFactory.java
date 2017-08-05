@@ -29,7 +29,9 @@ public class CacheFactory {
 
     public static Map<String, UserModel> userIdUsers = new ConcurrentHashMap<>();
 
-    public static List<RoleEnum> backMoneyAuditRoleChain = new ArrayList<>(); //退费审核链  userId_num
+    public static List<RoleEnum> backMoneyAuditRoleChain = new ArrayList<>(); //退费审核链
+
+    public static List<RoleEnum> changeSchoolAuditRoleChain = new ArrayList<>(); //转校审核链
 
     @Autowired
     private SchoolService schoolService;
@@ -59,9 +61,17 @@ public class CacheFactory {
         userIdUsers.put(userModel.getId(), userModel);
     }
 
-    public static RoleEnum getNextProcess(Integer index) {
+    public static RoleEnum getNextBackMoneyProcess(Integer index) {
         try {
             return null == index ? backMoneyAuditRoleChain.get(0) : backMoneyAuditRoleChain.get(index + 1);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static RoleEnum getNextChangeSchoolProcess(Integer index) {
+        try {
+            return null == index ? changeSchoolAuditRoleChain.get(0) : changeSchoolAuditRoleChain.get(index + 1);
         } catch (Exception e) {
             return null;
         }

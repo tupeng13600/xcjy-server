@@ -2,6 +2,7 @@ package com.xcjy.web.controller;
 
 import com.xcjy.web.common.enums.HandlerStatusType;
 import com.xcjy.web.controller.req.BackMoneyCreateReq;
+import com.xcjy.web.controller.req.ChangeSchoolReq;
 import com.xcjy.web.service.ApplicationService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,16 @@ public class ApplicationController {
 
     @ApiOperation("退费申请审核")
     @PutMapping("/money/{handlerStatus}/{processId}")
-    public void audit(@PathVariable String processId, @PathVariable HandlerStatusType handlerStatus) {
+    public void auditMoney(@PathVariable String processId, @PathVariable HandlerStatusType handlerStatus) {
         applicationService.auditBackMoney(processId, handlerStatus);
     }
+
+    @ApiOperation("创建转校申请")
+    @PutMapping("/school")
+    public void changeSchool(@RequestBody @Valid ChangeSchoolReq req){
+        applicationService.changeSchool(req);
+    }
+
+
 
 }
