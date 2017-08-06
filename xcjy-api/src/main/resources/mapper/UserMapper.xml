@@ -77,7 +77,7 @@
     </update>
 
     <update id="deleteLogic">
-        UPDATE deleted = TRUE , update_time = #{updateTime} WHERE id = #{id};
+        UPDATE `user` SET deleted = TRUE , update_time = #{updateTime} WHERE id = #{id};
     </update>
 
 </mapper>

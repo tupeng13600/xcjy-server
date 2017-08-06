@@ -14,6 +14,8 @@ import com.xcjy.web.controller.req.PageReq;
 import com.xcjy.web.mapper.EmployeeMapper;
 import com.xcjy.web.mapper.UserMapper;
 import org.apache.shiro.util.SimpleByteSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,8 @@ import java.util.List;
  */
 @Service
 public class EmployeeService {
+
+    private static final Logger logger = LoggerFactory.getLogger(EmployeeService.class);
 
     @Autowired
     private EmployeeMapper employeeMapper;
@@ -88,7 +92,8 @@ public class EmployeeService {
         employeeMapper.update(employee);
         user = userMapper.getByEntityId(UserType.EMPLOYEE, req.getId());
         if (null == user) {
-            throw new EducationException("用户账号信息不存在");
+            logger.warn("更新员工信息接口调用：未查询到员工对应账号信息");
+            return;
         }
         user.setName(req.getName());
         user.setPhone(req.getPhone());
@@ -110,7 +115,8 @@ public class EmployeeService {
         employeeMapper.deleteLogic(id, new Date());
         User user = userMapper.getByEntityId(UserType.EMPLOYEE, id);
         if (null == user) {
-            throw new EducationException("用户账号信息不存在");
+            logger.warn("删除员工信息接口调用：未查询到员工对应账号信息");
+            return;
         }
         userMapper.deleteLogic(user.getId(), new Date());
     }
