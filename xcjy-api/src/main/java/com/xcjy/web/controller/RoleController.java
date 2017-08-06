@@ -1,6 +1,5 @@
 package com.xcjy.web.controller;
 
-import com.xcjy.web.common.enums.RoleEnum;
 import com.xcjy.web.controller.res.RoleRes;
 import com.xcjy.web.service.RoleService;
 import io.swagger.annotations.ApiOperation;
