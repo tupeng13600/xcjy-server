@@ -1,5 +1,6 @@
 package com.xcjy.web.controller;
 
+import com.xcjy.web.controller.req.PageReq;
 import com.xcjy.web.service.EmployeeService;
 import com.xcjy.web.bean.Employee;
 import com.xcjy.web.controller.req.EmployeeCreateReq;
@@ -41,8 +42,8 @@ public class EmployeeController {
 
     @ApiOperation("获取员工列表")
     @GetMapping
-    public List<Employee> list(){
-        return employeeService.list();
+    public List<Employee> list(PageReq pageReq){
+        return employeeService.list(pageReq);
     }
 
 }

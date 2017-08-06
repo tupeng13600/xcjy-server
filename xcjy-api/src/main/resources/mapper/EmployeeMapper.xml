@@ -69,11 +69,11 @@
     </update>
 
     <select id="getById" resultMap="BaseResultMap">
-        SELECT <include refid="baseSql"/> WHERE id = #{id};
+        SELECT <include refid="baseSql"/> FROM employee WHERE id = #{id};
     </select>
 
     <update id="deleteLogic">
-        UPDATE deleted = TRUE ,update_time = #{updateTime} WHERE id = #{id};
+        UPDATE employee SET deleted = TRUE ,update_time = #{updateTime} WHERE id = #{id};
     </update>
 
 </mapper>

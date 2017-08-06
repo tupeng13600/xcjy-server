@@ -16,9 +16,6 @@ public class EmployeeUpdateReq {
     private String id;
 
     @NotBlank
-    private String roleIds;
-
-    @NotBlank
     private String name;
 
     private SexType sex;

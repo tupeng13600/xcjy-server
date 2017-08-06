@@ -3,14 +3,16 @@ package com.xcjy.web.service;
 import com.xcjy.auth.util.UpcSecurityUtil;
 import com.xcjy.web.bean.Employee;
 import com.xcjy.web.bean.User;
+import com.xcjy.web.common.CurrentThreadLocal;
 import com.xcjy.web.common.enums.UserType;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.util.CommonUtil;
+import com.xcjy.web.common.util.DateUtil;
 import com.xcjy.web.controller.req.EmployeeCreateReq;
 import com.xcjy.web.controller.req.EmployeeUpdateReq;
+import com.xcjy.web.controller.req.PageReq;
 import com.xcjy.web.mapper.EmployeeMapper;
 import com.xcjy.web.mapper.UserMapper;
-import com.xcjy.web.common.util.DateUtil;
 import org.apache.shiro.util.SimpleByteSource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +40,7 @@ public class EmployeeService {
      * @param req
      */
     public void create(EmployeeCreateReq req) {
-        if(null != userMapper.getByPhone(req.getPhone()) || null != userMapper.getByUsername(req.getUsername())) {
+        if (null != userMapper.getByPhone(req.getPhone()) || null != userMapper.getByUsername(req.getUsername())) {
             throw new EducationException("用户名或者手机号码已存在");
         }
         //创建Employee
@@ -75,10 +77,16 @@ public class EmployeeService {
         if (null == employee) {
             throw new EducationException("员工信息不存在");
         }
+
+        User user = userMapper.getByPhone(req.getPhone());
+        if (null != user && !req.getId().equals(user.getEntityId())) {
+            throw new EducationException("手机号码已经被使用");
+        }
+
         BeanUtils.copyProperties(req, employee);
         employee.setUpdateTime(new Date());
         employeeMapper.update(employee);
-        User user = userMapper.getByEntityId(UserType.EMPLOYEE, req.getId());
+        user = userMapper.getByEntityId(UserType.EMPLOYEE, req.getId());
         if (null == user) {
             throw new EducationException("用户账号信息不存在");
         }
@@ -112,7 +120,8 @@ public class EmployeeService {
      *
      * @return
      */
-    public List<Employee> list() {
+    public List<Employee> list(PageReq pageReq) {
+        CurrentThreadLocal.setPageReq(pageReq);
         return employeeMapper.getAll();
     }
 
