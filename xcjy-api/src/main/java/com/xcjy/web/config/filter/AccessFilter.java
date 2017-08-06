@@ -34,7 +34,7 @@ public class AccessFilter implements Filter {
         }
         httpResponse.setHeader("Access-Control-Allow-Methods", "POST,GET,PUT,PATCH,DELETE,OPTIONS");
         httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
-        httpResponse.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept,__skcy");
+        httpResponse.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept,__skcy, No-Cache, If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires,  X-E4M-With");
         httpResponse.setHeader("Access-Control-Max-Age", "1728000");
 
         if ( httpRequest.getMethod().equals("OPTIONS") ) {
