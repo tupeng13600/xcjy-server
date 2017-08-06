@@ -43,10 +43,9 @@ public class RelationService {
 
     @Transactional
     public void counselorStudent(CounselorStudentCreateReq req) {
-        String schoolId = req.getSchoolId();
         String employeeId = req.getEmployeeId();
 
-        List<CounselorStudent> counselorStudents = counselorStudentMapper.getByStuIdScId(schoolId, req.getStudentId());
+        List<CounselorStudent> counselorStudents = counselorStudentMapper.getByStudentIds(req.getStudentId());
 
         if (CollectionUtils.isNotEmpty(counselorStudents)) {
             throw new EducationException("存在已经被分配的学生");
@@ -54,7 +53,6 @@ public class RelationService {
         List<CounselorStudent> counselorStudentList = new ArrayList<>();
         for (String studentId : req.getStudentId()) {
             CounselorStudent counselorStudent = new CounselorStudent();
-            counselorStudent.setSchoolId(schoolId);
             counselorStudent.setEmployeeId(employeeId);
             counselorStudent.setStudentId(studentId);
             counselorStudent.setMoney(0);

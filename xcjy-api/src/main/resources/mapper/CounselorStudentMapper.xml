@@ -31,7 +31,7 @@
         insert into counselor_student (id, school_id, employee_id,
         student_id, money, status,
         create_time, update_time, deleted
-        )VALUES
+        ) VALUES
         <foreach collection="list" item="stu" separator=",">
             (#{stu.id,jdbcType=VARCHAR}, #{stu.schoolId,jdbcType=VARCHAR}, #{stu.employeeId,jdbcType=VARCHAR},
             #{stu.studentId,jdbcType=VARCHAR}, #{stu.money,jdbcType=INTEGER}, #{stu.status,jdbcType=VARCHAR},
@@ -57,10 +57,10 @@
         </foreach>
     </select>
 
-    <select id="getByStuIdScId" resultMap="BaseResultMap">
+    <select id="getByStudentIds" resultMap="BaseResultMap">
         SELECT
         <include refid="baseSql"/>
-        FROM counselor_student WHERE school_id = #{schoolId} AND
+        FROM counselor_student WHERE
         student_id IN
         <foreach collection="studentIds" item="studentId" open="(" separator="," close=")">
             #{studentId}

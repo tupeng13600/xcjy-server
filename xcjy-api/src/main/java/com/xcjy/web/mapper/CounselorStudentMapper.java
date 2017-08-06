@@ -17,7 +17,7 @@ public interface CounselorStudentMapper {
 
     CounselorStudent getCS(@Param("schoolId") String schoolId, @Param("employeeId") String employeeId, @Param("studentId") String studentId);
 
-    List<CounselorStudent> getByStuIdScId(@Param("schoolId") String schoolId, @Param("studentIds") Set<String> studentIds);
+    List<CounselorStudent> getByStudentIds(@Param("studentIds") Set<String> studentIds);
 
     void updateMoney(CounselorStudent counselorStudent);
 }
