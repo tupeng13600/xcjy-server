@@ -2,10 +2,7 @@ package com.xcjy.web.controller;
 
 import com.xcjy.web.bean.User;
 import com.xcjy.web.common.exception.EducationException;
-import com.xcjy.web.controller.req.PageReq;
-import com.xcjy.web.controller.req.RegisterReq;
-import com.xcjy.web.controller.req.UserBaseUpdateReq;
-import com.xcjy.web.controller.req.UserRoleUpdateReq;
+import com.xcjy.web.controller.req.*;
 import com.xcjy.web.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +52,12 @@ public class UserController {
     @PutMapping("/pwd")
     public void updateRole(UserRoleUpdateReq req) {
         userService.updateRole(req);
+    }
+
+    @ApiOperation("修改自身用户密码")
+    @PutMapping("/pwd")
+    public void updateSelfPassword(UserPwdSelfUpdateReq req) {
+        userService.updateSelfPassword(req);
     }
 
 }

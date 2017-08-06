@@ -3,16 +3,13 @@ package com.xcjy.web.service;
 import com.xcjy.auth.util.UpcSecurityUtil;
 import com.xcjy.web.bean.User;
 import com.xcjy.web.common.CurrentThreadLocal;
-import com.xcjy.web.common.enums.RoleEnum;
 import com.xcjy.web.common.exception.EducationException;
+import com.xcjy.web.common.model.UserModel;
 import com.xcjy.web.common.util.CommonUtil;
-import com.xcjy.web.controller.req.PageReq;
-import com.xcjy.web.controller.req.RegisterReq;
-import com.xcjy.web.controller.req.UserBaseUpdateReq;
-import com.xcjy.web.controller.req.UserRoleUpdateReq;
+import com.xcjy.web.common.util.CurrentUserUtil;
+import com.xcjy.web.controller.req.*;
 import com.xcjy.web.mapper.UserMapper;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.util.CollectionUtils;
 import org.apache.shiro.util.SimpleByteSource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,11 +73,11 @@ public class UserService {
 
         User user = userMapper.getById(req.getId());
 
-        if(null == user) {
+        if (null == user) {
             throw new EducationException("用户不存在");
         }
 
-        if(!req.getPassword().equals(req.getRePassword())) {
+        if (!req.getPassword().equals(req.getRePassword())) {
             throw new EducationException("两次密码输入不一致");
         }
         user.setSalt(UpcSecurityUtil.randomString());
@@ -92,11 +89,23 @@ public class UserService {
     @Transactional
     public void updateRole(UserRoleUpdateReq req) {
         User user = userMapper.getById(req.getId());
-        if(null == user) {
+        if (null == user) {
             throw new EducationException("用户信息不存在");
         }
         user.setRoleId(CommonUtil.getRolIdString(req.getRoleList()));
         user.setUpdateTime(new Date());
         userMapper.updateRole(user);
+    }
+
+    public void updateSelfPassword(UserPwdSelfUpdateReq req) {
+        UserModel userModel = CurrentUserUtil.currentUser();
+        User user = userMapper.getById(userModel.getId());
+        if (null == user) {
+            throw new EducationException("用户信息不存在");
+        }
+        user.setSalt(UpcSecurityUtil.randomString());
+        user.setPassword(UpcSecurityUtil.encryptPwd(req.getPassword(), new SimpleByteSource(user.getSalt())));
+        user.setUpdateTime(new Date());
+        userMapper.updatePassword(user);
     }
 }
