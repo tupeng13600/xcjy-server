@@ -5,7 +5,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +22,8 @@ import java.util.*;
  */
 public abstract class ExcelUtil {
 
+    private static Logger logger = LoggerFactory.getLogger(ExcelUtil.class);
+
     /**
      * 获取excel工作页
      *
@@ -23,9 +31,8 @@ public abstract class ExcelUtil {
      * @return
      * @throws IOException
      */
-    public static HSSFSheet getSheet(InputStream inputStream) throws IOException {
-        POIFSFileSystem fileSystem = new POIFSFileSystem(inputStream);
-        HSSFWorkbook workbook = new HSSFWorkbook(fileSystem);
+    public static XSSFSheet getSheet(InputStream inputStream) throws IOException {
+        XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
         return workbook.getSheetAt(0);
     }
 
@@ -46,13 +53,17 @@ public abstract class ExcelUtil {
         return headers;
     }
 
-    public static void getData(List<Map<String, String>> resultList, HSSFSheet sheet, Integer headerBegin, Integer dataBegin, Integer maxColumn) {
+    public static void getData(List<Map<String, String>> resultList, XSSFSheet sheet, Integer headerBegin, Integer dataBegin, Integer maxColumn) {
         Map<String, String> dataMap = new HashMap<>();
         Boolean hasData = false;
-        HSSFRow headerRow = sheet.getRow(headerBegin);
-        HSSFRow dataRow = sheet.getRow(dataBegin);
+        XSSFRow headerRow = sheet.getRow(headerBegin);
+        XSSFRow dataRow = sheet.getRow(dataBegin);
+        logger.info("获取excel数据，第{}行", dataBegin + 1);
         for (int column = 0; column < maxColumn; column++) {
             String key = headerRow.getCell(column).getStringCellValue();
+            if(null == dataRow) {
+                break;
+            }
             String val = dataRow.getCell(column).getStringCellValue();
             dataMap.put(key, val);
             if (StringUtils.isNotBlank(val)) {
@@ -61,7 +72,7 @@ public abstract class ExcelUtil {
         }
         if (hasData) {
             resultList.add(dataMap);
-            getData(resultList, sheet, headerBegin, dataBegin, maxColumn);
+            getData(resultList, sheet, headerBegin, dataBegin + 1, maxColumn);
         }
     }
 

@@ -8,10 +8,7 @@ import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.plugin.*;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.Properties;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by tupeng on 2017/7/22.
@@ -32,13 +29,8 @@ public class MybatisUpdateInterceptors implements Interceptor {
         if (null != args && args.length > 0 && isInsert(args)) {
             for (Object arg : args) {
                 if (!(arg instanceof MappedStatement)) {
-                    if (arg instanceof Collection) {
-                        Collection collection = (Collection) arg;
-                        if (CollectionUtils.isNotEmpty(collection)) {
-                            for (Object des : collection) {
-                                setInitProperty(des);
-                            }
-                        }
+                    if (isBatchInsert(arg)) {
+                        initBatchArgs(arg);
                     } else {
                         setInitProperty(arg);
                     }
@@ -46,6 +38,39 @@ public class MybatisUpdateInterceptors implements Interceptor {
             }
         }
         return invocation.proceed();
+    }
+
+    private void initBatchArgs(Object args){
+        Collection des = getBatchArgList(args);
+        if(CollectionUtils.isNotEmpty(des)) {
+            for (Object arg : des) {
+                setInitProperty(arg);
+            }
+        }
+    }
+
+    private Collection getBatchArgList(Object arg) {
+        if (arg instanceof Map) {
+            Object desParam = ((Map) arg).get("param1");
+            if (desParam instanceof Collection) {
+                return (Collection) desParam;
+            }
+        } else if (arg instanceof Collection) {
+            return (Collection) arg;
+        }
+        return null;
+    }
+
+    private boolean isBatchInsert(Object arg) {
+        if (arg instanceof Map) {
+            Object desParam = ((Map) arg).get("param1");
+            if (desParam instanceof Collection) {
+                return true;
+            }
+        } else if (arg instanceof Collection) {
+            return true;
+        }
+        return false;
     }
 
     private void setInitProperty(Object arg) {

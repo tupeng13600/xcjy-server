@@ -33,7 +33,7 @@ public class Student {
 
     private String parentName;
 
-    private String parentSex;
+    private SexType parentSex;
 
     private String parentIdCard;
 
@@ -117,7 +117,7 @@ public class Student {
         return birthday;
     }
 
-    @ExcelData(columnName = "身份证号", parseMethod = "birthdayPares")
+    @ExcelData(columnName = "身份证号", parseMethod = "birthdayParse")
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
@@ -158,12 +158,12 @@ public class Student {
         this.parentName = parentName;
     }
 
-    public String getParentSex() {
+    public SexType getParentSex() {
         return parentSex;
     }
 
     @ExcelData(columnName = "家长性别", parseMethod = "sexParse")
-    public void setParentSex(String parentSex) {
+    public void setParentSex(SexType parentSex) {
         this.parentSex = parentSex;
     }
 
@@ -249,7 +249,7 @@ public class Student {
         return null == CacheFactory.nameSchools.get(name.trim()) ? null : CacheFactory.nameSchools.get(name.trim()).getId();
     }
 
-    public Date birthdayPares(String idCard) {
+    public Date birthdayParse(String idCard) {
         return DateUtil.getBirthByIdCard(idCard);
     }
 

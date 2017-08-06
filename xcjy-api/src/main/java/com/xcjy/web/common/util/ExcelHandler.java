@@ -23,7 +23,7 @@ public class ExcelHandler {
             ExcelData annotation = method.getAnnotation(ExcelData.class);
             if (null != annotation) {
                 String data = excelData.get(annotation.columnName());
-                String parseMethodName = annotation.columnName();
+                String parseMethodName = annotation.parseMethod();
                 if (StringUtils.isBlank(parseMethodName)) {
                     invoke(method, result, data);
                 } else {
@@ -38,7 +38,7 @@ public class ExcelHandler {
 
     private static Method getMethod(Class clss, String methodName) {
         try {
-            return clss.getMethod(methodName);
+            return clss.getDeclaredMethod(methodName, String.class);
         } catch (NoSuchMethodException e) {
             throw new EducationException("方法：" + methodName + " 不存在");
         }
