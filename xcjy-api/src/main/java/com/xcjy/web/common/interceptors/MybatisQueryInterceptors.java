@@ -53,7 +53,7 @@ public class MybatisQueryInterceptors implements Interceptor {
         if (isSelect(boundSql.getSql())) {
             String sql = addLimit(appendDeleted(appendSchoolId(replaceEndOfSql(boundSql.getSql()))));
             ReflectUtil.setProperty(boundSql, "sql", sql);
-            logger.warn("开始执行sql : {}", sql);
+            logger.debug("开始执行sql : {}", sql);
         }
         return invocation.proceed();
     }
