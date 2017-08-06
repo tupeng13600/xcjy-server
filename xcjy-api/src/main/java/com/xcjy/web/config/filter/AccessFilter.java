@@ -1,5 +1,7 @@
 package com.xcjy.web.config.filter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +18,8 @@ import java.io.IOException;
 @Configuration
 public class AccessFilter implements Filter {
 
+    private static Logger logger = LoggerFactory.getLogger(AccessFilter.class);
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -23,13 +27,15 @@ public class AccessFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        logger.info("跨域拦截器开始调用");
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
-
+        logger.info("跨域拦截器开始调用：方法：{}， uri：{}", httpRequest.getMethod(), httpRequest.getRequestURI());
         String origin = httpRequest.getHeader("Origin");
         if (origin == null) {
             httpResponse.addHeader("Access-Control-Allow-Origin", "*");
         } else {
+            logger.info("orign is......{}", origin.toString());
             httpResponse.addHeader("Access-Control-Allow-Origin", origin);
         }
         httpResponse.setHeader("Access-Control-Allow-Methods", "POST,GET,PUT,PATCH,DELETE,OPTIONS");
@@ -38,6 +44,7 @@ public class AccessFilter implements Filter {
         httpResponse.setHeader("Access-Control-Max-Age", "1728000");
 
         if ( httpRequest.getMethod().equals("OPTIONS") ) {
+            logger.info("OPTIONS 方法。。。。。。。。");
             httpResponse.setStatus(HttpServletResponse.SC_OK);
             return;
         }
