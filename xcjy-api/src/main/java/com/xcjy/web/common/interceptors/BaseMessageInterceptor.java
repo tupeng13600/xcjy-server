@@ -37,14 +37,15 @@ public class BaseMessageInterceptor implements HandlerInterceptor {
      * 将schoolId写进ThreadLocal
      * 缓存用户基本信息
      *
-     * @param httpServletRequest
-     * @param httpServletResponse
+     * @param request
+     * @param response
      * @param o
      * @return
      * @throws Exception
      */
     @Override
-    public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
+
         String username = null;
         try {
             username = UserUtil.getCurrentUserName();
@@ -57,6 +58,7 @@ public class BaseMessageInterceptor implements HandlerInterceptor {
                 CurrentThreadLocal.setSchoolId(user.getSchoolId());
             }
         }
+        logger.info("HOST：{} 发起请求。URI：{}，METHOD：{}，USER:{}", request.getRemoteHost(), request.getRequestURI(), request.getMethod(), username);
         return true;
     }
 
