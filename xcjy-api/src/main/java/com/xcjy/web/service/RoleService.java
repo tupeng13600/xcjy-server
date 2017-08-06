@@ -1,12 +1,10 @@
 package com.xcjy.web.service;
 
-import com.xcjy.web.bean.Role;
-import com.xcjy.web.common.exception.EducationException;
-import com.xcjy.web.controller.req.RoleCreateReq;
-import com.xcjy.web.mapper.RoleMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.xcjy.web.common.enums.RoleEnum;
+import com.xcjy.web.controller.res.RoleRes;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -16,25 +14,14 @@ import java.util.Set;
 @Service
 public class RoleService {
 
-    @Autowired
-    private RoleMapper roleMapper;
-
-    public Set<Role> getRoleByIds(List<String> roleIds) {
-        return roleMapper.getByRoleIds(roleIds);
+    public Set<RoleEnum> getRoleByIds(List<String> roleIds) {
+        return RoleEnum.getRoleList(roleIds);
     }
 
-    public void create(RoleCreateReq req) {
-        Role role = roleMapper.getByRoleName(req.getRoleName());
-        if (null != role) {
-            throw new EducationException("角色名称已存在");
-        }
-        role = new Role();
-        role.setName(req.getRoleName());
-        role.setRemark(req.getRemark());
-        roleMapper.insert(role);
-    }
-
-    public List<Role> listAll() {
-        return roleMapper.getAll();
+    public List<RoleRes> listAll() {
+        List<RoleRes> result = new ArrayList<>();
+        List<RoleEnum> roleEnums = RoleEnum.getAll();
+        roleEnums.forEach(roleEnum -> result.add(new RoleRes(roleEnum.name(), roleEnum.getName())));
+        return result;
     }
 }

@@ -4,8 +4,8 @@ import com.xcjy.auth.model.UpcLoginSuccessModel;
 import com.xcjy.auth.model.UpcUser;
 import com.xcjy.auth.service.AuthMessageService;
 import com.xcjy.auth.util.UserUtil;
-import com.xcjy.web.bean.Role;
 import com.xcjy.web.bean.User;
+import com.xcjy.web.common.enums.RoleEnum;
 import com.xcjy.web.service.RoleService;
 import com.xcjy.web.service.UserService;
 import org.apache.commons.collections.CollectionUtils;
@@ -37,10 +37,10 @@ public class AuthService implements AuthMessageService {
     @Override
     public Set<String> getRole(String username) {
         User user = userService.getByUsernameOrPhone(username, username);
-        if(null != user && StringUtils.isNotBlank(user.getRoleId())) {
-            Set<Role> roleSet = roleService.getRoleByIds(Arrays.asList(user.getRoleId().split(",")));
-            if(CollectionUtils.isNotEmpty(roleSet)) {
-                return roleSet.stream().map(Role::getName).collect(Collectors.toSet());
+        if (null != user && StringUtils.isNotBlank(user.getRoleId())) {
+            Set<RoleEnum> roleSet = roleService.getRoleByIds(Arrays.asList(user.getRoleId().split(",")));
+            if (CollectionUtils.isNotEmpty(roleSet)) {
+                return roleSet.stream().map(RoleEnum::name).collect(Collectors.toSet());
             }
         }
         return new HashSet<>();

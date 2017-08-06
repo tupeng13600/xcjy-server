@@ -1,13 +1,14 @@
 package com.xcjy.web.controller;
 
-import com.xcjy.web.bean.Role;
-import com.xcjy.web.controller.req.RoleCreateReq;
+import com.xcjy.web.common.enums.RoleEnum;
+import com.xcjy.web.controller.res.RoleRes;
 import com.xcjy.web.service.RoleService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -20,15 +21,9 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
-    @ApiOperation("创建角色")
-    @PostMapping
-    public void create(@RequestBody @Valid RoleCreateReq req) {
-        roleService.create(req);
-    }
-
-    @ApiOperation("获取角色列表")
+    @ApiOperation("获取全部角色列表")
     @GetMapping
-    public List<Role> list(){
+    public List<RoleRes> list() {
         return roleService.listAll();
     }
 

@@ -1,5 +1,11 @@
 package com.xcjy.web.common.enums;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 /**
  * Created by tupeng on 2017/8/5.
  */
@@ -27,4 +33,17 @@ public enum RoleEnum {
     public String getName() {
         return name;
     }
+
+    public static Set<RoleEnum> getRoleList(List<String> roleIds){
+        RoleEnum[] roleEnums = RoleEnum.values();
+        return Arrays.stream(roleEnums).
+                filter(roleEnum -> roleIds.contains(roleEnum.name()))
+                .collect(Collectors.toSet());
+    }
+
+    public static List<RoleEnum> getAll(){
+        RoleEnum[] roleEnums = RoleEnum.values();
+        return Arrays.stream(roleEnums).collect(Collectors.toList());
+    }
+
 }
