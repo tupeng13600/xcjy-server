@@ -132,4 +132,14 @@
         FROM student WHERE id_card = #{idCard};
     </select>
 
+    <select id="getByIdCards" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM student WHERE id_card
+        IN
+        <foreach collection="idCardList" open="(" separator="," close=")" item="idCard">
+            #{idCard}
+        </foreach>
+    </select>
+
 </mapper>

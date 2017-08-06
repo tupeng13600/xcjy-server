@@ -2,6 +2,7 @@ package com.xcjy.web.service;
 
 import com.xcjy.web.bean.Student;
 import com.xcjy.web.common.enums.PayStatusType;
+import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.mapper.StudentMapper;
 import com.xcjy.web.common.util.ExcelUtil;
 import org.apache.commons.collections.CollectionUtils;
@@ -16,6 +17,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by tupeng on 2017/7/25.
@@ -35,6 +37,10 @@ public class ExcelService {
     public void importStudent(MultipartFile file) throws IOException {
         List<Student> students = getStudent(file);
         if (CollectionUtils.isNotEmpty(students)) {
+            List<String> idCardList = students.stream().map(Student::getIdCard).collect(Collectors.toList());
+            if(CollectionUtils.isNotEmpty(studentMapper.getByIdCards(idCardList))){
+                throw new EducationException("有身份证号码已经存在");
+            }
             studentMapper.insertBatch(students);
         }
     }
@@ -45,7 +51,7 @@ public class ExcelService {
         List<Map<String, String>> resultList = new ArrayList<>();
         ExcelUtil.getData(resultList, sheet, headerRow, dataRowStart, maxColumn);
         List<Student> students = ExcelUtil.getResultList(resultList, Student.class);
-        if(CollectionUtils.isNotEmpty(students)) {
+        if (CollectionUtils.isNotEmpty(students)) {
             students.forEach(student -> student.setAlreadyPaid(PayStatusType.NO));
         }
         return students;
