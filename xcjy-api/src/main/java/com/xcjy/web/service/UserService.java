@@ -59,4 +59,8 @@ public class UserService {
         return userMapper.getAll();
     }
 
+    public List<User> getAll() {
+        return userMapper.getAll();
+    }
+
 }

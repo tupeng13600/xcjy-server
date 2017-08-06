@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * Created by tupeng on 2017/7/27.
  */
-@WebFilter(filterName="accessFilter",urlPatterns="/*")
+@WebFilter(filterName="accessFilter",urlPatterns="/**")
 @Configuration
 public class AccessFilter implements Filter {
 
@@ -27,10 +27,9 @@ public class AccessFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        logger.info("跨域拦截器开始调用");
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
-        logger.info("跨域拦截器开始调用：方法：{}， uri：{}", httpRequest.getMethod(), httpRequest.getRequestURI());
+        logger.info("主机：{} 发起请求：方法：{}， uri：{}", httpRequest.getRemoteHost(), httpRequest.getMethod(), httpRequest.getRequestURI());
         String origin = httpRequest.getHeader("Origin");
         if (origin == null) {
             httpResponse.addHeader("Access-Control-Allow-Origin", "*");
