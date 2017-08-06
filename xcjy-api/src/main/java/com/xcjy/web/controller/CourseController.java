@@ -1,5 +1,6 @@
 package com.xcjy.web.controller;
 
+import com.xcjy.web.controller.req.PageReq;
 import com.xcjy.web.service.CourseService;
 import com.xcjy.web.bean.Course;
 import com.xcjy.web.controller.req.CourseCreateReq;
@@ -41,8 +42,8 @@ public class CourseController {
 
     @ApiOperation("获取课程列表")
     @GetMapping
-    public List<Course> list() {
-        return courseService.list();
+    public List<Course> list(PageReq page) {
+        return courseService.list(page);
     }
 
 }

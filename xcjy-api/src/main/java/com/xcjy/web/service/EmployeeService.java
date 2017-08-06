@@ -5,6 +5,7 @@ import com.xcjy.web.bean.Employee;
 import com.xcjy.web.bean.User;
 import com.xcjy.web.common.enums.UserType;
 import com.xcjy.web.common.exception.EducationException;
+import com.xcjy.web.common.util.CommonUtil;
 import com.xcjy.web.controller.req.EmployeeCreateReq;
 import com.xcjy.web.controller.req.EmployeeUpdateReq;
 import com.xcjy.web.mapper.EmployeeMapper;
@@ -37,6 +38,9 @@ public class EmployeeService {
      * @param req
      */
     public void create(EmployeeCreateReq req) {
+        if(null != userMapper.getByPhone(req.getPhone()) || null != userMapper.getByUsername(req.getUsername())) {
+            throw new EducationException("用户名或者手机号码已存在");
+        }
         //创建Employee
         Employee employee = new Employee();
         BeanUtils.copyProperties(req, employee);
@@ -50,7 +54,7 @@ public class EmployeeService {
         user.setName(req.getName());
         user.setPhone(req.getPhone());
         user.setSchoolId(req.getSchoolId());
-        user.setRoleId(req.getRoleIds());
+        user.setRoleId(CommonUtil.getRolIdString(req.getRoleIds()));
         user.setUserType(UserType.EMPLOYEE);
         user.setEntityId(employee.getId());
         user.setLastLoginIp("0.0.0.0");

@@ -1,10 +1,13 @@
 package com.xcjy.web.controller.req;
 
+import com.xcjy.web.common.enums.RoleEnum;
 import com.xcjy.web.common.enums.SexType;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by tupeng on 2017/7/22.
@@ -15,8 +18,8 @@ public class EmployeeCreateReq {
     @NotBlank
     private String username;
 
-    @NotBlank
-    private String roleIds;
+    @NotEmpty
+    private List<RoleEnum> roleIds;
 
     private String schoolId;
 

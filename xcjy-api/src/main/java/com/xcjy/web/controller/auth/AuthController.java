@@ -4,6 +4,7 @@ import com.xcjy.auth.util.UserUtil;
 import com.xcjy.web.bean.User;
 import com.xcjy.web.service.UserService;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,12 @@ public class AuthController {
     public User getUserInfo(){
         String username = UserUtil.getCurrentUserName();
         return userService.getByUsernameOrPhone(username, username);
+    }
+
+    @ApiOperation("退出登录")
+    @GetMapping("/logout")
+    public void logout(){
+        SecurityUtils.getSubject().logout();
     }
 
 }

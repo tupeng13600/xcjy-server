@@ -1,9 +1,11 @@
 package com.xcjy.web.service;
 
 import com.xcjy.web.bean.Course;
+import com.xcjy.web.common.CurrentThreadLocal;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.controller.req.CourseCreateReq;
 import com.xcjy.web.controller.req.CourseUpdateReq;
+import com.xcjy.web.controller.req.PageReq;
 import com.xcjy.web.mapper.CourseMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +44,8 @@ public class CourseService {
         courseMapper.deleteLogic(id, new Date());
     }
 
-    public List<Course> list(){
+    public List<Course> list(PageReq page){
+        CurrentThreadLocal.setPageReq(page);
         return courseMapper.getAll();
     }
 

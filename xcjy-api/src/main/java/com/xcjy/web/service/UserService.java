@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 
+import static com.xcjy.web.common.util.CommonUtil.getRolIdString;
+
 /**
  * Created by tupeng on 2017/7/18.
  */
@@ -54,12 +56,4 @@ public class UserService {
         return userMapper.getAll();
     }
 
-    private String getRolIdString(List<RoleEnum> roleEnums) {
-        if (CollectionUtils.isEmpty(roleEnums)) {
-            return "";
-        }
-        StringBuilder builder = new StringBuilder();
-        roleEnums.forEach(roleEnum -> builder.append(roleEnum.name()).append(","));
-        return builder.toString();
-    }
 }
