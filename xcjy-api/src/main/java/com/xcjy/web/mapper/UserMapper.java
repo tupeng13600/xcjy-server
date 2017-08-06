@@ -31,4 +31,9 @@ public interface UserMapper {
 
     List<User> getAll();
 
+    User getById(@Param("id") String id);
+
+    void updatePassword(@Param("user") User user);
+
+    void updateRole(@Param("user") User user);
 }

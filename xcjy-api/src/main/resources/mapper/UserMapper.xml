@@ -68,6 +68,10 @@
         SELECT <include refid="BaseTemplate" /> FROM `user`
     </select>
 
+    <select id="getById" resultMap="BaseResultMap">
+        SELECT <include refid="BaseTemplate" /> FROM `user` WHERE id = #{id}
+    </select>
+
     <update id="updateBase">
         UPDATE user SET
         name = #{user.name},
@@ -78,6 +82,21 @@
 
     <update id="deleteLogic">
         UPDATE `user` SET deleted = TRUE , update_time = #{updateTime} WHERE id = #{id};
+    </update>
+
+    <update id="updatePassword">
+         UPDATE `user` SET
+         password = #{user.password},
+         salt = #{user.salt},
+         update_time = #{user.updateTime}
+         WHERE id = #{user.id}
+    </update>
+
+    <update id="updateRole">
+        UPDATE `user` SET
+         role_id = #{user.roleId},
+         update_time = #{user.updateTime}
+         WHERE id = #{user.id}
     </update>
 
 </mapper>

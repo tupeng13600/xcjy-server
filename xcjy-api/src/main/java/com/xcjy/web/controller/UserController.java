@@ -4,6 +4,8 @@ import com.xcjy.web.bean.User;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.controller.req.PageReq;
 import com.xcjy.web.controller.req.RegisterReq;
+import com.xcjy.web.controller.req.UserBaseUpdateReq;
+import com.xcjy.web.controller.req.UserRoleUpdateReq;
 import com.xcjy.web.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,14 +39,22 @@ public class UserController {
         userService.insert(req);
     }
 
+    @ApiOperation("获取用户列表")
     @GetMapping
     public List<User> listAll(PageReq pageReq) {
         return userService.getAll(pageReq);
     }
 
-    @PutMapping("/base")
-    public void updateBaeMessage() {
+    @ApiOperation("修改用户密码")
+    @PutMapping("/pwd")
+    public void updatePassword(UserBaseUpdateReq req) {
+        userService.updatePassword(req);
+    }
 
+    @ApiOperation("修改用户角色")
+    @PutMapping("/pwd")
+    public void updateRole(UserRoleUpdateReq req) {
+        userService.updateRole(req);
     }
 
 }
