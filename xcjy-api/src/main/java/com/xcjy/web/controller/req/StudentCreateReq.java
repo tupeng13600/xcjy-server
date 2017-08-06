@@ -50,6 +50,4 @@ public class StudentCreateReq {
 
     private String remark;
 
-    private PayStatusType alreadyPaid = PayStatusType.NO;
-
 }

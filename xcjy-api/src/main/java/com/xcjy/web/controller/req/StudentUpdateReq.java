@@ -4,6 +4,7 @@ import com.xcjy.web.common.enums.SexType;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -21,7 +22,7 @@ public class StudentUpdateReq {
     @NotBlank
     private String idCard;
 
-    @NotBlank
+    @NotNull
     private SexType sex;
 
     private String orignSchool;

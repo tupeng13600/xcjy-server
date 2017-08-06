@@ -126,5 +126,10 @@
             #{id}
         </foreach>
     </select>
+    <select id="getByIdCard" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM student WHERE id_card = #{idCard};
+    </select>
 
 </mapper>

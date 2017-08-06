@@ -24,4 +24,6 @@ public interface StudentMapper {
     void updateSchoolId(@Param("student") Student student);
 
     List<Student> getByIds(@Param("ids") Set<String> ids);
+
+    Student getByIdCard(@Param("idCard") String idCard);
 }
