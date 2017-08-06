@@ -2,7 +2,9 @@ package com.xcjy.web.service;
 
 import com.xcjy.auth.util.UpcSecurityUtil;
 import com.xcjy.web.bean.User;
+import com.xcjy.web.common.CurrentThreadLocal;
 import com.xcjy.web.common.enums.RoleEnum;
+import com.xcjy.web.controller.req.PageReq;
 import com.xcjy.web.controller.req.RegisterReq;
 import com.xcjy.web.mapper.UserMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -52,7 +54,8 @@ public class UserService {
         userMapper.updateLoginMessage(currentUserName, loginTime, loginIp, new Date());
     }
 
-    public List<User> getAll() {
+    public List<User> getAll(PageReq pageReq) {
+        CurrentThreadLocal.setPageReq(pageReq);
         return userMapper.getAll();
     }
 

@@ -1,9 +1,11 @@
 package com.xcjy.web.service;
 
 import com.xcjy.web.bean.Student;
+import com.xcjy.web.common.CurrentThreadLocal;
 import com.xcjy.web.common.enums.PayStatusType;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.util.DateUtil;
+import com.xcjy.web.controller.req.PageReq;
 import com.xcjy.web.controller.req.StudentCreateReq;
 import com.xcjy.web.controller.req.StudentUpdateReq;
 import com.xcjy.web.mapper.StudentMapper;
@@ -63,7 +65,8 @@ public class StudentService {
         studentMapper.deleteLogic(id, new Date());
     }
 
-    public List<Student> list() {
+    public List<Student> list(PageReq pageReq) {
+        CurrentThreadLocal.setPageReq(pageReq);
         return studentMapper.listAll();
     }
 }
