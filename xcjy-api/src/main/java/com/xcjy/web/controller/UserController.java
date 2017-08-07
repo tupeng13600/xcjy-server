@@ -44,19 +44,19 @@ public class UserController {
 
     @ApiOperation("修改用户密码")
     @PutMapping("/pwd")
-    public void updatePassword(UserBaseUpdateReq req) {
+    public void updatePassword(@RequestBody @Valid UserBaseUpdateReq req) {
         userService.updatePassword(req);
     }
 
     @ApiOperation("修改用户角色")
     @PutMapping("/role")
-    public void updateRole(UserRoleUpdateReq req) {
+    public void updateRole(@RequestBody @Valid UserRoleUpdateReq req) {
         userService.updateRole(req);
     }
 
     @ApiOperation("修改自身用户密码")
     @PutMapping("/self/pwd")
-    public void updateSelfPassword(UserPwdSelfUpdateReq req) {
+    public void updateSelfPassword(@RequestBody @Valid UserPwdSelfUpdateReq req) {
         userService.updateSelfPassword(req);
     }
 
