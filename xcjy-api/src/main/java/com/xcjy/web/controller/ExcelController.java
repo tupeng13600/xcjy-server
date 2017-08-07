@@ -21,10 +21,16 @@ public class ExcelController {
     @Autowired
     private ExcelService excelService;
 
-    @ApiOperation("excel导入学生信息")
+    @ApiOperation("导入学生信息")
     @PostMapping("/student")
     public void student(@RequestParam MultipartFile file) throws IOException {
         excelService.importStudent(file);
+    }
+
+    @ApiOperation("导入已缴费学生信息")
+    @PostMapping("/student/paid")
+    public void studentPaid(@RequestParam MultipartFile file) throws IOException {
+        excelService.importStudentPaid(file);
     }
 
 }

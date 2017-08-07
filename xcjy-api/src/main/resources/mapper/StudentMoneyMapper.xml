@@ -26,6 +26,17 @@
       #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT})
   </insert>
 
+    <insert id="insertBatch">
+        insert into student_money (id, school_id, student_id,
+      has_pay, has_back, has_used, create_time,
+      update_time, deleted) values
+      <foreach collection="list" separator="," item="sm">
+          (#{sm.id,jdbcType=VARCHAR}, #{sm.schoolId,jdbcType=VARCHAR}, #{sm.studentId,jdbcType=VARCHAR},
+          #{sm.hasPay,jdbcType=INTEGER}, #{sm.hasBack,jdbcType=INTEGER}, #{sm.hasUsed}, #{sm.createTime,jdbcType=TIMESTAMP},
+          #{sm.updateTime,jdbcType=TIMESTAMP}, #{sm.deleted,jdbcType=BIT})
+      </foreach>
+    </insert>
+
     <update id="updateMoney">
         UPDATE student_money SET
         has_pay = #{studentMoney.hasPay},

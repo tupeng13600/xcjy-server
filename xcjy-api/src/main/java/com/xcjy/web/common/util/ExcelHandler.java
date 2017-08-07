@@ -27,8 +27,8 @@ public class ExcelHandler {
                 if (StringUtils.isBlank(parseMethodName)) {
                     invoke(method, result, data);
                 } else {
-                    Method parseMethod = getMethod(clss, parseMethodName);
-                    Object parseData = invoke(parseMethod, result, data);
+                    Method parseMethod = getParseMethod(parseMethodName);
+                    Object parseData = invoke(parseMethod, null, data);
                     invoke(method, result, parseData);
                 }
             }
@@ -36,9 +36,9 @@ public class ExcelHandler {
         return result;
     }
 
-    private static Method getMethod(Class clss, String methodName) {
+    private static Method getParseMethod(String methodName) {
         try {
-            return clss.getDeclaredMethod(methodName, String.class);
+            return ExcelParseUtil.class.getDeclaredMethod(methodName, String.class);
         } catch (NoSuchMethodException e) {
             throw new EducationException("方法：" + methodName + " 不存在");
         }

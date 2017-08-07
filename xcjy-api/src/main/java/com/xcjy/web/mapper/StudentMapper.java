@@ -27,5 +27,5 @@ public interface StudentMapper {
 
     Student getByIdCard(@Param("idCard") String idCard);
 
-    List<Student> getByIdCards(@Param("idCardList") List<String> idCardList);
+    List<Student> getByIdCards(@Param("idCardList") Set<String> idCardList);
 }

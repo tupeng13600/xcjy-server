@@ -33,6 +33,8 @@ public class CacheFactory {
 
     public static Map<String, UserModel> userIdUsers = new ConcurrentHashMap<>();
 
+    public static Map<String, UserModel> empIdUsers = new ConcurrentHashMap<>();
+
     public static List<RoleEnum> backMoneyAuditRoleChain = new ArrayList<>(); //退费审核链
 
     public static List<RoleEnum> changeSchoolAuditRoleChain = new ArrayList<>(); //转校审核链
@@ -54,6 +56,7 @@ public class CacheFactory {
             users.forEach(user -> {
                 cacheIdUsers(user);
                 cacheUsernameUsers(user);
+                cacheEmpIdUsers(user);
             });
         }
     }
@@ -74,6 +77,15 @@ public class CacheFactory {
         }
         BeanUtils.copyProperties(user, userModel);
         userIdUsers.put(userModel.getId(), userModel);
+    }
+
+    public static void cacheEmpIdUsers(User user) {
+        UserModel userModel = new UserModel();
+        if (null == user) {
+            throw new EducationException("缓存的用户不可为空");
+        }
+        BeanUtils.copyProperties(user, userModel);
+        empIdUsers.put(userModel.getEntityId(), userModel);
     }
 
     public static RoleEnum getNextBackMoneyProcess(Integer index) {
