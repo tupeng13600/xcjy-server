@@ -3,6 +3,7 @@ package com.xcjy.web.service;
 import com.xcjy.auth.util.UpcSecurityUtil;
 import com.xcjy.web.bean.User;
 import com.xcjy.web.common.CurrentThreadLocal;
+import com.xcjy.web.common.cache.CacheFactory;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.model.UserModel;
 import com.xcjy.web.common.util.CommonUtil;
@@ -52,6 +53,7 @@ public class UserService {
         regUser.setPassword(UpcSecurityUtil.encryptPwd(req.getPassword(), new SimpleByteSource(regUser.getSalt())));
         regUser.setRoleId(getRolIdString(req.getRoleIds()));
         userMapper.insert(regUser);
+        CacheFactory.updateUserCache(regUser);
     }
 
     @Transactional
@@ -95,6 +97,7 @@ public class UserService {
         user.setRoleId(CommonUtil.getRolIdString(req.getRoleList()));
         user.setUpdateTime(new Date());
         userMapper.updateRole(user);
+        CacheFactory.updateUserCache(user);
     }
 
     public void updateSelfPassword(UserPwdSelfUpdateReq req) {

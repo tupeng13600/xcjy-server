@@ -61,6 +61,22 @@ public class CacheFactory {
         }
     }
 
+    /**
+     * 更新用户相关缓存
+     * @param user
+     */
+    public static void updateUserCache(User user) {
+        cacheEmpIdUsers(user);
+        cacheUsernameUsers(user);
+        cacheIdUsers(user);
+    }
+
+    public static void removeUserCache(User user) {
+        empIdUsers.remove(user.getEntityId());
+        userIdUsers.remove(user.getId());
+        usernameUsers.remove(user.getUsername());
+    }
+
     public static void cacheUsernameUsers(User user) {
         UserModel userModel = new UserModel();
         if (null == user) {

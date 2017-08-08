@@ -88,11 +88,7 @@ public class ExcelService {
                 throw new EducationException("有学生尚未导入基本信息，请确认!!!");
             }
             initData2DB(students, excelModels);
-
-
         }
-
-
     }
 
     private void initData2DB(List<Student> students, List<StudentPaidExcelModel> excelModels) {

@@ -4,6 +4,7 @@ import com.xcjy.auth.util.UpcSecurityUtil;
 import com.xcjy.web.bean.Employee;
 import com.xcjy.web.bean.User;
 import com.xcjy.web.common.CurrentThreadLocal;
+import com.xcjy.web.common.cache.CacheFactory;
 import com.xcjy.web.common.enums.UserType;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.util.CommonUtil;
@@ -68,6 +69,7 @@ public class EmployeeService {
         user.setSalt(UpcSecurityUtil.randomString());
         user.setPassword(UpcSecurityUtil.encryptPwd(req.getUsername(), new SimpleByteSource(user.getSalt())));
         userMapper.insert(user);
+        CacheFactory.updateUserCache(user);
     }
 
     /**
@@ -99,6 +101,7 @@ public class EmployeeService {
         user.setPhone(req.getPhone());
         user.setUpdateTime(new Date());
         userMapper.updateBase(user);
+        CacheFactory.updateUserCache(user);
     }
 
     /**
@@ -119,6 +122,7 @@ public class EmployeeService {
             return;
         }
         userMapper.deleteLogic(user.getId(), new Date());
+        CacheFactory.removeUserCache(user);
     }
 
     /**
