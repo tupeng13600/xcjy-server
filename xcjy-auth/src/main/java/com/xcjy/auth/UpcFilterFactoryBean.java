@@ -20,7 +20,6 @@ import java.util.Map;
 public class UpcFilterFactoryBean extends ShiroFilterFactoryBean {
 
     public UpcFilterFactoryBean(UpcSecurityManager upcSecurityManager, AuthMessageService authMessageService, List<String> defineFilterChain) {
-        upcSecurityManager.setAuthMessageService(authMessageService);
         setSecurityManager(upcSecurityManager);
 
         Map<String, Filter> filterMap = new HashMap<>();

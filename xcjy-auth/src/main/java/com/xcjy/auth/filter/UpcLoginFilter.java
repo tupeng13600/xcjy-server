@@ -28,7 +28,7 @@ public class UpcLoginFilter extends UpcAuthFilter {
 
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
-        if(super.isAccessAllowed(request,response, mappedValue)) {
+        if (super.isAccessAllowed(request, response, mappedValue)) {
             return true;
         }
         String username = WebUtils.toHttp(request).getParameter(USERNAME_IDX);
@@ -37,8 +37,9 @@ public class UpcLoginFilter extends UpcAuthFilter {
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             return false;
         }
+        UpcToken token = new UpcToken(username, password);
         try {
-            SecurityUtils.getSubject().login(new UpcToken(username, password));
+            SecurityUtils.getSubject().login(token);
         } catch (Exception e) {
             LOGGER.error("login fail:{}", e.getMessage());
             return false;

@@ -1,9 +1,12 @@
 package com.xcjy.auth.realm;
 
+import com.xcjy.auth.cache.AuthCache;
+import com.xcjy.auth.cache.TokenThreadLocal;
 import com.xcjy.auth.matcher.UpcCredentialsMatcher;
 import com.xcjy.auth.model.UpcUser;
 import com.xcjy.auth.service.AuthMessageService;
 import com.xcjy.auth.token.UpcToken;
+import com.xcjy.auth.util.UpcSecurityUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -22,7 +25,7 @@ import java.util.Set;
 public class UpcRealm extends AuthorizingRealm {
     private static final Logger LOGGER = LoggerFactory.getLogger(UpcRealm.class);
 
-    private AuthMessageService authMessageService;
+    protected AuthMessageService authMessageService;
 
     public UpcRealm(AuthMessageService authMessageService) {
         super.setCredentialsMatcher(new UpcCredentialsMatcher());
@@ -65,7 +68,15 @@ public class UpcRealm extends AuthorizingRealm {
             LOGGER.error("登录失败，用户不存在!!");
             throw new UnknownAccountException("用户不存在");
         }
+        String accessToken = getToken();
+        AuthCache.put(accessToken, user, (UpcToken) token);
         return new SimpleAuthenticationInfo(token.getPrincipal(), user.getPassword(), new SimpleByteSource(user.getSalt()), getName());
+    }
+
+    private String getToken(){
+        String accessToken = StringUtils.isBlank(TokenThreadLocal.get()) ? UpcSecurityUtil.randomString().toUpperCase() : TokenThreadLocal.get();
+        TokenThreadLocal.put(accessToken);
+        return accessToken;
     }
 
     @Override
