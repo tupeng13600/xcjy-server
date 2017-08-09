@@ -8,6 +8,7 @@
         <result column="type" jdbcType="VARCHAR" property="type"/>
         <result column="student_num" jdbcType="INTEGER" property="studentNum"/>
         <result column="price" jdbcType="INTEGER" property="price"/>
+        <result column="study_hour" jdbcType="INTEGER" property="studyHour"/>
         <result column="selected_num" jdbcType="INTEGER" property="selectedNum"/>
         <result column="back_num" jdbcType="INTEGER" property="backNum"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -21,11 +22,11 @@
 
     <insert id="insert" parameterType="com.xcjy.web.bean.Course">
     insert into course (id, school_id, name, type, student_num,
-      price, selected_num, back_num, 
+      price, study_hour, selected_num, back_num,
       create_time, update_time, deleted
       )
     values (#{id,jdbcType=VARCHAR}, #{schoolId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{studentNum,jdbcType=INTEGER},
-      #{price,jdbcType=INTEGER}, #{selectedNum,jdbcType=INTEGER}, #{backNum,jdbcType=INTEGER}, 
+      #{price,jdbcType=INTEGER}, #{studyHour,jdbcType=INTEGER}, #{selectedNum,jdbcType=INTEGER}, #{backNum,jdbcType=INTEGER},
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}
       )
   </insert>
@@ -35,6 +36,7 @@
       name = #{course.name},
       type = #{course.type},
       price = #{course.price},
+      study_hour = #{course.studyHour},
       student_num = #{course.studentNum},
       update_time = #{course.updateTime}
       WHERE id = #{course.id} AND deleted = FALSE;
@@ -45,11 +47,24 @@
     </update>
 
     <select id="getAll" resultMap="BaseResultMap">
-        SELECT <include refid="baseSql"/> FROM course ORDER BY create_time DESC;
+        SELECT
+        <include refid="baseSql"/>
+        FROM course ORDER BY create_time DESC;
     </select>
 
     <select id="getById" resultMap="BaseResultMap">
-        SELECT <include refid="baseSql"/> FROM course WHERE id = #{id};
+        SELECT
+        <include refid="baseSql"/>
+        FROM course WHERE id = #{id};
+    </select>
+
+    <select id="getByIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM course WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
     </select>
 
 </mapper>

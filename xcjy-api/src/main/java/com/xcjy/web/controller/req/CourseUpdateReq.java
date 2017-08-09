@@ -28,4 +28,7 @@ public class CourseUpdateReq {
     @NotNull
     private Integer price;
 
+    @NotNull
+    private Integer studyHour;
+
 }

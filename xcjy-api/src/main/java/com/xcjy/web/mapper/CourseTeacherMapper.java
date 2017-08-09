@@ -1,7 +1,16 @@
 package com.xcjy.web.mapper;
 
 import com.xcjy.web.bean.CourseTeacher;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface CourseTeacherMapper {
     int insert(CourseTeacher record);
+
+    void deleteByCourseId(@Param("schoolId") String schoolId, @Param("courseId") String courseId);
+
+    void insertBatch(@Param("courseTeachers") List<CourseTeacher> courseTeachers);
+
+    CourseTeacher getByCIdAndTId(@Param("studentId") String courseId, @Param("employeeId") String employeeId);
 }

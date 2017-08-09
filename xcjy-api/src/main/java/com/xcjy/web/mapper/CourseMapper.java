@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 public interface CourseMapper {
 
@@ -17,4 +18,6 @@ public interface CourseMapper {
     List<Course> getAll();
 
     void deleteLogic(@Param("id") String id, @Param("updateTime") Date updateTime);
+
+    List<Course> getByIds(@Param("ids") Set<String> ids);
 }

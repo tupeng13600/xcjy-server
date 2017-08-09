@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xcjy.web.mapper.CourseScheduleMapper">
+    <resultMap id="BaseResultMap" type="com.xcjy.web.bean.CourseSchedule">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="school_id" jdbcType="VARCHAR" property="schoolId"/>
+        <result column="course_id" jdbcType="VARCHAR" property="courseId"/>
+        <result column="employee_id" jdbcType="VARCHAR" property="employeeId"/>
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="study_time" jdbcType="INTEGER" property="studyTime"/>
+        <result column="finish" jdbcType="BIT" property="finish"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="deleted" jdbcType="BIT" property="deleted"/>
+    </resultMap>
+
+    <sql id="baseSql">
+    id, school_id, course_id, employee_id, start_time, end_time, study_time, finish, create_time, update_time, deleted
+  </sql>
+
+    <insert id="insert" parameterType="com.xcjy.web.bean.CourseSchedule">
+    insert into course_schedule (id, school_id, course_id, 
+      employee_id, start_time, end_time, 
+      study_time, finish, create_time, 
+      update_time, deleted)
+    values (#{id,jdbcType=VARCHAR}, #{schoolId,jdbcType=VARCHAR}, #{courseId,jdbcType=VARCHAR}, 
+      #{employeeId,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{studyTime,jdbcType=INTEGER}, #{finish,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT})
+  </insert>
+
+    <update id="updateBase">
+        UPDATE course_schedule SET
+        course_id = #{schedule.courseId},
+        employee_id = #{schedule.employeeId},
+        start_time = #{schedule.startTime},
+        end_time = #{schedule.endTime},
+        study_time = #{schedule.studyTime},
+        update_time = #{schedule.updateTime}
+        WHERE id = #{schedule.id}
+    </update>
+
+    <update id="deleteLogic">
+        UPDATE course_schedule SET
+        deleted = TRUE,
+        update_time = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <select id="getById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM course_schedule WHERE id = #{id}
+    </select>
+
+    <select id="listAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM course_schedule ORDER BY create_time DESC
+    </select>
+
+</mapper>

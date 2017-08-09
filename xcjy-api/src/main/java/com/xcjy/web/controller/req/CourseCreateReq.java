@@ -25,4 +25,7 @@ public class CourseCreateReq {
     @NotNull
     private Integer price;
 
+    @NotNull
+    private Integer studyHour;
+
 }

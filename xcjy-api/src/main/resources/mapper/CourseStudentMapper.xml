@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xcjy.web.mapper.CourseStudentMapper">
+    <resultMap id="BaseResultMap" type="com.xcjy.web.bean.CourseStudent">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="school_id" jdbcType="VARCHAR" property="schoolId"/>
+        <result column="student_id" jdbcType="VARCHAR" property="studentId"/>
+        <result column="course_id" jdbcType="VARCHAR" property="courseId"/>
+        <result column="buy_hour" jdbcType="INTEGER" property="buyHour"/>
+        <result column="used_hour" jdbcType="INTEGER" property="usedHour"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="deleted" jdbcType="BIT" property="deleted"/>
+    </resultMap>
+
+    <sql id="baseSql">
+    id, school_id, student_id, course_id, buy_hour, used_hour, create_time, update_time, deleted
+  </sql>
+
+    <insert id="insert" parameterType="com.xcjy.web.bean.CourseStudent">
+    insert into course_student (id, school_id, student_id, 
+      course_id, buy_hour, used_hour, create_time, update_time,
+      deleted)
+    values (#{id,jdbcType=VARCHAR}, #{schoolId,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR}, 
+      #{courseId,jdbcType=VARCHAR}, #{buyHour}, #{usedHour}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{deleted,jdbcType=BIT})
+  </insert>
+
+    <update id="updateHour">
+    UPDATE course_student SET
+    used_hour = #{courseStudent.usedHour},
+    update_time = #{courseStudent.updateTime}
+    WHERE id = #{courseStudent.id}
+  </update>
+
+    <select id="getBySIdAndCId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM course_student WHERE student_id = #{studentId} AND course_id = #{courseId}
+    </select>
+
+</mapper>

@@ -1,10 +1,10 @@
 package com.xcjy.web.controller;
 
-import com.xcjy.web.controller.req.PageReq;
-import com.xcjy.web.service.StudentService;
 import com.xcjy.web.bean.Student;
-import com.xcjy.web.controller.req.StudentCreateReq;
-import com.xcjy.web.controller.req.StudentUpdateReq;
+import com.xcjy.web.controller.req.*;
+import com.xcjy.web.service.CourseScheduleStudentService;
+import com.xcjy.web.service.CourseStudentService;
+import com.xcjy.web.service.StudentService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +21,12 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private CourseScheduleStudentService courseScheduleStudentService;
+
+    @Autowired
+    private CourseStudentService courseStudentService;
 
     @ApiOperation("创建学生")
     @PostMapping
@@ -44,6 +50,18 @@ public class StudentController {
     @GetMapping
     public List<Student> list(PageReq pageReq) {
         return studentService.list(pageReq);
+    }
+
+    @ApiOperation("为学生购买课程")
+    @PostMapping("/course")
+    public void course(@RequestBody @Valid CourseStudentReq req){
+        courseStudentService.createCourse(req);
+    }
+
+    @ApiOperation("为学生安排课表")
+    @PostMapping("/course/schedule")
+    public void courseSchedule(@RequestBody @Valid StudentCourseScheduleReq req){
+        courseScheduleStudentService.createSchedule(req);
     }
 
 }

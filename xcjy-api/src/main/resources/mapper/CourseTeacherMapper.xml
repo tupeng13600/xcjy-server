@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xcjy.web.mapper.CourseTeacherMapper">
-  <resultMap id="BaseResultMap" type="com.xcjy.web.bean.CourseTeacher">
-    <result column="id" jdbcType="VARCHAR" property="id" />
-    <result column="school_id" jdbcType="VARCHAR" property="schoolId" />
-    <result column="course_id" jdbcType="VARCHAR" property="courseId" />
-    <result column="teacher_id" jdbcType="VARCHAR" property="teacherId" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="deleted" jdbcType="BIT" property="deleted" />
-  </resultMap>
-  <insert id="insert" parameterType="com.xcjy.web.bean.CourseTeacher">
+    <resultMap id="BaseResultMap" type="com.xcjy.web.bean.CourseTeacher">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="school_id" jdbcType="VARCHAR" property="schoolId"/>
+        <result column="course_id" jdbcType="VARCHAR" property="courseId"/>
+        <result column="teacher_id" jdbcType="VARCHAR" property="teacherId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="deleted" jdbcType="BIT" property="deleted"/>
+    </resultMap>
+
+    <sql id="baseSql">
+        id, school_id, course_id, teacher_id, create_time, update_time, deleted
+    </sql>
+
+    <insert id="insert" parameterType="com.xcjy.web.bean.CourseTeacher">
     insert into course_teacher (id, school_id, course_id, 
       teacher_id, create_time, update_time, 
       deleted)
@@ -18,4 +23,32 @@
       #{teacherId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{deleted,jdbcType=BIT})
   </insert>
+
+    <insert id="insertBatch">
+        INSERT INTO course_teacher
+        (id, school_id, course_id,
+        teacher_id, create_time, update_time,
+        deleted)
+        VALUES
+        <foreach collection="courseTeachers" item="courseTeacher" separator=",">
+            (#{courseTeacher.id,jdbcType=VARCHAR}, #{courseTeacher.schoolId,jdbcType=VARCHAR},
+            #{courseTeacher.courseId,jdbcType=VARCHAR},
+            #{courseTeacher.teacherId,jdbcType=VARCHAR}, #{courseTeacher.createTime,jdbcType=TIMESTAMP},
+            #{courseTeacher.updateTime,jdbcType=TIMESTAMP},
+            #{courseTeacher.deleted,jdbcType=BIT})
+        </foreach>
+    </insert>
+
+    <delete id="deleteByCourseId">
+        DELETE FROM course_teacher WHERE course_id = #{courseId}
+        <if test="schoolId != null">
+            AND school_id = #{schoolId}
+        </if>
+    </delete>
+
+    <select id="getByCIdAndTId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM course_teacher WHERE course_id = #{employeeId} AND teacher_id = #{employeeId}
+    </select>
 </mapper>

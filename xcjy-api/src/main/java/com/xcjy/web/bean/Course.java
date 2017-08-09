@@ -20,6 +20,8 @@ public class Course {
 
     private Integer price;
 
+    private Integer studyHour;
+
     private Integer selectedNum;
 
     private Integer backNum;

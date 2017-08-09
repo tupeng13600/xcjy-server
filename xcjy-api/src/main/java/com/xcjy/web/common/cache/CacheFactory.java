@@ -1,10 +1,12 @@
 package com.xcjy.web.common.cache;
 
+import com.xcjy.web.bean.Employee;
 import com.xcjy.web.bean.School;
 import com.xcjy.web.bean.User;
 import com.xcjy.web.common.enums.RoleEnum;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.model.UserModel;
+import com.xcjy.web.service.EmployeeService;
 import com.xcjy.web.service.SchoolService;
 import com.xcjy.web.service.UserService;
 import org.apache.commons.collections.CollectionUtils;
@@ -25,9 +27,11 @@ import java.util.stream.Collectors;
 @Component
 public class CacheFactory {
 
-    public static Map<String, School> idSchools;
+    public static Map<String, Employee> employeeMap = new ConcurrentHashMap<>(); //员工缓存map
 
-    public static Map<String, School> nameSchools;
+    public static Map<String, School> idSchools;  //学校缓存map
+
+    public static Map<String, School> nameSchools;  //学校缓存map
 
     public static Map<String, UserModel> usernameUsers = new ConcurrentHashMap<>();
 
@@ -45,6 +49,9 @@ public class CacheFactory {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private EmployeeService employeeService;
+
     @PostConstruct
     public void init() {
         List<School> schoolList = schoolService.list();
@@ -59,6 +66,21 @@ public class CacheFactory {
                 cacheEmpIdUsers(user);
             });
         }
+
+        List<Employee> employeeList = employeeService.list(null);
+        if(CollectionUtils.isNotEmpty(employeeList)) {
+            for(Employee employee : employeeList) {
+                employeeMap.put(employee.getId(), employee);
+            }
+        }
+    }
+
+    public static void updateEmployee(Employee employee){
+        employeeMap.put(employee.getId(), employee);
+    }
+
+    public static void removeEmployee(String id) {
+        employeeMap.remove(id);
     }
 
     /**
