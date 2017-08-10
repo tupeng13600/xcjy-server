@@ -4,6 +4,7 @@ import com.xcjy.web.common.enums.HandlerStatusType;
 import com.xcjy.web.common.enums.ProcessLogType;
 import com.xcjy.web.controller.req.BackMoneyCreateReq;
 import com.xcjy.web.controller.req.ChangeSchoolReq;
+import com.xcjy.web.controller.res.CreateIdRes;
 import com.xcjy.web.controller.res.ProcessRes;
 import com.xcjy.web.service.ApplicationService;
 import io.swagger.annotations.ApiOperation;
@@ -25,8 +26,8 @@ public class ApplicationController {
 
     @ApiOperation("创建退费申请")
     @PostMapping("/money")
-    public void backMoney(@RequestBody @Valid BackMoneyCreateReq req) {
-        applicationService.backMoney(req);
+    public CreateIdRes backMoney(@RequestBody @Valid BackMoneyCreateReq req) {
+        return applicationService.backMoney(req);
     }
 
     @ApiOperation("退费申请审核")
@@ -37,8 +38,8 @@ public class ApplicationController {
 
     @ApiOperation("创建转校申请")
     @PostMapping("/school")
-    public void changeSchool(@RequestBody @Valid ChangeSchoolReq req) {
-        applicationService.changeSchool(req);
+    public CreateIdRes changeSchool(@RequestBody @Valid ChangeSchoolReq req) {
+        return applicationService.changeSchool(req);
     }
 
     @ApiOperation("退费申请审核")

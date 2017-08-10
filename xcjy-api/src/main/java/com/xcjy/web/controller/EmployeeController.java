@@ -3,6 +3,7 @@ package com.xcjy.web.controller;
 import com.xcjy.web.controller.req.*;
 import com.xcjy.web.controller.res.CounselorAssesSignRes;
 import com.xcjy.web.controller.res.CounselorStatRes;
+import com.xcjy.web.controller.res.CreateIdRes;
 import com.xcjy.web.service.EmployeeService;
 import com.xcjy.web.bean.Employee;
 import com.xcjy.web.service.StudentAssetService;
@@ -28,8 +29,8 @@ public class EmployeeController {
 
     @ApiOperation("创建员工")
     @PostMapping
-    public void create(@RequestBody @Valid EmployeeCreateReq req){
-        employeeService.create(req);
+    public CreateIdRes create(@RequestBody @Valid EmployeeCreateReq req){
+        return employeeService.create(req);
     }
 
     @ApiOperation("修改员工")

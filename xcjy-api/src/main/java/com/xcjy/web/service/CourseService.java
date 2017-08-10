@@ -6,6 +6,7 @@ import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.controller.req.CourseCreateReq;
 import com.xcjy.web.controller.req.CourseUpdateReq;
 import com.xcjy.web.controller.req.PageReq;
+import com.xcjy.web.controller.res.CreateIdRes;
 import com.xcjy.web.mapper.CourseMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,13 @@ public class CourseService {
     @Autowired
     private CourseMapper courseMapper;
 
-    public void create(CourseCreateReq req){
+    public CreateIdRes create(CourseCreateReq req){
         Course course = new Course();
         BeanUtils.copyProperties(req, course);
         course.setSelectedNum(0);
         course.setBackNum(0);
         courseMapper.insert(course);
+        return new CreateIdRes(course.getId());
     }
 
     public void update(CourseUpdateReq req) {

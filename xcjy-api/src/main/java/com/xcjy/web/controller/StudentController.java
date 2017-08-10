@@ -2,6 +2,7 @@ package com.xcjy.web.controller;
 
 import com.xcjy.web.bean.Student;
 import com.xcjy.web.controller.req.*;
+import com.xcjy.web.controller.res.CreateIdRes;
 import com.xcjy.web.controller.res.StudentAssetsRes;
 import com.xcjy.web.service.CourseScheduleStudentService;
 import com.xcjy.web.service.CourseStudentService;
@@ -31,8 +32,8 @@ public class StudentController {
 
     @ApiOperation("创建学生")
     @PostMapping
-    public void create(@RequestBody @Valid StudentCreateReq req) {
-        studentService.create(req);
+    public CreateIdRes create(@RequestBody @Valid StudentCreateReq req) {
+        return studentService.create(req);
     }
 
     @ApiOperation("修改学生信息")

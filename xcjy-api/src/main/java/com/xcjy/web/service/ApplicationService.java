@@ -12,6 +12,7 @@ import com.xcjy.web.common.util.CurrentUserUtil;
 import com.xcjy.web.controller.req.BackMoneyCreateReq;
 import com.xcjy.web.controller.req.ChangeSchoolReq;
 import com.xcjy.web.controller.res.AplnSimpleRes;
+import com.xcjy.web.controller.res.CreateIdRes;
 import com.xcjy.web.controller.res.ProcessRes;
 import com.xcjy.web.mapper.*;
 import org.apache.commons.collections.CollectionUtils;
@@ -59,7 +60,7 @@ public class ApplicationService {
      * @param req
      */
     @Transactional
-    public void backMoney(BackMoneyCreateReq req) {
+    public CreateIdRes backMoney(BackMoneyCreateReq req) {
         AplnBackMoney aplnBackMoney = new AplnBackMoney();
         BeanUtils.copyProperties(req, aplnBackMoney);
         UserModel user = CurrentUserUtil.currentUser();
@@ -72,6 +73,7 @@ public class ApplicationService {
         aplnBackMoneyMapper.insert(aplnBackMoney);
         createProcessLog(aplnBackMoney.getId(), aplnBackMoney.getSchoolId(), aplnBackMoney.getStudentId(),
                 0, CacheFactory.getNextBackMoneyProcess(null), ProcessLogType.BACK_MONEY);
+        return new CreateIdRes(aplnBackMoney.getId());
     }
 
     /**
@@ -109,7 +111,7 @@ public class ApplicationService {
      * @param req
      */
     @Transactional
-    public void changeSchool(ChangeSchoolReq req) {
+    public CreateIdRes changeSchool(ChangeSchoolReq req) {
         AplnChangeSchool aplnChangeSchool = new AplnChangeSchool();
         BeanUtils.copyProperties(req, aplnChangeSchool);
         UserModel user = CurrentUserUtil.currentUser();
@@ -127,6 +129,7 @@ public class ApplicationService {
         //创建审核流程
         createProcessLog(aplnChangeSchool.getId(), aplnChangeSchool.getFromSchoolId(), aplnChangeSchool.getStudentId(),
                 0, CacheFactory.getNextChangeSchoolProcess(null), ProcessLogType.CHANGE_SCHOOL);
+        return new CreateIdRes(aplnChangeSchool.getId());
     }
 
     /**

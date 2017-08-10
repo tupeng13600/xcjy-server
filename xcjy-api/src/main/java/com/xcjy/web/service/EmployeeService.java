@@ -13,6 +13,7 @@ import com.xcjy.web.common.util.DateUtil;
 import com.xcjy.web.controller.req.EmployeeCreateReq;
 import com.xcjy.web.controller.req.EmployeeUpdateReq;
 import com.xcjy.web.controller.req.PageReq;
+import com.xcjy.web.controller.res.CreateIdRes;
 import com.xcjy.web.mapper.EmployeeMapper;
 import com.xcjy.web.mapper.UserMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -46,7 +47,7 @@ public class EmployeeService {
      *
      * @param req
      */
-    public void create(EmployeeCreateReq req) {
+    public CreateIdRes create(EmployeeCreateReq req) {
         validateArg(req.getRoleIds(), req.getSchoolId());
         if (null != userMapper.getByPhone(req.getPhone()) || null != userMapper.getByUsername(req.getUsername())) {
             throw new EducationException("用户名或者手机号码已存在");
@@ -73,6 +74,8 @@ public class EmployeeService {
         user.setPassword(UpcSecurityUtil.encryptPwd(req.getUsername(), new SimpleByteSource(user.getSalt())));
         userMapper.insert(user);
         CacheFactory.updateUserCache(user);
+
+        return new CreateIdRes(employee.getId());
     }
 
     private void validateArg(List<RoleEnum> roleIds, String schoolId) {

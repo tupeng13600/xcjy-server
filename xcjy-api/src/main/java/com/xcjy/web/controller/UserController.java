@@ -21,20 +21,20 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    /**
-     * 注册新的用户
-     *
-     * @param req
-     */
-    @ApiOperation("注册用户，仅供测试使用")
-    @PostMapping
-    public void register(@RequestBody @Valid RegisterReq req) {
-        User user = userService.getByUsernameOrPhone(req.getUsername(), req.getPhone());
-        if (null != user) {
-            throw new EducationException("用户名或手机号码已经被占用");
-        }
-        userService.insert(req);
-    }
+//    /**
+//     * 注册新的用户
+//     *
+//     * @param req
+//     */
+//    @ApiOperation("注册用户，仅供测试使用")
+//    @PostMapping
+//    public void register(@RequestBody @Valid RegisterReq req) {
+//        User user = userService.getByUsernameOrPhone(req.getUsername(), req.getPhone());
+//        if (null != user) {
+//            throw new EducationException("用户名或手机号码已经被占用");
+//        }
+//        userService.insert(req);
+//    }
 
     @ApiOperation("获取用户列表")
     @GetMapping

@@ -4,6 +4,7 @@ import com.xcjy.web.bean.School;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.controller.req.SchoolCreateReq;
 import com.xcjy.web.controller.req.SchoolUpdateReq;
+import com.xcjy.web.controller.res.CreateIdRes;
 import com.xcjy.web.mapper.SchoolMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,11 @@ public class SchoolService {
      * 创建校区
      * @param req
      */
-    public void create(SchoolCreateReq req) {
+    public CreateIdRes create(SchoolCreateReq req) {
         School school = new School();
         BeanUtils.copyProperties(req, school);
         schoolMapper.insert(school);
+        return new CreateIdRes(school.getId());
     }
 
     /**

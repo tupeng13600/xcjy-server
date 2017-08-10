@@ -8,6 +8,7 @@ import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.controller.req.CourseScheduleCreateReq;
 import com.xcjy.web.controller.req.CourseScheduleUpdateReq;
 import com.xcjy.web.controller.req.PageReq;
+import com.xcjy.web.controller.res.CreateIdRes;
 import com.xcjy.web.controller.res.ScheduleRes;
 import com.xcjy.web.mapper.*;
 import org.apache.commons.collections.CollectionUtils;
@@ -44,7 +45,7 @@ public class CourseScheduleService {
     private CourseScheduleStudentMapper courseScheduleStudentMapper;
 
     @Transactional
-    public void create(CourseScheduleCreateReq req) {
+    public CreateIdRes create(CourseScheduleCreateReq req) {
 
         Course course = courseMapper.getById(req.getCourseId());
         if(null == course) {
@@ -59,6 +60,7 @@ public class CourseScheduleService {
         courseSchedule.setSchoolId(CurrentThreadLocal.getSchoolId());
         courseSchedule.setFinish(false);
         courseScheduleMapper.insert(courseSchedule);
+        return new CreateIdRes(courseSchedule.getId());
     }
 
     @Transactional

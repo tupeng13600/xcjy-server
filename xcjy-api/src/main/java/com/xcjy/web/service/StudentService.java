@@ -11,6 +11,7 @@ import com.xcjy.web.common.util.DateUtil;
 import com.xcjy.web.controller.req.PageReq;
 import com.xcjy.web.controller.req.StudentCreateReq;
 import com.xcjy.web.controller.req.StudentUpdateReq;
+import com.xcjy.web.controller.res.CreateIdRes;
 import com.xcjy.web.controller.res.StudentAssetsRes;
 import com.xcjy.web.mapper.CounselorStudentMapper;
 import com.xcjy.web.mapper.StmanagerStudentMapper;
@@ -43,7 +44,7 @@ public class StudentService {
     private StmanagerStudentMapper stmanagerStudentMapper;
 
     @Transactional
-    public void create(StudentCreateReq req) {
+    public CreateIdRes create(StudentCreateReq req) {
         Student student = studentMapper.getByIdCard(req.getIdCard());
         if (null != student) {
             throw new EducationException("学生身份证号已经存在");
@@ -55,6 +56,7 @@ public class StudentService {
         }
         student.setAlreadyPaid(PayStatusType.NO);
         studentMapper.insert(student);
+        return new CreateIdRes(student.getId());
     }
 
     @Transactional

@@ -1,5 +1,6 @@
 package com.xcjy.web.controller;
 
+import com.xcjy.web.controller.res.CreateIdRes;
 import com.xcjy.web.service.SchoolService;
 import com.xcjy.web.bean.School;
 import com.xcjy.web.controller.req.SchoolCreateReq;
@@ -27,8 +28,8 @@ public class SchoolController {
      */
     @ApiOperation("创建校区")
     @PostMapping
-    public void create(@RequestBody @Valid SchoolCreateReq req) {
-        schoolService.create(req);
+    public CreateIdRes create(@RequestBody @Valid SchoolCreateReq req) {
+        return schoolService.create(req);
     }
 
     /**

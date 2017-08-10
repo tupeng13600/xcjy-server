@@ -3,6 +3,7 @@ package com.xcjy.web.controller;
 import com.xcjy.web.controller.req.CourseScheduleCreateReq;
 import com.xcjy.web.controller.req.CourseScheduleUpdateReq;
 import com.xcjy.web.controller.req.PageReq;
+import com.xcjy.web.controller.res.CreateIdRes;
 import com.xcjy.web.controller.res.ScheduleRes;
 import com.xcjy.web.service.CourseScheduleService;
 import io.swagger.annotations.ApiOperation;
@@ -24,8 +25,8 @@ public class CourseScheduleController {
 
     @ApiOperation("创建课表")
     @PostMapping
-    public void create(@RequestBody @Valid CourseScheduleCreateReq req) {
-        courseScheduleService.create(req);
+    public CreateIdRes create(@RequestBody @Valid CourseScheduleCreateReq req) {
+        return courseScheduleService.create(req);
     }
 
     @ApiOperation("更新课表")
