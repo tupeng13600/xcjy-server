@@ -18,6 +18,10 @@ public class StudentMoney {
 
     private Integer hasUsed;
 
+    private Integer totalHour;
+
+    private Integer usedHour;
+
     private Date createTime;
 
     private Date updateTime;

@@ -59,6 +59,7 @@ public class CourseStudentService {
         courseStudent.setBuyHour(req.getBuyHour());
         courseStudentMapper.insert(courseStudent);
         studentMoney.setHasUsed(studentMoney.getHasUsed() + (course.getPrice() * req.getBuyHour()));
+        studentMoney.setTotalHour(studentMoney.getTotalHour() + req.getBuyHour());
         studentMoneyMapper.updateMoney(studentMoney, new Date());
     }
 

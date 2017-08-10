@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 public interface StudentMoneyMapper {
     int insert(StudentMoney record);
@@ -14,4 +15,6 @@ public interface StudentMoneyMapper {
     void updateMoney(@Param("studentMoney") StudentMoney studentMoney, @Param("infoTime") Date infoTime);
 
     void insertBatch(@Param("list") List<StudentMoney> list);
+
+    List<StudentMoney> getByStudentIds(@Param("studentIds") Set<String> studentIds);
 }

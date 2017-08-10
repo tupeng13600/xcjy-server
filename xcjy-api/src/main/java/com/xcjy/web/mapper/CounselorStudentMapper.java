@@ -20,4 +20,8 @@ public interface CounselorStudentMapper {
     List<CounselorStudent> getByStudentIds(@Param("studentIds") Set<String> studentIds);
 
     void updateMoney(CounselorStudent counselorStudent);
+
+    List<CounselorStudent> getByEmployeeId(@Param("employeId") String employeeId);
+
+    List<String> getSIdByEmployeeId(@Param("employeId") String employeeId);
 }

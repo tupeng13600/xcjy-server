@@ -2,6 +2,7 @@ package com.xcjy.web.controller;
 
 import com.xcjy.web.bean.Student;
 import com.xcjy.web.controller.req.*;
+import com.xcjy.web.controller.res.StudentAssetsRes;
 import com.xcjy.web.service.CourseScheduleStudentService;
 import com.xcjy.web.service.CourseStudentService;
 import com.xcjy.web.service.StudentService;
@@ -54,14 +55,20 @@ public class StudentController {
 
     @ApiOperation("为学生购买课程")
     @PostMapping("/course")
-    public void course(@RequestBody @Valid CourseStudentReq req){
+    public void course(@RequestBody @Valid CourseStudentReq req) {
         courseStudentService.createCourse(req);
     }
 
     @ApiOperation("为学生安排课表")
     @PostMapping("/course/schedule")
-    public void courseSchedule(@RequestBody @Valid StudentCourseScheduleReq req){
+    public void courseSchedule(@RequestBody @Valid StudentCourseScheduleReq req) {
         courseScheduleStudentService.createSchedule(req);
+    }
+
+    @ApiOperation("获取学生资产信息[学管师,咨询师]")
+    @GetMapping("/assets")
+    public List<StudentAssetsRes> getAssets(PageReq page) {
+        return studentService.getAssets(page);
     }
 
 }

@@ -67,10 +67,22 @@
         </foreach>
     </select>
 
-    <select id="getCS" resultType="com.xcjy.web.bean.CounselorStudent">
+    <select id="getCS" resultMap="BaseResultMap">
         SELECT
         <include refid="baseSql"/>
         FROM counselor_student WHERE school_id = #{schoolId} AND employee_id = #{employeeId} AND student_id = #{studentId};
+    </select>
+
+    <select id="getByEmployeeId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql" />
+        FROM counselor_student WHERE employee_id = #{employeId};
+    </select>
+
+    <select id="getSIdByEmployeeId" resultType="java.lang.String">
+        SELECT
+        student_id
+        FROM counselor_student WHERE employee_id = #{employeId} ORDER BY create_time DESC;
     </select>
 
 </mapper>

@@ -16,7 +16,7 @@ public abstract class CommonUtil {
         }
         StringBuilder builder = new StringBuilder();
         roleEnums.forEach(roleEnum -> builder.append(roleEnum.name()).append(","));
-        return builder.toString();
+        return builder.toString().substring(0, builder.toString().length() - 1);
     }
 
 }

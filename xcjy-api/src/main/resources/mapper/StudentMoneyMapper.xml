@@ -8,33 +8,37 @@
         <result column="has_pay" jdbcType="INTEGER" property="hasPay"/>
         <result column="has_back" jdbcType="INTEGER" property="hasBack"/>
         <result column="has_used" jdbcType="INTEGER" property="hasUsed"/>
+        <result column="total_hour" jdbcType="INTEGER" property="totalHour"/>
+        <result column="used_hour" jdbcType="INTEGER" property="usedHour"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="deleted" jdbcType="BIT" property="deleted"/>
     </resultMap>
 
     <sql id="baseSql">
-      id, school_id, student_id, has_pay, has_back, has_used, create_time, update_time, deleted
+      id, school_id, student_id, has_pay, has_back, has_used, total_hour, used_hour, create_time, update_time, deleted
     </sql>
 
     <insert id="insert" parameterType="com.xcjy.web.bean.StudentMoney">
-    insert into student_money (id, school_id, student_id, 
-      has_pay, has_back, has_used, create_time,
-      update_time, deleted)
-    values (#{id,jdbcType=VARCHAR}, #{schoolId,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR}, 
-      #{hasPay,jdbcType=INTEGER}, #{hasBack,jdbcType=INTEGER}, #{hasUsed}, #{createTime,jdbcType=TIMESTAMP},
-      #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT})
+        insert into student_money (id, school_id, student_id,
+          has_pay, has_back, has_used, total_hour, used_hour,
+          create_time, update_time, deleted)
+        values (#{id,jdbcType=VARCHAR}, #{schoolId,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR},
+          #{hasPay,jdbcType=INTEGER}, #{hasBack,jdbcType=INTEGER}, #{hasUsed}, #{totalHour}, #{usedHour}
+          #{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT})
   </insert>
 
     <insert id="insertBatch">
         insert into student_money (id, school_id, student_id,
-      has_pay, has_back, has_used, create_time,
-      update_time, deleted) values
-      <foreach collection="list" separator="," item="sm">
-          (#{sm.id,jdbcType=VARCHAR}, #{sm.schoolId,jdbcType=VARCHAR}, #{sm.studentId,jdbcType=VARCHAR},
-          #{sm.hasPay,jdbcType=INTEGER}, #{sm.hasBack,jdbcType=INTEGER}, #{sm.hasUsed}, #{sm.createTime,jdbcType=TIMESTAMP},
-          #{sm.updateTime,jdbcType=TIMESTAMP}, #{sm.deleted,jdbcType=BIT})
-      </foreach>
+        has_pay, has_back, has_used, create_time,
+        update_time, deleted) values
+        <foreach collection="list" separator="," item="sm">
+            (#{sm.id,jdbcType=VARCHAR}, #{sm.schoolId,jdbcType=VARCHAR}, #{sm.studentId,jdbcType=VARCHAR},
+            #{sm.hasPay,jdbcType=INTEGER}, #{sm.hasBack,jdbcType=INTEGER}, #{sm.hasUsed}, #{sm.totalHour},
+            #{sm.usedHour}
+            #{sm.createTime,jdbcType=TIMESTAMP},
+            #{sm.updateTime,jdbcType=TIMESTAMP}, #{sm.deleted,jdbcType=BIT})
+        </foreach>
     </insert>
 
     <update id="updateMoney">
@@ -50,6 +54,16 @@
         SELECT
         <include refid="baseSql"/>
         FROM student_money WHERE school_id = #{schoolId} AND student_id = #{studentId}
+    </select>
+
+    <select id="getByStudentIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM student_money WHERE student_id IN
+        <foreach collection="studentIds" separator="," item="studentId" open="(" close=")">
+            #{studentId}
+        </foreach>
+        ORDER BY update_time DESC
     </select>
 
 </mapper>

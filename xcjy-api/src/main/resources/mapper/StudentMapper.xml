@@ -125,6 +125,7 @@
         <foreach collection="ids" open="(" separator="," close=")" item="id">
             #{id}
         </foreach>
+        ORDER BY create_time DESC
     </select>
     <select id="getByIdCard" resultMap="BaseResultMap">
         SELECT

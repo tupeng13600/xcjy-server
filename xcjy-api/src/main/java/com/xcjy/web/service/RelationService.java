@@ -122,6 +122,8 @@ public class RelationService {
             studentMoney.setSchoolId(req.getSchoolId());
             studentMoney.setHasPay(req.getMoney());
             studentMoney.setHasBack(0);
+            studentMoney.setTotalHour(0);
+            studentMoney.setUsedHour(0);
             studentMoneyMapper.insert(studentMoney);
         } else {
             studentMoney.setHasPay(studentMoney.getHasPay() + req.getMoney());

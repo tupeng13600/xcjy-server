@@ -17,4 +17,6 @@ public interface StmanagerStudentMapper {
     StmanagerStudent getBySES(@Param("schoolId") String schoolId, @Param("employeeId") String employeeId, @Param("studentId") String studentId);
 
     void updateMoney(@Param("stmanagerStudent") StmanagerStudent stmanagerStudent, @Param("infoTime") Date infoTime);
+
+    List<String> getSIdByEmployeeId(@Param("employeeId") String employeeId);
 }
