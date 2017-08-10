@@ -12,13 +12,34 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     </resultMap>
 
+    <sql id="baseSql">
+        id, school_id, student_id, employee_id, op_pay_type, money, remark, create_time
+    </sql>
+
     <insert id="insert" parameterType="com.xcjy.web.bean.StudentPayLog">
-    insert into student_pay_log (id, school_id, student_id, 
+    INSERT INTO student_pay_log
+    (id, school_id, student_id,
       employee_id, op_pay_type, money, 
       remark, create_time)
-    values (#{id,jdbcType=VARCHAR}, #{schoolId,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR}, 
+    VALUES
+    (#{id,jdbcType=VARCHAR}, #{schoolId,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR},
       #{employeeId,jdbcType=VARCHAR}, #{opPayType,jdbcType=VARCHAR}, #{money,jdbcType=INTEGER}, 
-      #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+      #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
   </insert>
+
+    <select id="getByEmployeeId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM student_pay_log
+        WHERE employee_id = #{employeeId}
+        <if test="startTime != null">
+            AND create_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND create_time &lt;= #{endTime}
+        </if>
+        ORDER BY create_time DESC
+    </select>
 
 </mapper>

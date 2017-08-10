@@ -33,6 +33,10 @@ public abstract class CurrentUserUtil {
         return currentUser().getEntityId();
     }
 
+    public static String currentName(){
+        return currentUser().getName();
+    }
+
     public static Set<RoleEnum> currentRoles() {
         return getRoleEnums(currentUser().getRoleId());
     }
