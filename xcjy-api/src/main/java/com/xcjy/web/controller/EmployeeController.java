@@ -1,12 +1,10 @@
 package com.xcjy.web.controller;
 
-import com.xcjy.web.controller.req.CounselorStatReq;
-import com.xcjy.web.controller.req.PageReq;
+import com.xcjy.web.controller.req.*;
+import com.xcjy.web.controller.res.CounselorAssesSignRes;
 import com.xcjy.web.controller.res.CounselorStatRes;
 import com.xcjy.web.service.EmployeeService;
 import com.xcjy.web.bean.Employee;
-import com.xcjy.web.controller.req.EmployeeCreateReq;
-import com.xcjy.web.controller.req.EmployeeUpdateReq;
 import com.xcjy.web.service.StudentAssetService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +52,15 @@ public class EmployeeController {
 
     @ApiOperation("咨询师查看金额和总和")
     @GetMapping("/student/stat")
-    public CounselorStatRes getCounselorStat(CounselorStatReq req, PageReq page){
+    public CounselorStatRes getCounselorStat(@RequestBody @Valid CounselorStatReq req, PageReq page){
         return studentAssetService.getCounselorStat(req, page);
+    }
+
+
+    @ApiOperation("咨询主任获取咨询师签约数据")
+    @GetMapping("/student/stat")
+    public List<CounselorAssesSignRes> getAssetsSign(@RequestBody @Valid AssetsSignReq req, PageReq page){
+        return studentAssetService.getAssetsSign(req, page);
     }
 
 }

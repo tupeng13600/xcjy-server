@@ -1,24 +1,28 @@
 package com.xcjy.web.service;
 
+import com.xcjy.web.bean.Employee;
 import com.xcjy.web.bean.Student;
 import com.xcjy.web.bean.StudentPayLog;
 import com.xcjy.web.common.CurrentThreadLocal;
 import com.xcjy.web.common.enums.RoleEnum;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.util.CurrentUserUtil;
+import com.xcjy.web.controller.req.AssetsSignReq;
 import com.xcjy.web.controller.req.CounselorStatReq;
 import com.xcjy.web.controller.req.PageReq;
+import com.xcjy.web.controller.res.CounselorAssesSignRes;
 import com.xcjy.web.controller.res.CounselorStatRes;
+import com.xcjy.web.controller.res.PayStatModel;
 import com.xcjy.web.controller.res.StudentPayLogStat;
+import com.xcjy.web.mapper.EmployeeMapper;
 import com.xcjy.web.mapper.StudentMapper;
 import com.xcjy.web.mapper.StudentPayLogMapper;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -33,13 +37,27 @@ public class StudentAssetService {
     @Autowired
     private StudentMapper studentMapper;
 
+    @Autowired
+    private EmployeeMapper employeeMapper;
+
+    @Autowired
+    private StudentPayLogMapper studentPayLogMapper;
+
     public CounselorStatRes getCounselorStat(CounselorStatReq req, PageReq page) {
         CounselorStatRes statRes = new CounselorStatRes();
         Set<RoleEnum> roleEnums = CurrentUserUtil.currentRoles();
-        String employeeId = CurrentUserUtil.currentEmployeeId();
-        if (!roleEnums.contains(RoleEnum.CONSULTANT) && roleEnums.contains(RoleEnum.CONSULTANT_BOSS)) {
+        if (!roleEnums.contains(RoleEnum.CONSULTANT) && !roleEnums.contains(RoleEnum.CONSULTANT_BOSS)) {
             throw new EducationException("您不是咨询师或者咨询主任");
         }
+
+        String employeeId = CurrentUserUtil.currentEmployeeId();
+        String employeeName = CurrentUserUtil.currentName();
+        if (roleEnums.contains(RoleEnum.CONSULTANT_MAIN) && StringUtils.isNotBlank(req.getEmployeeId())) {
+            employeeId = req.getEmployeeId();
+            Employee employee = employeeMapper.getById(employeeId);
+            employeeName = employee.getName();
+        }
+
         CurrentThreadLocal.setPageReq(page);
         List<StudentPayLog> payLogs = studentPayLogMapper.getByEmployeeId(employeeId, req.getStartTime(), req.getEndTime());
         if (CollectionUtils.isNotEmpty(payLogs)) {
@@ -49,7 +67,7 @@ public class StudentAssetService {
             List<StudentPayLogStat> payLogStatList = new ArrayList<>();
             for (StudentPayLog payLog : payLogs) {
                 totalMoney += payLog.getMoney();
-                payLogStatList.add(getPayLogStat(payLog, students));
+                payLogStatList.add(getPayLogStat(payLog, students, employeeName));
             }
             statRes.setDetail(payLogStatList);
             statRes.setTotalMoney(totalMoney);
@@ -57,10 +75,10 @@ public class StudentAssetService {
         return statRes;
     }
 
-    private StudentPayLogStat getPayLogStat(StudentPayLog payLog, List<Student> students) {
+    private StudentPayLogStat getPayLogStat(StudentPayLog payLog, List<Student> students, String employeeName) {
         StudentPayLogStat payLogStat = new StudentPayLogStat();
         payLogStat.setEmployeeId(payLog.getEmployeeId());
-        payLogStat.setEmployeeName(CurrentUserUtil.currentName());
+        payLogStat.setEmployeeName(employeeName);
         payLogStat.setMoney(payLog.getMoney());
         payLogStat.setOpPayType(payLog.getOpPayType());
         payLogStat.setRemark(payLog.getRemark());
@@ -73,4 +91,40 @@ public class StudentAssetService {
         });
         return payLogStat;
     }
+
+    public List<CounselorAssesSignRes> getAssetsSign(AssetsSignReq req, PageReq page) {
+        List<CounselorAssesSignRes> signResList = new ArrayList<>();
+        List<Employee> employeeList;
+        CurrentThreadLocal.setPageReq(page);
+        if (StringUtils.isNotBlank(req.getEmployeeId())) {
+            employeeList = new ArrayList<>();
+            employeeList.add(employeeMapper.getById(req.getEmployeeId()));
+        } else {
+            employeeList = employeeMapper.getAll();
+        }
+        if (CollectionUtils.isNotEmpty(employeeList)) {
+            Set<String> employeeIds = employeeList.stream().map(Employee::getId).collect(Collectors.toSet());
+            List<PayStatModel> statModelList = studentPayLogMapper.getStatModelByEmpIds(employeeIds);
+            employeeList.forEach(employee -> {
+                signResList.add(getSign(employee, statModelList));
+            });
+            Collections.sort(signResList, Comparator.comparing(CounselorAssesSignRes::getTotalMoney));
+        }
+        return signResList;
+    }
+
+    private CounselorAssesSignRes getSign(Employee employee, List<PayStatModel> statModelList) {
+        CounselorAssesSignRes signRes = new CounselorAssesSignRes();
+        signRes.setEmployeeId(employee.getId());
+        signRes.setName(employee.getName());
+        signRes.setPhone(employee.getPhone());
+        statModelList.forEach(statModel -> {
+            if (employee.getId().equals(statModel.getEmployeeId())) {
+                signRes.setSignNum(statModel.getSignNum());
+                signRes.setTotalMoney(statModel.getTotalMoney());
+            }
+        });
+        return signRes;
+    }
+
 }

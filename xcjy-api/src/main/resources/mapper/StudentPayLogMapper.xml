@@ -42,4 +42,16 @@
         ORDER BY create_time DESC
     </select>
 
+    <select id="getStatModelByEmpIds" resultType="com.xcjy.web.controller.res.PayStatModel">
+        SELECT
+        employee_id AS employeeId,
+        count(id) AS signNum,
+        SUM(money) AS totalMoney
+        FROM student_pay_log WHERE employee_id IN
+        <foreach collection="employeeIds" item="employeeId" open="(" separator="," close=")">
+            #{employeeId}
+        </foreach>
+        GROUP BY employeeId ORDER BY totalMoney DESC, signNum DESC
+    </select>
+
 </mapper>
