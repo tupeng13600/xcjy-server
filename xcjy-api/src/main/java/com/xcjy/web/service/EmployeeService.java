@@ -5,6 +5,7 @@ import com.xcjy.web.bean.Employee;
 import com.xcjy.web.bean.User;
 import com.xcjy.web.common.CurrentThreadLocal;
 import com.xcjy.web.common.cache.CacheFactory;
+import com.xcjy.web.common.enums.RoleEnum;
 import com.xcjy.web.common.enums.UserType;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.util.CommonUtil;
@@ -14,6 +15,7 @@ import com.xcjy.web.controller.req.EmployeeUpdateReq;
 import com.xcjy.web.controller.req.PageReq;
 import com.xcjy.web.mapper.EmployeeMapper;
 import com.xcjy.web.mapper.UserMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.util.SimpleByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +47,7 @@ public class EmployeeService {
      * @param req
      */
     public void create(EmployeeCreateReq req) {
+        validateArg(req.getRoleIds(), req.getSchoolId());
         if (null != userMapper.getByPhone(req.getPhone()) || null != userMapper.getByUsername(req.getUsername())) {
             throw new EducationException("用户名或者手机号码已存在");
         }
@@ -70,6 +73,14 @@ public class EmployeeService {
         user.setPassword(UpcSecurityUtil.encryptPwd(req.getUsername(), new SimpleByteSource(user.getSalt())));
         userMapper.insert(user);
         CacheFactory.updateUserCache(user);
+    }
+
+    private void validateArg(List<RoleEnum> roleIds, String schoolId) {
+        if (roleIds.contains(RoleEnum.CONSULTANT) || roleIds.contains(RoleEnum.CONSULTANT_BOSS)) {
+            if (StringUtils.isBlank(schoolId)) {
+                throw new EducationException("咨询师创建必须选择校区");
+            }
+        }
     }
 
     /**
