@@ -40,9 +40,6 @@ public class StudentAssetService {
     @Autowired
     private EmployeeMapper employeeMapper;
 
-    @Autowired
-    private StudentPayLogMapper studentPayLogMapper;
-
     public CounselorStatRes getCounselorStat(CounselorStatReq req, PageReq page) {
         CounselorStatRes statRes = new CounselorStatRes();
         Set<RoleEnum> roleEnums = CurrentUserUtil.currentRoles();

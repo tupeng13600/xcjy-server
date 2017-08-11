@@ -59,7 +59,7 @@ public class EmployeeController {
 
 
     @ApiOperation("咨询主任获取咨询师签约数据")
-    @GetMapping("/student/stat")
+    @GetMapping("/counselor/stat")
     public List<CounselorAssesSignRes> getAssetsSign(@RequestBody @Valid AssetsSignReq req, PageReq page){
         return studentAssetService.getAssetsSign(req, page);
     }
