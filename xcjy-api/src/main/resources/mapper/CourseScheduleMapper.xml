@@ -60,4 +60,41 @@
         FROM course_schedule ORDER BY create_time DESC
     </select>
 
+    <select id="getByFinish" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM course_schedule WHERE finish = #{finish} ORDER BY start_time ASC
+    </select>
+
+    <select id="getByStartEndFinish" resultType="com.xcjy.web.controller.res.CourseScheduleStatModel">
+        SELECT
+        employee_id AS employeeId,
+        sum(study_time) total
+        FROM course_schedule WHERE
+        <where>
+            <if test="startTime != null">
+                start_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND end_time >= #{endTime}
+            </if>
+            <if test="finish != null">
+                AND finish = #{finish}
+            </if>
+        </where>
+        GROUP BY employee_id ORDER BY total DESC
+    </select>
+
+    <select id="getByEmployeeIds" resultType="com.xcjy.web.controller.res.CourseScheduleStatModel">
+        SELECT
+        employee_id AS employeeId,
+        sum(study_time) total
+        FROM course_schedule WHERE employee_id IN
+        <foreach collection="teacherIds" item="teacherId" open="(" separator="," close=")">
+            #{teacherId}
+        </foreach>
+        AND finish = #{finish}
+        GROUP BY employee_id ORDER BY total DESC
+    </select>
+
 </mapper>

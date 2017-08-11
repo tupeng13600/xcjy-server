@@ -51,17 +51,6 @@ public class EmployeeController {
         return employeeService.list(pageReq);
     }
 
-    @ApiOperation("咨询师查看金额和总和")
-    @GetMapping("/student/stat")
-    public CounselorStatRes getCounselorStat(@RequestBody @Valid CounselorStatReq req, PageReq page){
-        return studentAssetService.getCounselorStat(req, page);
-    }
 
-
-    @ApiOperation("咨询主任获取咨询师签约数据")
-    @GetMapping("/counselor/stat")
-    public List<CounselorAssesSignRes> getAssetsSign(@RequestBody @Valid AssetsSignReq req, PageReq page){
-        return studentAssetService.getAssetsSign(req, page);
-    }
 
 }

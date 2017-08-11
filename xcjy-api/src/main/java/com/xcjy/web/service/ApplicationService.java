@@ -2,10 +2,7 @@ package com.xcjy.web.service;
 
 import com.xcjy.web.bean.*;
 import com.xcjy.web.common.cache.CacheFactory;
-import com.xcjy.web.common.enums.ApplicationStatusType;
-import com.xcjy.web.common.enums.HandlerStatusType;
-import com.xcjy.web.common.enums.ProcessLogType;
-import com.xcjy.web.common.enums.RoleEnum;
+import com.xcjy.web.common.enums.*;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.model.UserModel;
 import com.xcjy.web.common.util.CurrentUserUtil;
@@ -54,6 +51,9 @@ public class ApplicationService {
     @Autowired
     private StudentMapper studentMapper;
 
+    @Autowired
+    private StudentPayLogMapper studentPayLogMapper;
+
     /**
      * 创建退费申请
      *
@@ -95,6 +95,8 @@ public class ApplicationService {
                 //更新学管师退款金额
                 updateStmanagerBackMoney(aplnBackMoney.getSchoolId(), aplnBackMoney.getApplicationUserId(),
                         aplnBackMoney.getStudentId(), aplnBackMoney.getReturnAmount());
+                //创建退费日志
+                createPayLog(processLog, aplnBackMoney.getReturnAmount());
             } else {
                 //创建下一个审核流程
                 createProcessLog(processLog.getApplicationId(), processLog.getSchoolId(), processLog.getStudentId(),
@@ -103,6 +105,16 @@ public class ApplicationService {
         } else {
             updateBackMoney(processLog.getApplicationId(), ApplicationStatusType.AUDIT_FAIL);
         }
+    }
+
+    private void createPayLog(ProcessLog processLog, Integer returnAmount) {
+        StudentPayLog studentPayLog = new StudentPayLog();
+        studentPayLog.setSchoolId(processLog.getSchoolId());
+        studentPayLog.setStudentId(processLog.getStudentId());
+        studentPayLog.setMoney(returnAmount);
+        studentPayLog.setEmployeeId(studentPayLog.getEmployeeId());
+        studentPayLog.setOpPayType(StudentPayType.STUDENTMANAGER_BACK);
+        studentPayLogMapper.insert(studentPayLog);
     }
 
     /**

@@ -51,4 +51,5 @@
         <include refid="baseSql"/>
         FROM course_teacher WHERE course_id = #{employeeId} AND teacher_id = #{employeeId}
     </select>
+
 </mapper>

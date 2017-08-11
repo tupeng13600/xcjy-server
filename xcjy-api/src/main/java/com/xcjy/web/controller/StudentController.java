@@ -54,22 +54,4 @@ public class StudentController {
         return studentService.list(pageReq);
     }
 
-    @ApiOperation("为学生购买课程")
-    @PostMapping("/course")
-    public void course(@RequestBody @Valid CourseStudentReq req) {
-        courseStudentService.createCourse(req);
-    }
-
-    @ApiOperation("为学生安排课表")
-    @PostMapping("/course/schedule")
-    public void courseSchedule(@RequestBody @Valid StudentCourseScheduleReq req) {
-        courseScheduleStudentService.createSchedule(req);
-    }
-
-    @ApiOperation("获取学生资产信息[学管师,咨询师]")
-    @GetMapping("/assets")
-    public List<StudentAssetsRes> getAssets(PageReq page) {
-        return studentService.getAssets(page);
-    }
-
 }

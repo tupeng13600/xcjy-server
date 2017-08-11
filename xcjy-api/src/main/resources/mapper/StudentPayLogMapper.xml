@@ -54,4 +54,52 @@
         GROUP BY employeeId ORDER BY totalMoney DESC, signNum DESC
     </select>
 
+    <select id="getByEmpIdsAndType" resultType="com.xcjy.web.controller.res.PayStatModel">
+        SELECT
+        employee_id AS employeeId,
+        SUM(money) AS totalMoney
+        FROM student_pay_log
+        <where>
+            <if test="startTime != null">
+                AND create_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND create_time &lt;= #{endTime}
+            </if>
+            <if test="type != null">
+                AND op_pay_type = #{type}
+            </if>
+        </where>
+        GROUP BY employee_id ORDER BY totalMoney DESC
+    </select>
+
+    <select id="getStatByIds" resultType="com.xcjy.web.controller.res.PayStatModel">
+        SELECT
+        employee_id AS employeeId,
+        SUM(money) AS totalMoney
+        FROM student_pay_log
+        WHERE id IN
+        <foreach collection="employeeIds" item="employeeId" open="(" separator="," close=")">
+            #{employeeId}
+        </foreach>
+        <if test="type != null">
+            AND op_pay_type = #{type}
+        </if>
+        GROUP BY employee_id ORDER BY totalMoney DESC
+    </select>
+
+    <select id="getIdsByStartAndEnd" resultType="java.lang.Integer">
+        SELECT
+        employee_id AS employeeId,
+        FROM student_pay_log
+        WHERE (op_pay_type = 'STUDENTMANAGER_PAY' OR op_pay_type = 'STUDENTMANAGER_BACK')
+        <if test="startTime != null">
+            AND create_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND create_time &lt;= #{endTime}
+        </if>
+        GROUP BY employee_id ORDER BY totalMoney DESC
+    </select>
+
 </mapper>

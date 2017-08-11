@@ -1,6 +1,7 @@
 package com.xcjy.web.mapper;
 
 import com.xcjy.web.bean.StudentPayLog;
+import com.xcjy.web.common.enums.StudentPayType;
 import com.xcjy.web.controller.res.PayStatModel;
 import org.apache.ibatis.annotations.Param;
 
@@ -17,4 +18,14 @@ public interface StudentPayLogMapper {
                                         @Param("endTime") Date endTime);
 
     List<PayStatModel> getStatModelByEmpIds(@Param("employeeIds") Set<String> employeeIds);
+
+    List<PayStatModel> getByEmpIdsAndType(@Param("startTime") Date startTime,
+                                          @Param("endTime") Date endTime,
+                                          @Param("type") StudentPayType type);
+
+    List<PayStatModel> getStatByIds(@Param("employeeIds") Set<String> employeeIds,
+                                    @Param("type") StudentPayType type);
+
+    List<String> getIdsByStartAndEnd(@Param("startTime") Date startTime,
+                                          @Param("endTime") Date endTime);
 }

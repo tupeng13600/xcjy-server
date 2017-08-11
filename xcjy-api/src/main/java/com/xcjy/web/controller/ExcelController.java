@@ -1,14 +1,14 @@
 package com.xcjy.web.controller;
 
+import com.xcjy.web.controller.req.CourseStudentReq;
+import com.xcjy.web.service.CourseStudentService;
 import com.xcjy.web.service.ExcelService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 
 /**
@@ -27,10 +27,5 @@ public class ExcelController {
         excelService.importStudent(file);
     }
 
-    @ApiOperation("导入已缴费学生信息")
-    @PostMapping("/student/paid")
-    public void studentPaid(@RequestParam MultipartFile file) throws IOException {
-        excelService.importStudentPaid(file);
-    }
 
 }
