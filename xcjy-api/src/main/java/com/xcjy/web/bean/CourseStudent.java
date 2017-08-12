@@ -18,6 +18,8 @@ public class CourseStudent {
 
     private Integer usedHour;
 
+    private Integer score;
+
     private Date createTime;
 
     private Date updateTime;

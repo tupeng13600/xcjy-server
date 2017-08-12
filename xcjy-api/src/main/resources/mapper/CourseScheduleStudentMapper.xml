@@ -25,15 +25,16 @@
       #{deleted,jdbcType=BIT})
   </insert>
     <insert id="insertBatch">
-         insert into course_schedule_student (id, school_id, course_schedule_id, student_id,
-          finish, create_time, update_time,
-          deleted)
-          values
-          <foreach collection="list" item="css" separator=",">
-          (#{css.id,jdbcType=VARCHAR}, #{css.schoolId,jdbcType=VARCHAR}, #{css.courseScheduleId,jdbcType=VARCHAR}, #{css.studentId,jdbcType=VARCHAR},
-          #{css.finish,jdbcType=BIT}, #{css.createTime,jdbcType=TIMESTAMP}, #{css.updateTime,jdbcType=TIMESTAMP},
-          #{css.deleted,jdbcType=BIT})
-          </foreach>
+        insert into course_schedule_student (id, school_id, course_schedule_id, student_id,
+        finish, create_time, update_time,
+        deleted)
+        values
+        <foreach collection="list" item="css" separator=",">
+            (#{css.id,jdbcType=VARCHAR}, #{css.schoolId,jdbcType=VARCHAR}, #{css.courseScheduleId,jdbcType=VARCHAR},
+            #{css.studentId,jdbcType=VARCHAR},
+            #{css.finish,jdbcType=BIT}, #{css.createTime,jdbcType=TIMESTAMP}, #{css.updateTime,jdbcType=TIMESTAMP},
+            #{css.deleted,jdbcType=BIT})
+        </foreach>
     </insert>
 
     <delete id="deleteByCSId">
@@ -50,7 +51,19 @@
     </delete>
 
     <select id="getByCourseScheduleId" resultMap="BaseResultMap">
-      SELECT <include refid="baseSql"/> FROM course_schedule_student WHERE  course_schedule_id = #{courseScheduleId};
+        SELECT
+        <include refid="baseSql"/>
+        FROM course_schedule_student WHERE course_schedule_id = #{courseScheduleId};
+    </select>
+
+    <select id="getByStudentIds" resultType="com.xcjy.web.bean.CourseScheduleStudent">
+        SELECT
+        <include refid="baseSql"/>
+        FROM course_schedule_student WHERE student_id
+        IN
+        <foreach collection="studentIds" item="studentId" open="(" separator="," close=")">
+            #{studentId}
+        </foreach>
     </select>
 
 </mapper>

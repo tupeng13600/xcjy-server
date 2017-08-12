@@ -97,4 +97,12 @@
         GROUP BY employee_id ORDER BY total DESC
     </select>
 
+    <select id="getByIds" resultMap="BaseResultMap">
+        SELECT <include refid="baseSql"/> FROM course_schedule WHERE id
+        IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
 </mapper>

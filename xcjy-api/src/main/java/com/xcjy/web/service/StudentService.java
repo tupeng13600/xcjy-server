@@ -1,5 +1,6 @@
 package com.xcjy.web.service;
 
+import com.xcjy.web.bean.StmanagerStudent;
 import com.xcjy.web.bean.Student;
 import com.xcjy.web.bean.StudentMoney;
 import com.xcjy.web.common.CurrentThreadLocal;
@@ -11,6 +12,7 @@ import com.xcjy.web.common.util.DateUtil;
 import com.xcjy.web.controller.req.PageReq;
 import com.xcjy.web.controller.req.StudentCreateReq;
 import com.xcjy.web.controller.req.StudentUpdateReq;
+import com.xcjy.web.controller.req.TeacherScheduleStatReq;
 import com.xcjy.web.controller.res.CreateIdRes;
 import com.xcjy.web.controller.res.StudentAssetsRes;
 import com.xcjy.web.mapper.CounselorStudentMapper;
@@ -114,5 +116,13 @@ public class StudentService {
             });
         }
         return resList;
+    }
+
+    public List<Student> getForStmanager(PageReq page) {
+        List<String> studentIds = stmanagerStudentMapper.getSIdByEmployeeId(CurrentUserUtil.currentEmployeeId());
+        if(CollectionUtils.isEmpty(studentIds)) {
+            return new ArrayList<>();
+        }
+        return studentMapper.getByIds(new HashSet<>(studentIds));
     }
 }

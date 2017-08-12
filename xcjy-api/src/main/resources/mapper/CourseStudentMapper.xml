@@ -8,6 +8,7 @@
         <result column="course_id" jdbcType="VARCHAR" property="courseId"/>
         <result column="buy_hour" jdbcType="INTEGER" property="buyHour"/>
         <result column="used_hour" jdbcType="INTEGER" property="usedHour"/>
+        <result column="score" jdbcType="INTEGER" property="score"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="deleted" jdbcType="BIT" property="deleted"/>
@@ -19,10 +20,10 @@
 
     <insert id="insert" parameterType="com.xcjy.web.bean.CourseStudent">
     insert into course_student (id, school_id, student_id, 
-      course_id, buy_hour, used_hour, create_time, update_time,
+      course_id, buy_hour, used_hour, score, create_time, update_time,
       deleted)
     values (#{id,jdbcType=VARCHAR}, #{schoolId,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR}, 
-      #{courseId,jdbcType=VARCHAR}, #{buyHour}, #{usedHour}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{courseId,jdbcType=VARCHAR}, #{buyHour}, #{usedHour},#{score}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
       #{deleted,jdbcType=BIT})
   </insert>
 
@@ -56,6 +57,14 @@
             #{studentId}
         </foreach>
         AND course_id = #{courseId}
+    </select>
+    <select id="getByStudentIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM course_student WHERE student_id
+        <foreach collection="studentIds" item="studentId" open="(" separator="," close=")">
+            #{studentId}
+        </foreach>
     </select>
 
 </mapper>

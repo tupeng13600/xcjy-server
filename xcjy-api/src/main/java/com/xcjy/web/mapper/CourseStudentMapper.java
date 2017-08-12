@@ -17,4 +17,5 @@ public interface CourseStudentMapper {
 
     void updateHourBatch(@Param("courseStudents")List<CourseStudent> courseStudents);
 
+    List<CourseStudent> getByStudentIds(@Param("studentIds") List<String> studentIds);
 }

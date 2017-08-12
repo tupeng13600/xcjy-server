@@ -1,5 +1,6 @@
 package com.xcjy.web.controller.manager;
 
+import com.xcjy.web.bean.Student;
 import com.xcjy.web.controller.req.CourseScheduleCreateReq;
 import com.xcjy.web.controller.req.PageReq;
 import com.xcjy.web.controller.req.StudentCourseScheduleReq;
@@ -63,6 +64,18 @@ public class StmanagerController {
     @GetMapping("/stmanager/back")
     public List<StmanagerStatRes> getStmanagerBack(TeacherScheduleStatReq req, PageReq page){
         return stmanagerStudentService.getStmanagerBack(req, page);
+    }
+
+    @ApiOperation("获取分配到的学生列表")
+    @GetMapping("/student")
+    public List<Student> getStudentList(PageReq page){
+        return studentService.getForStmanager(page);
+    }
+
+    @ApiOperation("获取分配到的学生上课列表详情")
+    @GetMapping("/student")
+    public List<StudentScheduleRes> getStudentSchedule(){
+        return courseScheduleStudentService.getForStmanager();
     }
 
 }

@@ -1,17 +1,18 @@
 package com.xcjy.web.service;
 
-import com.xcjy.web.bean.CourseSchedule;
-import com.xcjy.web.bean.CourseScheduleStudent;
-import com.xcjy.web.bean.CourseStudent;
-import com.xcjy.web.common.exception.EducationException;
-import com.xcjy.web.controller.req.StudentCourseScheduleReq;
-import com.xcjy.web.mapper.CourseScheduleMapper;
-import com.xcjy.web.mapper.CourseScheduleStudentMapper;
-import com.xcjy.web.mapper.CourseStudentMapper;
+import com.xcjy.web.bean.*;
+import com.xcjy.web.common.util.CurrentUserUtil;
+import com.xcjy.web.controller.res.StudentScheduleRes;
+import com.xcjy.web.mapper.*;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by tupeng on 2017/8/10.
@@ -28,28 +29,72 @@ public class CourseScheduleStudentService {
     @Autowired
     private CourseStudentMapper courseStudentMapper;
 
+    @Autowired
+    private StudentMapper studentMapper;
 
-    public void createSchedule(StudentCourseScheduleReq req) {
-        CourseSchedule courseSchedule = courseScheduleMapper.getById(req.getCourseScheduleId());
-        if(null == courseSchedule) {
-            throw new EducationException("课表信息不存在");
+    @Autowired
+    private StmanagerStudentMapper stmanagerStudentMapper;
+
+    @Autowired
+    private CourseMapper courseMapper;
+
+    @Autowired
+    private GradeMapper gradeMapper;
+
+    public List<StudentScheduleRes> getForStmanager() {
+        List<StudentScheduleRes> scheduleResList = new ArrayList<>();
+        List<String> studentIds = stmanagerStudentMapper.getSIdByEmployeeId(CurrentUserUtil.currentEmployeeId());
+        if (CollectionUtils.isEmpty(studentIds)) {
+            return scheduleResList;
         }
-        CourseStudent courseStudent = courseStudentMapper.getBySIdAndCId(req.getStudentId(), courseSchedule.getCourseId());
-        if(null == courseStudent) {
-            throw new EducationException("学生尚未订购该课程");
+        List<Student> students = studentMapper.getByIds(new HashSet<>(studentIds));
+        List<CourseScheduleStudent> courseScheduleStudentList = courseScheduleStudentMapper.getByStudentIds(studentIds);
+        Set<String> courseScheduleIds = courseScheduleStudentList.stream().map(CourseScheduleStudent::getCourseScheduleId).collect(Collectors.toSet());
+        List<CourseSchedule> courseSchedules = courseScheduleMapper.getByIds(courseScheduleIds);
+        Set<String> courseIds = courseSchedules.stream().map(CourseSchedule::getCourseId).collect(Collectors.toSet());
+        List<Course> courseList = courseMapper.getByIds(courseIds);
+        Set<String> gradeIds = courseList.stream().map(Course::getGradeId).collect(Collectors.toSet());
+        List<Grade> gradeList = gradeMapper.getByIds(gradeIds);
+        for (Student student : students) {
+            scheduleResList.add(getStudentScheduleRes(student, courseScheduleStudentList, courseSchedules, courseList, gradeList));
         }
-        CourseScheduleStudent courseScheduleStudent = new CourseScheduleStudent();
-        courseScheduleStudent.setCourseScheduleId(req.getCourseScheduleId());
-        courseScheduleStudent.setStudentId(req.getStudentId());
-        courseScheduleStudent.setFinish(false);
-        courseScheduleStudentMapper.insert(courseScheduleStudent);
-        //增加学生已经使用的课时
-        Integer usedHour = courseStudent.getUsedHour() + courseStudent.getUsedHour();
-        if(courseStudent.getBuyHour() < usedHour) {
-            throw new EducationException("该学生的剩余课时不足");
-        }
-        courseStudent.setUsedHour(usedHour);
-        courseStudent.setUpdateTime(new Date());
-        courseStudentMapper.updateHour(courseStudent);
+        return scheduleResList;
     }
+
+    private StudentScheduleRes getStudentScheduleRes(Student student,
+                                                     List<CourseScheduleStudent> courseScheduleStudentList,
+                                                     List<CourseSchedule> courseSchedules,
+                                                     List<Course> courseList,
+                                                     List<Grade> gradeList) {
+        StudentScheduleRes res = new StudentScheduleRes();
+        res.setStudentId(student.getId());
+        res.setStudentName(student.getName());
+        for (CourseScheduleStudent courseScheduleStudent : courseScheduleStudentList) {
+            if (courseScheduleStudent.getStudentId().equals(student.getId())) {
+                for (CourseSchedule courseSchedule : courseSchedules) {
+                    if (courseSchedule.getId().equals(courseScheduleStudent.getCourseScheduleId())) {
+                        res.setStartTime(courseSchedule.getStartTime());
+                        res.setEndTime(courseSchedule.getEndTime());
+                        res.setFinish(courseScheduleStudent.getFinish());
+                        for (Course course : courseList) {
+                            if (course.getId().equals(courseSchedule.getCourseId())) {
+                                res.setCourseName(course.getName());
+                                for (Grade grade : gradeList) {
+                                    if (course.getGradeId().equals(grade.getId())) {
+                                        res.setGradeName(grade.getName());
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        return res;
+    }
+
 }

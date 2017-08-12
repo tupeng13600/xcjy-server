@@ -1,6 +1,7 @@
 package com.xcjy.web.mapper;
 
 import com.xcjy.web.bean.StmanagerStudent;
+import com.xcjy.web.controller.res.StudentScheduleRes;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
@@ -19,4 +20,5 @@ public interface StmanagerStudentMapper {
     void updateMoney(@Param("stmanagerStudent") StmanagerStudent stmanagerStudent, @Param("infoTime") Date infoTime);
 
     List<String> getSIdByEmployeeId(@Param("employeeId") String employeeId);
+
 }
