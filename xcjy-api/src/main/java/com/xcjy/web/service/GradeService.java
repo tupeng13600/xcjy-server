@@ -27,7 +27,7 @@ public class GradeService {
         grade.setPrice(req.getPrice());
         grade.setRemark(req.getRemark());
         gradeMapper.insert(grade);
-        return null;
+        return new CreateIdRes(grade.getId());
     }
 
     public void update(GradeUpdateReq req) {

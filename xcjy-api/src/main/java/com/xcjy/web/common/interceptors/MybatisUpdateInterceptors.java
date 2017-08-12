@@ -1,14 +1,20 @@
 package com.xcjy.web.common.interceptors;
 
 import com.xcjy.web.common.enums.DbOperationType;
+import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.util.ReflectUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.plugin.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Created by tupeng on 2017/7/22.
@@ -17,6 +23,8 @@ import java.util.*;
  */
 @Intercepts({@Signature(method = "update", type = Executor.class, args = {MappedStatement.class, Object.class})})
 public class MybatisUpdateInterceptors implements Interceptor {
+
+    private static Logger logger = LoggerFactory.getLogger(MybatisUpdateInterceptors.class);
 
     private static final String autoCreateIdKey = "id";
     private static final String createTimeKey = "createTime";
@@ -40,9 +48,9 @@ public class MybatisUpdateInterceptors implements Interceptor {
         return invocation.proceed();
     }
 
-    private void initBatchArgs(Object args){
+    private void initBatchArgs(Object args) {
         Collection des = getBatchArgList(args);
-        if(CollectionUtils.isNotEmpty(des)) {
+        if (CollectionUtils.isNotEmpty(des)) {
             for (Object arg : des) {
                 setInitProperty(arg);
             }
@@ -75,12 +83,23 @@ public class MybatisUpdateInterceptors implements Interceptor {
 
     private void setInitProperty(Object arg) {
         if (null != arg) {
-            String id = UUID.randomUUID().toString().replaceAll("-", "");
+            String id = generateId();
             ReflectUtil.setProperty(arg, autoCreateIdKey, id);
             ReflectUtil.setProperty(arg, createTimeKey, new Date());
             ReflectUtil.setProperty(arg, updateTimeKey, new Date());
             ReflectUtil.setProperty(arg, deletedKey, false);
         }
+    }
+
+    private synchronized String generateId() {
+        Long currentTime = System.currentTimeMillis();
+        try {
+            Thread.sleep(2);  //每2毫秒生成一条id
+        } catch (InterruptedException e) {
+            logger.error("线程休眠2毫秒失败：", e);
+            throw new EducationException("生成ID失败，请联系开发人员");
+        }
+        return currentTime.toString();
     }
 
     private Boolean isInsert(Object[] args) {
