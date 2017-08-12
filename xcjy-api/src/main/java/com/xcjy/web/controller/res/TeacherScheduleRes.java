@@ -21,4 +21,6 @@ public class TeacherScheduleRes {
     private Date startTime;
 
     private Date endTime;
+
+    private Boolean finish;
 }

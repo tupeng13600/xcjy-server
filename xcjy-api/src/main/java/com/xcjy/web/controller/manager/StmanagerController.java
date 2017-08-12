@@ -1,15 +1,9 @@
 package com.xcjy.web.controller.manager;
 
 import com.xcjy.web.bean.Student;
-import com.xcjy.web.controller.req.CourseScheduleCreateReq;
-import com.xcjy.web.controller.req.PageReq;
-import com.xcjy.web.controller.req.StudentCourseScheduleReq;
-import com.xcjy.web.controller.req.TeacherScheduleStatReq;
+import com.xcjy.web.controller.req.*;
 import com.xcjy.web.controller.res.*;
-import com.xcjy.web.service.CourseScheduleService;
-import com.xcjy.web.service.CourseScheduleStudentService;
-import com.xcjy.web.service.StmanagerStudentService;
-import com.xcjy.web.service.StudentService;
+import com.xcjy.web.service.*;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +29,9 @@ public class StmanagerController {
 
     @Autowired
     private StmanagerStudentService stmanagerStudentService;
+
+    @Autowired
+    private ApplicationService applicationService;
 
     @ApiOperation("获取学生资产信息[学管师,咨询师]")
     @GetMapping("/assets")
@@ -88,6 +85,18 @@ public class StmanagerController {
     @GetMapping("/student/schedule/cancel/{courseScheduleId}/{studentId}")
     public void cancelSchedule(@PathVariable String courseScheduleId, @PathVariable String studentId) {
         courseScheduleStudentService.cancel(courseScheduleId, studentId);
+    }
+
+    @ApiOperation("查看学员上课统计")
+    @GetMapping("/student/stat")
+    public void getStudentStat() {
+        // TODO: 2017/8/12 学生上课时间统计
+    }
+
+    @ApiOperation("创建退费申请")
+    @PostMapping("/back/money")
+    public CreateIdRes backMoney(@RequestBody @Valid BackMoneyCreateReq req) {
+        return applicationService.backMoney(req);
     }
 
 }

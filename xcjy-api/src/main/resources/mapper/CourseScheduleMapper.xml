@@ -63,7 +63,13 @@
     <select id="getByFinish" resultMap="BaseResultMap">
         SELECT
         <include refid="baseSql"/>
-        FROM course_schedule WHERE finish = #{finish} ORDER BY start_time ASC
+        FROM course_schedule WHERE
+        <where>
+            <if test="finish != null">
+                finish = #{finish}
+            </if>
+        </where>
+        ORDER BY start_time ASC
     </select>
 
     <select id="getByStartEndFinish" resultType="com.xcjy.web.controller.res.CourseScheduleStatModel">
@@ -98,11 +104,31 @@
     </select>
 
     <select id="getByIds" resultMap="BaseResultMap">
-        SELECT <include refid="baseSql"/> FROM course_schedule WHERE id
+        SELECT
+        <include refid="baseSql"/>
+        FROM course_schedule WHERE id
         IN
         <foreach collection="ids" item="id" open="(" separator="," close=")">
             #{id}
         </foreach>
+    </select>
+    <select id="getByEmployeeId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM course_schedule WHERE employee_id = #{teacherId}
+    </select>
+
+    <select id="getByEmployeeIdAndFinish" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM course_schedule
+        WHERE employee_id = #{teacherId} AND finish = #{finish}
+        <if test="startTime != null">
+            AND end_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND end_time &lt;= #{endTime}
+        </if>
     </select>
 
 </mapper>

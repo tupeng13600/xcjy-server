@@ -3,6 +3,7 @@ package com.xcjy.web.service;
 import com.xcjy.web.bean.*;
 import com.xcjy.web.common.CurrentThreadLocal;
 import com.xcjy.web.common.exception.EducationException;
+import com.xcjy.web.common.util.CurrentUserUtil;
 import com.xcjy.web.controller.req.CourseScheduleCreateReq;
 import com.xcjy.web.controller.req.CourseScheduleUpdateReq;
 import com.xcjy.web.controller.req.PageReq;
@@ -193,10 +194,14 @@ public class CourseScheduleService {
         return resList;
     }
 
-    public List<TeacherScheduleRes> getTeacherSchedule(Boolean finish, PageReq page) {
+    public List<TeacherScheduleRes> getTeacherSchedule() {
+        String teacherId = CurrentUserUtil.currentEmployeeId();
+        List<CourseSchedule> courseScheduleList = courseScheduleMapper.getByEmployeeId(teacherId);
+        return buildTeacherScheduleList(courseScheduleList);
+    }
+
+    private List<TeacherScheduleRes> buildTeacherScheduleList(List<CourseSchedule> courseScheduleList) {
         List<TeacherScheduleRes> scheduleResList = new ArrayList<>();
-        CurrentThreadLocal.setPageReq(page);
-        List<CourseSchedule> courseScheduleList = courseScheduleMapper.getByFinish(finish);
         if (CollectionUtils.isNotEmpty(courseScheduleList)) {
             Set<String> teacherIds = courseScheduleList.stream().map(CourseSchedule::getEmployeeId).collect(Collectors.toSet());
             Set<String> courseIds = courseScheduleList.stream().map(CourseSchedule::getCourseId).collect(Collectors.toSet());
@@ -207,6 +212,12 @@ public class CourseScheduleService {
         return scheduleResList;
     }
 
+    public List<TeacherScheduleRes> getTeacherSchedule(Boolean finish, PageReq page) {
+        CurrentThreadLocal.setPageReq(page);
+        List<CourseSchedule> courseScheduleList = courseScheduleMapper.getByFinish(finish);
+        return buildTeacherScheduleList(courseScheduleList);
+    }
+
     private TeacherScheduleRes getRes(CourseSchedule courseSchedule, List<Employee> employeeList, List<Course> courseList) {
 
         TeacherScheduleRes res = new TeacherScheduleRes();
@@ -214,6 +225,7 @@ public class CourseScheduleService {
         res.setTeacherId(courseSchedule.getEmployeeId());
         res.setStartTime(courseSchedule.getStartTime());
         res.setEndTime(courseSchedule.getEndTime());
+        res.setFinish(courseSchedule.getFinish());
         for (Employee employee : employeeList) {
             if (employee.getId().equals(res.getTeacherId())) {
                 res.setTeacherName(employee.getName());
@@ -266,4 +278,29 @@ public class CourseScheduleService {
         return res;
     }
 
+    public TeacherHourStatRes statHour4Teacher(Date startTime, Date endTime) {
+        TeacherHourStatRes res = new TeacherHourStatRes();
+        List<CourseSchedule> courseScheduleList = courseScheduleMapper.getByEmployeeIdAndFinish(CurrentUserUtil.currentEmployeeId(), startTime, endTime, true);
+        if (CollectionUtils.isNotEmpty(courseScheduleList)) {
+            Set<String> courseIds = courseScheduleList.stream().map(CourseSchedule::getCourseId).collect(Collectors.toSet());
+            List<Course> courseList = courseMapper.getByIds(courseIds);
+            List<TeacherCourseHourStat> details = new ArrayList<>();
+            Integer total = 0;
+            for (Course course : courseList) {
+                TeacherCourseHourStat stat = new TeacherCourseHourStat();
+                stat.setCourseName(course.getName());
+                for (CourseSchedule courseSchedule : courseScheduleList) {
+                    if (courseSchedule.getCourseId().equals(course.getId())) {
+                        stat.setHours(stat.getHours() + courseSchedule.getStudyTime());
+                        total += courseSchedule.getStudyTime();
+                        break;
+                    }
+                }
+                details.add(stat);
+            }
+            res.setTotalHours(total);
+            res.setDetail(details);
+        }
+        return res;
+    }
 }
