@@ -1,16 +1,12 @@
 package com.xcjy.web.controller.manager;
 
-import com.xcjy.web.controller.req.AssetsSignReq;
-import com.xcjy.web.controller.req.CounselorStatReq;
-import com.xcjy.web.controller.req.CourseStudentReq;
-import com.xcjy.web.controller.req.PageReq;
+import com.xcjy.web.bean.Student;
+import com.xcjy.web.controller.req.*;
 import com.xcjy.web.controller.res.CounselorAssesSignRes;
 import com.xcjy.web.controller.res.CounselorStatRes;
+import com.xcjy.web.controller.res.CounselorStuStatusRes;
 import com.xcjy.web.controller.res.StudentAssetsRes;
-import com.xcjy.web.service.CourseStudentService;
-import com.xcjy.web.service.ExcelService;
-import com.xcjy.web.service.StudentAssetService;
-import com.xcjy.web.service.StudentService;
+import com.xcjy.web.service.*;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,6 +35,9 @@ public class CounselorController {
 
     @Autowired
     private StudentAssetService studentAssetService;
+
+    @Autowired
+    private RelationService relationService;
 
     @ApiOperation("导入已缴费学生信息")
     @PostMapping("/student/paid")
@@ -69,6 +69,24 @@ public class CounselorController {
     public List<CounselorAssesSignRes> getAssetsSign(@RequestBody @Valid AssetsSignReq req, PageReq page){
         return studentAssetService.getAssetsSign(req, page);
     }
+
+    @ApiOperation("咨询总监获取咨询记录")
+    @GetMapping("/counselor/stat")
+    public List<CounselorStuStatusRes> getCounselorStudentTypeHis(Date startTime, Date endTime){
+        return courseStudentService.getCounselorStudentTypeHis(startTime, endTime);
+    }
+
+    /**
+     * 分配学生给咨询师
+     *
+     * @param req
+     */
+    @ApiOperation("咨询总监分配学生给咨询师")
+    @PostMapping("/counselor/student")
+    public void createCounselorStudent(@RequestBody @Valid CounselorStudentCreateReq req) {
+        relationService.counselorStudent(req);
+    }
+
 
 
 }

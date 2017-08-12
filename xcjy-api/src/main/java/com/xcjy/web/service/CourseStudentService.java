@@ -1,21 +1,21 @@
 package com.xcjy.web.service;
 
-import com.xcjy.web.bean.Course;
-import com.xcjy.web.bean.CourseStudent;
-import com.xcjy.web.bean.Student;
-import com.xcjy.web.bean.StudentMoney;
+import com.xcjy.web.bean.*;
 import com.xcjy.web.common.enums.PayStatusType;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.controller.req.CourseStudentReq;
-import com.xcjy.web.mapper.CourseMapper;
-import com.xcjy.web.mapper.CourseStudentMapper;
-import com.xcjy.web.mapper.StudentMapper;
-import com.xcjy.web.mapper.StudentMoneyMapper;
+import com.xcjy.web.controller.res.CounselorStuStatusRes;
+import com.xcjy.web.mapper.*;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by tupeng on 2017/8/10.
@@ -34,6 +34,9 @@ public class CourseStudentService {
 
     @Autowired
     private StudentMoneyMapper studentMoneyMapper;
+
+    @Autowired
+    private EmployeeMapper employeeMapper;
 
 
     @Transactional
@@ -76,4 +79,43 @@ public class CourseStudentService {
         return studentMoney;
     }
 
+    public List<CounselorStuStatusRes> getCounselorStudentTypeHis(Date startTime, Date endTime) {
+        List<CounselorStuStatusRes> resList = new ArrayList<>();
+        List<CounselorStudent> counselorStudentList = courseStudentMapper.getByTime(startTime, endTime);
+        if(CollectionUtils.isNotEmpty(counselorStudentList)) {
+            Set<String> studentIds = counselorStudentList.stream().map(CounselorStudent::getStudentId).collect(Collectors.toSet());
+            Set<String> employeeIds = counselorStudentList.stream().map(CounselorStudent::getEmployeeId).collect(Collectors.toSet());
+            List<Student> studentList = studentMapper.getByIds(studentIds);
+            List<Employee> employeeList = employeeMapper.getByIds(employeeIds);
+            for (CounselorStudent counselorStudent : counselorStudentList) {
+                resList.add(getStatusRes(counselorStudent, studentList, employeeList));
+            }
+        }
+        return resList;
+    }
+
+    private CounselorStuStatusRes getStatusRes(CounselorStudent counselorStudent,
+                                               List<Student> studentList,
+                                               List<Employee> employeeList) {
+        CounselorStuStatusRes stuStatusRes = new CounselorStuStatusRes();
+        stuStatusRes.setStatus(counselorStudent.getStatus());
+        stuStatusRes.setUpdateTime(counselorStudent.getUpdateTime());
+        for (Student student : studentList) {
+            if(student.getId().equals(counselorStudent.getStudentId())) {
+                stuStatusRes.setStudentId(student.getId());
+                stuStatusRes.setStudentName(student.getName());
+                stuStatusRes.setStudentPhone(student.getPhone());
+                break;
+            }
+        }
+        for (Employee employee : employeeList) {
+            if(employee.getId().equals(counselorStudent.getEmployeeId())) {
+                stuStatusRes.setEmployeeId(employee.getId());
+                stuStatusRes.setEmployeeName(employee.getName());
+                stuStatusRes.setEmployeePhone(employee.getPhone());
+                break;
+            }
+        }
+        return stuStatusRes;
+    }
 }

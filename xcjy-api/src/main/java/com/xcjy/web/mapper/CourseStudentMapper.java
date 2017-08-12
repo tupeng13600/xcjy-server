@@ -1,8 +1,10 @@
 package com.xcjy.web.mapper;
 
+import com.xcjy.web.bean.CounselorStudent;
 import com.xcjy.web.bean.CourseStudent;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -18,4 +20,6 @@ public interface CourseStudentMapper {
     void updateHourBatch(@Param("courseStudents")List<CourseStudent> courseStudents);
 
     List<CourseStudent> getByStudentIds(@Param("studentIds") List<String> studentIds);
+
+    List<CounselorStudent> getByTime(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
 }

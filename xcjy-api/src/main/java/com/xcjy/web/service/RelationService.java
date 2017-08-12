@@ -35,12 +35,6 @@ public class RelationService {
     @Autowired
     private StmanagerStudentMapper stmanagerStudentMapper;
 
-    @Autowired
-    private StudentMoneyMapper studentMoneyMapper;
-
-    @Autowired
-    private StudentPayLogMapper studentPayLogMapper;
-
     @Transactional
     public void counselorStudent(CounselorStudentCreateReq req) {
         String employeeId = req.getEmployeeId();

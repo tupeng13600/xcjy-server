@@ -66,4 +66,19 @@
         </foreach>
     </select>
 
+    <select id="getByTime" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM course_student
+        <where>
+            <if test="startTime != null">
+                update_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND update_time &lt;= #{endTime}
+            </if>
+        </where>
+
+    </select>
+
 </mapper>
