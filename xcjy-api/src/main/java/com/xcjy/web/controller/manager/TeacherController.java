@@ -33,7 +33,7 @@ public class TeacherController {
     @ApiOperation("查看自己的课表")
     @GetMapping("/course/stat")
     public TeacherHourStatRes getHourStat(Date startTime, Date endTime){
-        return courseScheduleService.statHour4Teacher();
+        return courseScheduleService.statHour4Teacher(startTime, endTime);
     }
 
 }

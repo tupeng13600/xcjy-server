@@ -295,8 +295,11 @@ public class ApplicationService {
         ProcessLog processLog = new ProcessLog();
         processLog.setApplicationId(applicationId);
         processLog.setHandlerStatus(HandlerStatusType.WAIT_AUDIT);
-        User roleUser = userMapper.getByRole(roleEnum);
-        processLog.setHandlerUserId(roleUser.getId());
+        List<User> roleUsers = userMapper.getByRole(roleEnum);
+        if(CollectionUtils.isEmpty(roleUsers)) {
+            throw new EducationException("不存在该角色的用户");
+        }
+        processLog.setHandlerUserId(roleUsers.get(0).getId());
         processLog.setProcessNum(processNum);
         processLog.setType(processLogType);
         processLog.setSchoolId(schoolId);

@@ -18,7 +18,7 @@
   </sql>
 
     <insert id="insert" parameterType="com.xcjy.web.bean.CounselorStudent">
-    insert into counselor_student (id, school_id, employee_id, 
+    insert into counselor_student (id, school_id, employee_id,
       student_id, money, status, 
       create_time, update_time, deleted
       )
@@ -70,12 +70,13 @@
     <select id="getCS" resultMap="BaseResultMap">
         SELECT
         <include refid="baseSql"/>
-        FROM counselor_student WHERE school_id = #{schoolId} AND employee_id = #{employeeId} AND student_id = #{studentId};
+        FROM counselor_student WHERE school_id = #{schoolId} AND employee_id = #{employeeId} AND student_id =
+        #{studentId};
     </select>
 
     <select id="getByEmployeeId" resultMap="BaseResultMap">
         SELECT
-        <include refid="baseSql" />
+        <include refid="baseSql"/>
         FROM counselor_student WHERE employee_id = #{employeId};
     </select>
 
@@ -83,6 +84,25 @@
         SELECT
         student_id
         FROM counselor_student WHERE employee_id = #{employeId} ORDER BY create_time DESC;
+    </select>
+
+    <select id="getAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM counselor_student
+    </select>
+
+    <select id="getByTimeAndType" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM counselor_student
+        WHERE status = #{type}
+        <if test="startTime != null">
+            AND update_time >= #{startTime}
+        </if>
+        <if test="startTime != null">
+            AND update_time &lt;= #{endTime}
+        </if>
     </select>
 
 </mapper>

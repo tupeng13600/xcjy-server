@@ -130,5 +130,23 @@
             AND end_time &lt;= #{endTime}
         </if>
     </select>
+    
+    <select id="getByEmployeeIdsAndTime" resultType="com.xcjy.web.controller.res.CourseScheduleStatModel">
+        SELECT
+        employee_id AS employeeId,
+        sum(study_time) total
+        FROM course_schedule WHERE employee_id IN
+        <foreach collection="teacherIds" item="teacherId" open="(" separator="," close=")">
+            #{teacherId}
+        </foreach>
+        AND finish = #{finish}
+        <if test="startTime != null">
+            AND end_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND end_time &lt;= #{endTime}
+        </if>
+        GROUP BY employee_id ORDER BY total DESC
+    </select>
 
 </mapper>

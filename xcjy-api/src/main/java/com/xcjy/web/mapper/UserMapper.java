@@ -27,7 +27,7 @@ public interface UserMapper {
 
     void deleteLogic(@Param("id") String id, @Param("updateTime") Date updateTime);
 
-    User getByRole(@Param("roleCode") RoleEnum roleCode);
+    List<User> getByRole(@Param("roleCode") RoleEnum roleCode);
 
     List<User> getAll();
 

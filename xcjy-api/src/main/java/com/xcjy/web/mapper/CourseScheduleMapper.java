@@ -27,6 +27,11 @@ public interface CourseScheduleMapper {
 
     List<CourseScheduleStatModel> getByEmployeeIds(@Param("teacherIds") Set<String> teacherIds, @Param("finish")  boolean finish);
 
+    List<CourseScheduleStatModel> getByEmployeeIdsAndTime(@Param("teacherIds") Set<String> teacherIds,
+                                                          @Param("startTime") Date startTime,
+                                                          @Param("endTime") Date endTime,
+                                                          @Param("finish")  boolean finish);
+
     List<CourseSchedule> getByIds(@Param("ids") Set<String> ids);
 
     List<CourseSchedule> getByEmployeeId(@Param("teacherId") String teacherId);
