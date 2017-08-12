@@ -33,7 +33,6 @@
     update_time = #{courseStudent.updateTime}
     WHERE id = #{courseStudent.id}
   </update>
-    courseStudents
     <update id="updateHourBatch">
         <foreach collection="courseStudents" item="courseStudent" separator=";">
             UPDATE course_student SET

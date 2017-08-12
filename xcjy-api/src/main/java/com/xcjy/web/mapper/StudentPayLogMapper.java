@@ -27,7 +27,7 @@ public interface StudentPayLogMapper {
     List<PayStatModel> getStatByIds(@Param("employeeIds") Set<String> employeeIds,
                                     @Param("type") StudentPayType type);
 
-    Integer getIdsByStartAndEnd(@Param("startTime") Date startTime,
+    List<String> getIdsByStartAndEnd(@Param("startTime") Date startTime,
                                           @Param("endTime") Date endTime);
 
     List<StudentPayLog> getTimeAndEIds(@Param("startTime") Date startTime,
