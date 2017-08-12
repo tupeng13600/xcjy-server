@@ -71,7 +71,7 @@ public class CounselorController {
     }
 
     @ApiOperation("咨询总监获取咨询记录")
-    @GetMapping("/counselor/stat")
+    @GetMapping("/counselor/record")
     public List<CounselorStuStatusRes> getCounselorStudentTypeHis(Date startTime, Date endTime){
         return courseStudentService.getCounselorStudentTypeHis(startTime, endTime);
     }
