@@ -8,6 +8,8 @@ import java.util.Date;
 public class CourseScheduleStudent {
     private String id;
 
+    private String schoolId;
+
     private String courseScheduleId;
 
     private String studentId;

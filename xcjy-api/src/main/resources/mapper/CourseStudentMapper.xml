@@ -32,11 +32,30 @@
     update_time = #{courseStudent.updateTime}
     WHERE id = #{courseStudent.id}
   </update>
+    courseStudents
+    <update id="updateHourBatch">
+        <foreach collection="courseStudents" item="courseStudent" separator=";">
+            UPDATE course_student SET
+            used_hour = #{courseStudent.usedHour},
+            update_time = #{courseStudent.updateTime}
+            WHERE id = #{courseStudent.id}
+        </foreach>
+    </update>
 
     <select id="getBySIdAndCId" resultMap="BaseResultMap">
         SELECT
         <include refid="baseSql"/>
         FROM course_student WHERE student_id = #{studentId} AND course_id = #{courseId}
+    </select>
+
+    <select id="getBySIdAndCIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM course_student WHERE student_id
+        <foreach collection="studentIds" item="studentId" open="(" separator="," close=")">
+            #{studentId}
+        </foreach>
+        AND course_id = #{courseId}
     </select>
 
 </mapper>

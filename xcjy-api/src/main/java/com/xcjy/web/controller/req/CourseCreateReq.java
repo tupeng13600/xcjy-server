@@ -15,15 +15,15 @@ public class CourseCreateReq {
     private String schoolId;
 
     @NotBlank
+    private String gradeId;
+
+    @NotBlank
     private String name;
 
     @NotNull
     private CourseType type;
 
     private Integer studentNum;
-
-    @NotNull
-    private Integer price;
 
     @NotNull
     private Integer studyHour;

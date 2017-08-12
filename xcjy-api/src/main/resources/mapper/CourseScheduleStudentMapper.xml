@@ -3,6 +3,7 @@
 <mapper namespace="com.xcjy.web.mapper.CourseScheduleStudentMapper">
     <resultMap id="BaseResultMap" type="com.xcjy.web.bean.CourseScheduleStudent">
         <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="school_id" jdbcType="VARCHAR" property="schoolId"/>
         <result column="course_schedule_id" jdbcType="VARCHAR" property="courseScheduleId"/>
         <result column="student_id" jdbcType="VARCHAR" property="studentId"/>
         <result column="finish" jdbcType="BIT" property="finish"/>
@@ -10,17 +11,46 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="deleted" jdbcType="BIT" property="deleted"/>
     </resultMap>
+
+    <sql id="baseSql">
+        id, school_id, course_schedule_id, student_id,finish, create_time, update_time, deleted
+    </sql>
+
     <insert id="insert" parameterType="com.xcjy.web.bean.CourseScheduleStudent">
-    insert into course_schedule_student (id, course_schedule_id, student_id, 
+    insert into course_schedule_student (id, school_id, course_schedule_id, student_id,
       finish, create_time, update_time, 
       deleted)
-    values (#{id,jdbcType=VARCHAR}, #{courseScheduleId,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{schoolId,jdbcType=VARCHAR}, #{courseScheduleId,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR},
       #{finish,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{deleted,jdbcType=BIT})
   </insert>
+    <insert id="insertBatch">
+         insert into course_schedule_student (id, school_id, course_schedule_id, student_id,
+          finish, create_time, update_time,
+          deleted)
+          values
+          <foreach collection="list" item="css" separator=",">
+          (#{css.id,jdbcType=VARCHAR}, #{css.schoolId,jdbcType=VARCHAR}, #{css.courseScheduleId,jdbcType=VARCHAR}, #{css.studentId,jdbcType=VARCHAR},
+          #{css.finish,jdbcType=BIT}, #{css.createTime,jdbcType=TIMESTAMP}, #{css.updateTime,jdbcType=TIMESTAMP},
+          #{css.deleted,jdbcType=BIT})
+          </foreach>
+    </insert>
 
     <delete id="deleteByCSId">
     DELETE FROM course_schedule_student WHERE course_schedule_id = #{courseScheduleId};
   </delete>
+
+    <delete id="deleteByIds">
+        DELETE FROM course_schedule_student
+        WHERE course_schedule_id
+        IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getByCourseScheduleId" resultMap="BaseResultMap">
+      SELECT <include refid="baseSql"/> FROM course_schedule_student WHERE  course_schedule_id = #{courseScheduleId};
+    </select>
 
 </mapper>

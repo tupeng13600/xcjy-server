@@ -26,4 +26,5 @@ public interface CourseScheduleMapper {
                                                       @Param("finish") Boolean finish);
 
     List<CourseScheduleStatModel> getByEmployeeIds(@Param("teacherIds") Set<String> teacherIds, @Param("finish")  boolean finish);
+
 }

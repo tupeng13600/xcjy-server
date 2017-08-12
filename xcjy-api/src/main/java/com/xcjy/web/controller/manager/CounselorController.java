@@ -54,7 +54,7 @@ public class CounselorController {
     @ApiOperation("为学生购买课程")
     @PostMapping("/course")
     public void course(@RequestBody @Valid CourseStudentReq req) {
-        courseStudentService.createCourse(req);
+        courseStudentService.buyCourse(req);
     }
 
     @ApiOperation("咨询师查看自己金额和总和")

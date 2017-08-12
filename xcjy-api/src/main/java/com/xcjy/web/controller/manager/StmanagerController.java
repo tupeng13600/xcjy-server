@@ -1,12 +1,10 @@
 package com.xcjy.web.controller.manager;
 
+import com.xcjy.web.controller.req.CourseScheduleCreateReq;
 import com.xcjy.web.controller.req.PageReq;
 import com.xcjy.web.controller.req.StudentCourseScheduleReq;
 import com.xcjy.web.controller.req.TeacherScheduleStatReq;
-import com.xcjy.web.controller.res.StmanagerStatRes;
-import com.xcjy.web.controller.res.StudentAssetsRes;
-import com.xcjy.web.controller.res.TeacherScheduleRes;
-import com.xcjy.web.controller.res.TeacherScheduleStatRes;
+import com.xcjy.web.controller.res.*;
 import com.xcjy.web.service.CourseScheduleService;
 import com.xcjy.web.service.CourseScheduleStudentService;
 import com.xcjy.web.service.StmanagerStudentService;
@@ -45,8 +43,8 @@ public class StmanagerController {
 
     @ApiOperation("为学生安排课表")
     @PostMapping("/course/schedule")
-    public void courseSchedule(@RequestBody @Valid StudentCourseScheduleReq req) {
-        courseScheduleStudentService.createSchedule(req);
+    public CreateIdRes createStudentSchedule(@RequestBody @Valid CourseScheduleCreateReq req) {
+        return courseScheduleService.createStudentSchedule(req);
     }
 
     @ApiOperation("获取教师课表信息")

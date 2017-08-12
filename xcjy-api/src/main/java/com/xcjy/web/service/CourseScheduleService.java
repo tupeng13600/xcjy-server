@@ -1,8 +1,6 @@
 package com.xcjy.web.service;
 
-import com.xcjy.web.bean.Course;
-import com.xcjy.web.bean.CourseSchedule;
-import com.xcjy.web.bean.Employee;
+import com.xcjy.web.bean.*;
 import com.xcjy.web.common.CurrentThreadLocal;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.controller.req.CourseScheduleCreateReq;
@@ -10,17 +8,16 @@ import com.xcjy.web.controller.req.CourseScheduleUpdateReq;
 import com.xcjy.web.controller.req.PageReq;
 import com.xcjy.web.controller.req.TeacherScheduleStatReq;
 import com.xcjy.web.controller.res.*;
-import com.xcjy.web.mapper.CourseMapper;
-import com.xcjy.web.mapper.CourseScheduleMapper;
-import com.xcjy.web.mapper.CourseTeacherMapper;
-import com.xcjy.web.mapper.EmployeeMapper;
+import com.xcjy.web.mapper.*;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -43,9 +40,88 @@ public class CourseScheduleService {
     @Autowired
     private CourseMapper courseMapper;
 
-    @Transactional
-    public CreateIdRes create(CourseScheduleCreateReq req) {
+    @Autowired
+    private CourseStudentMapper courseStudentMapper;
 
+    @Autowired
+    private CourseScheduleStudentMapper courseScheduleStudentMapper;
+
+    /**
+     * 学管师创建课表，选择课表上课时间，上课老师，上课学生等
+     *
+     * @param req
+     * @return
+     */
+    @Transactional
+    public CreateIdRes createStudentSchedule(CourseScheduleCreateReq req) {
+        valid(req); //校验数据的正确性
+        CourseSchedule courseSchedule = getCourseSchedule(req);
+        List<CourseStudent> courseStudents = courseStudentMapper.getBySIdAndCIds(req.getStudentIds(), courseSchedule.getCourseId());
+        if (courseStudents.size() != req.getStudentIds().size()) {
+            throw new EducationException("存在未订购该课时的学生");
+        }
+        //删除历史数据，并归还学生使用课时
+        backCourseSchedule(courseSchedule);
+        //新建学生课表关系数据
+        createScheduleStudent(req, courseSchedule);
+        //更新学生已经使用的学时数据
+        updateCourseStudent(courseStudents, courseSchedule);
+        return new CreateIdRes(courseSchedule.getId());
+    }
+
+    private CourseSchedule getCourseSchedule(CourseScheduleCreateReq req) {
+        return StringUtils.isNoneEmpty(req.getCourseScheduleId()) ?
+                courseScheduleMapper.getById(req.getCourseScheduleId()) : createCourseSchedule(req);
+    }
+
+    @Transactional
+    private void updateCourseStudent(List<CourseStudent> courseStudents, CourseSchedule courseSchedule) {
+        for (CourseStudent courseStudent : courseStudents) {
+            Integer usedHour = courseSchedule.getStudyTime() + courseStudent.getUsedHour();
+            if (courseStudent.getBuyHour() < usedHour) {
+                throw new EducationException("该学生该课程的剩余课时不足");
+            }
+            courseStudent.setUsedHour(usedHour);
+            courseStudent.setUpdateTime(new Date());
+        }
+        courseStudentMapper.updateHourBatch(courseStudents);
+    }
+
+    @Transactional
+    private void createScheduleStudent(CourseScheduleCreateReq req, CourseSchedule courseSchedule) {
+        List<CourseScheduleStudent> cssList = new ArrayList<>();
+        for (String studentId : req.getStudentIds()) {
+            CourseScheduleStudent courseScheduleStudent = new CourseScheduleStudent();
+            courseScheduleStudent.setCourseScheduleId(courseSchedule.getId());
+            courseScheduleStudent.setStudentId(studentId);
+            courseScheduleStudent.setFinish(false);
+            courseScheduleStudent.setSchoolId(CurrentThreadLocal.getSchoolId());
+            cssList.add(courseScheduleStudent);
+        }
+
+        courseScheduleStudentMapper.insertBatch(cssList);
+    }
+
+
+    @Transactional
+    private void backCourseSchedule(CourseSchedule courseSchedule) {
+        List<CourseScheduleStudent> courseScheduleStudents = courseScheduleStudentMapper.getByCourseScheduleId(courseSchedule.getId());
+        if (CollectionUtils.isNotEmpty(courseScheduleStudents)) {
+            Set<String> studentIds = courseScheduleStudents.stream().map(CourseScheduleStudent::getStudentId).collect(Collectors.toSet());
+            List<CourseStudent> courseStudents = courseStudentMapper.getBySIdAndCIds(studentIds, courseSchedule.getCourseId());
+            for (CourseStudent courseStudent : courseStudents) {
+                Integer usedHour = courseStudent.getUsedHour() - courseSchedule.getStudyTime();
+                courseStudent.setUsedHour(usedHour);
+                courseStudent.setUpdateTime(new Date());
+            }
+            courseStudentMapper.updateHourBatch(courseStudents);
+            Set<String> ids = courseScheduleStudents.stream().map(CourseScheduleStudent::getId).collect(Collectors.toSet());
+            courseScheduleStudentMapper.deleteByIds(ids);
+        }
+    }
+
+    @Transactional
+    private void valid(CourseScheduleCreateReq req) {
         Course course = courseMapper.getById(req.getCourseId());
         if (null == course) {
             throw new EducationException("课程信息不存在");
@@ -54,12 +130,16 @@ public class CourseScheduleService {
         if (null == employee) {
             throw new EducationException("员工信息不存在");
         }
+    }
+
+    @Transactional
+    private CourseSchedule createCourseSchedule(CourseScheduleCreateReq req) {
         CourseSchedule courseSchedule = new CourseSchedule();
         BeanUtils.copyProperties(req, courseSchedule);
         courseSchedule.setSchoolId(CurrentThreadLocal.getSchoolId());
         courseSchedule.setFinish(false);
         courseScheduleMapper.insert(courseSchedule);
-        return new CreateIdRes(courseSchedule.getId());
+        return courseSchedule;
     }
 
     @Transactional

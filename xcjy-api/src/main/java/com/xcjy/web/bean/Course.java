@@ -12,6 +12,8 @@ public class Course {
 
     private String schoolId;
 
+    private String gradeId;
+
     private String name;
 
     private CourseType type;

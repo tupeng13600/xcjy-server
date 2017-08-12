@@ -4,6 +4,7 @@
     <resultMap id="BaseResultMap" type="com.xcjy.web.bean.Course">
         <result column="id" jdbcType="VARCHAR" property="id"/>
         <result column="school_id" jdbcType="VARCHAR" property="schoolId"/>
+        <result column="grade_id" jdbcType="VARCHAR" property="gradeId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="type" jdbcType="VARCHAR" property="type"/>
         <result column="student_num" jdbcType="INTEGER" property="studentNum"/>
@@ -17,15 +18,15 @@
     </resultMap>
 
     <sql id="baseSql">
-    id, school_id, name, type, student_num, price, selected_num, back_num, create_time, update_time, deleted
+    id, school_id, grade_id, name, type, student_num, price, selected_num, back_num, create_time, update_time, deleted
   </sql>
 
     <insert id="insert" parameterType="com.xcjy.web.bean.Course">
-    insert into course (id, school_id, name, type, student_num,
+    insert into course (id, school_id, grade_id, name, type, student_num,
       price, study_hour, selected_num, back_num,
       create_time, update_time, deleted
       )
-    values (#{id,jdbcType=VARCHAR}, #{schoolId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{studentNum,jdbcType=INTEGER},
+    values (#{id,jdbcType=VARCHAR}, #{schoolId,jdbcType=VARCHAR}, #{gradeId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{studentNum,jdbcType=INTEGER},
       #{price,jdbcType=INTEGER}, #{studyHour,jdbcType=INTEGER}, #{selectedNum,jdbcType=INTEGER}, #{backNum,jdbcType=INTEGER},
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}
       )

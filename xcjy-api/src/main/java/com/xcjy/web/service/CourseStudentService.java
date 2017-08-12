@@ -37,7 +37,7 @@ public class CourseStudentService {
 
 
     @Transactional
-    public void createCourse(CourseStudentReq req) {
+    public void buyCourse(CourseStudentReq req) {
         Course course = courseMapper.getById(req.getCourseId());
         if(null == course) {
             throw new EducationException("课程信息不存在");
