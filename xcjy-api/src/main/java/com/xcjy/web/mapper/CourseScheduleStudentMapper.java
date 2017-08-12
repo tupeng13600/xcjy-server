@@ -18,4 +18,8 @@ public interface CourseScheduleStudentMapper {
     void deleteByIds(@Param("ids") Set<String> ids);
 
     List<CourseScheduleStudent> getByStudentIds(@Param("studentIds") List<String> studentIds);
+
+    CourseScheduleStudent getById(@Param("id") String id);
+
+    void finish(@Param("css") CourseScheduleStudent courseScheduleStudent);
 }

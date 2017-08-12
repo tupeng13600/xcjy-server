@@ -1,6 +1,7 @@
 package com.xcjy.web.service;
 
 import com.xcjy.web.bean.*;
+import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.util.CurrentUserUtil;
 import com.xcjy.web.controller.res.StudentScheduleRes;
 import com.xcjy.web.mapper.*;
@@ -8,10 +9,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -71,11 +69,12 @@ public class CourseScheduleStudentService {
         res.setStudentName(student.getName());
         for (CourseScheduleStudent courseScheduleStudent : courseScheduleStudentList) {
             if (courseScheduleStudent.getStudentId().equals(student.getId())) {
+                res.setFinish(courseScheduleStudent.getFinish());
+                res.setId(courseScheduleStudent.getId());
                 for (CourseSchedule courseSchedule : courseSchedules) {
                     if (courseSchedule.getId().equals(courseScheduleStudent.getCourseScheduleId())) {
                         res.setStartTime(courseSchedule.getStartTime());
                         res.setEndTime(courseSchedule.getEndTime());
-                        res.setFinish(courseScheduleStudent.getFinish());
                         for (Course course : courseList) {
                             if (course.getId().equals(courseSchedule.getCourseId())) {
                                 res.setCourseName(course.getName());
@@ -97,4 +96,13 @@ public class CourseScheduleStudentService {
         return res;
     }
 
+    public void finish(String id) {
+        CourseScheduleStudent courseScheduleStudent = courseScheduleStudentMapper.getById(id);
+        if(null == courseScheduleStudent) {
+            throw new EducationException("学生课表信息不存在");
+        }
+        courseScheduleStudent.setFinish(true);
+        courseScheduleStudent.setUpdateTime(new Date());
+        courseScheduleStudentMapper.finish(courseScheduleStudent);
+    }
 }

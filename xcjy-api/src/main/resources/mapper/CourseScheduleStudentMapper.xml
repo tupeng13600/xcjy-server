@@ -36,6 +36,13 @@
             #{css.deleted,jdbcType=BIT})
         </foreach>
     </insert>
+    <update id="finish">
+        UPDATE course_schedule_student
+        SET
+        finish = #{css.finish},
+        update_time = #{css.updateTime}
+        WHERE id = #{css.id}
+    </update>
 
     <delete id="deleteByCSId">
     DELETE FROM course_schedule_student WHERE course_schedule_id = #{courseScheduleId};
@@ -64,6 +71,12 @@
         <foreach collection="studentIds" item="studentId" open="(" separator="," close=")">
             #{studentId}
         </foreach>
+    </select>
+
+    <select id="getById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM course_schedule_student WHERE id = #{id}
     </select>
 
 </mapper>

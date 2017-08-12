@@ -73,9 +73,15 @@ public class StmanagerController {
     }
 
     @ApiOperation("获取分配到的学生上课列表详情")
-    @GetMapping("/student")
+    @GetMapping("/student/schedule")
     public List<StudentScheduleRes> getStudentSchedule(){
         return courseScheduleStudentService.getForStmanager();
+    }
+
+    @ApiOperation("完成课程")
+    @GetMapping("/student/finish/{id}")
+    public void finishStudentCourse(@PathVariable String id){
+        courseScheduleStudentService.finish(id);
     }
 
 }
