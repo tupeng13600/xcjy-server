@@ -107,16 +107,6 @@ public class ApplicationService {
         }
     }
 
-    private void createPayLog(ProcessLog processLog, Integer returnAmount) {
-        StudentPayLog studentPayLog = new StudentPayLog();
-        studentPayLog.setSchoolId(processLog.getSchoolId());
-        studentPayLog.setStudentId(processLog.getStudentId());
-        studentPayLog.setMoney(returnAmount);
-        studentPayLog.setEmployeeId(studentPayLog.getEmployeeId());
-        studentPayLog.setOpPayType(StudentPayType.STUDENTMANAGER_BACK);
-        studentPayLogMapper.insert(studentPayLog);
-    }
-
     /**
      * 创建转校申请
      *
@@ -169,7 +159,6 @@ public class ApplicationService {
         } else {
             updateChangeSchool(processLog.getApplicationId(), ApplicationStatusType.AUDIT_FAIL);
         }
-
     }
 
     /**
@@ -195,6 +184,10 @@ public class ApplicationService {
         }
         return new ArrayList<>();
     }
+
+    /**
+     * 私有方法分界线------------------------------------------------------------------------------------------------------
+     */
 
     private List<ProcessRes> getResult(List<ProcessLog> processLogs, List<Student> studentList, List<AplnSimpleRes> aplnSimpleRes) {
         List<ProcessRes> result = new ArrayList<>();
@@ -257,10 +250,15 @@ public class ApplicationService {
         return "-";
     }
 
-
-    /**
-     * 私有方法分界线------------------------------------------------------------------------------------------------------
-     */
+    private void createPayLog(ProcessLog processLog, Integer returnAmount) {
+        StudentPayLog studentPayLog = new StudentPayLog();
+        studentPayLog.setSchoolId(processLog.getSchoolId());
+        studentPayLog.setStudentId(processLog.getStudentId());
+        studentPayLog.setMoney(returnAmount);
+        studentPayLog.setEmployeeId(studentPayLog.getEmployeeId());
+        studentPayLog.setOpPayType(StudentPayType.STUDENTMANAGER_BACK);
+        studentPayLogMapper.insert(studentPayLog);
+    }
 
     @Transactional
     private void updateStudentSchool(String studentId, String fromSchoolId, String toSchoolId) {
