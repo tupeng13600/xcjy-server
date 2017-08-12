@@ -78,10 +78,16 @@ public class StmanagerController {
         return courseScheduleStudentService.getForStmanager();
     }
 
-    @ApiOperation("完成课程")
+    @ApiOperation("确认课表已经完成")
     @GetMapping("/student/finish/{id}")
     public void finishStudentCourse(@PathVariable String id){
         courseScheduleStudentService.finish(id);
+    }
+
+    @ApiOperation("取消课表")
+    @GetMapping("/student/schedule/cancel/{courseScheduleId}/{studentId}")
+    public void cancelSchedule(@PathVariable String courseScheduleId, @PathVariable String studentId) {
+        courseScheduleStudentService.cancel(courseScheduleId, studentId);
     }
 
 }

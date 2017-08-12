@@ -10,7 +10,9 @@ import java.util.Date;
 @Data
 public class StudentScheduleRes {
 
-    private String id;
+    private String courseScheduleStudentId;
+
+    private String courseScheduleId;
 
     private String studentId;
 

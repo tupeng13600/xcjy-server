@@ -56,6 +56,9 @@
             #{id}
         </foreach>
     </delete>
+    <delete id="deleteBySIdAndCSId">
+        DELETE FROM course_schedule_student WHERE course_schedule_id = #{courseScheduleId} AND student_id = #{studentId}
+    </delete>
 
     <select id="getByCourseScheduleId" resultMap="BaseResultMap">
         SELECT
@@ -77,6 +80,12 @@
         SELECT
         <include refid="baseSql"/>
         FROM course_schedule_student WHERE id = #{id}
+    </select>
+
+    <select id="getByCourseScheduleIdAndStudentId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM course_schedule_student WHERE course_schedule_id = #{courseScheduleId} AND student_id = #{studentId}
     </select>
 
 </mapper>

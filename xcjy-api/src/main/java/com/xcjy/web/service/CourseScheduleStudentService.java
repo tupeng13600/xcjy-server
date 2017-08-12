@@ -70,9 +70,10 @@ public class CourseScheduleStudentService {
         for (CourseScheduleStudent courseScheduleStudent : courseScheduleStudentList) {
             if (courseScheduleStudent.getStudentId().equals(student.getId())) {
                 res.setFinish(courseScheduleStudent.getFinish());
-                res.setId(courseScheduleStudent.getId());
+                res.setCourseScheduleStudentId(courseScheduleStudent.getId());
                 for (CourseSchedule courseSchedule : courseSchedules) {
                     if (courseSchedule.getId().equals(courseScheduleStudent.getCourseScheduleId())) {
+                        res.setCourseScheduleId(courseSchedule.getId());
                         res.setStartTime(courseSchedule.getStartTime());
                         res.setEndTime(courseSchedule.getEndTime());
                         for (Course course : courseList) {
@@ -98,11 +99,25 @@ public class CourseScheduleStudentService {
 
     public void finish(String id) {
         CourseScheduleStudent courseScheduleStudent = courseScheduleStudentMapper.getById(id);
-        if(null == courseScheduleStudent) {
+        if (null == courseScheduleStudent) {
             throw new EducationException("学生课表信息不存在");
         }
         courseScheduleStudent.setFinish(true);
         courseScheduleStudent.setUpdateTime(new Date());
         courseScheduleStudentMapper.finish(courseScheduleStudent);
+    }
+
+    public void cancel(String courseScheduleId, String studentId) {
+        CourseSchedule courseSchedule = courseScheduleMapper.getById(courseScheduleId);
+        if (null == courseSchedule) {
+            throw new EducationException("课表信息不存在");
+        }
+        CourseStudent courseStudent = courseStudentMapper.getBySIdAndCId(studentId, courseSchedule.getCourseId());
+        courseStudent.setUsedHour(courseStudent.getUsedHour() - courseSchedule.getStudyTime());
+        courseStudent.setUpdateTime(new Date());
+        //归还课时
+        courseStudentMapper.updateUsedHour(courseStudent);
+        //删除学生课表关系
+        courseScheduleStudentMapper.deleteBySIdAndCSId(studentId, courseScheduleId);
     }
 }

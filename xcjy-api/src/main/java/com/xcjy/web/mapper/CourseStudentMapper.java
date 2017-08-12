@@ -11,7 +11,7 @@ public interface CourseStudentMapper {
 
     CourseStudent getBySIdAndCId(@Param("studentId") String studentId, @Param("courseId") String courseId);
 
-    void updateHour(@Param("courseStudent") CourseStudent courseStudent);
+    void updateUsedHour(@Param("courseStudent") CourseStudent courseStudent);
 
     List<CourseStudent> getBySIdAndCIds(@Param("studentIds") Set<String> studentIds, @Param("courseId") String courseId);
 

@@ -22,4 +22,8 @@ public interface CourseScheduleStudentMapper {
     CourseScheduleStudent getById(@Param("id") String id);
 
     void finish(@Param("css") CourseScheduleStudent courseScheduleStudent);
+
+    CourseScheduleStudent getByCourseScheduleIdAndStudentId(@Param("courseScheduleId") String courseScheduleId, @Param("studentId") String studentId);
+
+    void deleteBySIdAndCSId(@Param("studentId") String studentId, @Param("courseScheduleId")String courseScheduleId);
 }

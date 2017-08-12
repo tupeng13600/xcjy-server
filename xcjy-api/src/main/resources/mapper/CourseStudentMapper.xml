@@ -27,7 +27,7 @@
       #{deleted,jdbcType=BIT})
   </insert>
 
-    <update id="updateHour">
+    <update id="updateUsedHour">
     UPDATE course_student SET
     used_hour = #{courseStudent.usedHour},
     update_time = #{courseStudent.updateTime}
