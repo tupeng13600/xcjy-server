@@ -119,4 +119,10 @@
         </if>
     </select>
 
+    <select id="getBySchoolId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM student_pay_log WHERE school_id = #{schoolId}
+    </select>
+
 </mapper>

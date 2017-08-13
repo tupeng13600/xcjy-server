@@ -34,4 +34,6 @@ public interface StudentPayLogMapper {
                                           @Param("endTime") Date endTime,
                                           @Param("employeeIds") Set<String> employeeIds,
                                           @Param("payType") StudentPayType payType);
+
+    List<StudentPayLog> getBySchoolId(@Param("schoolId") String schoolId);
 }
