@@ -32,4 +32,6 @@ public interface CounselorStudentMapper {
     List<CounselorStudent> getByTimeAndType(@Param("startTime") Date startTime,
                                             @Param("endTime") Date endTime,
                                             @Param("type") CounselorStudentStatusType type);
+
+    List<CounselorStudent> getByTime(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
 }

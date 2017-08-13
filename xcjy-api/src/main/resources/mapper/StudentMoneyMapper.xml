@@ -24,7 +24,7 @@
           has_pay, has_back, has_used, total_hour, used_hour,
           create_time, update_time, deleted)
         values (#{id,jdbcType=VARCHAR}, #{schoolId,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR},
-          #{hasPay,jdbcType=INTEGER}, #{hasBack,jdbcType=INTEGER}, #{hasUsed}, #{totalHour}, #{usedHour}
+          #{hasPay,jdbcType=INTEGER}, #{hasBack,jdbcType=INTEGER}, #{hasUsed}, #{totalHour}, #{usedHour},
           #{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT})
   </insert>
 
@@ -47,7 +47,7 @@
         has_back = #{studentMoney.hasBack},
         has_used = #{studentMoney.hasUsed},
         update_time = #{studentMoney.updateTime}
-        WHERE id = #{studentMoney.id} AND update_time = #{infoTime} AND deleted = FALSE;
+        WHERE id = #{studentMoney.id} AND deleted = FALSE;
     </update>
 
     <select id="getBySchoolIdAndStudentId" resultMap="BaseResultMap">

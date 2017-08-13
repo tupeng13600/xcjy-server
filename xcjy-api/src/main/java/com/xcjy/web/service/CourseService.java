@@ -36,6 +36,7 @@ public class CourseService {
         }
         Course course = new Course();
         BeanUtils.copyProperties(req, course);
+        course.setSchoolId(CurrentThreadLocal.getSchoolId());
         course.setPrice(grade.getPrice());
         course.setSelectedNum(0);
         course.setBackNum(0);

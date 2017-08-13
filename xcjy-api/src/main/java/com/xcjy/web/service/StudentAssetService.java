@@ -40,7 +40,7 @@ public class StudentAssetService {
     @Autowired
     private EmployeeMapper employeeMapper;
 
-    public CounselorStatRes getCounselorStat(CounselorStatReq req, PageReq page) {
+    public CounselorStatRes getCounselorStat(CounselorStatReq req) {
         CounselorStatRes statRes = new CounselorStatRes();
         Set<RoleEnum> roleEnums = CurrentUserUtil.currentRoles();
         if (!roleEnums.contains(RoleEnum.CONSULTANT) && !roleEnums.contains(RoleEnum.CONSULTANT_BOSS)) {
@@ -54,8 +54,6 @@ public class StudentAssetService {
             Employee employee = employeeMapper.getById(employeeId);
             employeeName = employee.getName();
         }
-
-        CurrentThreadLocal.setPageReq(page);
         List<StudentPayLog> payLogs = studentPayLogMapper.getByEmployeeId(employeeId, req.getStartTime(), req.getEndTime());
         if (CollectionUtils.isNotEmpty(payLogs)) {
             Set<String> studentIds = payLogs.stream().map(StudentPayLog::getStudentId).collect(Collectors.toSet());
@@ -89,10 +87,9 @@ public class StudentAssetService {
         return payLogStat;
     }
 
-    public List<CounselorAssesSignRes> getAssetsSign(AssetsSignReq req, PageReq page) {
+    public List<CounselorAssesSignRes> getAssetsSign(AssetsSignReq req) {
         List<CounselorAssesSignRes> signResList = new ArrayList<>();
         List<Employee> employeeList;
-        CurrentThreadLocal.setPageReq(page);
         if (StringUtils.isNotBlank(req.getEmployeeId())) {
             employeeList = new ArrayList<>();
             employeeList.add(employeeMapper.getById(req.getEmployeeId()));

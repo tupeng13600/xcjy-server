@@ -23,4 +23,8 @@ public class StudentPayLog {
 
     private Date createTime;
 
+    private Date updateTime;
+
+    private Boolean deleted;
+
 }

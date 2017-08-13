@@ -1,6 +1,7 @@
 package com.xcjy.web.service;
 
 import com.xcjy.web.bean.Grade;
+import com.xcjy.web.common.CurrentThreadLocal;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.controller.req.GradeCreateReq;
 import com.xcjy.web.controller.req.GradeUpdateReq;
@@ -24,6 +25,7 @@ public class GradeService {
 
     public CreateIdRes create(GradeCreateReq req) {
         Grade grade = new Grade();
+        grade.setSchoolId(CurrentThreadLocal.getSchoolId());
         grade.setName(req.getName());
         grade.setPrice(req.getPrice());
         grade.setRemark(req.getRemark());

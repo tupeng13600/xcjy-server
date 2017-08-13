@@ -1,9 +1,10 @@
 package com.xcjy.web.service;
 
-import com.xcjy.web.bean.StmanagerStudent;
+import com.xcjy.web.bean.CounselorStudent;
 import com.xcjy.web.bean.Student;
 import com.xcjy.web.bean.StudentMoney;
 import com.xcjy.web.common.CurrentThreadLocal;
+import com.xcjy.web.common.enums.CounselorStudentStatusType;
 import com.xcjy.web.common.enums.PayStatusType;
 import com.xcjy.web.common.enums.RoleEnum;
 import com.xcjy.web.common.exception.EducationException;
@@ -12,7 +13,6 @@ import com.xcjy.web.common.util.DateUtil;
 import com.xcjy.web.controller.req.PageReq;
 import com.xcjy.web.controller.req.StudentCreateReq;
 import com.xcjy.web.controller.req.StudentUpdateReq;
-import com.xcjy.web.controller.req.TeacherScheduleStatReq;
 import com.xcjy.web.controller.res.CreateIdRes;
 import com.xcjy.web.controller.res.StudentAssetsRes;
 import com.xcjy.web.mapper.CounselorStudentMapper;
@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by tupeng on 2017/7/22.
@@ -59,6 +60,13 @@ public class StudentService {
         student.setAlreadyPaid(PayStatusType.NO);
         student.setSchoolId(CurrentThreadLocal.getSchoolId());
         studentMapper.insert(student);
+        CounselorStudent counselorStudent = new CounselorStudent();
+        counselorStudent.setSchoolId(CurrentThreadLocal.getSchoolId());
+        counselorStudent.setStatus(CounselorStudentStatusType.CONNECTION_NO);
+        counselorStudent.setEmployeeId(CurrentUserUtil.currentEmployeeId());
+        counselorStudent.setMoney(0);
+        counselorStudent.setStudentId(student.getId());
+        counselorStudentMapper.insert(counselorStudent);
         return new CreateIdRes(student.getId());
     }
 
@@ -86,9 +94,13 @@ public class StudentService {
         studentMapper.deleteLogic(id, new Date());
     }
 
-    public List<Student> list(PageReq pageReq) {
-        CurrentThreadLocal.setPageReq(pageReq);
-        return studentMapper.listAll();
+    public List<Student> list4Counselor() {
+        List<CounselorStudent> counselorStudentList = counselorStudentMapper.getByEmployeeId(CurrentUserUtil.currentEmployeeId());
+        if (CollectionUtils.isEmpty(counselorStudentList)) {
+            return new ArrayList<>();
+        }
+        Set<String> studentIds = counselorStudentList.stream().map(CounselorStudent::getStudentId).collect(Collectors.toSet());
+        return studentMapper.getByIds(studentIds);
     }
 
     public List<StudentAssetsRes> getAssets(PageReq page) {
@@ -121,7 +133,7 @@ public class StudentService {
 
     public List<Student> getForStmanager(PageReq page) {
         List<String> studentIds = stmanagerStudentMapper.getSIdByEmployeeId(CurrentUserUtil.currentEmployeeId());
-        if(CollectionUtils.isEmpty(studentIds)) {
+        if (CollectionUtils.isEmpty(studentIds)) {
             return new ArrayList<>();
         }
         return studentMapper.getByIds(new HashSet<>(studentIds));

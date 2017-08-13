@@ -70,8 +70,10 @@
     <select id="getCS" resultMap="BaseResultMap">
         SELECT
         <include refid="baseSql"/>
-        FROM counselor_student WHERE school_id = #{schoolId} AND employee_id = #{employeeId} AND student_id =
-        #{studentId};
+        FROM counselor_student
+        WHERE school_id = #{schoolId}
+        AND employee_id = #{employeeId}
+        AND student_id = #{studentId}
     </select>
 
     <select id="getByEmployeeId" resultMap="BaseResultMap">
@@ -103,6 +105,20 @@
         <if test="startTime != null">
             AND update_time &lt;= #{endTime}
         </if>
+    </select>
+    
+    <select id="getByTime" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM counselor_student
+        <where>
+            <if test="startTime != null">
+                update_time >= #{startTime}
+            </if>
+            <if test="startTime != null">
+                AND update_time &lt;= #{endTime}
+            </if>
+        </where>
     </select>
 
 </mapper>

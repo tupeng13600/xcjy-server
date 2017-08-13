@@ -1,6 +1,7 @@
 package com.xcjy.web.service;
 
 import com.xcjy.web.bean.*;
+import com.xcjy.web.common.CurrentThreadLocal;
 import com.xcjy.web.common.enums.PayStatusType;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.controller.req.CourseStudentReq;
@@ -38,42 +39,52 @@ public class CourseStudentService {
     @Autowired
     private EmployeeMapper employeeMapper;
 
+    @Autowired
+    private CounselorStudentMapper counselorStudentMapper;
+
 
     @Transactional
     public void buyCourse(CourseStudentReq req) {
         Course course = courseMapper.getById(req.getCourseId());
-        if(null == course) {
+        if (null == course) {
             throw new EducationException("课程信息不存在");
         }
         Student student = studentMapper.getById(req.getStudentId());
-        if(null == student) {
+        if (null == student) {
             throw new EducationException("学生信息不存在");
         }
-        if(PayStatusType.NO.equals(student.getAlreadyPaid())) {
+        if (PayStatusType.NO.equals(student.getAlreadyPaid())) {
             throw new EducationException("学生尚未缴费，无法订购课时");
         }
         StudentMoney studentMoney = studentMoneyMapper.getBySchoolIdAndStudentId(student.getSchoolId(), student.getId());
         //校验学生是否有足够的余额购买课程
         validatePay(student.getSchoolId(), student.getId(), course.getPrice() * req.getBuyHour());
+        //创建学生课程关系
+        createCourseStudent(req);
+
+        studentMoney.setHasUsed(studentMoney.getHasUsed() + (course.getPrice() * req.getBuyHour()));
+        studentMoney.setTotalHour(studentMoney.getTotalHour() + req.getBuyHour());
+        studentMoneyMapper.updateMoney(studentMoney);
+    }
+
+    private void createCourseStudent(CourseStudentReq req) {
         CourseStudent courseStudent = new CourseStudent();
+        courseStudent.setStudentId(req.getStudentId());
         courseStudent.setCourseId(req.getCourseId());
-        courseStudent.setSchoolId(req.getStudentId());
+        courseStudent.setSchoolId(CurrentThreadLocal.getSchoolId());
         courseStudent.setUsedHour(0);
         courseStudent.setBuyHour(req.getBuyHour());
         courseStudentMapper.insert(courseStudent);
-        studentMoney.setHasUsed(studentMoney.getHasUsed() + (course.getPrice() * req.getBuyHour()));
-        studentMoney.setTotalHour(studentMoney.getTotalHour() + req.getBuyHour());
-        studentMoneyMapper.updateMoney(studentMoney, new Date());
     }
 
     @Transactional
-    private StudentMoney validatePay(String schoolId, String studentId, Integer price){
+    private StudentMoney validatePay(String schoolId, String studentId, Integer price) {
         StudentMoney studentMoney = studentMoneyMapper.getBySchoolIdAndStudentId(schoolId, studentId);
-        if(null == studentMoney) {
+        if (null == studentMoney) {
             throw new EducationException("未找到学生缴费信息，无法订购课时");
         }
         Integer canUserMoney = studentMoney.getHasPay() - studentMoney.getHasBack() - studentMoney.getHasUsed();
-        if(canUserMoney.intValue() < price.intValue()) {
+        if (canUserMoney.intValue() < price.intValue()) {
             throw new EducationException("该学生余额不足");
         }
         return studentMoney;
@@ -81,8 +92,8 @@ public class CourseStudentService {
 
     public List<CounselorStuStatusRes> getCounselorStudentTypeHis(Date startTime, Date endTime) {
         List<CounselorStuStatusRes> resList = new ArrayList<>();
-        List<CounselorStudent> counselorStudentList = courseStudentMapper.getByTime(startTime, endTime);
-        if(CollectionUtils.isNotEmpty(counselorStudentList)) {
+        List<CounselorStudent> counselorStudentList = counselorStudentMapper.getByTime(startTime, endTime);
+        if (CollectionUtils.isNotEmpty(counselorStudentList)) {
             Set<String> studentIds = counselorStudentList.stream().map(CounselorStudent::getStudentId).collect(Collectors.toSet());
             Set<String> employeeIds = counselorStudentList.stream().map(CounselorStudent::getEmployeeId).collect(Collectors.toSet());
             List<Student> studentList = studentMapper.getByIds(studentIds);
@@ -101,7 +112,7 @@ public class CourseStudentService {
         stuStatusRes.setStatus(counselorStudent.getStatus());
         stuStatusRes.setUpdateTime(counselorStudent.getUpdateTime());
         for (Student student : studentList) {
-            if(student.getId().equals(counselorStudent.getStudentId())) {
+            if (student.getId().equals(counselorStudent.getStudentId())) {
                 stuStatusRes.setStudentId(student.getId());
                 stuStatusRes.setStudentName(student.getName());
                 stuStatusRes.setStudentPhone(student.getPhone());
@@ -109,7 +120,7 @@ public class CourseStudentService {
             }
         }
         for (Employee employee : employeeList) {
-            if(employee.getId().equals(counselorStudent.getEmployeeId())) {
+            if (employee.getId().equals(counselorStudent.getEmployeeId())) {
                 stuStatusRes.setEmployeeId(employee.getId());
                 stuStatusRes.setEmployeeName(employee.getName());
                 stuStatusRes.setEmployeePhone(employee.getPhone());

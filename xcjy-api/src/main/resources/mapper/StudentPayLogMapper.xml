@@ -10,21 +10,23 @@
         <result column="money" jdbcType="INTEGER" property="money"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="deleted" jdbcType="BIT" property="deleted"/>
     </resultMap>
 
     <sql id="baseSql">
-        id, school_id, student_id, employee_id, op_pay_type, money, remark, create_time
+        id, school_id, student_id, employee_id, op_pay_type, money, remark, create_time, update_time, deleted
     </sql>
 
     <insert id="insert" parameterType="com.xcjy.web.bean.StudentPayLog">
     INSERT INTO student_pay_log
     (id, school_id, student_id,
       employee_id, op_pay_type, money, 
-      remark, create_time)
+      remark, create_time, update_time, deleted)
     VALUES
     (#{id,jdbcType=VARCHAR}, #{schoolId,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR},
       #{employeeId,jdbcType=VARCHAR}, #{opPayType,jdbcType=VARCHAR}, #{money,jdbcType=INTEGER}, 
-      #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{deleted}
       )
   </insert>
 

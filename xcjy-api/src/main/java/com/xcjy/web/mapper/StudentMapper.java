@@ -15,8 +15,6 @@ public interface StudentMapper {
 
     void deleteLogic(@Param("id") String id, @Param("updateTime") Date updateTime);
 
-    List<Student> listAll();
-
     Student getById(@Param("id") String id);
 
     int insertBatch(@Param("students") List<Student> students);

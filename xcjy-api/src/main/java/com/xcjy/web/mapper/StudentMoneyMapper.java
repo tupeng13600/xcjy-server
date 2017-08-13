@@ -12,7 +12,7 @@ public interface StudentMoneyMapper {
 
     StudentMoney getBySchoolIdAndStudentId(@Param("schoolId") String schoolId, @Param("studentId") String studentId);
 
-    void updateMoney(@Param("studentMoney") StudentMoney studentMoney, @Param("infoTime") Date infoTime);
+    void updateMoney(@Param("studentMoney") StudentMoney studentMoney);
 
     void insertBatch(@Param("list") List<StudentMoney> list);
 

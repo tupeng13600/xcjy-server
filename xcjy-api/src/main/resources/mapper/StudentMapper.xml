@@ -105,12 +105,6 @@
         WHERE id = #{student.id} AND deleted = FALSE;
     </update>
 
-    <select id="listAll" resultMap="BaseResultMap">
-        SELECT
-        <include refid="baseSql"/>
-        FROM student;
-    </select>
-
     <select id="getById" resultMap="BaseResultMap">
         SELECT
         <include refid="baseSql"/>

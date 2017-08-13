@@ -58,19 +58,18 @@ public class CounselorController {
 
     @ApiOperation("咨询师查看自己金额和总和")
     @GetMapping("/student/stat")
-    public CounselorStatRes getCounselorStat(@RequestBody @Valid CounselorStatReq req, PageReq page) {
-        return studentAssetService.getCounselorStat(req, page);
+    public CounselorStatRes getCounselorStat(CounselorStatReq req) {
+        return studentAssetService.getCounselorStat(req);
     }
 
-
-    @ApiOperation("咨询主任获取本人咨询师签约数据")
-    @GetMapping("/counselor/stat")
-    public List<CounselorAssesSignRes> getAssetsSign(@RequestBody @Valid AssetsSignReq req, PageReq page) {
-        return studentAssetService.getAssetsSign(req, page);
+    @ApiOperation("咨询主任获取咨询师签约数据")
+    @GetMapping("/stat")
+    public List<CounselorAssesSignRes> getAssetsSign(AssetsSignReq req) {
+        return studentAssetService.getAssetsSign(req);
     }
 
     @ApiOperation("咨询总监获取咨询记录")
-    @GetMapping("/counselor/record")
+    @GetMapping("/record")
     public List<CounselorStuStatusRes> getCounselorStudentTypeHis(Date startTime, Date endTime) {
         return courseStudentService.getCounselorStudentTypeHis(startTime, endTime);
     }
@@ -106,8 +105,8 @@ public class CounselorController {
 
     @ApiOperation("获取学生列表")
     @GetMapping("/student")
-    public List<Student> list(PageReq pageReq) {
-        return studentService.list(pageReq);
+    public List<Student> list() {
+        return studentService.list4Counselor();
     }
 
 }

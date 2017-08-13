@@ -12,8 +12,6 @@ import javax.validation.constraints.NotNull;
 @Data
 public class CourseCreateReq {
 
-    private String schoolId;
-
     @NotBlank
     private String gradeId;
 

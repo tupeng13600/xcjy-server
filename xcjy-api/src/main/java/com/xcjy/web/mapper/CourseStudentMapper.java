@@ -20,6 +20,4 @@ public interface CourseStudentMapper {
     void updateHourBatch(@Param("courseStudents")List<CourseStudent> courseStudents);
 
     List<CourseStudent> getByStudentIds(@Param("studentIds") List<String> studentIds);
-
-    List<CounselorStudent> getByTime(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
 }

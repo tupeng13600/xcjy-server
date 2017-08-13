@@ -366,9 +366,8 @@ public class ApplicationService {
             throw new EducationException("学生金额信息不存在");
         }
         studentMoney.setHasBack(studentMoney.getHasBack() + moneyAmount);
-        Date infoTime = studentMoney.getUpdateTime();
         studentMoney.setUpdateTime(new Date());
-        studentMoneyMapper.updateMoney(studentMoney, infoTime);
+        studentMoneyMapper.updateMoney(studentMoney);
     }
 
 }

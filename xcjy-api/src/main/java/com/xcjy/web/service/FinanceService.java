@@ -1,17 +1,12 @@
 package com.xcjy.web.service;
 
-import com.xcjy.web.bean.CounselorStudent;
-import com.xcjy.web.bean.StmanagerStudent;
-import com.xcjy.web.bean.StudentMoney;
-import com.xcjy.web.bean.StudentPayLog;
+import com.xcjy.web.bean.*;
 import com.xcjy.web.common.enums.CounselorStudentStatusType;
+import com.xcjy.web.common.enums.PayStatusType;
 import com.xcjy.web.common.enums.StudentPayType;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.controller.req.StudentPayReq;
-import com.xcjy.web.mapper.CounselorStudentMapper;
-import com.xcjy.web.mapper.StmanagerStudentMapper;
-import com.xcjy.web.mapper.StudentMoneyMapper;
-import com.xcjy.web.mapper.StudentPayLogMapper;
+import com.xcjy.web.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +30,9 @@ public class FinanceService {
 
     @Autowired
     private StudentPayLogMapper studentPayLogMapper;
+
+    @Autowired
+    private StudentMapper studentMapper;
 
     @Transactional
     public void studentPay(StudentPayReq req) {
@@ -66,14 +64,14 @@ public class FinanceService {
             studentMoney.setSchoolId(req.getSchoolId());
             studentMoney.setHasPay(req.getMoney());
             studentMoney.setHasBack(0);
+            studentMoney.setHasUsed(0);
             studentMoney.setTotalHour(0);
             studentMoney.setUsedHour(0);
             studentMoneyMapper.insert(studentMoney);
         } else {
             studentMoney.setHasPay(studentMoney.getHasPay() + req.getMoney());
-            Date infoTime = studentMoney.getUpdateTime();
             studentMoney.setUpdateTime(new Date());
-            studentMoneyMapper.updateMoney(studentMoney, infoTime);
+            studentMoneyMapper.updateMoney(studentMoney);
         }
         //添加学生缴费日志
         StudentPayLog studentPayLog = new StudentPayLog();
@@ -84,6 +82,14 @@ public class FinanceService {
         studentPayLog.setMoney(req.getMoney());
         studentPayLog.setRemark(req.getRemark());
         studentPayLogMapper.insert(studentPayLog);
+
+        Student student = studentMapper.getById(req.getSchoolId());
+        if(null == student) {
+            throw new EducationException("学生信息不存在");
+        }
+        student.setAlreadyPaid(PayStatusType.YES);
+        student.setUpdateTime(new Date());
+        studentMapper.update(student);
 
     }
 
