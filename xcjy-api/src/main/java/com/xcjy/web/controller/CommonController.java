@@ -28,7 +28,7 @@ public class CommonController {
     private UserService userService;
 
     @ApiOperation("获取全部角色列表")
-    @GetMapping
+    @GetMapping("/role")
     public List<RoleRes> list() {
         return roleService.listAll();
     }

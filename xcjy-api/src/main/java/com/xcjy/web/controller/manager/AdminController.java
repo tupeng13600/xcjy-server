@@ -7,6 +7,7 @@ import com.xcjy.web.controller.req.UserRoleUpdateReq;
 import com.xcjy.web.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,22 +22,23 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 
+    @Autowired
     private UserService userService;
 
     @ApiOperation("获取用户列表")
-    @GetMapping
-    public List<User> listAll(PageReq pageReq) {
-        return userService.getAll(pageReq);
+    @GetMapping("/user")
+    public List<User> listAll() {
+        return userService.getAll();
     }
 
     @ApiOperation("修改用户密码")
-    @PutMapping("/pwd")
+    @PutMapping("/user/pwd")
     public void updatePassword(@RequestBody @Valid UserBaseUpdateReq req) {
         userService.updatePassword(req);
     }
 
     @ApiOperation("修改用户角色")
-    @PutMapping("/role")
+    @PutMapping("/user/role")
     public void updateRole(@RequestBody @Valid UserRoleUpdateReq req) {
         userService.updateRole(req);
     }
