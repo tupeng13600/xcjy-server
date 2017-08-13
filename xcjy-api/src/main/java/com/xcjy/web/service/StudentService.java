@@ -57,6 +57,7 @@ public class StudentService {
             student.setBirthday(DateUtil.getBirthByIdCard(student.getIdCard()));
         }
         student.setAlreadyPaid(PayStatusType.NO);
+        student.setSchoolId(CurrentThreadLocal.getSchoolId());
         studentMapper.insert(student);
         return new CreateIdRes(student.getId());
     }
