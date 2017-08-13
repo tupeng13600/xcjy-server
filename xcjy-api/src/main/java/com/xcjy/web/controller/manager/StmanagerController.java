@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * Created by tupeng on 2017/8/11.
+ * 学管师，教研主任
  */
 @RestController
 @RequestMapping("/stmanager")
@@ -32,6 +33,9 @@ public class StmanagerController {
 
     @Autowired
     private ApplicationService applicationService;
+
+    @Autowired
+    private RelationService relationService;
 
     @ApiOperation("获取学生资产信息[学管师,咨询师]")
     @GetMapping("/assets")
@@ -97,6 +101,29 @@ public class StmanagerController {
     @PostMapping("/back/money")
     public CreateIdRes backMoney(@RequestBody @Valid BackMoneyCreateReq req) {
         return applicationService.backMoney(req);
+    }
+
+    /**
+     * 分配学生给学管师
+     *
+     * @param req
+     */
+    @ApiOperation("分配学生给学管师")
+    @PostMapping("/stmanager/student")
+    public void createStmanagerStudent(@RequestBody @Valid StmanagerStudentCreateReq req) {
+        relationService.stmanagerStudent(req);
+    }
+
+    @ApiOperation("更新课表")
+    @PutMapping
+    public void update(@RequestBody @Valid CourseScheduleUpdateReq req) {
+        courseScheduleService.update(req);
+    }
+
+    @ApiOperation("获取课表列表")
+    @GetMapping
+    public List<ScheduleRes> listSchedule(PageReq req) {
+        return courseScheduleService.list(req);
     }
 
 }

@@ -6,12 +6,14 @@ import com.xcjy.web.controller.req.EmployeeUpdateReq;
 import com.xcjy.web.controller.req.PageReq;
 import com.xcjy.web.controller.res.CreateIdRes;
 import com.xcjy.web.service.EmployeeService;
-import com.xcjy.web.service.StudentAssetService;
+import com.xcjy.web.service.ExcelService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -26,9 +28,12 @@ public class PersonController {
     @Autowired
     private EmployeeService employeeService;
 
+    @Autowired
+    private ExcelService excelService;
+
     @ApiOperation("创建员工")
     @PostMapping("/employee")
-    public CreateIdRes create(@RequestBody @Valid EmployeeCreateReq req){
+    public CreateIdRes create(@RequestBody @Valid EmployeeCreateReq req) {
         return employeeService.create(req);
     }
 
@@ -40,14 +45,20 @@ public class PersonController {
 
     @ApiOperation("删除员工")
     @DeleteMapping("/employee/{id}")
-    public void delete(@PathVariable String id){
+    public void delete(@PathVariable String id) {
         employeeService.deleted(id);
     }
 
     @ApiOperation("获取员工列表")
     @GetMapping("/employee")
-    public List<Employee> list(PageReq pageReq){
+    public List<Employee> list(PageReq pageReq) {
         return employeeService.list(pageReq);
+    }
+
+    @ApiOperation("导入学生信息")
+    @PostMapping("/student/excel")
+    public void student(@RequestParam MultipartFile file) throws IOException {
+        excelService.importStudent(file);
     }
 
 

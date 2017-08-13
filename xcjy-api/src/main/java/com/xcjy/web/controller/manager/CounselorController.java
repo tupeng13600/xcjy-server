@@ -2,10 +2,7 @@ package com.xcjy.web.controller.manager;
 
 import com.xcjy.web.bean.Student;
 import com.xcjy.web.controller.req.*;
-import com.xcjy.web.controller.res.CounselorAssesSignRes;
-import com.xcjy.web.controller.res.CounselorStatRes;
-import com.xcjy.web.controller.res.CounselorStuStatusRes;
-import com.xcjy.web.controller.res.StudentAssetsRes;
+import com.xcjy.web.controller.res.*;
 import com.xcjy.web.service.*;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,20 +56,20 @@ public class CounselorController {
 
     @ApiOperation("咨询师查看自己金额和总和")
     @GetMapping("/student/stat")
-    public CounselorStatRes getCounselorStat(@RequestBody @Valid CounselorStatReq req, PageReq page){
+    public CounselorStatRes getCounselorStat(@RequestBody @Valid CounselorStatReq req, PageReq page) {
         return studentAssetService.getCounselorStat(req, page);
     }
 
 
     @ApiOperation("咨询主任获取本人咨询师签约数据")
     @GetMapping("/counselor/stat")
-    public List<CounselorAssesSignRes> getAssetsSign(@RequestBody @Valid AssetsSignReq req, PageReq page){
+    public List<CounselorAssesSignRes> getAssetsSign(@RequestBody @Valid AssetsSignReq req, PageReq page) {
         return studentAssetService.getAssetsSign(req, page);
     }
 
     @ApiOperation("咨询总监获取咨询记录")
     @GetMapping("/counselor/record")
-    public List<CounselorStuStatusRes> getCounselorStudentTypeHis(Date startTime, Date endTime){
+    public List<CounselorStuStatusRes> getCounselorStudentTypeHis(Date startTime, Date endTime) {
         return courseStudentService.getCounselorStudentTypeHis(startTime, endTime);
     }
 
@@ -87,6 +84,28 @@ public class CounselorController {
         relationService.counselorStudent(req);
     }
 
+    @ApiOperation("创建学生")
+    @PostMapping("/student")
+    public CreateIdRes create(@RequestBody @Valid StudentCreateReq req) {
+        return studentService.create(req);
+    }
 
+    @ApiOperation("修改学生信息")
+    @PutMapping("/student")
+    public void update(@RequestBody @Valid StudentUpdateReq req) {
+        studentService.update(req);
+    }
+
+    @ApiOperation("删除学生")
+    @DeleteMapping("/student/{id}")
+    public void delete(@PathVariable String id) {
+        studentService.deleteLogic(id);
+    }
+
+    @ApiOperation("获取学生列表")
+    @GetMapping("/student")
+    public List<Student> list(PageReq pageReq) {
+        return studentService.list(pageReq);
+    }
 
 }
