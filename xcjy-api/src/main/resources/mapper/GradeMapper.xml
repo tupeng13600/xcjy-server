@@ -3,6 +3,7 @@
 <mapper namespace="com.xcjy.web.mapper.GradeMapper">
     <resultMap id="BaseResultMap" type="com.xcjy.web.bean.Grade">
         <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="school_id" jdbcType="VARCHAR" property="schoolId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="price" jdbcType="INTEGER" property="price"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
@@ -12,14 +13,14 @@
     </resultMap>
 
     <sql id="baseSql">
-        id, name, price, remark, create_time, update_time, deleted
+        id, school_id, name, price, remark, create_time, update_time, deleted
     </sql>
 
     <insert id="insert" parameterType="com.xcjy.web.bean.Grade">
-    insert into grade (id, name, price, 
+    insert into grade (id, school_id, name, price,
       remark, create_time, update_time, 
       deleted)
-    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{price,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=VARCHAR}, #{schoolId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{price,jdbcType=INTEGER},
       #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{deleted,jdbcType=BIT})
   </insert>
@@ -49,5 +50,10 @@
         <foreach collection="ids" item="id" open="(" separator="," close=")">
             #{id}
         </foreach>
+    </select>
+    <select id="getAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM grade
     </select>
 </mapper>

@@ -17,4 +17,7 @@ public interface GradeMapper {
     void deleteLogic(@Param("id") String id, @Param("updateTime")Date updateTime);
 
     List<Grade> getByIds(@Param("ids") Set<String> ids);
+
+    List<Grade> getAll();
+
 }
