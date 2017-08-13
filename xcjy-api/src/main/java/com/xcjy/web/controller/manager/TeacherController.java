@@ -4,6 +4,7 @@ import com.xcjy.web.controller.res.TeacherHourStatRes;
 import com.xcjy.web.controller.res.TeacherScheduleRes;
 import com.xcjy.web.service.CourseScheduleService;
 import com.xcjy.web.service.CourseTeacherService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import java.util.List;
 /**
  * Created by tupeng on 2017/8/12.
  */
+@Api(value = "/teacher", description = "教师相关接口")
 @RestController
 @RequestMapping("/teacher")
 public class TeacherController {

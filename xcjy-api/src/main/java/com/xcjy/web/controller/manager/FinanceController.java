@@ -5,6 +5,7 @@ import com.xcjy.web.controller.res.StudentPayLogDetailRes;
 import com.xcjy.web.service.FinanceService;
 import com.xcjy.web.service.RelationService;
 import com.xcjy.web.service.StudentPayLogService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.List;
  * Created by tupeng on 2017/8/12.
  * 人事专员出纳, 财务
  */
+@Api(value = "/finance", description = "人事专员出纳, 财务相关接口")
 @RestController
 @RequestMapping("/finance")
 public class FinanceController {

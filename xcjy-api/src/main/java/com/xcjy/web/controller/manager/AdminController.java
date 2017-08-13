@@ -5,6 +5,7 @@ import com.xcjy.web.controller.req.PageReq;
 import com.xcjy.web.controller.req.UserBaseUpdateReq;
 import com.xcjy.web.controller.req.UserRoleUpdateReq;
 import com.xcjy.web.service.UserService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * Created by tupeng on 2017/8/13.
  * 管理员专用接口
  */
+@Api(value = "/admin", description = "管理员专用接口")
 @RestController
 @RequestMapping("/admin")
 public class AdminController {

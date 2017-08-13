@@ -4,6 +4,7 @@ import com.xcjy.web.bean.Student;
 import com.xcjy.web.controller.req.*;
 import com.xcjy.web.controller.res.*;
 import com.xcjy.web.service.*;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  * Created by tupeng on 2017/8/11.
  */
+@Api(value = "/counselor", description = "咨询师，咨询主任，咨询总监相关接口")
 @RestController
 @RequestMapping("/counselor")
 public class CounselorController {

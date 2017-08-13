@@ -4,6 +4,7 @@ import com.xcjy.web.bean.Student;
 import com.xcjy.web.controller.req.*;
 import com.xcjy.web.controller.res.*;
 import com.xcjy.web.service.*;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.List;
  * Created by tupeng on 2017/8/11.
  * 学管师，教研主任
  */
+@Api(value = "/stmanager", description = "学管师，教管主任相关接口")
 @RestController
 @RequestMapping("/stmanager")
 public class StmanagerController {

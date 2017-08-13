@@ -9,6 +9,7 @@ import com.xcjy.web.controller.res.PresidentTeacherStatRes;
 import com.xcjy.web.controller.res.ProcessRes;
 import com.xcjy.web.service.ApplicationService;
 import com.xcjy.web.service.PresidentService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ import java.util.List;
 /**
  * Created by tupeng on 2017/8/12.
  */
+@Api(value = "/president", description = "分校长, 总校长相关接口")
 @RestController
 @RequestMapping("/president")
 public class PresidentController {

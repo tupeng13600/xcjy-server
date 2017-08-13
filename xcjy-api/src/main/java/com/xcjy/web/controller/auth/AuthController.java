@@ -4,6 +4,7 @@ import com.xcjy.auth.cache.TokenThreadLocal;
 import com.xcjy.auth.util.UserUtil;
 import com.xcjy.web.bean.User;
 import com.xcjy.web.service.UserService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.util.Map;
 /**
  * Created by tupeng on 2017/7/19.
  */
+@Api(value = "/auth", description = "权限相关接口")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {

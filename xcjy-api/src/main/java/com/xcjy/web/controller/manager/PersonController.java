@@ -7,6 +7,7 @@ import com.xcjy.web.controller.req.PageReq;
 import com.xcjy.web.controller.res.CreateIdRes;
 import com.xcjy.web.service.EmployeeService;
 import com.xcjy.web.service.ExcelService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ import java.util.List;
  * Created by tupeng on 2017/8/13.
  * 人事经理
  */
+@Api(value = "/persion", description = "人事经理相关接口")
 @RestController
 @RequestMapping("/persion")
 public class PersonController {

@@ -9,6 +9,7 @@ import com.xcjy.web.service.CourseService;
 import com.xcjy.web.service.CourseTeacherService;
 import com.xcjy.web.service.GradeService;
 import com.xcjy.web.service.SchoolService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ import java.util.List;
  * Created by tupeng on 2017/8/13.\
  * 教研主任
  */
+@Api(value = "/director", description = "教研主任相关接口")
 @RestController
 @RequestMapping("/director")
 public class TCDirectorController {
