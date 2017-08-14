@@ -53,24 +53,25 @@ public class CourseScheduleStudentService {
         List<Course> courseList = courseMapper.getByIds(courseIds);
         Set<String> gradeIds = courseList.stream().map(Course::getGradeId).collect(Collectors.toSet());
         List<Grade> gradeList = gradeMapper.getByIds(gradeIds);
-        for (Student student : students) {
-            scheduleResList.add(getStudentScheduleRes(student, courseScheduleStudentList, courseSchedules, courseList, gradeList));
+        for (CourseScheduleStudent courseScheduleStudent : courseScheduleStudentList) {
+            scheduleResList.add(getStudentScheduleRes(courseScheduleStudent, students, courseSchedules, courseList, gradeList));
         }
         return scheduleResList;
     }
 
-    private StudentScheduleRes getStudentScheduleRes(Student student,
-                                                     List<CourseScheduleStudent> courseScheduleStudentList,
+    private StudentScheduleRes getStudentScheduleRes(CourseScheduleStudent courseScheduleStudent,
+                                                     List<Student> studentList,
                                                      List<CourseSchedule> courseSchedules,
                                                      List<Course> courseList,
                                                      List<Grade> gradeList) {
         StudentScheduleRes res = new StudentScheduleRes();
-        res.setStudentId(student.getId());
-        res.setStudentName(student.getName());
-        for (CourseScheduleStudent courseScheduleStudent : courseScheduleStudentList) {
+        res.setFinish(courseScheduleStudent.getFinish());
+        res.setCourseScheduleStudentId(courseScheduleStudent.getId());
+
+        for (Student student : studentList) {
             if (courseScheduleStudent.getStudentId().equals(student.getId())) {
-                res.setFinish(courseScheduleStudent.getFinish());
-                res.setCourseScheduleStudentId(courseScheduleStudent.getId());
+                res.setStudentId(student.getId());
+                res.setStudentName(student.getName());
                 for (CourseSchedule courseSchedule : courseSchedules) {
                     if (courseSchedule.getId().equals(courseScheduleStudent.getCourseScheduleId())) {
                         res.setCourseScheduleId(courseSchedule.getId());

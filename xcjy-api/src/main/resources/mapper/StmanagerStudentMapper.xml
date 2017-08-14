@@ -51,7 +51,7 @@
     <select id="getBySIdAndScIds" resultMap="BaseResultMap">
         SELECT
         <include refid="baseSql"/>
-        FROM stmanager_student WHERE school_id = #{schoolId} AND
+        FROM stmanager_student WHERE school_id = #{schoolId} AND student_id IN
         <foreach collection="studentIds" item="studentId" open="(" separator="," close=")">
             #{studentId}
         </foreach>

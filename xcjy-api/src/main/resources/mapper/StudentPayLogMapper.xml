@@ -92,7 +92,7 @@
 
     <select id="getIdsByStartAndEnd" resultType="java.lang.String">
         SELECT
-        employee_id AS employeeId,
+        employee_id AS employeeId
         FROM student_pay_log
         WHERE (op_pay_type = 'STUDENTMANAGER_PAY' OR op_pay_type = 'STUDENTMANAGER_BACK')
         <if test="startTime != null">
@@ -101,7 +101,7 @@
         <if test="endTime != null">
             AND create_time &lt;= #{endTime}
         </if>
-        GROUP BY employee_id ORDER BY totalMoney DESC
+        GROUP BY employee_id ORDER BY create_time DESC
     </select>
 
     <select id="getTimeAndEIds" resultMap="BaseResultMap">

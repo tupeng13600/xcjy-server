@@ -46,8 +46,30 @@
         has_pay = #{studentMoney.hasPay},
         has_back = #{studentMoney.hasBack},
         has_used = #{studentMoney.hasUsed},
+        total_hour = #{studentMoney.totalHour},
+        used_hour = #{studentMoney.usedHour},
         update_time = #{studentMoney.updateTime}
         WHERE id = #{studentMoney.id} AND deleted = FALSE;
+    </update>
+
+    <update id="decreaseUsedHourBatch">
+        UPDATE student_money SET
+        used_hour = used_hour - #{studyTime},
+        update_time = #{updateTime}
+        WHERE student_id IN
+        <foreach collection="studentIds" item="studentId" separator=";">
+            #{studentId}
+        </foreach>
+    </update>
+
+    <update id="increaseUsedHour">
+        UPDATE student_money SET
+        used_hour = used_hour + #{studyTime},
+        update_time = #{updateTime}
+        WHERE student_id IN
+        <foreach collection="studentIds" item="studentId" separator=";">
+            #{studentId}
+        </foreach>
     </update>
 
     <select id="getBySchoolIdAndStudentId" resultMap="BaseResultMap">

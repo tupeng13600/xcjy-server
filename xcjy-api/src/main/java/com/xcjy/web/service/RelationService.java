@@ -4,6 +4,7 @@ import com.xcjy.web.bean.CounselorStudent;
 import com.xcjy.web.bean.StmanagerStudent;
 import com.xcjy.web.bean.StudentMoney;
 import com.xcjy.web.bean.StudentPayLog;
+import com.xcjy.web.common.CurrentThreadLocal;
 import com.xcjy.web.common.enums.CounselorStudentStatusType;
 import com.xcjy.web.common.enums.StudentPayType;
 import com.xcjy.web.common.exception.EducationException;
@@ -58,25 +59,15 @@ public class RelationService {
 
     @Transactional
     public void stmanagerStudent(StmanagerStudentCreateReq req) {
-        String schoolId = req.getSchoolId();
         String employeeId = req.getEmployeeId();
-
-        List<CounselorStudent> counselorStudents = counselorStudentMapper.getByEIdStuIdScId(schoolId, employeeId, req.getStudentId());
-
-        if (counselorStudents.size() != req.getStudentId().size()) {
-            throw new EducationException("分配的学生中包含非法学生!");
-        }
-
-        List<StmanagerStudent> stmanagerStudents = stmanagerStudentMapper.getBySIdAndScIds(schoolId, req.getStudentId());
-
+        List<StmanagerStudent> stmanagerStudents = stmanagerStudentMapper.getBySIdAndScIds(CurrentThreadLocal.getSchoolId(), req.getStudentId());
         if (CollectionUtils.isNotEmpty(stmanagerStudents)) {
             throw new EducationException("存在已经被分配的学生");
         }
-
         stmanagerStudents = new ArrayList<>();
         for (String studentId : req.getStudentId()) {
             StmanagerStudent stmanagerStudent = new StmanagerStudent();
-            stmanagerStudent.setSchoolId(schoolId);
+            stmanagerStudent.setSchoolId(CurrentThreadLocal.getSchoolId());
             stmanagerStudent.setEmployeeId(employeeId);
             stmanagerStudent.setStudentId(studentId);
             stmanagerStudent.setRenewMoney(0);

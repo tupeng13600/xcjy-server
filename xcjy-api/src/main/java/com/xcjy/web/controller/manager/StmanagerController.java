@@ -53,8 +53,8 @@ public class StmanagerController {
 
     @ApiOperation("获取教师课表信息")
     @GetMapping("/teacher/schedule")
-    public List<TeacherScheduleRes> getTeacherSchedule(@RequestParam Boolean finish, PageReq page){
-        return courseScheduleService.getTeacherSchedule(finish, page);
+    public List<TeacherScheduleRes> getTeacherSchedule(@RequestParam Boolean finish){
+        return courseScheduleService.getTeacherSchedule(finish);
     }
 
     @ApiOperation("获取教师课时统计信息")
@@ -65,8 +65,8 @@ public class StmanagerController {
 
     @ApiOperation("获取学管师续费|退费统计列表")
     @GetMapping("/stmanager/back")
-    public List<StmanagerStatRes> getStmanagerBack(TeacherScheduleStatReq req, PageReq page){
-        return stmanagerStudentService.getStmanagerBack(req, page);
+    public List<StmanagerStatRes> getStmanagerBack(TeacherScheduleStatReq req){
+        return stmanagerStudentService.getStmanagerBack(req);
     }
 
     @ApiOperation("获取分配到的学生列表")
@@ -93,7 +93,7 @@ public class StmanagerController {
         courseScheduleStudentService.cancel(courseScheduleId, studentId);
     }
 
-    @ApiOperation("查看学员上课统计")
+    @ApiOperation("查看学员上课统计[未实现]")
     @GetMapping("/student/stat")
     public void getStudentStat() {
         // TODO: 2017/8/12 学生上课时间统计

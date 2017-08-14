@@ -33,9 +33,8 @@ public class StmanagerStudentService {
     @Autowired
     private EmployeeMapper employeeMapper;
 
-    public List<StmanagerStatRes> getStmanagerBack(TeacherScheduleStatReq req, PageReq page) {
+    public List<StmanagerStatRes> getStmanagerBack(TeacherScheduleStatReq req) {
         List<StmanagerStatRes> statResList = new ArrayList<>();
-        CurrentThreadLocal.setPageReq(page);
         List<String> idList = studentPayLogMapper.getIdsByStartAndEnd(req.getStartTime(), req.getEndTime());
         if (CollectionUtils.isNotEmpty(idList)) {
             List<PayStatModel> payList = studentPayLogMapper.getStatByIds(new HashSet<>(idList), StudentPayType.STUDENTMANAGER_PAY);

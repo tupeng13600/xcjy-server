@@ -68,13 +68,20 @@ public class CourseStudentService {
     }
 
     private void createCourseStudent(CourseStudentReq req) {
-        CourseStudent courseStudent = new CourseStudent();
-        courseStudent.setStudentId(req.getStudentId());
-        courseStudent.setCourseId(req.getCourseId());
-        courseStudent.setSchoolId(CurrentThreadLocal.getSchoolId());
-        courseStudent.setUsedHour(0);
-        courseStudent.setBuyHour(req.getBuyHour());
-        courseStudentMapper.insert(courseStudent);
+        CourseStudent courseStudent = courseStudentMapper.getBySIdAndCId(req.getStudentId(), req.getCourseId());
+        if (null == courseStudent) {
+            courseStudent = new CourseStudent();
+            courseStudent.setStudentId(req.getStudentId());
+            courseStudent.setCourseId(req.getCourseId());
+            courseStudent.setSchoolId(CurrentThreadLocal.getSchoolId());
+            courseStudent.setUsedHour(0);
+            courseStudent.setBuyHour(req.getBuyHour());
+            courseStudentMapper.insert(courseStudent);
+        } else {
+            courseStudent.setBuyHour(courseStudent.getBuyHour() + req.getBuyHour());
+            courseStudent.setUpdateTime(new Date());
+            courseStudentMapper.updateUsedHour(courseStudent);
+        }
     }
 
     @Transactional

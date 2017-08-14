@@ -47,6 +47,9 @@ public class CourseScheduleService {
     @Autowired
     private CourseScheduleStudentMapper courseScheduleStudentMapper;
 
+    @Autowired
+    private StudentMoneyMapper studentMoneyMapper;
+
     /**
      * 学管师创建课表，选择课表上课时间，上课老师，上课学生等
      *
@@ -67,6 +70,8 @@ public class CourseScheduleService {
         createScheduleStudent(req, courseSchedule);
         //更新学生已经使用的学时数据
         updateCourseStudent(courseStudents, courseSchedule);
+        //更新学生金额信息
+        studentMoneyMapper.increaseUsedHour(req.getStudentIds(),req.getStudyTime(), new Date());
         return new CreateIdRes(courseSchedule.getId());
     }
 
@@ -118,6 +123,7 @@ public class CourseScheduleService {
             courseStudentMapper.updateHourBatch(courseStudents);
             Set<String> ids = courseScheduleStudents.stream().map(CourseScheduleStudent::getId).collect(Collectors.toSet());
             courseScheduleStudentMapper.deleteByIds(ids);
+            studentMoneyMapper.decreaseUsedHourBatch(studentIds, courseSchedule.getStudyTime(), new Date());
         }
     }
 
@@ -212,8 +218,7 @@ public class CourseScheduleService {
         return scheduleResList;
     }
 
-    public List<TeacherScheduleRes> getTeacherSchedule(Boolean finish, PageReq page) {
-        CurrentThreadLocal.setPageReq(page);
+    public List<TeacherScheduleRes> getTeacherSchedule(Boolean finish) {
         List<CourseSchedule> courseScheduleList = courseScheduleMapper.getByFinish(finish);
         return buildTeacherScheduleList(courseScheduleList);
     }

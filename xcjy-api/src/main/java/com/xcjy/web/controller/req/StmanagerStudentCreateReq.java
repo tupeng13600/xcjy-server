@@ -13,9 +13,6 @@ import java.util.Set;
 public class StmanagerStudentCreateReq {
 
     @NotBlank
-    private String schoolId;
-
-    @NotBlank
     private String employeeId;
 
     @NotEmpty

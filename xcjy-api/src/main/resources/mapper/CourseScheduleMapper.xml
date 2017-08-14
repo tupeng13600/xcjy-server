@@ -63,7 +63,7 @@
     <select id="getByFinish" resultMap="BaseResultMap">
         SELECT
         <include refid="baseSql"/>
-        FROM course_schedule WHERE
+        FROM course_schedule
         <where>
             <if test="finish != null">
                 finish = #{finish}
