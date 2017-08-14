@@ -117,13 +117,13 @@ public class StmanagerController {
     }
 
     @ApiOperation("更新课表")
-    @PutMapping
+    @PutMapping("/course/schedule")
     public void update(@RequestBody @Valid CourseScheduleUpdateReq req) {
         courseScheduleService.update(req);
     }
 
     @ApiOperation("获取课表列表")
-    @GetMapping
+    @GetMapping("/course/schedule")
     public List<ScheduleRes> listSchedule(PageReq req) {
         return courseScheduleService.list(req);
     }
