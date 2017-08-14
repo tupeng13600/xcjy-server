@@ -97,12 +97,6 @@ public class CounselorController {
         studentService.update(req);
     }
 
-    @ApiOperation("删除学生")
-    @DeleteMapping("/student/{id}")
-    public void delete(@PathVariable String id) {
-        studentService.deleteLogic(id);
-    }
-
     @ApiOperation("获取学生列表")
     @GetMapping("/student")
     public List<Student> list() {
