@@ -33,8 +33,8 @@ public class StudentPayLogService {
 
     public List<StudentPayLogDetailRes> getPayLogDetailRes(String schoolId) {
         List<StudentPayLogDetailRes> detailResList = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(detailResList)) {
-            List<StudentPayLog> payLogList = studentPayLogMapper.getBySchoolId(schoolId);
+        List<StudentPayLog> payLogList = studentPayLogMapper.getBySchoolId(schoolId);
+        if (CollectionUtils.isNotEmpty(payLogList)) {
             Set<String> studentIds = payLogList.stream().map(StudentPayLog::getStudentId).collect(Collectors.toSet());
             Set<String> employeeIds = payLogList.stream().map(StudentPayLog::getEmployeeId).collect(Collectors.toSet());
             List<Employee> employeeList = employeeMapper.getByIds(employeeIds);
@@ -53,7 +53,7 @@ public class StudentPayLogService {
         res.setPayType(studentPayLog.getOpPayType());
         res.setMoney(studentPayLog.getMoney());
         res.setLogId(studentPayLog.getId());
-        School school = CacheFactory.idSchools.get(studentPayLog.getId());
+        School school = CacheFactory.idSchools.get(studentPayLog.getSchoolId());
         if (null != school) {
             res.setSchoolId(school.getId());
             res.setSchoolName(school.getName());
