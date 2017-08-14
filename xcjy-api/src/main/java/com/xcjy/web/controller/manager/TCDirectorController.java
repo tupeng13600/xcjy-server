@@ -35,9 +35,6 @@ public class TCDirectorController {
     @Autowired
     private CourseTeacherService courseTeacherService;
 
-    @Autowired
-    private SchoolService schoolService;
-
     @ApiOperation("创建班组")
     @PostMapping("/grade")
     public CreateIdRes create(@RequestBody @Valid GradeCreateReq req) {
@@ -91,37 +88,5 @@ public class TCDirectorController {
     public void teacher(@RequestBody @Valid CourseTeacherCreateReq req){
         courseTeacherService.save(req);
     }
-
-    /**
-     * 创建校区
-     * @param req
-     */
-    @ApiOperation("创建校区")
-    @PostMapping("/school")
-    public CreateIdRes create(@RequestBody @Valid SchoolCreateReq req) {
-        return schoolService.create(req);
-    }
-
-    /**
-     * 更新校区
-     * @param req
-     */
-    @ApiOperation("修改校区信息")
-    @PutMapping("/school")
-    public void update(@RequestBody @Valid SchoolUpdateReq req) {
-        schoolService.update(req);
-    }
-
-    /**
-     * 获取校区列表
-     * @return
-     */
-    @ApiOperation("获取校区列表")
-    @GetMapping("/school")
-    public List<School> listSchool() {
-        return schoolService.list();
-    }
-
-
 
 }

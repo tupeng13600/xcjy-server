@@ -1,8 +1,10 @@
 package com.xcjy.web.controller;
 
+import com.xcjy.web.bean.School;
 import com.xcjy.web.controller.req.UserPwdSelfUpdateReq;
 import com.xcjy.web.controller.res.RoleRes;
 import com.xcjy.web.service.RoleService;
+import com.xcjy.web.service.SchoolService;
 import com.xcjy.web.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,6 +29,9 @@ public class CommonController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private SchoolService schoolService;
+
     @ApiOperation("获取全部角色列表")
     @GetMapping("/role")
     public List<RoleRes> list() {
@@ -37,6 +42,16 @@ public class CommonController {
     @PutMapping("/self/pwd")
     public void updateSelfPassword(@RequestBody @Valid UserPwdSelfUpdateReq req) {
         userService.updateSelfPassword(req);
+    }
+
+    /**
+     * 获取校区列表
+     * @return
+     */
+    @ApiOperation("获取校区列表")
+    @GetMapping("/school")
+    public List<School> listSchool() {
+        return schoolService.list();
     }
 
 }

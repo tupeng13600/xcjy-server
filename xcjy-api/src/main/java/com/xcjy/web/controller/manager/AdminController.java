@@ -1,9 +1,10 @@
 package com.xcjy.web.controller.manager;
 
+import com.xcjy.web.bean.School;
 import com.xcjy.web.bean.User;
-import com.xcjy.web.controller.req.PageReq;
-import com.xcjy.web.controller.req.UserBaseUpdateReq;
-import com.xcjy.web.controller.req.UserRoleUpdateReq;
+import com.xcjy.web.controller.req.*;
+import com.xcjy.web.controller.res.CreateIdRes;
+import com.xcjy.web.service.SchoolService;
 import com.xcjy.web.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,6 +26,9 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private SchoolService schoolService;
+
     @ApiOperation("获取用户列表")
     @GetMapping("/user")
     public List<User> listAll() {
@@ -41,6 +45,18 @@ public class AdminController {
     @PutMapping("/user/role")
     public void updateRole(@RequestBody @Valid UserRoleUpdateReq req) {
         userService.updateRole(req);
+    }
+
+    @ApiOperation("创建校区")
+    @PostMapping("/school")
+    public CreateIdRes create(@RequestBody @Valid SchoolCreateReq req) {
+        return schoolService.create(req);
+    }
+
+    @ApiOperation("修改校区信息")
+    @PutMapping("/school")
+    public void update(@RequestBody @Valid SchoolUpdateReq req) {
+        schoolService.update(req);
     }
 
 }
