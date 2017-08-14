@@ -100,15 +100,24 @@ public class UserService {
         CacheFactory.updateUserCache(user);
     }
 
+    @Transactional
     public void updateSelfPassword(UserPwdSelfUpdateReq req) {
         UserModel userModel = CurrentUserUtil.currentUser();
         User user = userMapper.getById(userModel.getId());
         if (null == user) {
             throw new EducationException("用户信息不存在");
         }
+        validatePwd(req.getOldPassword(), user.getPassword(), user.getSalt());
         user.setSalt(UpcSecurityUtil.randomString());
         user.setPassword(UpcSecurityUtil.encryptPwd(req.getPassword(), new SimpleByteSource(user.getSalt())));
         user.setUpdateTime(new Date());
         userMapper.updatePassword(user);
+    }
+
+    private void validatePwd(String oldPassword, String password, String salt) {
+        String enPwd = UpcSecurityUtil.encryptPwd(oldPassword, new SimpleByteSource(salt));
+        if (!enPwd.equals(password)) {
+            throw new EducationException("原始密码错误");
+        }
     }
 }
