@@ -1,17 +1,17 @@
 package com.xcjy.web.controller.manager;
 
-import com.xcjy.web.bean.Student;
 import com.xcjy.web.controller.req.*;
 import com.xcjy.web.controller.res.*;
-import com.xcjy.web.service.*;
+import com.xcjy.web.service.CourseStudentService;
+import com.xcjy.web.service.RelationService;
+import com.xcjy.web.service.StudentAssetService;
+import com.xcjy.web.service.StudentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -24,9 +24,6 @@ import java.util.List;
 public class CounselorController {
 
     @Autowired
-    private ExcelService excelService;
-
-    @Autowired
     private StudentService studentService;
 
     @Autowired
@@ -37,12 +34,6 @@ public class CounselorController {
 
     @Autowired
     private RelationService relationService;
-
-    @ApiOperation("导入已缴费学生信息")
-    @PostMapping("/student/paid")
-    public void studentPaid(@RequestParam MultipartFile file) throws IOException {
-        excelService.importStudentPaid(file);
-    }
 
     @ApiOperation("获取学生资产信息[学管师,咨询师]")
     @GetMapping("/assets")
@@ -99,7 +90,7 @@ public class CounselorController {
 
     @ApiOperation("获取学生列表")
     @GetMapping("/student")
-    public List<Student> list() {
+    public List<CounselorStudentRes> list() {
         return studentService.list4Counselor();
     }
 

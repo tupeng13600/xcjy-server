@@ -2,6 +2,7 @@ package com.xcjy.web.mapper;
 
 import com.xcjy.web.bean.CounselorStudent;
 import com.xcjy.web.common.enums.CounselorStudentStatusType;
+import com.xcjy.web.controller.res.CounselorStuNumModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -34,4 +35,6 @@ public interface CounselorStudentMapper {
                                             @Param("type") CounselorStudentStatusType type);
 
     List<CounselorStudent> getByTime(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
+
+    List<CounselorStuNumModel> getStudentNumByEIds(@Param("employeeIds") Set<String> employeeIds);
 }

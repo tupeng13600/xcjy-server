@@ -2,6 +2,7 @@ package com.xcjy.web.controller.manager;
 
 import com.xcjy.web.controller.req.StudentPayReq;
 import com.xcjy.web.controller.res.StudentPayLogDetailRes;
+import com.xcjy.web.service.ExcelService;
 import com.xcjy.web.service.FinanceService;
 import com.xcjy.web.service.RelationService;
 import com.xcjy.web.service.StudentPayLogService;
@@ -9,8 +10,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -27,6 +30,9 @@ public class FinanceController {
 
     @Autowired
     private StudentPayLogService studentPayLogService;
+
+    @Autowired
+    private ExcelService excelService;
 
     /**
      * 学生缴费
@@ -47,5 +53,12 @@ public class FinanceController {
     public List<StudentPayLogDetailRes> getPayLogDetailRes(@PathVariable String schoolId){
         return studentPayLogService.getPayLogDetailRes(schoolId);
     }
+
+    @ApiOperation("导入已缴费学生信息")
+    @PostMapping("/student/paid")
+    public void studentPaid(@RequestParam MultipartFile file) throws IOException {
+        excelService.importStudentPaid(file);
+    }
+
 
 }

@@ -1,26 +1,26 @@
-package com.xcjy.web.controller.req;
+package com.xcjy.web.controller.res;
 
+import com.xcjy.web.common.enums.CounselorStudentStatusType;
 import com.xcjy.web.common.enums.PayStatusType;
 import com.xcjy.web.common.enums.SexType;
 import lombok.Data;
-import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
- * Created by tupeng on 2017/7/22.
+ * Created by tupeng on 2017/8/14.
  */
 @Data
-public class StudentCreateReq {
+public class CounselorStudentRes {
 
-    @NotBlank
+    private String id;
+
+    private String schoolId;
+
     private String name;
 
-    @NotBlank
     private String idCard;
 
-    @NotNull
     private SexType sex;
 
     private String orignSchool;
@@ -33,12 +33,11 @@ public class StudentCreateReq {
 
     private String source;
 
-    @NotBlank
     private String phone;
 
     private String parentName;
 
-    private String parentSex;
+    private SexType parentSex;
 
     private String parentIdCard;
 
@@ -47,5 +46,9 @@ public class StudentCreateReq {
     private String address;
 
     private String remark;
+
+    private CounselorStudentStatusType status;
+
+    private Integer money;
 
 }

@@ -106,7 +106,7 @@
             AND update_time &lt;= #{endTime}
         </if>
     </select>
-    
+
     <select id="getByTime" resultMap="BaseResultMap">
         SELECT
         <include refid="baseSql"/>
@@ -119,6 +119,15 @@
                 AND update_time &lt;= #{endTime}
             </if>
         </where>
+    </select>
+    <select id="getStudentNumByEIds" resultType="com.xcjy.web.controller.res.CounselorStuNumModel">
+        SELECT
+        COUNT(1) studentNum,
+        employee_id employeeId
+        FROM counselor_student WHERE employee_id IN
+        <foreach collection="employeeIds" item="employeeId" open="(" separator="," close=")">
+            #{employeeId}
+        </foreach>
     </select>
 
 </mapper>

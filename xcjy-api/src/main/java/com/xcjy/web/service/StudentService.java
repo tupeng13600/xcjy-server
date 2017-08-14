@@ -13,6 +13,7 @@ import com.xcjy.web.common.util.DateUtil;
 import com.xcjy.web.controller.req.PageReq;
 import com.xcjy.web.controller.req.StudentCreateReq;
 import com.xcjy.web.controller.req.StudentUpdateReq;
+import com.xcjy.web.controller.res.CounselorStudentRes;
 import com.xcjy.web.controller.res.CreateIdRes;
 import com.xcjy.web.controller.res.StudentAssetsRes;
 import com.xcjy.web.mapper.CounselorStudentMapper;
@@ -94,13 +95,31 @@ public class StudentService {
         studentMapper.deleteLogic(id, new Date());
     }
 
-    public List<Student> list4Counselor() {
+    public List<CounselorStudentRes> list4Counselor() {
         List<CounselorStudent> counselorStudentList = counselorStudentMapper.getByEmployeeId(CurrentUserUtil.currentEmployeeId());
         if (CollectionUtils.isEmpty(counselorStudentList)) {
             return new ArrayList<>();
         }
         Set<String> studentIds = counselorStudentList.stream().map(CounselorStudent::getStudentId).collect(Collectors.toSet());
-        return studentMapper.getByIds(studentIds);
+        List<Student> studentList = studentMapper.getByIds(studentIds);
+        return getResList(counselorStudentList, studentList);
+    }
+
+    private List<CounselorStudentRes> getResList(List<CounselorStudent> counselorStudentList, List<Student> studentList){
+        List<CounselorStudentRes> resList = new ArrayList<>();
+        studentList.forEach(student -> {
+            CounselorStudentRes res = new CounselorStudentRes();
+            BeanUtils.copyProperties(student, res);
+            for (CounselorStudent counselorStudent : counselorStudentList) {
+                if(counselorStudent.getStudentId().equals(student.getId())) {
+                    res.setStatus(counselorStudent.getStatus());
+                    res.setMoney(counselorStudent.getMoney());
+                    break;
+                }
+            }
+            resList.add(res);
+        });
+        return resList;
     }
 
     public List<StudentAssetsRes> getAssets(PageReq page) {

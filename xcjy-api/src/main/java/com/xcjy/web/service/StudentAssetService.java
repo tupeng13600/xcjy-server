@@ -10,10 +10,8 @@ import com.xcjy.web.common.util.CurrentUserUtil;
 import com.xcjy.web.controller.req.AssetsSignReq;
 import com.xcjy.web.controller.req.CounselorStatReq;
 import com.xcjy.web.controller.req.PageReq;
-import com.xcjy.web.controller.res.CounselorAssesSignRes;
-import com.xcjy.web.controller.res.CounselorStatRes;
-import com.xcjy.web.controller.res.PayStatModel;
-import com.xcjy.web.controller.res.StudentPayLogStat;
+import com.xcjy.web.controller.res.*;
+import com.xcjy.web.mapper.CounselorStudentMapper;
 import com.xcjy.web.mapper.EmployeeMapper;
 import com.xcjy.web.mapper.StudentMapper;
 import com.xcjy.web.mapper.StudentPayLogMapper;
@@ -39,6 +37,9 @@ public class StudentAssetService {
 
     @Autowired
     private EmployeeMapper employeeMapper;
+
+    @Autowired
+    private CounselorStudentMapper counselorStudentMapper;
 
     public CounselorStatRes getCounselorStat(CounselorStatReq req) {
         CounselorStatRes statRes = new CounselorStatRes();
@@ -98,16 +99,17 @@ public class StudentAssetService {
         }
         if (CollectionUtils.isNotEmpty(employeeList)) {
             Set<String> employeeIds = employeeList.stream().map(Employee::getId).collect(Collectors.toSet());
+            List<CounselorStuNumModel> counModels = counselorStudentMapper.getStudentNumByEIds(employeeIds);
             List<PayStatModel> statModelList = studentPayLogMapper.getStatModelByEmpIds(employeeIds);
             employeeList.forEach(employee -> {
-                signResList.add(getSign(employee, statModelList));
+                signResList.add(getSign(employee, statModelList, counModels));
             });
             Collections.sort(signResList, Comparator.comparing(CounselorAssesSignRes::getTotalMoney));
         }
         return signResList;
     }
 
-    private CounselorAssesSignRes getSign(Employee employee, List<PayStatModel> statModelList) {
+    private CounselorAssesSignRes getSign(Employee employee, List<PayStatModel> statModelList, List<CounselorStuNumModel> countModels) {
         CounselorAssesSignRes signRes = new CounselorAssesSignRes();
         signRes.setEmployeeId(employee.getId());
         signRes.setName(employee.getName());
@@ -116,6 +118,11 @@ public class StudentAssetService {
             if (employee.getId().equals(statModel.getEmployeeId())) {
                 signRes.setSignNum(statModel.getSignNum());
                 signRes.setTotalMoney(statModel.getTotalMoney());
+            }
+        });
+        countModels.forEach(countModel -> {
+            if(countModel.getEmployeeId().equals(employee.getId())){
+                signRes.setTotalStudentNum(countModel.getStudentNum());
             }
         });
         return signRes;

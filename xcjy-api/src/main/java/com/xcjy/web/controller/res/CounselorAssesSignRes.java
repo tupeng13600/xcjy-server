@@ -17,6 +17,8 @@ public class CounselorAssesSignRes {
 
     private String phone;
 
+    private Integer totalStudentNum = 0;
+
     private Integer totalMoney = 0;
 
     private Integer signNum = 0;
