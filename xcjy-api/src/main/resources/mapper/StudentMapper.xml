@@ -22,13 +22,14 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="already_paid" jdbcType="VARCHAR" property="alreadyPaid"/>
+        <result column="distribution_type" jdbcType="VARCHAR" property="distributionType"/>
         <result column="deleted" jdbcType="BIT" property="deleted"/>
     </resultMap>
 
     <sql id="baseSql">
         id, school_id, name, id_card, sex, orign_school, grade, birthday, subject,
         source, phone, parent_name, parent_sex, parent_id_card, parent_phone, address,
-        remark, create_time, update_time, already_paid, deleted
+        remark, create_time, update_time, already_paid, distribution_type, deleted
     </sql>
 
     <insert id="insert" parameterType="com.xcjy.web.bean.Student">
@@ -38,14 +39,14 @@
       source, phone, parent_name, 
       parent_sex, parent_id_card, parent_phone, 
       address, remark, create_time, 
-      update_time, already_paid, deleted)
+      update_time, already_paid, distribution_type, deleted)
     values (#{id,jdbcType=VARCHAR}, #{schoolId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{idCard,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{orignSchool,jdbcType=VARCHAR}, 
       #{grade,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, #{subject,jdbcType=VARCHAR}, 
       #{source,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{parentName,jdbcType=VARCHAR}, 
       #{parentSex,jdbcType=VARCHAR}, #{parentIdCard,jdbcType=VARCHAR}, #{parentPhone,jdbcType=VARCHAR}, 
       #{address,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{alreadyPaid}, #{deleted,jdbcType=BIT})
+      #{updateTime,jdbcType=TIMESTAMP}, #{alreadyPaid}, #{distributionType}, #{deleted,jdbcType=BIT})
   </insert>
 
     <insert id="insertBatch">
@@ -55,7 +56,7 @@
         source, phone, parent_name,
         parent_sex, parent_id_card, parent_phone,
         address, remark, create_time,
-        update_time, already_paid, deleted)
+        update_time, already_paid, distribution_type, deleted)
         values
         <foreach collection="students" item="student" separator=",">
             (#{student.id,jdbcType=VARCHAR}, #{student.schoolId,jdbcType=VARCHAR}, #{student.name,jdbcType=VARCHAR},
@@ -68,7 +69,7 @@
             #{student.parentPhone,jdbcType=VARCHAR},
             #{student.address,jdbcType=VARCHAR}, #{student.remark,jdbcType=VARCHAR},
             #{student.createTime,jdbcType=TIMESTAMP},
-            #{student.updateTime,jdbcType=TIMESTAMP}, #{student.alreadyPaid}, #{student.deleted,jdbcType=BIT})
+            #{student.updateTime,jdbcType=TIMESTAMP}, #{student.alreadyPaid}, #{distributionType}, #{student.deleted,jdbcType=BIT})
         </foreach>
     </insert>
 
@@ -105,6 +106,17 @@
         WHERE id = #{student.id} AND deleted = FALSE;
     </update>
 
+    <update id="updateDisTributeType">
+        UPDATE student SET
+        distribution_type = #{distributionType},
+        school_id = #{schoolId},
+        update_time = #{updateTime}
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
     <select id="getById" resultMap="BaseResultMap">
         SELECT
         <include refid="baseSql"/>
@@ -135,6 +147,12 @@
         <foreach collection="idCardList" open="(" separator="," close=")" item="idCard">
             #{idCard}
         </foreach>
+    </select>
+
+    <select id="getByDisType"  resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM student WHERE distribution_type = #{distributionType}
     </select>
 
 </mapper>

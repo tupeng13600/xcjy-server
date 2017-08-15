@@ -105,11 +105,6 @@ public class StmanagerController {
         return applicationService.backMoney(req);
     }
 
-    /**
-     * 分配学生给学管师
-     *
-     * @param req
-     */
     @ApiOperation("分配学生给学管师")
     @PostMapping("/stmanager/student")
     public void createStmanagerStudent(@RequestBody @Valid StmanagerStudentCreateReq req) {

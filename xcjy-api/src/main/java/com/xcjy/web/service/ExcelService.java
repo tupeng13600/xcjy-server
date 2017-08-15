@@ -4,6 +4,7 @@ import com.xcjy.web.bean.CounselorStudent;
 import com.xcjy.web.bean.Student;
 import com.xcjy.web.bean.StudentMoney;
 import com.xcjy.web.common.enums.CounselorStudentStatusType;
+import com.xcjy.web.common.enums.DistributionTypeEnum;
 import com.xcjy.web.common.enums.PayStatusType;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.util.ExcelUtil;
@@ -61,7 +62,10 @@ public class ExcelService {
     private List<Student> getStudent(MultipartFile file) throws IOException {
         List<Student> studentList = getDataList(file, Student.class, headerRow, dataRowStart, maxStudentColumn);
         if (CollectionUtils.isNotEmpty(studentList)) {
-            studentList.forEach(student -> student.setAlreadyPaid(PayStatusType.NO));
+            studentList.forEach(student -> {
+                student.setAlreadyPaid(PayStatusType.NO);
+                student.setDistributionType(DistributionTypeEnum.NO_DISTRIBUTION);
+            });
         }
         return studentList;
     }

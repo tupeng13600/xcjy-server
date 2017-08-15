@@ -1,6 +1,7 @@
 package com.xcjy.web.bean;
 
 import com.xcjy.web.common.cache.CacheFactory;
+import com.xcjy.web.common.enums.DistributionTypeEnum;
 import com.xcjy.web.common.enums.PayStatusType;
 import com.xcjy.web.common.enums.SexType;
 import com.xcjy.web.common.util.DateUtil;
@@ -48,6 +49,8 @@ public class Student {
     private Date updateTime;
 
     private PayStatusType alreadyPaid;
+
+    private DistributionTypeEnum distributionType;
 
     private Boolean deleted;
 
@@ -201,6 +204,14 @@ public class Student {
     @ExcelData(columnName = "描述信息")
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public DistributionTypeEnum getDistributionType() {
+        return distributionType;
+    }
+
+    public void setDistributionType(DistributionTypeEnum distributionType) {
+        this.distributionType = distributionType;
     }
 
     public Date getCreateTime() {

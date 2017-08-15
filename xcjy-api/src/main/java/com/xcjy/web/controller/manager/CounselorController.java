@@ -1,5 +1,7 @@
 package com.xcjy.web.controller.manager;
 
+import com.xcjy.web.bean.Student;
+import com.xcjy.web.common.enums.DistributionTypeEnum;
 import com.xcjy.web.controller.req.*;
 import com.xcjy.web.controller.res.*;
 import com.xcjy.web.service.CourseStudentService;
@@ -65,11 +67,12 @@ public class CounselorController {
         return courseStudentService.getCounselorStudentTypeHis(startTime, endTime);
     }
 
-    /**
-     * 分配学生给咨询师
-     *
-     * @param req
-     */
+    @ApiOperation("获取未分配的学生列表")
+    @GetMapping("/student/distribution/{distributionType}")
+    public List<StudentShowRes> getList4NoCounselor(@PathVariable DistributionTypeEnum distributionType) {
+        return studentService.getList4ByDisType(distributionType);
+    }
+
     @ApiOperation("咨询总监分配学生给咨询师")
     @PostMapping("/counselor/student")
     public void createCounselorStudent(@RequestBody @Valid CounselorStudentCreateReq req) {

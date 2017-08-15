@@ -1,10 +1,13 @@
 package com.xcjy.web.service;
 
 import com.xcjy.web.bean.CounselorStudent;
+import com.xcjy.web.bean.School;
 import com.xcjy.web.bean.Student;
 import com.xcjy.web.bean.StudentMoney;
 import com.xcjy.web.common.CurrentThreadLocal;
+import com.xcjy.web.common.cache.CacheFactory;
 import com.xcjy.web.common.enums.CounselorStudentStatusType;
+import com.xcjy.web.common.enums.DistributionTypeEnum;
 import com.xcjy.web.common.enums.PayStatusType;
 import com.xcjy.web.common.enums.RoleEnum;
 import com.xcjy.web.common.exception.EducationException;
@@ -16,11 +19,13 @@ import com.xcjy.web.controller.req.StudentUpdateReq;
 import com.xcjy.web.controller.res.CounselorStudentRes;
 import com.xcjy.web.controller.res.CreateIdRes;
 import com.xcjy.web.controller.res.StudentAssetsRes;
+import com.xcjy.web.controller.res.StudentShowRes;
 import com.xcjy.web.mapper.CounselorStudentMapper;
 import com.xcjy.web.mapper.StmanagerStudentMapper;
 import com.xcjy.web.mapper.StudentMapper;
 import com.xcjy.web.mapper.StudentMoneyMapper;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,6 +64,7 @@ public class StudentService {
             student.setBirthday(DateUtil.getBirthByIdCard(student.getIdCard()));
         }
         student.setAlreadyPaid(PayStatusType.NO);
+        student.setDistributionType(DistributionTypeEnum.COUNSELOR_DISTRIBUTION);
         student.setSchoolId(CurrentThreadLocal.getSchoolId());
         studentMapper.insert(student);
         CounselorStudent counselorStudent = new CounselorStudent();
@@ -105,13 +111,13 @@ public class StudentService {
         return getResList(counselorStudentList, studentList);
     }
 
-    private List<CounselorStudentRes> getResList(List<CounselorStudent> counselorStudentList, List<Student> studentList){
+    private List<CounselorStudentRes> getResList(List<CounselorStudent> counselorStudentList, List<Student> studentList) {
         List<CounselorStudentRes> resList = new ArrayList<>();
         studentList.forEach(student -> {
             CounselorStudentRes res = new CounselorStudentRes();
             BeanUtils.copyProperties(student, res);
             for (CounselorStudent counselorStudent : counselorStudentList) {
-                if(counselorStudent.getStudentId().equals(student.getId())) {
+                if (counselorStudent.getStudentId().equals(student.getId())) {
                     res.setStatus(counselorStudent.getStatus());
                     res.setMoney(counselorStudent.getMoney());
                     break;
@@ -156,5 +162,24 @@ public class StudentService {
             return new ArrayList<>();
         }
         return studentMapper.getByIds(new HashSet<>(studentIds));
+    }
+
+    public List<StudentShowRes> getList4ByDisType(DistributionTypeEnum distributionType) {
+        List<StudentShowRes> showResList = new ArrayList<>();
+        List<Student> studentList = studentMapper.getByDisType(distributionType);
+        if (CollectionUtils.isNotEmpty(studentList)) {
+            studentList.forEach(student -> {
+                StudentShowRes showRes = new StudentShowRes();
+                BeanUtils.copyProperties(student, showRes);
+                if (StringUtils.isNotBlank(student.getSchoolId())) {
+                    School school = CacheFactory.idSchools.get(student.getSchoolId());
+                    if (null != school) {
+                        showRes.setSchoolName(school.getName());
+                    }
+                }
+                showResList.add(showRes);
+            });
+        }
+        return showResList;
     }
 }
