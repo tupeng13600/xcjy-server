@@ -18,6 +18,10 @@ public class FinanceStudentStatRes {
 
     private String name;
 
+    private String phone;
+
+    private String idCard;
+
     private String remark;
 
     private PayStatusType alreadyPaid;
