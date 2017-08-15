@@ -39,4 +39,6 @@ public interface StudentMapper {
                            @Param("updateTime") Date updateTime);
 
     List<Student> getByDisType(@Param("distributionType") DistributionTypeEnum distributionType);
+
+    List<Student> getAll();
 }

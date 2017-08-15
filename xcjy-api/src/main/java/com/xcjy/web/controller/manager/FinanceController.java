@@ -2,11 +2,9 @@ package com.xcjy.web.controller.manager;
 
 import com.xcjy.web.common.util.CommonUtil;
 import com.xcjy.web.controller.req.StudentPayReq;
+import com.xcjy.web.controller.res.FinanceStudentStatRes;
 import com.xcjy.web.controller.res.StudentPayLogDetailRes;
-import com.xcjy.web.service.ExcelService;
-import com.xcjy.web.service.FinanceService;
-import com.xcjy.web.service.RelationService;
-import com.xcjy.web.service.StudentPayLogService;
+import com.xcjy.web.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -36,6 +34,9 @@ public class FinanceController {
     @Autowired
     private ExcelService excelService;
 
+    @Autowired
+    private StudentService studentService;
+
     @RequiresRoles({CommonUtil.FINANCE})
     @ApiOperation("学生缴费")
     @PutMapping("/student/pay")
@@ -55,6 +56,13 @@ public class FinanceController {
     @PostMapping("/student/paid")
     public void studentPaid(@RequestParam MultipartFile file) throws IOException {
         excelService.importStudentPaid(file);
+    }
+
+    @RequiresRoles({CommonUtil.FINANCE})
+    @ApiOperation("获取学生缴费统计")
+    @PostMapping("/student/stat/{schoolId}")
+    public List<FinanceStudentStatRes> studentPaid(@PathVariable String schoolId) throws IOException {
+        return studentService.getBySchoolId(schoolId);
     }
 
 

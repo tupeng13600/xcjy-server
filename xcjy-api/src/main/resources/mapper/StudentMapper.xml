@@ -69,7 +69,8 @@
             #{student.parentPhone,jdbcType=VARCHAR},
             #{student.address,jdbcType=VARCHAR}, #{student.remark,jdbcType=VARCHAR},
             #{student.createTime,jdbcType=TIMESTAMP},
-            #{student.updateTime,jdbcType=TIMESTAMP}, #{student.alreadyPaid}, #{distributionType}, #{student.deleted,jdbcType=BIT})
+            #{student.updateTime,jdbcType=TIMESTAMP}, #{student.alreadyPaid}, #{distributionType},
+            #{student.deleted,jdbcType=BIT})
         </foreach>
     </insert>
 
@@ -149,10 +150,16 @@
         </foreach>
     </select>
 
-    <select id="getByDisType"  resultMap="BaseResultMap">
+    <select id="getByDisType" resultMap="BaseResultMap">
         SELECT
         <include refid="baseSql"/>
         FROM student WHERE distribution_type = #{distributionType}
+    </select>
+
+    <select id="getAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM student
     </select>
 
 </mapper>

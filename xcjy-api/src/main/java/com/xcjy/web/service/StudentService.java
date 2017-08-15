@@ -16,10 +16,7 @@ import com.xcjy.web.common.util.DateUtil;
 import com.xcjy.web.controller.req.PageReq;
 import com.xcjy.web.controller.req.StudentCreateReq;
 import com.xcjy.web.controller.req.StudentUpdateReq;
-import com.xcjy.web.controller.res.CounselorStudentRes;
-import com.xcjy.web.controller.res.CreateIdRes;
-import com.xcjy.web.controller.res.StudentAssetsRes;
-import com.xcjy.web.controller.res.StudentShowRes;
+import com.xcjy.web.controller.res.*;
 import com.xcjy.web.mapper.CounselorStudentMapper;
 import com.xcjy.web.mapper.StmanagerStudentMapper;
 import com.xcjy.web.mapper.StudentMapper;
@@ -182,4 +179,37 @@ public class StudentService {
         }
         return showResList;
     }
+
+    public List<FinanceStudentStatRes> getBySchoolId(String schoolId) {
+        List<FinanceStudentStatRes> statResList = new ArrayList<>();
+        CurrentThreadLocal.setSchoolId(schoolId);
+        List<Student> studentList = studentMapper.getAll();
+        if (CollectionUtils.isNotEmpty(studentList)) {
+            Set<String> studentIds = studentList.stream().map(Student::getId).collect(Collectors.toSet());
+            List<StudentMoney> studentMonies = studentMoneyMapper.getByStudentIds(studentIds);
+            for (Student student : studentList) {
+                statResList.add(getRes(student, studentMonies));
+            }
+        }
+        return statResList;
+    }
+
+    private FinanceStudentStatRes getRes(Student student, List<StudentMoney> studentMonies) {
+        FinanceStudentStatRes statRes = new FinanceStudentStatRes();
+        BeanUtils.copyProperties(student, statRes);
+        School school = CacheFactory.idSchools.get(student.getSchoolId());
+        if (null != school) {
+            statRes.setSchoolName(school.getName());
+        }
+        for (StudentMoney studentMony : studentMonies) {
+            if (studentMony.getStudentId().equals(student.getId())) {
+                statRes.setHasPay(studentMony.getHasPay());
+                statRes.setHasBack(studentMony.getHasBack());
+                statRes.setHasUsed(studentMony.getHasUsed());
+                break;
+            }
+        }
+        return statRes;
+    }
+
 }
