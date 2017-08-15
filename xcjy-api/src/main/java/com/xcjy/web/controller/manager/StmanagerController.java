@@ -1,6 +1,7 @@
 package com.xcjy.web.controller.manager;
 
 import com.xcjy.web.bean.Student;
+import com.xcjy.web.common.enums.DistributionTypeEnum;
 import com.xcjy.web.common.util.CommonUtil;
 import com.xcjy.web.controller.req.*;
 import com.xcjy.web.controller.res.*;
@@ -147,6 +148,13 @@ public class StmanagerController {
     @PutMapping("/score/{courseId}/{score}/{studentId}")
     public void setScore(@PathVariable String courseId, @PathVariable String studentId, @PathVariable Integer score) {
         courseStudentService.updateScore(courseId,studentId, score);
+    }
+
+    @RequiresRoles({CommonUtil.STUDENTMANAGER_BOSS})
+    @ApiOperation("获取未分配的学生列表")
+    @PutMapping("/student/distribution/no")
+    public List<StudentShowRes> getStudentNoManager() {
+        return studentService.getList4ByDisType(DistributionTypeEnum.COUNSELOR_DISTRIBUTION);
     }
 
 }

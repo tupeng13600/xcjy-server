@@ -78,9 +78,9 @@ public class CounselorController {
 
     @RequiresRoles({CommonUtil.CONSULTANT_BOSS})
     @ApiOperation("获取未分配的学生列表")
-    @GetMapping("/student/distribution/{distributionType}")
-    public List<StudentShowRes> getList4NoCounselor(@PathVariable DistributionTypeEnum distributionType) {
-        return studentService.getList4ByDisType(distributionType);
+    @GetMapping("/student/distribution/no")
+    public List<StudentShowRes> getList4NoCounselor() {
+        return studentService.getList4ByDisType(DistributionTypeEnum.NO_DISTRIBUTION);
     }
 
     @RequiresRoles({CommonUtil.CONSULTANT_BOSS})
