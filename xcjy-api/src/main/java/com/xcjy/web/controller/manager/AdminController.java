@@ -1,8 +1,11 @@
 package com.xcjy.web.controller.manager;
 
-import com.xcjy.web.bean.School;
 import com.xcjy.web.bean.User;
-import com.xcjy.web.controller.req.*;
+import com.xcjy.web.common.util.CommonUtil;
+import com.xcjy.web.controller.req.SchoolCreateReq;
+import com.xcjy.web.controller.req.SchoolUpdateReq;
+import com.xcjy.web.controller.req.UserBaseUpdateReq;
+import com.xcjy.web.controller.req.UserRoleUpdateReq;
 import com.xcjy.web.controller.res.CreateIdRes;
 import com.xcjy.web.service.SchoolService;
 import com.xcjy.web.service.UserService;
@@ -30,35 +33,35 @@ public class AdminController {
     @Autowired
     private SchoolService schoolService;
 
-    @RequiresRoles({"SUPER_ADMIN"})
+    @RequiresRoles(CommonUtil.SUPER_ADMIN)
     @ApiOperation("获取用户列表")
     @GetMapping("/user")
     public List<User> listAll() {
         return userService.getAll();
     }
 
-    @RequiresRoles({"SUPER_ADMIN"})
+    @RequiresRoles({CommonUtil.SUPER_ADMIN})
     @ApiOperation("修改用户密码")
     @PutMapping("/user/pwd")
     public void updatePassword(@RequestBody @Valid UserBaseUpdateReq req) {
         userService.updatePassword(req);
     }
 
-    @RequiresRoles({"SUPER_ADMIN"})
+    @RequiresRoles({CommonUtil.SUPER_ADMIN})
     @ApiOperation("修改用户角色")
     @PutMapping("/user/role")
     public void updateRole(@RequestBody @Valid UserRoleUpdateReq req) {
         userService.updateRole(req);
     }
 
-    @RequiresRoles({"SUPER_ADMIN"})
+    @RequiresRoles({CommonUtil.SUPER_ADMIN})
     @ApiOperation("创建校区")
     @PostMapping("/school")
     public CreateIdRes create(@RequestBody @Valid SchoolCreateReq req) {
         return schoolService.create(req);
     }
 
-    @RequiresRoles({"SUPER_ADMIN"})
+    @RequiresRoles({CommonUtil.SUPER_ADMIN})
     @ApiOperation("修改校区信息")
     @PutMapping("/school")
     public void update(@RequestBody @Valid SchoolUpdateReq req) {

@@ -2,18 +2,19 @@ package com.xcjy.web.controller.manager;
 
 import com.xcjy.web.bean.Student;
 import com.xcjy.web.common.enums.DistributionTypeEnum;
+import com.xcjy.web.common.util.CommonUtil;
 import com.xcjy.web.controller.req.*;
 import com.xcjy.web.controller.res.*;
-import com.xcjy.web.service.CourseStudentService;
-import com.xcjy.web.service.RelationService;
-import com.xcjy.web.service.StudentAssetService;
-import com.xcjy.web.service.StudentService;
+import com.xcjy.web.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -37,64 +38,84 @@ public class CounselorController {
     @Autowired
     private RelationService relationService;
 
-    @ApiOperation("获取学生资产信息[学管师,咨询师]")
+    @Autowired
+    private ExcelService excelService;
+
+    @RequiresRoles({CommonUtil.CONSULTANT, CommonUtil.CONSULTANT_MAIN})
+    @ApiOperation("获取学生资产信息[咨询师]")
     @GetMapping("/assets")
     public List<StudentAssetsRes> getAssets(PageReq page) {
         return studentService.getAssets(page);
     }
 
+    @RequiresRoles({CommonUtil.CONSULTANT, CommonUtil.CONSULTANT_MAIN})
     @ApiOperation("为学生购买课程")
     @PostMapping("/course")
     public void course(@RequestBody @Valid CourseStudentReq req) {
         courseStudentService.buyCourse(req);
     }
 
+    @RequiresRoles({CommonUtil.CONSULTANT, CommonUtil.CONSULTANT_MAIN})
     @ApiOperation("咨询师查看自己金额和总和")
     @GetMapping("/student/stat")
     public CounselorStatRes getCounselorStat(CounselorStatReq req) {
         return studentAssetService.getCounselorStat(req);
     }
 
+    @RequiresRoles({CommonUtil.CONSULTANT_MAIN})
     @ApiOperation("咨询主任获取咨询师签约数据")
     @GetMapping("/stat")
     public List<CounselorAssesSignRes> getAssetsSign(AssetsSignReq req) {
         return studentAssetService.getAssetsSign(req);
     }
 
+    @RequiresRoles({CommonUtil.CONSULTANT_BOSS})
     @ApiOperation("咨询总监获取咨询记录")
     @GetMapping("/record")
     public List<CounselorStuStatusRes> getCounselorStudentTypeHis(Date startTime, Date endTime) {
         return courseStudentService.getCounselorStudentTypeHis(startTime, endTime);
     }
 
+    @RequiresRoles({CommonUtil.CONSULTANT_BOSS})
     @ApiOperation("获取未分配的学生列表")
     @GetMapping("/student/distribution/{distributionType}")
     public List<StudentShowRes> getList4NoCounselor(@PathVariable DistributionTypeEnum distributionType) {
         return studentService.getList4ByDisType(distributionType);
     }
 
+    @RequiresRoles({CommonUtil.CONSULTANT_BOSS})
     @ApiOperation("咨询总监分配学生给咨询师")
     @PostMapping("/counselor/student")
     public void createCounselorStudent(@RequestBody @Valid CounselorStudentCreateReq req) {
         relationService.counselorStudent(req);
     }
 
+    @RequiresRoles({CommonUtil.CONSULTANT, CommonUtil.CONSULTANT_MAIN})
     @ApiOperation("创建学生")
     @PostMapping("/student")
     public CreateIdRes create(@RequestBody @Valid StudentCreateReq req) {
         return studentService.create(req);
     }
 
+    @RequiresRoles({CommonUtil.CONSULTANT, CommonUtil.CONSULTANT_MAIN})
     @ApiOperation("修改学生信息")
     @PutMapping("/student")
     public void update(@RequestBody @Valid StudentUpdateReq req) {
         studentService.update(req);
     }
 
-    @ApiOperation("获取学生列表")
+    @RequiresRoles({CommonUtil.CONSULTANT, CommonUtil.CONSULTANT_MAIN})
+    @ApiOperation("获取分配到的学生列表")
     @GetMapping("/student")
     public List<CounselorStudentRes> list() {
         return studentService.list4Counselor();
+    }
+
+    @RequiresRoles({CommonUtil.CONSULTANT_BOSS})
+    @ApiOperation("导入学生信息")
+    @PostMapping("/student/excel")
+    public void student(@RequestParam MultipartFile file) throws IOException {
+        excelService.importStudent(file);
     }
 
 }

@@ -10,6 +10,33 @@ import java.util.List;
  */
 public abstract class CommonUtil {
 
+    //人事经理
+    public static final String PERSONNEL_MANAGER = "PERSONNEL_MANAGER";
+    //教研主任
+    public static final String TEACHER_DIRECTOR = "TEACHER_DIRECTOR";
+    //管理员
+    public static final String SUPER_ADMIN = "SUPER_ADMIN";
+    //教管主任
+    public static final String STUDENTMANAGER_BOSS = "STUDENTMANAGER_BOSS";
+    //财务
+    public static final String FINANCE = "FINANCE";
+    //分校长
+    public static final String SCHOOLMASTER = "SCHOOLMASTER";
+    //人事专员出纳
+    public static final String PERSONNEL_CASHIER = "PERSONNEL_CASHIER";
+    //总校长
+    public static final String SCHOOLMASTER_BOSS = "SCHOOLMASTER_BOSS";
+    //咨询师
+    public static final String CONSULTANT = "CONSULTANT";
+    //学管师
+    public static final String STUDENTMANAGER = "STUDENTMANAGER";
+    //教师
+    public static final String TEACHER = "TEACHER";
+    //咨询主任
+    public static final String CONSULTANT_MAIN = "CONSULTANT_MAIN";
+    //咨询总监
+    public static final String CONSULTANT_BOSS = "CONSULTANT_BOSS";
+
     public static String getRolIdString(List<RoleEnum> roleEnums) {
         if (CollectionUtils.isEmpty(roleEnums)) {
             return "";

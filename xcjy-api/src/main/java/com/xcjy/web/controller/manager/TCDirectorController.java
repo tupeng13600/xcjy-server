@@ -2,15 +2,15 @@ package com.xcjy.web.controller.manager;
 
 import com.xcjy.web.bean.Course;
 import com.xcjy.web.bean.Grade;
-import com.xcjy.web.bean.School;
+import com.xcjy.web.common.util.CommonUtil;
 import com.xcjy.web.controller.req.*;
 import com.xcjy.web.controller.res.CreateIdRes;
 import com.xcjy.web.service.CourseService;
 import com.xcjy.web.service.CourseTeacherService;
 import com.xcjy.web.service.GradeService;
-import com.xcjy.web.service.SchoolService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,57 +35,66 @@ public class TCDirectorController {
     @Autowired
     private CourseTeacherService courseTeacherService;
 
+    @RequiresRoles({CommonUtil.TEACHER_DIRECTOR})
     @ApiOperation("创建班组")
     @PostMapping("/grade")
     public CreateIdRes create(@RequestBody @Valid GradeCreateReq req) {
         return gradeService.create(req);
     }
 
+    @RequiresRoles({CommonUtil.TEACHER_DIRECTOR})
     @ApiOperation("编辑班组")
     @PutMapping("/grade")
     public void create(@RequestBody @Valid GradeUpdateReq req) {
         gradeService.update(req);
     }
 
+    @RequiresRoles({CommonUtil.TEACHER_DIRECTOR})
     @ApiOperation("获取班组列表")
     @GetMapping("/grade")
     public List<Grade> listGrade() {
         return gradeService.getAll();
     }
 
+    @RequiresRoles({CommonUtil.TEACHER_DIRECTOR})
     @ApiOperation("删除班组")
     @PostMapping("/grade/{id}")
     public void delete(@PathVariable String id) {
         gradeService.delete(id);
     }
 
+    @RequiresRoles({CommonUtil.TEACHER_DIRECTOR})
     @ApiOperation("创建课程")
     @PostMapping("/course")
     public CreateIdRes create(@RequestBody @Valid CourseCreateReq req) {
         return courseService.create(req);
     }
 
+    @RequiresRoles({CommonUtil.TEACHER_DIRECTOR})
     @ApiOperation("修改课程")
     @PutMapping("/course")
     public void update(@RequestBody @Valid CourseUpdateReq req) {
         courseService.update(req);
     }
 
+    @RequiresRoles({CommonUtil.TEACHER_DIRECTOR})
     @ApiOperation("删除课程")
     @DeleteMapping("/course/{id}")
     public void deleteLogic(@PathVariable String id) {
         courseService.deleteLogic(id);
     }
 
+    @RequiresRoles({CommonUtil.TEACHER_DIRECTOR})
     @ApiOperation("获取课程列表")
     @GetMapping("/course")
     public List<Course> listCourse(PageReq page) {
         return courseService.list(page);
     }
 
+    @RequiresRoles({CommonUtil.TEACHER_DIRECTOR})
     @ApiOperation("保存课程教师分配信息")
     @PostMapping("/teacher")
-    public void teacher(@RequestBody @Valid CourseTeacherCreateReq req){
+    public void teacher(@RequestBody @Valid CourseTeacherCreateReq req) {
         courseTeacherService.save(req);
     }
 

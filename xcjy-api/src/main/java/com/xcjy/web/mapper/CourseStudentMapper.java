@@ -20,4 +20,8 @@ public interface CourseStudentMapper {
     void updateHourBatch(@Param("courseStudents")List<CourseStudent> courseStudents);
 
     List<CourseStudent> getByStudentIds(@Param("studentIds") List<String> studentIds);
+
+    void updateScore(@Param("courseId") String courseId,
+                     @Param("studentId") String studentId,
+                     @Param("score") Integer score);
 }

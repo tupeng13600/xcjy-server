@@ -144,8 +144,7 @@ public class EmployeeService {
      *
      * @return
      */
-    public List<Employee> list(PageReq pageReq) {
-        CurrentThreadLocal.setPageReq(pageReq);
+    public List<Employee> list() {
         return employeeMapper.getAll();
     }
 

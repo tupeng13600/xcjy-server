@@ -1,11 +1,13 @@
 package com.xcjy.web.controller.manager;
 
+import com.xcjy.web.common.util.CommonUtil;
 import com.xcjy.web.controller.res.TeacherHourStatRes;
 import com.xcjy.web.controller.res.TeacherScheduleRes;
 import com.xcjy.web.service.CourseScheduleService;
 import com.xcjy.web.service.CourseTeacherService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,12 +28,14 @@ public class TeacherController {
     private CourseScheduleService courseScheduleService;
 
 
+    @RequiresRoles({CommonUtil.TEACHER})
     @ApiOperation("查看自己的课表")
     @GetMapping("/schedule")
     public List<TeacherScheduleRes> getSchedule(){
         return courseScheduleService.getTeacherSchedule();
     }
 
+    @RequiresRoles({CommonUtil.TEACHER})
     @ApiOperation("查看自己的课时统计信息")
     @GetMapping("/course/stat")
     public TeacherHourStatRes getHourStat(Date startTime, Date endTime){

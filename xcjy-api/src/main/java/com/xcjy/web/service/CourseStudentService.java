@@ -4,18 +4,17 @@ import com.xcjy.web.bean.*;
 import com.xcjy.web.common.CurrentThreadLocal;
 import com.xcjy.web.common.enums.PayStatusType;
 import com.xcjy.web.common.exception.EducationException;
+import com.xcjy.web.common.util.CurrentUserUtil;
 import com.xcjy.web.controller.req.CourseStudentReq;
 import com.xcjy.web.controller.res.CounselorStuStatusRes;
+import com.xcjy.web.controller.res.CourseStudentStatRes;
 import com.xcjy.web.mapper.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -41,6 +40,9 @@ public class CourseStudentService {
 
     @Autowired
     private CounselorStudentMapper counselorStudentMapper;
+
+    @Autowired
+    private StmanagerStudentMapper stmanagerStudentMapper;
 
 
     @Transactional
@@ -136,4 +138,49 @@ public class CourseStudentService {
         }
         return stuStatusRes;
     }
+
+    public void updateScore(String courseId, String studentId, Integer score) {
+        courseStudentMapper.updateScore(courseId, studentId, score);
+    }
+
+    public List<CourseStudentStatRes> stat() {
+        String employeeId = CurrentUserUtil.currentEmployeeId();
+        List<CourseStudentStatRes> resList = new ArrayList<>();
+        List<String> studentIds = stmanagerStudentMapper.getSIdByEmployeeId(employeeId);
+        if (CollectionUtils.isNotEmpty(studentIds)) {
+            List<CourseStudent> courseStudents = courseStudentMapper.getByStudentIds(studentIds);
+            if (CollectionUtils.isNotEmpty(courseStudents)) {
+                Set<String> courseIds = courseStudents.stream().map(CourseStudent::getCourseId).collect(Collectors.toSet());
+                List<Course> courseList = courseMapper.getByIds(courseIds);
+                List<Student> studentList = studentMapper.getByIds(new HashSet<>(studentIds));
+                for (CourseStudent courseStudent : courseStudents) {
+                    resList.add(getRes(courseStudent, courseList, studentList));
+                }
+            }
+        }
+        return resList;
+    }
+
+    private CourseStudentStatRes getRes(CourseStudent courseStudent, List<Course> courseList, List<Student> studentList) {
+        CourseStudentStatRes res = new CourseStudentStatRes();
+        res.setBuyHour(courseStudent.getBuyHour());
+        res.setBuyTime(courseStudent.getCreateTime());
+        res.setCourseId(courseStudent.getCourseId());
+        res.setStudentId(courseStudent.getStudentId());
+        res.setUsedHour(courseStudent.getUsedHour());
+        for (Course course : courseList) {
+            if (course.getId().equals(courseStudent.getCourseId())) {
+                res.setCourseName(course.getName());
+                break;
+            }
+        }
+        for (Student student : studentList) {
+            if (student.getId().equals(courseStudent.getStudentId())) {
+                res.setStudentName(student.getName());
+                break;
+            }
+        }
+        return res;
+    }
+
 }

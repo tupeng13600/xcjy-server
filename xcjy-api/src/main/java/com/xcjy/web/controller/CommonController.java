@@ -1,8 +1,12 @@
 package com.xcjy.web.controller;
 
 import com.xcjy.web.bean.School;
+import com.xcjy.web.common.enums.HandlerStatusType;
+import com.xcjy.web.common.enums.ProcessLogType;
 import com.xcjy.web.controller.req.UserPwdSelfUpdateReq;
+import com.xcjy.web.controller.res.ProcessRes;
 import com.xcjy.web.controller.res.RoleRes;
+import com.xcjy.web.service.ApplicationService;
 import com.xcjy.web.service.RoleService;
 import com.xcjy.web.service.SchoolService;
 import com.xcjy.web.service.UserService;
@@ -32,6 +36,9 @@ public class CommonController {
     @Autowired
     private SchoolService schoolService;
 
+    @Autowired
+    private ApplicationService applicationService;
+
     @ApiOperation("获取全部角色列表")
     @GetMapping("/role")
     public List<RoleRes> list() {
@@ -52,6 +59,12 @@ public class CommonController {
     @GetMapping("/school")
     public List<School> listSchool() {
         return schoolService.list();
+    }
+
+    @ApiOperation("获取审核列表")
+    @GetMapping("/money/{processLog}/{handlerStatus}")
+    public List<ProcessRes> getBackMoneyProcessList(@PathVariable HandlerStatusType handlerStatus, @PathVariable ProcessLogType processLog) {
+        return applicationService.listProcess(handlerStatus, processLog);
     }
 
 }
