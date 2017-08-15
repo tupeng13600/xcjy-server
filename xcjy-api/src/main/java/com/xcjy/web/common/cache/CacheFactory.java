@@ -67,7 +67,7 @@ public class CacheFactory {
             });
         }
 
-        List<Employee> employeeList = employeeService.list(null);
+        List<Employee> employeeList = employeeService.list();
         if(CollectionUtils.isNotEmpty(employeeList)) {
             for(Employee employee : employeeList) {
                 employeeMap.put(employee.getId(), employee);
