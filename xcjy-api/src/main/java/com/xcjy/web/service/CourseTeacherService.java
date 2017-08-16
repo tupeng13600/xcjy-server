@@ -2,12 +2,14 @@ package com.xcjy.web.service;
 
 import com.xcjy.web.bean.Course;
 import com.xcjy.web.bean.CourseTeacher;
+import com.xcjy.web.bean.Employee;
 import com.xcjy.web.common.CurrentThreadLocal;
 import com.xcjy.web.common.cache.CacheFactory;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.controller.req.CourseTeacherCreateReq;
 import com.xcjy.web.mapper.CourseMapper;
 import com.xcjy.web.mapper.CourseTeacherMapper;
+import com.xcjy.web.mapper.EmployeeMapper;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by tupeng on 2017/8/9.
@@ -28,6 +31,9 @@ public class CourseTeacherService {
 
     @Autowired
     private CourseMapper courseMapper;
+
+    @Autowired
+    private EmployeeMapper employeeMapper;
 
     @Transactional
     public void save(CourseTeacherCreateReq req) {
@@ -60,4 +66,12 @@ public class CourseTeacherService {
         return courseTeacherList;
     }
 
+    public List<Employee> getByCourseId(String courseId) {
+        List<CourseTeacher> courseTeacherList = courseTeacherMapper.getByCId(courseId);
+        if(CollectionUtils.isEmpty(courseTeacherList)) {
+            return new ArrayList<>();
+        }
+        Set<String> employeeIds = courseTeacherList.stream().map(CourseTeacher::getTeacherId).collect(Collectors.toSet());
+        return employeeMapper.getByIds(employeeIds);
+    }
 }

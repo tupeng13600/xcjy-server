@@ -86,6 +86,7 @@ public class UserService {
         user.setPassword(UpcSecurityUtil.encryptPwd(req.getPassword(), new SimpleByteSource(user.getSalt())));
         user.setUpdateTime(new Date());
         userMapper.updatePassword(user);
+        CacheFactory.updateUserCache(user);
     }
 
     @Transactional
@@ -112,6 +113,7 @@ public class UserService {
         user.setPassword(UpcSecurityUtil.encryptPwd(req.getPassword(), new SimpleByteSource(user.getSalt())));
         user.setUpdateTime(new Date());
         userMapper.updatePassword(user);
+        CacheFactory.updateUserCache(user);
     }
 
     private void validatePwd(String oldPassword, String password, String salt) {

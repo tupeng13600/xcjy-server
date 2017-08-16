@@ -1,5 +1,6 @@
 package com.xcjy.web.controller.manager;
 
+import com.xcjy.web.bean.Employee;
 import com.xcjy.web.bean.Student;
 import com.xcjy.web.common.enums.DistributionTypeEnum;
 import com.xcjy.web.common.util.CommonUtil;
@@ -45,11 +46,28 @@ public class StmanagerController {
     @Autowired
     private CourseStudentService courseStudentService;
 
+    @Autowired
+    private CourseTeacherService courseTeacherService;
+
     @RequiresRoles({CommonUtil.STUDENTMANAGER})
     @ApiOperation("获取学生资产信息[学管师]")
     @GetMapping("/assets")
     public List<StudentAssetsRes> getAssets(PageReq page) {
         return studentService.getAssets(page);
+    }
+
+    @RequiresRoles({CommonUtil.STUDENTMANAGER})
+    @ApiOperation("根据课程获取教师列表")
+    @GetMapping("/course/teacher/{courseId}")
+    public List<Employee> getTeacherByCourseId(@PathVariable String courseId) {
+        return courseTeacherService.getByCourseId(courseId);
+    }
+
+    @RequiresRoles({CommonUtil.STUDENTMANAGER})
+    @ApiOperation("根据课程获取学生列表")
+    @GetMapping("/course/student/{courseId}")
+    public List<Student> getStudentByCourseId(@PathVariable String courseId) {
+        return courseStudentService.getByCourseId(courseId);
     }
 
     @RequiresRoles({CommonUtil.STUDENTMANAGER})
@@ -83,8 +101,8 @@ public class StmanagerController {
     @RequiresRoles({CommonUtil.STUDENTMANAGER})
     @ApiOperation("获取分配到的学生列表")
     @GetMapping("/student")
-    public List<Student> getStudentList(PageReq page){
-        return studentService.getForStmanager(page);
+    public List<Student> getStudentList(){
+        return studentService.getForStmanager();
     }
 
     @RequiresRoles({CommonUtil.STUDENTMANAGER})

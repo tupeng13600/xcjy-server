@@ -73,4 +73,10 @@
         </foreach>
     </select>
 
+    <select id="getByCourseId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM course_student WHERE course_id = #{courseId}
+    </select>
+
 </mapper>

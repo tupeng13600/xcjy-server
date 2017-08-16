@@ -153,7 +153,7 @@ public class StudentService {
         return resList;
     }
 
-    public List<Student> getForStmanager(PageReq page) {
+    public List<Student> getForStmanager() {
         List<String> studentIds = stmanagerStudentMapper.getSIdByEmployeeId(CurrentUserUtil.currentEmployeeId());
         if (CollectionUtils.isEmpty(studentIds)) {
             return new ArrayList<>();

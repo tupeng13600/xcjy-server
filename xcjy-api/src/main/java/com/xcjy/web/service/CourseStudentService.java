@@ -183,4 +183,12 @@ public class CourseStudentService {
         return res;
     }
 
+    public List<Student> getByCourseId(String courseId) {
+        List<CourseStudent> courseStudents = courseStudentMapper.getByCourseId(courseId);
+        if (CollectionUtils.isEmpty(courseStudents)) {
+            return new ArrayList<>();
+        }
+        Set<String> studentIds = courseStudents.stream().map(CourseStudent::getStudentId).collect(Collectors.toSet());
+        return studentMapper.getByIds(studentIds);
+    }
 }

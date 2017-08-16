@@ -12,6 +12,7 @@ public interface CourseTeacherMapper {
 
     void insertBatch(@Param("courseTeachers") List<CourseTeacher> courseTeachers);
 
-    CourseTeacher getByCIdAndTId(@Param("studentId") String courseId, @Param("employeeId") String employeeId);
+    CourseTeacher getByCIdAndTId(@Param("courseId") String courseId, @Param("employeeId") String employeeId);
 
+    List<CourseTeacher> getByCId(@Param("courseId") String courseId);
 }
