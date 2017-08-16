@@ -90,6 +90,7 @@ public class ShiroConfig {
         defineFilterChain.add("/swagger-ui.html = anon");
         defineFilterChain.add("/webjars/** = anon");
         defineFilterChain.add("/v2/** = anon");
+        defineFilterChain.add("/xcjy/** = anon");
         defineFilterChain.add("/** = upcAuth");
         return defineFilterChain;
     }
