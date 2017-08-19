@@ -6,7 +6,6 @@ import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.util.CurrentUserUtil;
 import com.xcjy.web.controller.req.CourseScheduleCreateReq;
 import com.xcjy.web.controller.req.CourseScheduleUpdateReq;
-import com.xcjy.web.controller.req.PageReq;
 import com.xcjy.web.controller.req.TeacherScheduleStatReq;
 import com.xcjy.web.controller.res.*;
 import com.xcjy.web.mapper.*;
@@ -168,9 +167,8 @@ public class CourseScheduleService {
         courseScheduleMapper.updateBase(courseSchedule);
     }
 
-    public List<ScheduleRes> list(PageReq req) {
+    public List<ScheduleRes> list() {
         List<ScheduleRes> resList = new ArrayList<>();
-        CurrentThreadLocal.setPageReq(req);
         List<CourseSchedule> courseSchedules = courseScheduleMapper.listAll();
         if (CollectionUtils.isEmpty(courseSchedules)) {
             return resList;
@@ -192,7 +190,7 @@ public class CourseScheduleService {
             });
             employeeList.forEach(employee -> {
                 if (employee.getId().equals(courseSchedule.getEmployeeId())) {
-                    res.setCourseName(employee.getName());
+                    res.setTeacherName(employee.getName());
                 }
             });
             resList.add(res);
@@ -246,9 +244,8 @@ public class CourseScheduleService {
         return res;
     }
 
-    public List<TeacherScheduleStatRes> getTSStat(TeacherScheduleStatReq req, PageReq page) {
+    public List<TeacherScheduleStatRes> getTSStat(TeacherScheduleStatReq req) {
         List<TeacherScheduleStatRes> scheduleResList = new ArrayList<>();
-        CurrentThreadLocal.setPageReq(page);
         List<CourseScheduleStatModel> totalModels = courseScheduleMapper.getByStartEndFinish(req.getStartTime(), req.getEndTime(), null);
         if (CollectionUtils.isNotEmpty(scheduleResList)) {
             Set<String> teacherIds = totalModels.stream().map(CourseScheduleStatModel::getEmployeeId).collect(Collectors.toSet());

@@ -6,7 +6,6 @@ import com.xcjy.web.common.CurrentThreadLocal;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.controller.req.CourseCreateReq;
 import com.xcjy.web.controller.req.CourseUpdateReq;
-import com.xcjy.web.controller.req.PageReq;
 import com.xcjy.web.controller.res.CreateIdRes;
 import com.xcjy.web.mapper.CourseMapper;
 import com.xcjy.web.mapper.GradeMapper;
@@ -57,8 +56,7 @@ public class CourseService {
         courseMapper.deleteLogic(id, new Date());
     }
 
-    public List<Course> list(PageReq page){
-        CurrentThreadLocal.setPageReq(page);
+    public List<Course> list(){
         return courseMapper.getAll();
     }
 

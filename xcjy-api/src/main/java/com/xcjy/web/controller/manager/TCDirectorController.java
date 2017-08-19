@@ -87,8 +87,8 @@ public class TCDirectorController {
     @RequiresRoles({CommonUtil.TEACHER_DIRECTOR})
     @ApiOperation("获取课程列表")
     @GetMapping("/course")
-    public List<Course> listCourse(PageReq page) {
-        return courseService.list(page);
+    public List<Course> listCourse() {
+        return courseService.list();
     }
 
     @RequiresRoles({CommonUtil.TEACHER_DIRECTOR})

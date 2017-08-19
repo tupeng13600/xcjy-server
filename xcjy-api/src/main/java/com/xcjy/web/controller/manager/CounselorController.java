@@ -44,8 +44,8 @@ public class CounselorController {
     @RequiresRoles({CommonUtil.CONSULTANT, CommonUtil.CONSULTANT_MAIN})
     @ApiOperation("获取学生资产信息[咨询师]")
     @GetMapping("/assets")
-    public List<StudentAssetsRes> getAssets(PageReq page) {
-        return studentService.getAssets(page);
+    public List<StudentAssetsRes> getAssets() {
+        return studentService.getAssets();
     }
 
     @RequiresRoles({CommonUtil.CONSULTANT, CommonUtil.CONSULTANT_MAIN})

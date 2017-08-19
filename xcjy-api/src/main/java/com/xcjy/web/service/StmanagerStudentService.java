@@ -1,9 +1,7 @@
 package com.xcjy.web.service;
 
 import com.xcjy.web.bean.Employee;
-import com.xcjy.web.common.CurrentThreadLocal;
 import com.xcjy.web.common.enums.StudentPayType;
-import com.xcjy.web.controller.req.PageReq;
 import com.xcjy.web.controller.req.TeacherScheduleStatReq;
 import com.xcjy.web.controller.res.PayStatModel;
 import com.xcjy.web.controller.res.StmanagerStatRes;

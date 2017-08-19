@@ -61,11 +61,6 @@ public class UserService {
         userMapper.updateLoginMessage(currentUserName, loginTime, loginIp, new Date());
     }
 
-    public List<User> getAll(PageReq pageReq) {
-        CurrentThreadLocal.setPageReq(pageReq);
-        return userMapper.getAll();
-    }
-
     public List<User> getAll() {
         return userMapper.getAll();
     }

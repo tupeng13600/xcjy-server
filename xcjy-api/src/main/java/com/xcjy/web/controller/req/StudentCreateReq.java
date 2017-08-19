@@ -3,6 +3,7 @@ package com.xcjy.web.controller.req;
 import com.xcjy.web.common.enums.PayStatusType;
 import com.xcjy.web.common.enums.SexType;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
@@ -18,6 +19,7 @@ public class StudentCreateReq {
     private String name;
 
     @NotBlank
+    @Length(min = 18, max = 18)
     private String idCard;
 
     @NotNull

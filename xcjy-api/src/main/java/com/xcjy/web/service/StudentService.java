@@ -13,7 +13,6 @@ import com.xcjy.web.common.enums.RoleEnum;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.util.CurrentUserUtil;
 import com.xcjy.web.common.util.DateUtil;
-import com.xcjy.web.controller.req.PageReq;
 import com.xcjy.web.controller.req.StudentCreateReq;
 import com.xcjy.web.controller.req.StudentUpdateReq;
 import com.xcjy.web.controller.res.*;
@@ -125,7 +124,7 @@ public class StudentService {
         return resList;
     }
 
-    public List<StudentAssetsRes> getAssets(PageReq page) {
+    public List<StudentAssetsRes> getAssets() {
         List<StudentAssetsRes> resList = new ArrayList<>();
         Set<RoleEnum> roleEnums = CurrentUserUtil.currentRoles();
         String employeeId = CurrentUserUtil.currentEmployeeId();

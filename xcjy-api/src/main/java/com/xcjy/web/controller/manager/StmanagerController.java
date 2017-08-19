@@ -52,8 +52,8 @@ public class StmanagerController {
     @RequiresRoles({CommonUtil.STUDENTMANAGER})
     @ApiOperation("获取学生资产信息[学管师]")
     @GetMapping("/assets")
-    public List<StudentAssetsRes> getAssets(PageReq page) {
-        return studentService.getAssets(page);
+    public List<StudentAssetsRes> getAssets() {
+        return studentService.getAssets();
     }
 
     @RequiresRoles({CommonUtil.STUDENTMANAGER})
@@ -87,8 +87,8 @@ public class StmanagerController {
     @RequiresRoles({CommonUtil.STUDENTMANAGER_BOSS})
     @ApiOperation("获取教师课时统计信息")
     @GetMapping("/teacher/schedule/stat")
-    public List<TeacherScheduleStatRes> getTeacherScheduleStat(TeacherScheduleStatReq req, PageReq page){
-        return courseScheduleService.getTSStat(req, page);
+    public List<TeacherScheduleStatRes> getTeacherScheduleStat(TeacherScheduleStatReq req){
+        return courseScheduleService.getTSStat(req);
     }
 
     @RequiresRoles({CommonUtil.STUDENTMANAGER_BOSS})
@@ -157,8 +157,8 @@ public class StmanagerController {
     @RequiresRoles({CommonUtil.STUDENTMANAGER})
     @ApiOperation("获取课表列表")
     @GetMapping("/course/schedule")
-    public List<ScheduleRes> listSchedule(PageReq req) {
-        return courseScheduleService.list(req);
+    public List<ScheduleRes> listSchedule() {
+        return courseScheduleService.list();
     }
 
     @RequiresRoles({CommonUtil.STUDENTMANAGER})
