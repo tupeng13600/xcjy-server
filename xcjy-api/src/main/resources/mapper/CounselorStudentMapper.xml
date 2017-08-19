@@ -128,6 +128,7 @@
         <foreach collection="employeeIds" item="employeeId" open="(" separator="," close=")">
             #{employeeId}
         </foreach>
+        GROUP BY employee_id;
     </select>
 
 </mapper>
