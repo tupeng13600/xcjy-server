@@ -19,4 +19,6 @@ public interface EmployeeMapper {
     void deleteLogic(@Param("id") String id, @Param("updateTime") Date updateTime);
 
     List<Employee> getByIds(@Param("ids") Set<String> ids);
+
+    List<Employee> getBySchoolId(@Param("schoolId") String schoolId);
 }

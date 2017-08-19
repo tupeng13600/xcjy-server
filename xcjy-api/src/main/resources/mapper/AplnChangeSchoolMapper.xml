@@ -56,4 +56,9 @@
             #{id}
         </foreach>
     </select>
+    <select id="getByApplicationIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM apln_change_school WHERE application_user_id = #{userId}
+    </select>
 </mapper>

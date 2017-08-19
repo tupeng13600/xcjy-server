@@ -8,9 +8,7 @@ import com.xcjy.web.common.model.UserModel;
 import com.xcjy.web.common.util.CurrentUserUtil;
 import com.xcjy.web.controller.req.BackMoneyCreateReq;
 import com.xcjy.web.controller.req.ChangeSchoolReq;
-import com.xcjy.web.controller.res.AplnSimpleRes;
-import com.xcjy.web.controller.res.CreateIdRes;
-import com.xcjy.web.controller.res.ProcessRes;
+import com.xcjy.web.controller.res.*;
 import com.xcjy.web.mapper.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -21,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by tupeng on 2017/8/5.
@@ -294,7 +293,7 @@ public class ApplicationService {
         processLog.setApplicationId(applicationId);
         processLog.setHandlerStatus(HandlerStatusType.WAIT_AUDIT);
         List<User> roleUsers = userMapper.getByRole(roleEnum);
-        if(CollectionUtils.isEmpty(roleUsers)) {
+        if (CollectionUtils.isEmpty(roleUsers)) {
             throw new EducationException("不存在该角色的用户");
         }
         processLog.setHandlerUserId(roleUsers.get(0).getId());
@@ -370,4 +369,67 @@ public class ApplicationService {
         studentMoneyMapper.updateMoney(studentMoney);
     }
 
+    public List<Object> getMyProcess(ProcessLogType logType) {
+        List<Object> resList = new ArrayList<>();
+        if (ProcessLogType.BACK_MONEY.equals(logType)) {
+            List<AplnBackMoney> aplnBackMonies = aplnBackMoneyMapper.getByApplicationIds(CurrentUserUtil.currentUserId());
+            if (CollectionUtils.isNotEmpty(aplnBackMonies)) {
+                Set<String> studentIds = aplnBackMonies.stream().map(AplnBackMoney::getStudentId).collect(Collectors.toSet());
+                List<Student> studentList = studentMapper.getByIds(studentIds);
+                aplnBackMonies.forEach(aplnBackMoney -> {
+                    resList.add(getMoneyRes(aplnBackMoney, studentList));
+                });
+            }
+        } else {
+            List<AplnChangeSchool> aplnChangeSchools = aplnChangeSchoolMapper.getByApplicationIds(CurrentUserUtil.currentUserId());
+            if (CollectionUtils.isNotEmpty(aplnChangeSchools)) {
+                Set<String> studentIds = aplnChangeSchools.stream().map(AplnChangeSchool::getStudentId).collect(Collectors.toSet());
+                List<Student> studentList = studentMapper.getByIds(studentIds);
+                aplnChangeSchools.forEach(aplnChangeSchool -> {
+                    resList.add(getChangeSchoolRes(aplnChangeSchool, studentList));
+                });
+            }
+        }
+        return resList;
+    }
+
+    private AplnBackMoneyRes getMoneyRes(AplnBackMoney aplnBackMoney, List<Student> studentList) {
+        AplnBackMoneyRes res = new AplnBackMoneyRes();
+        BeanUtils.copyProperties(aplnBackMoney, res);
+        School school = CacheFactory.idSchools.get(aplnBackMoney.getSchoolId());
+        if (null != school) {
+            res.setSchoolName(school.getName());
+        }
+        res.setApplicationUser(CurrentUserUtil.currentName());
+        for (Student student : studentList) {
+            if (student.getId().equals(aplnBackMoney.getStudentId())) {
+                res.setStudentId(student.getId());
+                res.setStudentName(student.getName());
+                break;
+            }
+        }
+        return res;
+    }
+
+    private AplnChangeSchoolRes getChangeSchoolRes(AplnChangeSchool aplnChangeSchool, List<Student> studentList) {
+        AplnChangeSchoolRes res = new AplnChangeSchoolRes();
+        BeanUtils.copyProperties(aplnChangeSchool, res);
+        School fromSchool = CacheFactory.idSchools.get(aplnChangeSchool.getFromSchoolId());
+        School toSchool = CacheFactory.idSchools.get(aplnChangeSchool.getToSchoolId());
+        if (null != fromSchool) {
+            res.setFromSchoolId(fromSchool.getName());
+        }
+        if (null != toSchool) {
+            res.setToSchoolName(toSchool.getName());
+        }
+        res.setApplicationUser(CurrentUserUtil.currentName());
+        for (Student student : studentList) {
+            if (student.getId().equals(aplnChangeSchool.getStudentId())) {
+                res.setStudentId(student.getId());
+                res.setStudentName(student.getName());
+                break;
+            }
+        }
+        return res;
+    }
 }

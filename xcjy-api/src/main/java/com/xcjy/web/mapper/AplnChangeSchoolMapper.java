@@ -1,5 +1,6 @@
 package com.xcjy.web.mapper;
 
+import com.xcjy.web.bean.AplnBackMoney;
 import com.xcjy.web.bean.AplnChangeSchool;
 import com.xcjy.web.common.enums.ApplicationStatusType;
 import com.xcjy.web.controller.res.AplnSimpleRes;
@@ -16,4 +17,6 @@ public interface AplnChangeSchoolMapper {
     void updateStatus(@Param("changeSchool") AplnChangeSchool aplnChangeSchool, @Param("status") ApplicationStatusType status);
 
     List<AplnSimpleRes> getSimpleResByIds(@Param("ids") Set<String> ids);
+
+    List<AplnChangeSchool> getByApplicationIds(@Param("userId") String userId);
 }

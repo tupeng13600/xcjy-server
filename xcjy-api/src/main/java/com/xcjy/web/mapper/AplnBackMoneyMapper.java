@@ -16,4 +16,6 @@ public interface AplnBackMoneyMapper {
     void updateStatus(@Param("backMoney") AplnBackMoney aplnBackMoney, @Param("status")ApplicationStatusType status);
 
     List<AplnSimpleRes> getSimpleResByIds(@Param("ids") Set<String> ids);
+
+    List<AplnBackMoney> getByApplicationIds(@Param("userId") String userId);
 }

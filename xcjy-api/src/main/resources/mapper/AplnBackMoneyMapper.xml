@@ -57,4 +57,10 @@
         </foreach>
     </select>
 
+    <select id="getByApplicationIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM apln_back_money WHERE application_user_id = #{userId};
+    </select>
+
 </mapper>

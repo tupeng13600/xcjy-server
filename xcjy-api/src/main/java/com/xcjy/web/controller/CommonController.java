@@ -1,15 +1,13 @@
 package com.xcjy.web.controller;
 
+import com.xcjy.web.bean.Employee;
 import com.xcjy.web.bean.School;
 import com.xcjy.web.common.enums.HandlerStatusType;
 import com.xcjy.web.common.enums.ProcessLogType;
 import com.xcjy.web.controller.req.UserPwdSelfUpdateReq;
 import com.xcjy.web.controller.res.ProcessRes;
 import com.xcjy.web.controller.res.RoleRes;
-import com.xcjy.web.service.ApplicationService;
-import com.xcjy.web.service.RoleService;
-import com.xcjy.web.service.SchoolService;
-import com.xcjy.web.service.UserService;
+import com.xcjy.web.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +36,9 @@ public class CommonController {
 
     @Autowired
     private ApplicationService applicationService;
+
+    @Autowired
+    private EmployeeService employeeService;
 
     @ApiOperation("获取全部角色列表")
     @GetMapping("/role")
@@ -68,9 +69,15 @@ public class CommonController {
     }
 
     @ApiOperation("获取自己提交的申请列表")
-    @GetMapping("/my/progress/{processLog}/{handlerStatus}")
-    public List<ProcessRes> getMyProcessList(@PathVariable HandlerStatusType handlerStatus, @PathVariable ProcessLogType processLog) {
-        return applicationService.listProcess(handlerStatus, processLog);
+    @GetMapping("/my/application/{type}")
+    public List<Object> getMyApplicationList(@PathVariable ProcessLogType type) {
+        return applicationService.getMyProcess(type);
+    }
+
+    @ApiOperation("根据校区ID获取咨询师列表")
+    @GetMapping("/counselor/{schoolId}")
+    public List<Employee> getMyProcessList(@PathVariable String schoolId) {
+        return employeeService.getBySchoolId(schoolId);
     }
 
 }

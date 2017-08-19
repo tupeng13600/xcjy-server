@@ -147,4 +147,7 @@ public class EmployeeService {
         return employeeMapper.getAll();
     }
 
+    public List<Employee> getBySchoolId(String schoolId) {
+        return employeeMapper.getBySchoolId(schoolId);
+    }
 }
