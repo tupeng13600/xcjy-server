@@ -43,6 +43,7 @@ public class AuthController {
     @GetMapping("/logout")
     public void logout() {
         SecurityUtils.getSubject().logout();
+        TokenThreadLocal.remove(); //清除token
     }
 
 }

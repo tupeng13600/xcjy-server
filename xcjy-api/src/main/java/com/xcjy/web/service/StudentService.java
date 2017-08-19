@@ -61,7 +61,9 @@ public class StudentService {
         }
         student.setAlreadyPaid(PayStatusType.NO);
         student.setDistributionType(DistributionTypeEnum.COUNSELOR_DISTRIBUTION);
-        student.setSchoolId(CurrentThreadLocal.getSchoolId());
+        if(null != CurrentThreadLocal.getSchoolId()) {
+            student.setSchoolId(CurrentThreadLocal.getSchoolId());
+        }
         studentMapper.insert(student);
         CounselorStudent counselorStudent = new CounselorStudent();
         counselorStudent.setSchoolId(CurrentThreadLocal.getSchoolId());
