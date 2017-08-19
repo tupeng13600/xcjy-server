@@ -60,9 +60,12 @@ public class StudentService {
             student.setBirthday(DateUtil.getBirthByIdCard(student.getIdCard()));
         }
         student.setAlreadyPaid(PayStatusType.NO);
-        student.setDistributionType(DistributionTypeEnum.COUNSELOR_DISTRIBUTION);
+
         if(null != CurrentThreadLocal.getSchoolId()) {
             student.setSchoolId(CurrentThreadLocal.getSchoolId());
+            student.setDistributionType(DistributionTypeEnum.COUNSELOR_DISTRIBUTION);
+        } else {
+            student.setDistributionType(DistributionTypeEnum.NO_DISTRIBUTION);
         }
         studentMapper.insert(student);
         //如果是咨询师创建,则创建关系
