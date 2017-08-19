@@ -75,7 +75,7 @@ public class CommonController {
         return applicationService.getMyProcess(type);
     }
 
-    @ApiOperation("根据校区ID获取咨询师列表")
+    @ApiOperation("根据校区ID获取对应角色员工列表")
     @GetMapping("/counselor/{schoolId}/{role}")
     public List<Employee> getMyProcessList(@PathVariable String schoolId, @PathVariable RoleEnum role) {
         return employeeService.getBySchoolId(schoolId, role);
