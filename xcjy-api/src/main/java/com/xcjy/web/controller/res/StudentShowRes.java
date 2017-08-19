@@ -27,6 +27,8 @@ public class StudentShowRes {
 
     private String grade;
 
+    private String address;
+
     private String subject;
 
     private String phone;
