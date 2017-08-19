@@ -62,7 +62,7 @@ public class CounselorController {
         return studentAssetService.getCounselorStat(req);
     }
 
-    @RequiresRoles({CommonUtil.CONSULTANT_MAIN})
+    @RequiresRoles({CommonUtil.CONSULTANT_MAIN, CommonUtil.CONSULTANT_BOSS})
     @ApiOperation("咨询主任获取咨询师签约数据")
     @GetMapping("/stat")
     public List<CounselorAssesSignRes> getAssetsSign(AssetsSignReq req) {
