@@ -65,13 +65,16 @@ public class StudentService {
             student.setSchoolId(CurrentThreadLocal.getSchoolId());
         }
         studentMapper.insert(student);
-        CounselorStudent counselorStudent = new CounselorStudent();
-        counselorStudent.setSchoolId(CurrentThreadLocal.getSchoolId());
-        counselorStudent.setStatus(CounselorStudentStatusType.CONNECTION_NO);
-        counselorStudent.setEmployeeId(CurrentUserUtil.currentEmployeeId());
-        counselorStudent.setMoney(0);
-        counselorStudent.setStudentId(student.getId());
-        counselorStudentMapper.insert(counselorStudent);
+        //如果是咨询师创建,则创建关系
+        if(null != CurrentThreadLocal.getSchoolId()) {
+            CounselorStudent counselorStudent = new CounselorStudent();
+            counselorStudent.setSchoolId(CurrentThreadLocal.getSchoolId());
+            counselorStudent.setStatus(CounselorStudentStatusType.CONNECTION_NO);
+            counselorStudent.setEmployeeId(CurrentUserUtil.currentEmployeeId());
+            counselorStudent.setMoney(0);
+            counselorStudent.setStudentId(student.getId());
+            counselorStudentMapper.insert(counselorStudent);
+        }
         return new CreateIdRes(student.getId());
     }
 

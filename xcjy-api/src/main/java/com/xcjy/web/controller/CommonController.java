@@ -62,8 +62,14 @@ public class CommonController {
     }
 
     @ApiOperation("获取审核列表")
-    @GetMapping("/money/{processLog}/{handlerStatus}")
-    public List<ProcessRes> getBackMoneyProcessList(@PathVariable HandlerStatusType handlerStatus, @PathVariable ProcessLogType processLog) {
+    @GetMapping("/progress/{processLog}/{handlerStatus}")
+    public List<ProcessRes> getProcessList(@PathVariable HandlerStatusType handlerStatus, @PathVariable ProcessLogType processLog) {
+        return applicationService.listProcess(handlerStatus, processLog);
+    }
+
+    @ApiOperation("获取自己提交的申请列表")
+    @GetMapping("/my/progress/{processLog}/{handlerStatus}")
+    public List<ProcessRes> getMyProcessList(@PathVariable HandlerStatusType handlerStatus, @PathVariable ProcessLogType processLog) {
         return applicationService.listProcess(handlerStatus, processLog);
     }
 
