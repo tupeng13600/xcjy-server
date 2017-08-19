@@ -36,4 +36,6 @@ public interface UserMapper {
     void updatePassword(@Param("user") User user);
 
     void updateRole(@Param("user") User user);
+
+    List<String> getBySchoolId(@Param("schoolId") String schoolId, @Param("role") RoleEnum role);
 }

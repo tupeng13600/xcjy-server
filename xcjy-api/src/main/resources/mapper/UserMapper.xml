@@ -72,6 +72,10 @@
         SELECT <include refid="BaseTemplate" /> FROM `user` WHERE id = #{id}
     </select>
 
+    <select id="getBySchoolId" resultType="java.lang.String">
+        SELECT entity_id FROM user WHERE school_id = #{schoolId} AND role_id LIKE CONCAT('%',#{role},'%');
+    </select>
+
     <update id="updateBase">
         UPDATE user SET
         name = #{user.name},

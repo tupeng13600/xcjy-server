@@ -87,7 +87,7 @@
     <select id="getBySchoolId" resultMap="BaseResultMap">
         SELECT
         <include refid="baseSql"/>
-        FROM employee WHERE school_id = #{schoolId}
+        FROM employee WHERE school_id = #{schoolId} AND
     </select>
 
     <update id="deleteLogic">

@@ -16,6 +16,7 @@ import com.xcjy.web.controller.res.CreateIdRes;
 import com.xcjy.web.mapper.EmployeeMapper;
 import com.xcjy.web.mapper.UserMapper;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.util.CollectionUtils;
 import org.apache.shiro.util.SimpleByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -147,7 +150,11 @@ public class EmployeeService {
         return employeeMapper.getAll();
     }
 
-    public List<Employee> getBySchoolId(String schoolId) {
-        return employeeMapper.getBySchoolId(schoolId);
+    public List<Employee> getBySchoolId(String schoolId, RoleEnum role) {
+        List<String> employeeIds = userMapper.getBySchoolId(schoolId, role);
+        if(CollectionUtils.isEmpty(employeeIds)) {
+            return new ArrayList<>();
+        }
+        return employeeMapper.getByIds(new HashSet<>(employeeIds));
     }
 }

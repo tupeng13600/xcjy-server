@@ -4,6 +4,7 @@ import com.xcjy.web.bean.Employee;
 import com.xcjy.web.bean.School;
 import com.xcjy.web.common.enums.HandlerStatusType;
 import com.xcjy.web.common.enums.ProcessLogType;
+import com.xcjy.web.common.enums.RoleEnum;
 import com.xcjy.web.controller.req.UserPwdSelfUpdateReq;
 import com.xcjy.web.controller.res.ProcessRes;
 import com.xcjy.web.controller.res.RoleRes;
@@ -75,9 +76,9 @@ public class CommonController {
     }
 
     @ApiOperation("根据校区ID获取咨询师列表")
-    @GetMapping("/counselor/{schoolId}")
-    public List<Employee> getMyProcessList(@PathVariable String schoolId) {
-        return employeeService.getBySchoolId(schoolId);
+    @GetMapping("/counselor/{schoolId}/{role}")
+    public List<Employee> getMyProcessList(@PathVariable String schoolId, @PathVariable RoleEnum role) {
+        return employeeService.getBySchoolId(schoolId, role);
     }
 
 }
