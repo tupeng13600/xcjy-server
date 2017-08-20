@@ -61,19 +61,36 @@
     </select>
 
     <select id="getByRole" resultMap="BaseResultMap">
-        SELECT <include refid="BaseTemplate" /> FROM `user` WHERE role_id = #{roleCode} limit 1;
+        SELECT
+        <include refid="BaseTemplate"/>
+        FROM `user` WHERE role_id = #{roleCode} limit 1;
     </select>
 
     <select id="getAll" resultMap="BaseResultMap">
-        SELECT <include refid="BaseTemplate" /> FROM `user`
+        SELECT
+        <include refid="BaseTemplate"/>
+        FROM `user`
     </select>
 
     <select id="getById" resultMap="BaseResultMap">
-        SELECT <include refid="BaseTemplate" /> FROM `user` WHERE id = #{id}
+        SELECT
+        <include refid="BaseTemplate"/>
+        FROM `user` WHERE id = #{id}
     </select>
 
     <select id="getBySchoolId" resultType="java.lang.String">
-        SELECT entity_id FROM user WHERE school_id = #{schoolId} AND role_id LIKE CONCAT('%',#{role},'%');
+        SELECT entity_id FROM user
+        <where>
+            <if test="schoolId != null">
+                school_id = #{schoolId}
+            </if>
+            <!--<if test="role != null">-->
+                <!--AND role_id LIKE CONCAT('%',#{role},',%');-->
+            <!--</if>-->
+            <if test="role != null">
+                AND role_id = #{role};
+            </if>
+        </where>
     </select>
 
     <update id="updateBase">
