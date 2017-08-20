@@ -219,4 +219,7 @@ public class StudentService {
         return statRes;
     }
 
+    public Student getById(String studentId) {
+        return studentMapper.getById(studentId);
+    }
 }

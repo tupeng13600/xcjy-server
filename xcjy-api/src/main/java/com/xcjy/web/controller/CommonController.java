@@ -2,6 +2,7 @@ package com.xcjy.web.controller;
 
 import com.xcjy.web.bean.Employee;
 import com.xcjy.web.bean.School;
+import com.xcjy.web.bean.Student;
 import com.xcjy.web.common.enums.HandlerStatusType;
 import com.xcjy.web.common.enums.ProcessLogType;
 import com.xcjy.web.common.enums.RoleEnum;
@@ -41,6 +42,9 @@ public class CommonController {
     @Autowired
     private EmployeeService employeeService;
 
+    @Autowired
+    private StudentService studentService;
+
     @ApiOperation("获取全部角色列表")
     @GetMapping("/role")
     public List<RoleRes> list() {
@@ -79,6 +83,12 @@ public class CommonController {
     @GetMapping("/counselor/{schoolId}/{role}")
     public List<Employee> getMyProcessList(@PathVariable String schoolId, @PathVariable RoleEnum role) {
         return employeeService.getBySchoolId(schoolId, role);
+    }
+
+    @ApiOperation("根据ID获取学生详情")
+    @GetMapping("/student/{studentId}")
+    public Student getById(@PathVariable String studentId){
+        return studentService.getById(studentId);
     }
 
 }
