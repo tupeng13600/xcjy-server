@@ -1,8 +1,10 @@
 package com.xcjy.web.service;
 
 import com.xcjy.web.bean.Employee;
+import com.xcjy.web.bean.School;
 import com.xcjy.web.bean.StudentPayLog;
 import com.xcjy.web.bean.User;
+import com.xcjy.web.common.cache.CacheFactory;
 import com.xcjy.web.common.enums.RoleEnum;
 import com.xcjy.web.common.enums.StudentPayType;
 import com.xcjy.web.controller.res.*;
@@ -78,6 +80,11 @@ public class PresidentService {
                 statRes.setNum(statRes.getNum() + 1);
             }
         }
+        School school = CacheFactory.idSchools.get(employee.getSchoolId());
+        if(null != school) {
+            detail.setSchoolId(school.getId());
+            detail.setSchoolName(school.getName());
+        }
         return detail;
     }
 
@@ -87,7 +94,7 @@ public class PresidentService {
         }
         List<User> userList = new ArrayList<>();
         for (RoleEnum roleEnum : roleEnums) {
-            userList.addAll(userMapper.getByRole(roleEnum));
+            userList.addAll(userMapper.getListByRole(roleEnum));
         }
         Set<String> employeeIds = CollectionUtils.isEmpty(userList) ? new HashSet<>() : userList.stream().map(User::getEntityId).collect(Collectors.toSet());
         if (CollectionUtils.isEmpty(employeeIds)) {
@@ -136,6 +143,11 @@ public class PresidentService {
                 statRes.setTotalHour(statRes.getTotalHour() + unFinishStat.getTotal());
                 statRes.setUnFinishHour(statRes.getUnFinishHour() + unFinishStat.getTotal());
             }
+        }
+        School school = CacheFactory.idSchools.get(employee.getSchoolId());
+        if(null != school) {
+            detail.setSchoolId(school.getId());
+            detail.setSchoolName(school.getName());
         }
         return detail;
     }

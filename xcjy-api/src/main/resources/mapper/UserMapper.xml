@@ -85,12 +85,18 @@
                 school_id = #{schoolId}
             </if>
             <!--<if test="role != null">-->
-                <!--AND role_id LIKE CONCAT('%',#{role},',%');-->
+            <!--AND role_id LIKE CONCAT('%',#{role},',%');-->
             <!--</if>-->
             <if test="role != null">
                 AND role_id = #{role};
             </if>
         </where>
+    </select>
+
+    <select id="getListByRole" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseTemplate"/>
+        FROM `user` WHERE role_id = #{roleCode}
     </select>
 
     <update id="updateBase">

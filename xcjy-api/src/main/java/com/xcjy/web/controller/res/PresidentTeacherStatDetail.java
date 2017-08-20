@@ -20,5 +20,9 @@ public class PresidentTeacherStatDetail {
 
     private Integer unFinishHour = 0;
 
+    private String schoolId;
+
+    private String schoolName;
+
 
 }

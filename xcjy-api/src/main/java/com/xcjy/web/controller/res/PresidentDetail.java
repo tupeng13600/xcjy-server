@@ -10,6 +10,10 @@ public class PresidentDetail {
 
     private String id;
 
+    private String schoolId;
+
+    private String schoolName;
+
     private String name;
 
     private String phone;

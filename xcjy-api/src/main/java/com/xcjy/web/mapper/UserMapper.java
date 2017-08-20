@@ -5,6 +5,7 @@ import com.xcjy.web.common.enums.RoleEnum;
 import com.xcjy.web.common.enums.UserType;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -39,4 +40,5 @@ public interface UserMapper {
 
     List<String> getBySchoolId(@Param("schoolId") String schoolId, @Param("role") RoleEnum role);
 
+    List<User> getListByRole(@Param("roleCode") RoleEnum roleCode);
 }
