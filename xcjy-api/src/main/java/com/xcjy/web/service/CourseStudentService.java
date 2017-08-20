@@ -5,6 +5,7 @@ import com.xcjy.web.common.CurrentThreadLocal;
 import com.xcjy.web.common.enums.PayStatusType;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.util.CurrentUserUtil;
+import com.xcjy.web.controller.req.BuyCourseHourReq;
 import com.xcjy.web.controller.req.CourseStudentReq;
 import com.xcjy.web.controller.res.CounselorStuStatusRes;
 import com.xcjy.web.controller.res.CourseStudentStatRes;
@@ -47,40 +48,44 @@ public class CourseStudentService {
 
     @Transactional
     public void buyCourse(CourseStudentReq req) {
-        Course course = courseMapper.getById(req.getCourseId());
-        if (null == course) {
-            throw new EducationException("课程信息不存在");
-        }
-        Student student = studentMapper.getById(req.getStudentId());
-        if (null == student) {
-            throw new EducationException("学生信息不存在");
-        }
-        if (PayStatusType.NO.equals(student.getAlreadyPaid())) {
-            throw new EducationException("学生尚未缴费，无法订购课时");
-        }
-        StudentMoney studentMoney = studentMoneyMapper.getBySchoolIdAndStudentId(student.getSchoolId(), student.getId());
-        //校验学生是否有足够的余额购买课程
-        validatePay(student.getSchoolId(), student.getId(), course.getPrice() * req.getBuyHour());
-        //创建学生课程关系
-        createCourseStudent(req);
+        List<BuyCourseHourReq> courseList = req.getCourseList();
+        for (BuyCourseHourReq courseReq : courseList) {
+            Course course = courseMapper.getById(courseReq.getCourseId());
+            if (null == course) {
+                throw new EducationException("课程信息不存在");
+            }
+            Student student = studentMapper.getById(req.getStudentId());
+            if (null == student) {
+                throw new EducationException("学生信息不存在");
+            }
+            if (PayStatusType.NO.equals(student.getAlreadyPaid())) {
+                throw new EducationException("学生尚未缴费，无法订购课时");
+            }
+            StudentMoney studentMoney = studentMoneyMapper.getBySchoolIdAndStudentId(student.getSchoolId(), student.getId());
+            //校验学生是否有足够的余额购买课程
+            validatePay(student.getSchoolId(), student.getId(), course.getPrice() * courseReq.getBuyHour());
+            //创建学生课程关系
+            createCourseStudent(req.getStudentId(), courseReq.getCourseId(), courseReq.getBuyHour());
 
-        studentMoney.setHasUsed(studentMoney.getHasUsed() + (course.getPrice() * req.getBuyHour()));
-        studentMoney.setTotalHour(studentMoney.getTotalHour() + req.getBuyHour());
-        studentMoneyMapper.updateMoney(studentMoney);
+            studentMoney.setHasUsed(studentMoney.getHasUsed() + (course.getPrice() * courseReq.getBuyHour()));
+            studentMoney.setTotalHour(studentMoney.getTotalHour() + courseReq.getBuyHour());
+            studentMoneyMapper.updateMoney(studentMoney);
+
+        }
     }
 
-    private void createCourseStudent(CourseStudentReq req) {
-        CourseStudent courseStudent = courseStudentMapper.getBySIdAndCId(req.getStudentId(), req.getCourseId());
+    private void createCourseStudent(String studentId, String courseId, Integer buyHour) {
+        CourseStudent courseStudent = courseStudentMapper.getBySIdAndCId(studentId, courseId);
         if (null == courseStudent) {
             courseStudent = new CourseStudent();
-            courseStudent.setStudentId(req.getStudentId());
-            courseStudent.setCourseId(req.getCourseId());
+            courseStudent.setStudentId(studentId);
+            courseStudent.setCourseId(courseId);
             courseStudent.setSchoolId(CurrentThreadLocal.getSchoolId());
             courseStudent.setUsedHour(0);
-            courseStudent.setBuyHour(req.getBuyHour());
+            courseStudent.setBuyHour(buyHour);
             courseStudentMapper.insert(courseStudent);
         } else {
-            courseStudent.setBuyHour(courseStudent.getBuyHour() + req.getBuyHour());
+            courseStudent.setBuyHour(courseStudent.getBuyHour() + buyHour);
             courseStudent.setUpdateTime(new Date());
             courseStudentMapper.updateUsedHour(courseStudent);
         }

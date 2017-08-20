@@ -2,8 +2,11 @@ package com.xcjy.web.controller.req;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * Created by tupeng on 2017/8/10.
@@ -13,10 +16,9 @@ public class CourseStudentReq {
 
     @NotBlank
     private String studentId;
-    @NotBlank
-    private String courseId;
 
-    @NotNull
-    private Integer buyHour;
+    @Valid
+    @NotEmpty
+    private List<BuyCourseHourReq> courseList;
 
 }

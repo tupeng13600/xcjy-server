@@ -1,5 +1,6 @@
 package com.xcjy.web.controller;
 
+import com.xcjy.web.bean.Course;
 import com.xcjy.web.bean.Employee;
 import com.xcjy.web.bean.School;
 import com.xcjy.web.bean.Student;
@@ -45,6 +46,9 @@ public class CommonController {
     @Autowired
     private StudentService studentService;
 
+    @Autowired
+    private CourseService courseService;
+
     @ApiOperation("获取全部角色列表")
     @GetMapping("/role")
     public List<RoleRes> list() {
@@ -89,6 +93,12 @@ public class CommonController {
     @GetMapping("/student/{studentId}")
     public Student getById(@PathVariable String studentId){
         return studentService.getById(studentId);
+    }
+
+    @ApiOperation("获取课程列表")
+    @GetMapping("/course")
+    public List<Course> getCourseList(){
+        return courseService.list();
     }
 
 }
