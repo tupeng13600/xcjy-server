@@ -11,6 +11,10 @@ public class UpcLoginSuccessModel {
 
     private String loginIp;
 
+    public UpcLoginSuccessModel(Date loginTime) {
+        this.loginTime = loginTime;
+    }
+
     public UpcLoginSuccessModel(Date loginTime, String loginIp) {
         this.loginTime = loginTime;
         this.loginIp = loginIp;

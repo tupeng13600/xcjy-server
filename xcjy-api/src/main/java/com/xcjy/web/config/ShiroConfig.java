@@ -47,32 +47,35 @@ public class ShiroConfig {
 
 
     @Bean("shiroFilter")
-    public UpcFilterFactoryBean shiroFilter(UpcSecurityManager securityManager, AuthMessageService authService) {
-        return new UpcFilterFactoryBean(securityManager, authService, getDefineFilterChain());
+    public UpcFilterFactoryBean shiroFilter(UpcSecurityManager securityManager) {
+        return new UpcFilterFactoryBean(securityManager, getDefineFilterChain());
     }
 
     /**
      * Shiro生命周期处理器
+     *
      * @return
      */
     @Bean
-    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor(){
+    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
     }
 
     /**
      * 开启shiro注解
+     *
      * @return
      */
     @Bean
     @DependsOn({"lifecycleBeanPostProcessor"})
-    public DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator(){
+    public DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator() {
         DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
         advisorAutoProxyCreator.setProxyTargetClass(true);
         return advisorAutoProxyCreator;
     }
+
     @Bean
-    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(UpcSecurityManager securityManager){
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(UpcSecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
@@ -81,9 +84,10 @@ public class ShiroConfig {
     /**
      * 在这里添加shiro的拦截路径
      * 例如：defineFilterChain.add("/user/info = anon");
+     *
      * @return
      */
-    private List<String> getDefineFilterChain(){
+    private List<String> getDefineFilterChain() {
         List<String> defineFilterChain = new ArrayList<>();
         defineFilterChain.add("/swagger-resources/** = anon");
         defineFilterChain.add("/user = anon");

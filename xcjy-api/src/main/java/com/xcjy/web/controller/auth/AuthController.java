@@ -26,7 +26,7 @@ public class AuthController {
 
     @ApiOperation("登陆接口")
     @PutMapping("/login")
-    public Map<String, String> valid(@RequestParam String username, @RequestParam String password) {
+    public Map<String, String> valid(@RequestParam(required = false) String username,@RequestParam(required = false) String password) {
         Map<String, String> result = new HashMap<>();
         result.put("accessToken", TokenThreadLocal.get());
         return result;

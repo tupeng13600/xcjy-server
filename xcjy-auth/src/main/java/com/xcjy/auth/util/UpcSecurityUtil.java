@@ -25,7 +25,7 @@ public class UpcSecurityUtil {
      * @return
      */
     public static String randomString(){
-        return UUID.randomUUID().toString().replaceAll("-", "");
+        return UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
     }
 
 }

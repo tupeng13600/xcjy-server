@@ -2,9 +2,7 @@ package com.xcjy.auth;
 
 
 import com.xcjy.auth.filter.UpcAuthFilter;
-import com.xcjy.auth.filter.UpcLoginFilter;
 import com.xcjy.auth.manager.UpcSecurityManager;
-import com.xcjy.auth.service.AuthMessageService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 
@@ -19,15 +17,14 @@ import java.util.Map;
  */
 public class UpcFilterFactoryBean extends ShiroFilterFactoryBean {
 
-    public UpcFilterFactoryBean(UpcSecurityManager upcSecurityManager, AuthMessageService authMessageService, List<String> defineFilterChain) {
+    public UpcFilterFactoryBean(UpcSecurityManager upcSecurityManager, List<String> defineFilterChain) {
         setSecurityManager(upcSecurityManager);
 
         Map<String, Filter> filterMap = new HashMap<>();
-        filterMap.put("upcAuth", new UpcAuthFilter(authMessageService));
-        filterMap.put("upcLogin", new UpcLoginFilter(authMessageService));
+        filterMap.put("upcAuth", new UpcAuthFilter());
         setFilters(filterMap);
         Map<String, String> definitionMap = new LinkedHashMap<>();
-        definitionMap.put("/auth/login", "upcLogin");
+        definitionMap.put("/auth/login", "upcAuth");
         if (CollectionUtils.isNotEmpty(defineFilterChain)) {
             defineFilterChain.stream().forEach(chain -> {
                 String[] uriList = chain.split("=");

@@ -3,6 +3,7 @@ package com.xcjy.auth.realm;
 import com.xcjy.auth.cache.AuthCache;
 import com.xcjy.auth.cache.TokenThreadLocal;
 import com.xcjy.auth.matcher.UpcCredentialsMatcher;
+import com.xcjy.auth.model.UpcLoginSuccessModel;
 import com.xcjy.auth.model.UpcUser;
 import com.xcjy.auth.service.AuthMessageService;
 import com.xcjy.auth.token.UpcToken;
@@ -17,6 +18,7 @@ import org.apache.shiro.util.SimpleByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -46,8 +48,8 @@ public class UpcRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         String principal = (String) principals.getPrimaryPrincipal();
+        LOGGER.warn("获取到的principal的值为：{}", principal);
         if (StringUtils.isEmpty(principal)) {
-            LOGGER.warn("can not get principal for this user");
             return new SimpleAuthorizationInfo();
         }
         Set<String> roles = authMessageService.getRole(principal);
@@ -68,15 +70,10 @@ public class UpcRealm extends AuthorizingRealm {
             LOGGER.error("登录失败，用户不存在!!");
             throw new UnknownAccountException("用户不存在");
         }
-        String accessToken = getToken();
-        AuthCache.put(accessToken, user, (UpcToken) token);
+        String accessToken = TokenThreadLocal.get();
+        AuthCache.put(accessToken, (UpcToken) token);
+        authMessageService.saveUserMessage(new UpcLoginSuccessModel(new Date()));
         return new SimpleAuthenticationInfo(token.getPrincipal(), user.getPassword(), new SimpleByteSource(user.getSalt()), getName());
-    }
-
-    private String getToken(){
-        String accessToken = StringUtils.isBlank(TokenThreadLocal.get()) ? UpcSecurityUtil.randomString().toUpperCase() : TokenThreadLocal.get();
-        TokenThreadLocal.put(accessToken);
-        return accessToken;
     }
 
     @Override

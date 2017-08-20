@@ -4,6 +4,7 @@ package com.xcjy.auth.service;
 
 import com.xcjy.auth.model.UpcLoginSuccessModel;
 import com.xcjy.auth.model.UpcUser;
+import com.xcjy.auth.token.UpcToken;
 
 import java.util.Set;
 
