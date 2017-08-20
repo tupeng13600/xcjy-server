@@ -13,6 +13,10 @@ public class CounselorAssesSignRes {
 
     private String employeeId;
 
+    private String schoolId;
+
+    private String schoolName;
+
     private String name;
 
     private String phone;

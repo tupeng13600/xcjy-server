@@ -1,6 +1,7 @@
 package com.xcjy.web.service;
 
 import com.xcjy.web.bean.School;
+import com.xcjy.web.common.cache.CacheFactory;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.controller.req.SchoolCreateReq;
 import com.xcjy.web.controller.req.SchoolUpdateReq;
@@ -29,6 +30,7 @@ public class SchoolService {
         School school = new School();
         BeanUtils.copyProperties(req, school);
         schoolMapper.insert(school);
+        CacheFactory.idSchools.put(school.getId(), school);
         return new CreateIdRes(school.getId());
     }
 

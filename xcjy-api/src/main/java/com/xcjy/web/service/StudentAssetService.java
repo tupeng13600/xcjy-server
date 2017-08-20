@@ -1,9 +1,11 @@
 package com.xcjy.web.service;
 
 import com.xcjy.web.bean.Employee;
+import com.xcjy.web.bean.School;
 import com.xcjy.web.bean.Student;
 import com.xcjy.web.bean.StudentPayLog;
 import com.xcjy.web.common.CurrentThreadLocal;
+import com.xcjy.web.common.cache.CacheFactory;
 import com.xcjy.web.common.enums.RoleEnum;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.util.CurrentUserUtil;
@@ -124,6 +126,11 @@ public class StudentAssetService {
                 signRes.setTotalStudentNum(countModel.getStudentNum());
             }
         });
+        School school = CacheFactory.idSchools.get(employee.getSchoolId());
+        if(null != school) {
+            signRes.setSchoolId(school.getId());
+            signRes.setSchoolName(school.getName());
+        }
         return signRes;
     }
 
