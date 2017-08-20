@@ -1,5 +1,6 @@
 package com.xcjy.web.controller.auth;
 
+import com.xcjy.auth.cache.AuthCache;
 import com.xcjy.auth.cache.TokenThreadLocal;
 import com.xcjy.auth.util.UserUtil;
 import com.xcjy.web.bean.User;
@@ -43,7 +44,7 @@ public class AuthController {
     @GetMapping("/logout")
     public void logout() {
         SecurityUtils.getSubject().logout();
-        TokenThreadLocal.remove(); //清除token
+        AuthCache.remove(TokenThreadLocal.get());
     }
 
 }
