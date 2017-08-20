@@ -37,4 +37,8 @@ public interface CounselorStudentMapper {
     List<CounselorStudent> getByTime(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
 
     List<CounselorStuNumModel> getStudentNumByEIds(@Param("employeeIds") Set<String> employeeIds);
+
+    CounselorStudent getStuIdAndEmpId(@Param("employeId") String employeeId, @Param("studentId") String studentId);
+
+    void updaStatus(@Param("counselorStudent") CounselorStudent counselorStudent);
 }

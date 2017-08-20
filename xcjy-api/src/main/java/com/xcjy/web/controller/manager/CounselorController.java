@@ -41,6 +41,9 @@ public class CounselorController {
     @Autowired
     private ExcelService excelService;
 
+    @Autowired
+    private CounselorStudentService counselorStudentService;
+
     @RequiresRoles({CommonUtil.CONSULTANT, CommonUtil.CONSULTANT_MAIN})
     @ApiOperation("获取学生资产信息[咨询师]")
     @GetMapping("/assets")
@@ -116,6 +119,13 @@ public class CounselorController {
     @PostMapping("/student/excel")
     public void student(@RequestParam MultipartFile file) throws IOException {
         excelService.importStudent(file);
+    }
+
+    @RequiresRoles({CommonUtil.CONSULTANT, CommonUtil.CONSULTANT_MAIN})
+    @ApiOperation("更新学生跟进状态")
+    @PostMapping("/counselor/student/{studentId}")
+    public void updateCounStu2NoPay(@PathVariable String studentId) throws IOException {
+        counselorStudentService.updateCounStu2NoPay(studentId);
     }
 
 }

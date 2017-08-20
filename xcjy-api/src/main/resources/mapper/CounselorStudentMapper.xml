@@ -46,6 +46,12 @@
         update_time = #{updateTime}
         WHERE id = #{id} AND deleted = false;
     </update>
+    <update id="updaStatus">
+        UPDATE counselor_student SET
+        status = #{counselorStudent.status},
+        update_time = #{counselorStudent.updateTime}
+        WHERE id = #{counselorStudent.id} AND deleted = false;
+    </update>
 
     <select id="getByEIdStuIdScId" resultType="com.xcjy.web.bean.CounselorStudent">
         SELECT
@@ -129,6 +135,12 @@
             #{employeeId}
         </foreach>
         GROUP BY employee_id;
+    </select>
+
+    <select id="getStuIdAndEmpId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM counselor_student WHERE  student_id = #{studentId} AND employee_id = #{employeId}
     </select>
 
 </mapper>
