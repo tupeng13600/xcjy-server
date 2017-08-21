@@ -7,7 +7,6 @@ import com.xcjy.auth.model.UpcLoginSuccessModel;
 import com.xcjy.auth.model.UpcUser;
 import com.xcjy.auth.service.AuthMessageService;
 import com.xcjy.auth.token.UpcToken;
-import com.xcjy.auth.util.UpcSecurityUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -65,6 +64,10 @@ public class UpcRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+        if (null == token) {
+            return null;
+        }
+        LOGGER.info("执行登录操作，用户名:{}，密码:{}", ((UpcToken) token).getUsername(), ((UpcToken) token).getPassword());
         UpcUser user = authMessageService.getUser(((UpcToken) token).getUsername());
         if (null == user) {
             LOGGER.error("登录失败，用户不存在!!");

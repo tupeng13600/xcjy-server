@@ -86,7 +86,7 @@ public class UpcAuthFilter extends BasicHttpAuthenticationFilter {
     private UpcToken getUpcToken(HttpServletRequest request) {
         String username = request.getParameter(USERNAME_IDX);
         String password = request.getParameter(PASSWORD_IDX);
-        LOGGER.info("执行登录操作，用户名:{}，密码:{}", username, password);
+        LOGGER.info("获取到的，用户名:{}，密码:{}", username, password);
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             filterThreadLocal.set("用户名或者密码不能为空");
             return null;

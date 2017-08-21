@@ -20,6 +20,7 @@ public abstract class AuthCache {
     public static UpcToken get(String token) {
         if (expire(token)) {
             remove(token);
+            return null;
         }
         tokenTime.put(token, System.currentTimeMillis());
         return tokenResource.get(token);
