@@ -61,7 +61,7 @@ public class StudentService {
         }
         student.setAlreadyPaid(PayStatusType.NO);
 
-        if(null != CurrentThreadLocal.getSchoolId()) {
+        if (null != CurrentThreadLocal.getSchoolId()) {
             student.setSchoolId(CurrentThreadLocal.getSchoolId());
             student.setDistributionType(DistributionTypeEnum.COUNSELOR_DISTRIBUTION);
         } else {
@@ -69,7 +69,7 @@ public class StudentService {
         }
         studentMapper.insert(student);
         //如果是咨询师创建,则创建关系
-        if(null != CurrentThreadLocal.getSchoolId()) {
+        if (null != CurrentThreadLocal.getSchoolId()) {
             CounselorStudent counselorStudent = new CounselorStudent();
             counselorStudent.setSchoolId(CurrentThreadLocal.getSchoolId());
             counselorStudent.setStatus(CounselorStudentStatusType.CONNECTION_NO);
@@ -102,6 +102,13 @@ public class StudentService {
     }
 
     public void deleteLogic(String id) {
+        Student student = studentMapper.getById(id);
+        if (null == student) {
+            throw new EducationException("学生信息不存在");
+        }
+        if (!DistributionTypeEnum.NO_DISTRIBUTION.equals(student.getDistributionType())) {
+            throw new EducationException("已经分配的学生不允许删除");
+        }
         studentMapper.deleteLogic(id, new Date());
     }
 

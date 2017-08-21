@@ -107,6 +107,14 @@ public class CounselorController {
         studentService.update(req);
     }
 
+    @RequiresRoles({CommonUtil.CONSULTANT_BOSS})
+    @ApiOperation("删除学生")
+    @DeleteMapping("/student/{studentId}")
+    public void update(@PathVariable String studentId) {
+        studentService.deleteLogic(studentId);
+    }
+
+
     @RequiresRoles({CommonUtil.CONSULTANT, CommonUtil.CONSULTANT_MAIN})
     @ApiOperation("获取分配到的学生列表")
     @GetMapping("/student")
