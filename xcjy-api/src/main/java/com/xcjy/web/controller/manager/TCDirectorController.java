@@ -50,13 +50,6 @@ public class TCDirectorController {
     }
 
     @RequiresRoles({CommonUtil.TEACHER_DIRECTOR})
-    @ApiOperation("获取班组列表")
-    @GetMapping("/grade")
-    public List<Grade> listGrade() {
-        return gradeService.getAll();
-    }
-
-    @RequiresRoles({CommonUtil.TEACHER_DIRECTOR})
     @ApiOperation("删除班组")
     @PostMapping("/grade/{id}")
     public void delete(@PathVariable String id) {
@@ -82,13 +75,6 @@ public class TCDirectorController {
     @DeleteMapping("/course/{id}")
     public void deleteLogic(@PathVariable String id) {
         courseService.deleteLogic(id);
-    }
-
-    @RequiresRoles({CommonUtil.TEACHER_DIRECTOR})
-    @ApiOperation("获取课程列表")
-    @GetMapping("/course")
-    public List<Course> listCourse() {
-        return courseService.list();
     }
 
     @RequiresRoles({CommonUtil.TEACHER_DIRECTOR})

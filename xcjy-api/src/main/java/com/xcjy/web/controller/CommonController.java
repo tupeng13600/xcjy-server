@@ -1,18 +1,21 @@
 package com.xcjy.web.controller;
 
-import com.xcjy.web.bean.Course;
 import com.xcjy.web.bean.Employee;
+import com.xcjy.web.bean.Grade;
 import com.xcjy.web.bean.School;
 import com.xcjy.web.bean.Student;
 import com.xcjy.web.common.enums.HandlerStatusType;
 import com.xcjy.web.common.enums.ProcessLogType;
 import com.xcjy.web.common.enums.RoleEnum;
+import com.xcjy.web.common.util.CommonUtil;
 import com.xcjy.web.controller.req.UserPwdSelfUpdateReq;
+import com.xcjy.web.controller.res.CourseShowRes;
 import com.xcjy.web.controller.res.ProcessRes;
 import com.xcjy.web.controller.res.RoleRes;
 import com.xcjy.web.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,6 +52,9 @@ public class CommonController {
     @Autowired
     private CourseService courseService;
 
+    @Autowired
+    private GradeService gradeService;
+
     @ApiOperation("获取全部角色列表")
     @GetMapping("/role")
     public List<RoleRes> list() {
@@ -63,6 +69,7 @@ public class CommonController {
 
     /**
      * 获取校区列表
+     *
      * @return
      */
     @ApiOperation("获取校区列表")
@@ -91,14 +98,22 @@ public class CommonController {
 
     @ApiOperation("根据ID获取学生详情")
     @GetMapping("/student/{studentId}")
-    public Student getById(@PathVariable String studentId){
+    public Student getById(@PathVariable String studentId) {
         return studentService.getById(studentId);
     }
 
     @ApiOperation("获取课程列表")
     @GetMapping("/course")
-    public List<Course> getCourseList(){
+    public List<CourseShowRes> getCourseList() {
         return courseService.list();
     }
+
+    @RequiresRoles({CommonUtil.TEACHER_DIRECTOR})
+    @ApiOperation("获取班组列表")
+    @GetMapping("/grade")
+    public List<Grade> listGrade() {
+        return gradeService.getAll();
+    }
+
 
 }

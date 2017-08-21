@@ -6,13 +6,16 @@ import com.xcjy.web.common.CurrentThreadLocal;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.controller.req.CourseCreateReq;
 import com.xcjy.web.controller.req.CourseUpdateReq;
+import com.xcjy.web.controller.res.CourseShowRes;
 import com.xcjy.web.controller.res.CreateIdRes;
 import com.xcjy.web.mapper.CourseMapper;
 import com.xcjy.web.mapper.GradeMapper;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,9 +31,9 @@ public class CourseService {
     @Autowired
     private GradeMapper gradeMapper;
 
-    public CreateIdRes create(CourseCreateReq req){
+    public CreateIdRes create(CourseCreateReq req) {
         Grade grade = gradeMapper.getById(req.getGradeId());
-        if(null == grade) {
+        if (null == grade) {
             throw new EducationException("年级信息不存在");
         }
         Course course = new Course();
@@ -45,7 +48,7 @@ public class CourseService {
 
     public void update(CourseUpdateReq req) {
         Course course = courseMapper.getById(req.getId());
-        if(null == course) {
+        if (null == course) {
             throw new EducationException("课程不存在");
         }
         BeanUtils.copyProperties(req, course);
@@ -56,8 +59,24 @@ public class CourseService {
         courseMapper.deleteLogic(id, new Date());
     }
 
-    public List<Course> list(){
-        return courseMapper.getAll();
+    public List<CourseShowRes> list() {
+        List<Course> courseList = courseMapper.getAll();
+        List<CourseShowRes> resList = new ArrayList<>();
+        List<Grade> gradeList = gradeMapper.getAll();
+        if (CollectionUtils.isNotEmpty(courseList)) {
+            CourseShowRes showRes = new CourseShowRes();
+            courseList.forEach(course -> {
+                BeanUtils.copyProperties(course, showRes);
+                for (Grade grade : gradeList) {
+                    if (grade.getId().equals(course.getGradeId())) {
+                        showRes.setGradeName(grade.getName());
+                        break;
+                    }
+                }
+                resList.add(showRes);
+            });
+        }
+        return resList;
     }
 
 }
