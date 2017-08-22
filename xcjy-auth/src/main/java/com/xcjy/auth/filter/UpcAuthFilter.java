@@ -120,7 +120,7 @@ public class UpcAuthFilter extends BasicHttpAuthenticationFilter {
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8"); //设置编码格式为UTF-8
         response.getWriter().write(json);
-        return super.onAccessDenied(request, response);
+        return false;
     }
 
 }
