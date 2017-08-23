@@ -67,7 +67,7 @@
         used_hour = used_hour + #{studyTime},
         update_time = #{updateTime}
         WHERE student_id IN
-        <foreach collection="studentIds" item="studentId" separator=";">
+        <foreach collection="studentIds" item="studentId" open="(" separator="," close=")">
             #{studentId}
         </foreach>
     </update>
