@@ -70,13 +70,24 @@ public class CourseScheduleService {
         //更新学生已经使用的学时数据
         updateCourseStudent(courseStudents, courseSchedule);
         //更新学生金额信息
-        studentMoneyMapper.increaseUsedHour(req.getStudentIds(),req.getStudyTime(), new Date());
+        studentMoneyMapper.increaseUsedHour(req.getStudentIds(), req.getStudyTime(), new Date());
         return new CreateIdRes(courseSchedule.getId());
     }
 
     private CourseSchedule getCourseSchedule(CourseScheduleCreateReq req) {
-        return StringUtils.isNoneEmpty(req.getCourseScheduleId()) ?
-                courseScheduleMapper.getById(req.getCourseScheduleId()) : createCourseSchedule(req);
+        CourseSchedule courseSchedule;
+        if (StringUtils.isNotEmpty(req.getCourseScheduleId())) {
+            courseSchedule = courseScheduleMapper.getById(req.getCourseScheduleId());
+            if (null == courseSchedule) {
+                throw new EducationException("课表ID不存在");
+            }
+            BeanUtils.copyProperties(req, courseSchedule);
+            courseSchedule.setUpdateTime(new Date());
+            courseScheduleMapper.updateBase(courseSchedule);
+        } else {
+            courseSchedule = createCourseSchedule(req);
+        }
+        return courseSchedule;
     }
 
     @Transactional
