@@ -178,6 +178,7 @@ public class CourseStudentService {
         res.setCourseId(courseStudent.getCourseId());
         res.setStudentId(courseStudent.getStudentId());
         res.setUsedHour(courseStudent.getUsedHour());
+        res.setScore(courseStudent.getScore());
         for (Course course : courseList) {
             if (course.getId().equals(courseStudent.getCourseId())) {
                 res.setCourseName(course.getName());

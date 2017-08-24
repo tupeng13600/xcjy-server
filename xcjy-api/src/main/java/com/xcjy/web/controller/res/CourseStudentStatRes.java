@@ -24,4 +24,6 @@ public class CourseStudentStatRes {
 
     private Date buyTime;
 
+    private Integer score;
+
 }
