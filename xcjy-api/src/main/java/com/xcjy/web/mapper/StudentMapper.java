@@ -2,6 +2,7 @@ package com.xcjy.web.mapper;
 
 import com.xcjy.web.bean.Student;
 import com.xcjy.web.common.enums.DistributionTypeEnum;
+import com.xcjy.web.controller.res.StudentInRes;
 import com.xcjy.web.controller.res.StudentShowRes;
 import org.apache.ibatis.annotations.Param;
 
@@ -24,6 +25,8 @@ public interface StudentMapper {
     void updateSchoolId(@Param("student") Student student);
 
     List<Student> getByIds(@Param("ids") Set<String> ids);
+
+    List<StudentInRes> getInResByIds(@Param("ids") Set<String> ids);
 
     Student getByIdCard(@Param("idCard") String idCard);
 

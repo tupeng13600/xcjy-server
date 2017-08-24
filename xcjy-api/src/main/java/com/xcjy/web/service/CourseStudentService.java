@@ -9,8 +9,10 @@ import com.xcjy.web.controller.req.BuyCourseHourReq;
 import com.xcjy.web.controller.req.CourseStudentReq;
 import com.xcjy.web.controller.res.CounselorStuStatusRes;
 import com.xcjy.web.controller.res.CourseStudentStatRes;
+import com.xcjy.web.controller.res.StudentInRes;
 import com.xcjy.web.mapper.*;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +46,9 @@ public class CourseStudentService {
 
     @Autowired
     private StmanagerStudentMapper stmanagerStudentMapper;
+
+    @Autowired
+    private CourseScheduleStudentMapper courseScheduleStudentMapper;
 
 
     @Transactional
@@ -188,12 +193,26 @@ public class CourseStudentService {
         return res;
     }
 
-    public List<Student> getByCourseId(String courseId) {
+    public List<StudentInRes> getByCourseId(String courseId, String courseScheduleId) {
         List<CourseStudent> courseStudents = courseStudentMapper.getByCourseId(courseId);
         if (CollectionUtils.isEmpty(courseStudents)) {
             return new ArrayList<>();
         }
         Set<String> studentIds = courseStudents.stream().map(CourseStudent::getStudentId).collect(Collectors.toSet());
-        return studentMapper.getByIds(studentIds);
+
+        List<StudentInRes> studentList = studentMapper.getInResByIds(studentIds);
+
+        if (StringUtils.isNotEmpty(courseScheduleId)) {
+            List<String> inStudentIds = courseScheduleStudentMapper.getStuIdByCSId(courseScheduleId);
+            if (CollectionUtils.isNotEmpty(inStudentIds)) {
+                studentList.forEach(student -> {
+                    if (inStudentIds.contains(student.getId())) {
+                        student.setInCourse(true);
+                    }
+                });
+            }
+        }
+        return studentList;
+
     }
 }

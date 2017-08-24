@@ -66,8 +66,8 @@ public class StmanagerController {
     @RequiresRoles({CommonUtil.STUDENTMANAGER})
     @ApiOperation("根据课程获取学生列表")
     @GetMapping("/course/student/{courseId}")
-    public List<Student> getStudentByCourseId(@PathVariable String courseId) {
-        return courseStudentService.getByCourseId(courseId);
+    public List<StudentInRes> getStudentByCourseId(@PathVariable String courseId, @RequestParam(required = false) String courseScheduleId) {
+        return courseStudentService.getByCourseId(courseId, courseScheduleId);
     }
 
     @RequiresRoles({CommonUtil.STUDENTMANAGER})

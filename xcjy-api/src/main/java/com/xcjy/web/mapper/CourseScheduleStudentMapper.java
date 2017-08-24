@@ -26,4 +26,6 @@ public interface CourseScheduleStudentMapper {
     CourseScheduleStudent getByCourseScheduleIdAndStudentId(@Param("courseScheduleId") String courseScheduleId, @Param("studentId") String studentId);
 
     void deleteBySIdAndCSId(@Param("studentId") String studentId, @Param("courseScheduleId")String courseScheduleId);
+
+    List<String> getStuIdByCSId(@Param("courseScheduleId") String courseScheduleId);
 }

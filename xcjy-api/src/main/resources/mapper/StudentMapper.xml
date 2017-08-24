@@ -26,6 +26,32 @@
         <result column="deleted" jdbcType="BIT" property="deleted"/>
     </resultMap>
 
+    <resultMap id="InResMap" type="com.xcjy.web.controller.res.StudentInRes">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="school_id" jdbcType="VARCHAR" property="schoolId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="id_card" jdbcType="VARCHAR" property="idCard"/>
+        <result column="sex" jdbcType="VARCHAR" property="sex"/>
+        <result column="orign_school" jdbcType="VARCHAR" property="orignSchool"/>
+        <result column="grade" jdbcType="VARCHAR" property="grade"/>
+        <result column="birthday" jdbcType="DATE" property="birthday"/>
+        <result column="subject" jdbcType="VARCHAR" property="subject"/>
+        <result column="source" jdbcType="VARCHAR" property="source"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="parent_name" jdbcType="VARCHAR" property="parentName"/>
+        <result column="parent_sex" jdbcType="VARCHAR" property="parentSex"/>
+        <result column="parent_id_card" jdbcType="VARCHAR" property="parentIdCard"/>
+        <result column="parent_phone" jdbcType="VARCHAR" property="parentPhone"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="already_paid" jdbcType="VARCHAR" property="alreadyPaid"/>
+        <result column="distribution_type" jdbcType="VARCHAR" property="distributionType"/>
+        <result column="deleted" jdbcType="BIT" property="deleted"/>
+        <result column="in_course" jdbcType="BIT" property="inCourse"/>
+    </resultMap>
+
     <sql id="baseSql">
         id, school_id, name, id_card, sex, orign_school, grade, birthday, subject,
         source, phone, parent_name, parent_sex, parent_id_card, parent_phone, address,
@@ -160,6 +186,18 @@
         SELECT
         <include refid="baseSql"/>
         FROM student
+    </select>
+
+    <select id="getInResByIds" resultMap="InResMap">
+        SELECT
+        <include refid="baseSql"/>,
+        FALSE in_course
+        FROM student
+        WHERE id IN
+        <foreach collection="ids" open="(" separator="," close=")" item="id">
+            #{id}
+        </foreach>
+        ORDER BY create_time DESC
     </select>
 
 </mapper>

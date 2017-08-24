@@ -88,4 +88,8 @@
         FROM course_schedule_student WHERE course_schedule_id = #{courseScheduleId} AND student_id = #{studentId}
     </select>
 
+    <select id="getStuIdByCSId" resultType="java.lang.String">
+        SELECT student_id FROM course_schedule_student WHERE course_schedule_id = #{courseScheduleId};
+    </select>
+
 </mapper>
