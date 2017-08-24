@@ -67,7 +67,7 @@
     <select id="getByStudentIds" resultMap="BaseResultMap">
         SELECT
         <include refid="baseSql"/>
-        FROM course_student WHERE student_id
+        FROM course_student WHERE student_id IN
         <foreach collection="studentIds" item="studentId" open="(" separator="," close=")">
             #{studentId}
         </foreach>
