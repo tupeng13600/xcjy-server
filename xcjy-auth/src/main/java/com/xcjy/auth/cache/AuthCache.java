@@ -1,15 +1,22 @@
 package com.xcjy.auth.cache;
 
 import com.xcjy.auth.token.UpcToken;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by tupeng on 2017/8/8.
  */
 public abstract class AuthCache {
+
+    private static Logger logger = LoggerFactory.getLogger(AuthCache.class);
 
     private static final Long expire = 30 * 60 * 1000L;
 
@@ -44,6 +51,22 @@ public abstract class AuthCache {
         }
         tokenResource.remove(token);
         tokenTime.remove(token);
+    }
+
+    public static void update() {
+        Set<String> expireTokenList = new HashSet<>();
+        for(Map.Entry<String, UpcToken> entry : tokenResource.entrySet()) {
+            String token = entry.getKey();
+            if (expire(token)){
+                expireTokenList.add(token);
+            }
+        }
+        if(CollectionUtils.isNotEmpty(expireTokenList)) {
+            logger.info("清除无效token:{}", expireTokenList);
+            expireTokenList.forEach(expireToken -> {
+                remove(expireToken);
+            });
+        }
     }
 
 }
