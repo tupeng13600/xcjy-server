@@ -44,7 +44,7 @@
 
     <update id="updateScore">
         UPDATE course_student SET
-        score = #{courseId},
+        score = #{score},
         update_time = CURRENT_TIME()
         WHERE student_id = #{studentId} AND course_id = #{courseId};
     </update>
