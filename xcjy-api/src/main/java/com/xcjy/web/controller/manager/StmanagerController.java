@@ -114,14 +114,14 @@ public class StmanagerController {
 
     @RequiresRoles({CommonUtil.STUDENTMANAGER})
     @ApiOperation("确认课表已经完成")
-    @GetMapping("/student/finish/{id}")
+    @PostMapping("/student/finish/{id}")
     public void finishStudentCourse(@PathVariable String id) {
         courseScheduleStudentService.finish(id);
     }
 
     @RequiresRoles({CommonUtil.STUDENTMANAGER})
     @ApiOperation("取消课表")
-    @GetMapping("/student/schedule/cancel/{courseScheduleId}/{studentId}")
+    @PostMapping("/student/schedule/cancel/{courseScheduleId}/{studentId}")
     public void cancelSchedule(@PathVariable String courseScheduleId, @PathVariable String studentId) {
         courseScheduleStudentService.cancel(courseScheduleId, studentId);
     }
@@ -184,7 +184,7 @@ public class StmanagerController {
 
     @RequiresRoles({CommonUtil.STUDENTMANAGER})
     @ApiOperation("退购课时")
-    @GetMapping("/course/back/{studentId}/{courseId}/{hourNum}")
+    @PostMapping("/course/back/{studentId}/{courseId}/{hourNum}")
     public void courseBack(@PathVariable String studentId, @PathVariable String courseId, @PathVariable Integer hourNum) {
         courseStudentService.courseBack(studentId, courseId, hourNum);
     }
