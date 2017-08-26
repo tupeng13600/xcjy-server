@@ -70,8 +70,7 @@ public class MybatisQueryInterceptors implements Interceptor {
         if (null != pageReq && !sql.toLowerCase().contains(limitCondition)) {
             Integer pageStart = getPageStart(pageReq.getPage(), pageReq.getPageSize());
             Integer pageEnd = getPageSize(pageReq.getPageSize());
-            StringBuilder builder = new StringBuilder();
-            return builder.append(sql).append(limitCondition).append(pageStart).append(", ").append(pageEnd).toString();
+            return sql + limitCondition + pageStart + ", " + pageEnd;
         }
         return sql;
     }

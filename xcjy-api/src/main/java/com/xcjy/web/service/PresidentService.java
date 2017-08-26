@@ -89,7 +89,7 @@ public class PresidentService {
     }
 
     private List<Employee> getEmployeeList(RoleEnum... roleEnums) {
-        if (null != roleEnums || roleEnums.length == 0) {
+        if (null == roleEnums || roleEnums.length == 0) {
             return new ArrayList<>();
         }
         List<User> userList = new ArrayList<>();

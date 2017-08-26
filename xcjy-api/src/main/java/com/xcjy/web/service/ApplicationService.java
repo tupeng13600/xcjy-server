@@ -376,18 +376,14 @@ public class ApplicationService {
             if (CollectionUtils.isNotEmpty(aplnBackMonies)) {
                 Set<String> studentIds = aplnBackMonies.stream().map(AplnBackMoney::getStudentId).collect(Collectors.toSet());
                 List<Student> studentList = studentMapper.getByIds(studentIds);
-                aplnBackMonies.forEach(aplnBackMoney -> {
-                    resList.add(getMoneyRes(aplnBackMoney, studentList));
-                });
+                aplnBackMonies.forEach(aplnBackMoney -> resList.add(getMoneyRes(aplnBackMoney, studentList)));
             }
         } else {
             List<AplnChangeSchool> aplnChangeSchools = aplnChangeSchoolMapper.getByApplicationIds(CurrentUserUtil.currentUserId());
             if (CollectionUtils.isNotEmpty(aplnChangeSchools)) {
                 Set<String> studentIds = aplnChangeSchools.stream().map(AplnChangeSchool::getStudentId).collect(Collectors.toSet());
                 List<Student> studentList = studentMapper.getByIds(studentIds);
-                aplnChangeSchools.forEach(aplnChangeSchool -> {
-                    resList.add(getChangeSchoolRes(aplnChangeSchool, studentList));
-                });
+                aplnChangeSchools.forEach(aplnChangeSchool -> resList.add(getChangeSchoolRes(aplnChangeSchool, studentList)));
             }
         }
         return resList;

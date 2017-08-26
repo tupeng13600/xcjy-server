@@ -1,6 +1,5 @@
 package com.xcjy.web.mapper;
 
-import com.xcjy.web.bean.AplnBackMoney;
 import com.xcjy.web.bean.AplnChangeSchool;
 import com.xcjy.web.common.enums.ApplicationStatusType;
 import com.xcjy.web.controller.res.AplnSimpleRes;

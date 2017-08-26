@@ -38,9 +38,7 @@ public class StmanagerStudentService {
             List<PayStatModel> payList = studentPayLogMapper.getStatByIds(new HashSet<>(idList), StudentPayType.STUDENTMANAGER_PAY);
             List<PayStatModel> backList = studentPayLogMapper.getStatByIds(new HashSet<>(idList), StudentPayType.STUDENTMANAGER_BACK);
             List<Employee> employeeList = employeeMapper.getByIds(new HashSet<>(idList));
-            idList.forEach(id -> {
-                statResList.add(getRes(id, payList, backList, employeeList));
-            });
+            idList.forEach(id -> statResList.add(getRes(id, payList, backList, employeeList)));
         }
         return statResList;
     }

@@ -7,10 +7,7 @@ import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.model.UserModel;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by tupeng on 2017/8/5.
@@ -45,9 +42,7 @@ public abstract class CurrentUserUtil {
         if (StringUtils.isNotBlank(roleString)) {
             String[] roleStrs = roleString.split(",");
             List<String> roleList = new ArrayList<>();
-            for (String roleStr : roleStrs) {
-                roleList.add(roleStr);
-            }
+            Collections.addAll(roleList, roleStrs);
             return RoleEnum.getRoleList(roleList);
         }
         return new HashSet<>();

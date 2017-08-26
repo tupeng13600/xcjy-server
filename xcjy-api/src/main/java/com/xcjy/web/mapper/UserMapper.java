@@ -5,7 +5,6 @@ import com.xcjy.web.common.enums.RoleEnum;
 import com.xcjy.web.common.enums.UserType;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 

@@ -4,8 +4,6 @@ import com.xcjy.web.common.enums.PayStatusType;
 import com.xcjy.web.common.enums.SexType;
 import lombok.Data;
 
-import java.util.Date;
-
 /**
  * Created by tupeng on 2017/8/10.
  */

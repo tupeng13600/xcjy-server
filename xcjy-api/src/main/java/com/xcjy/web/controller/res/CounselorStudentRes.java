@@ -1,7 +1,6 @@
 package com.xcjy.web.controller.res;
 
 import com.xcjy.web.common.enums.CounselorStudentStatusType;
-import com.xcjy.web.common.enums.PayStatusType;
 import com.xcjy.web.common.enums.SexType;
 import lombok.Data;
 

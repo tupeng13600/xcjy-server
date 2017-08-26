@@ -231,9 +231,7 @@ public class StudentService {
             List<Student> studentList = studentMapper.getByIds(new HashSet<>(studentIds));
             List<StudentMoney> studentMoneyList = studentMoneyMapper.getByStudentIds(new HashSet<>(studentIds));
             List<AplnBackMoney> backMoneyList = aplnBackMoneyMapper.getByStatusAndSIds(ApplicationStatusType.AUDITING, studentIds);
-            studentList.forEach(student -> {
-                resList.add(getBackRes(student, studentMoneyList, backMoneyList));
-            });
+            studentList.forEach(student -> resList.add(getBackRes(student, studentMoneyList, backMoneyList)));
         }
         return resList;
     }

@@ -3,8 +3,6 @@ package com.xcjy.web.common.model;
 import com.xcjy.web.common.enums.UserType;
 import lombok.Data;
 
-import java.util.Date;
-
 /**
  * Created by tupeng on 2017/8/5.
  */

@@ -1,6 +1,5 @@
 package com.xcjy.web.mapper;
 
-import com.xcjy.web.bean.CounselorStudent;
 import com.xcjy.web.bean.StudentPayLog;
 import com.xcjy.web.common.enums.StudentPayType;
 import com.xcjy.web.controller.res.PayStatModel;

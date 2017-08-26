@@ -105,10 +105,8 @@ public class StudentAssetService {
 
             List<CounselorStuNumModel> counModels = counselorStudentMapper.getStudentNumByEIds(employeeIds);
             List<PayStatModel> statModelList = studentPayLogMapper.getStatModelByEmpIds(employeeIds);
-            employeeList.forEach(employee -> {
-                signResList.add(getSign(employee, statModelList, counModels));
-            });
-            Collections.sort(signResList, Comparator.comparing(CounselorAssesSignRes::getTotalMoney));
+            employeeList.forEach(employee -> signResList.add(getSign(employee, statModelList, counModels)));
+            signResList.sort(Comparator.comparing(CounselorAssesSignRes::getTotalMoney));
         }
         return signResList;
     }

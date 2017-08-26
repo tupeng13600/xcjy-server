@@ -3,7 +3,6 @@ package com.xcjy.web.mapper;
 import com.xcjy.web.bean.Student;
 import com.xcjy.web.common.enums.DistributionTypeEnum;
 import com.xcjy.web.controller.res.StudentInRes;
-import com.xcjy.web.controller.res.StudentShowRes;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;

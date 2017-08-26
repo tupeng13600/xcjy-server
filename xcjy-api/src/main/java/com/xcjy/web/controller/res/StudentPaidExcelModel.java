@@ -1,9 +1,6 @@
 package com.xcjy.web.controller.res;
 
 import com.xcjy.web.common.util.ExcelData;
-import lombok.Data;
-
-import java.util.Date;
 
 /**
  * Created by tupeng on 2017/8/7.

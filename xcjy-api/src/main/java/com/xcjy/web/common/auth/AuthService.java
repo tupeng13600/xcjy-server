@@ -6,17 +6,12 @@ import com.xcjy.auth.service.AuthMessageService;
 import com.xcjy.auth.util.UserUtil;
 import com.xcjy.web.bean.User;
 import com.xcjy.web.common.enums.RoleEnum;
-import com.xcjy.web.controller.res.RoleRes;
 import com.xcjy.web.service.RoleService;
 import com.xcjy.web.service.UserService;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Created by tupeng on 2017/7/18.

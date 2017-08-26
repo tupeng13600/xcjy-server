@@ -2,13 +2,15 @@ package com.xcjy.web.service;
 
 import com.xcjy.auth.util.UpcSecurityUtil;
 import com.xcjy.web.bean.User;
-import com.xcjy.web.common.CurrentThreadLocal;
 import com.xcjy.web.common.cache.CacheFactory;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.model.UserModel;
 import com.xcjy.web.common.util.CommonUtil;
 import com.xcjy.web.common.util.CurrentUserUtil;
-import com.xcjy.web.controller.req.*;
+import com.xcjy.web.controller.req.RegisterReq;
+import com.xcjy.web.controller.req.UserBaseUpdateReq;
+import com.xcjy.web.controller.req.UserPwdSelfUpdateReq;
+import com.xcjy.web.controller.req.UserRoleUpdateReq;
 import com.xcjy.web.mapper.UserMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.util.SimpleByteSource;

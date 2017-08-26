@@ -1,6 +1,5 @@
 package com.xcjy.web.controller.req;
 
-import com.xcjy.web.common.enums.PayStatusType;
 import com.xcjy.web.common.enums.SexType;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;

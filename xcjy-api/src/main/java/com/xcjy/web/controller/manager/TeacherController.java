@@ -4,7 +4,6 @@ import com.xcjy.web.common.util.CommonUtil;
 import com.xcjy.web.controller.res.TeacherHourStatRes;
 import com.xcjy.web.controller.res.TeacherScheduleRes;
 import com.xcjy.web.service.CourseScheduleService;
-import com.xcjy.web.service.CourseTeacherService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresRoles;
