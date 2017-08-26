@@ -143,7 +143,7 @@ public class ApplicationService {
     public void auditChangeSchool(String processId, HandlerStatusType handlerStatus, String remark) {
         ProcessLog processLog = updateProcessLog(processId, handlerStatus, ProcessLogType.CHANGE_SCHOOL, remark);
         if (HandlerStatusType.AUDIT_SUCCESS.equals(handlerStatus)) {
-            RoleEnum roleEnum = CacheFactory.getNextBackMoneyProcess(processLog.getProcessNum());
+            RoleEnum roleEnum = CacheFactory.getNextChangeSchoolProcess(processLog.getProcessNum());
             if (null == roleEnum) {
                 //更新转校申请信息
                 AplnChangeSchool aplnChangeSchool = updateChangeSchool(processLog.getApplicationId(), ApplicationStatusType.AUDIT_SUCCESS);
