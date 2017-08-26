@@ -18,7 +18,7 @@
     </resultMap>
 
     <sql id="baseSql">
-    id, school_id, grade_id, name, type, student_num, price, selected_num, back_num, create_time, update_time, deleted
+    id, school_id, grade_id, name, type, student_num, price, study_hour, selected_num, back_num, create_time, update_time, deleted
   </sql>
 
     <insert id="insert" parameterType="com.xcjy.web.bean.Course">
