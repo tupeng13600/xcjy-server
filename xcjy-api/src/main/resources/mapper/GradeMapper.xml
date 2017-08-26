@@ -53,7 +53,7 @@
     </select>
     <select id="getAll" resultMap="BaseResultMap">
         SELECT
-        <include refid="baseSql"/>
+         <include refid="baseSql"/>
         FROM grade
     </select>
 </mapper>

@@ -64,8 +64,8 @@ public class CourseService {
         List<CourseShowRes> resList = new ArrayList<>();
         List<Grade> gradeList = gradeMapper.getAll();
         if (CollectionUtils.isNotEmpty(courseList)) {
-            CourseShowRes showRes = new CourseShowRes();
             courseList.forEach(course -> {
+                CourseShowRes showRes = new CourseShowRes();
                 BeanUtils.copyProperties(course, showRes);
                 for (Grade grade : gradeList) {
                     if (grade.getId().equals(course.getGradeId())) {
