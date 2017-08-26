@@ -108,11 +108,16 @@ public class CommonController {
         return courseService.list();
     }
 
-    @RequiresRoles({CommonUtil.TEACHER_DIRECTOR})
     @ApiOperation("获取班组列表")
     @GetMapping("/grade")
     public List<Grade> listGrade() {
         return gradeService.getAll();
+    }
+
+    @ApiOperation("根据角色获取员工列表")
+    @GetMapping("/employee/{role}")
+    public List<Employee> listEmployeeByRole(@PathVariable RoleEnum role) {
+        return employeeService.getByRole(role);
     }
 
 

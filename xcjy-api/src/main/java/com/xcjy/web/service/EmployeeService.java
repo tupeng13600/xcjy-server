@@ -3,7 +3,6 @@ package com.xcjy.web.service;
 import com.xcjy.auth.util.UpcSecurityUtil;
 import com.xcjy.web.bean.Employee;
 import com.xcjy.web.bean.User;
-import com.xcjy.web.common.CurrentThreadLocal;
 import com.xcjy.web.common.cache.CacheFactory;
 import com.xcjy.web.common.enums.RoleEnum;
 import com.xcjy.web.common.enums.UserType;
@@ -25,10 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by tupeng on 2017/7/22.
@@ -156,5 +153,14 @@ public class EmployeeService {
             return new ArrayList<>();
         }
         return employeeMapper.getByIds(new HashSet<>(employeeIds));
+    }
+
+    public List<Employee> getByRole(RoleEnum role) {
+        List<User> userList = userMapper.getByRole(role);
+        if(org.apache.commons.collections.CollectionUtils.isNotEmpty(userList)) {
+            Set<String> employeeIds = userList.stream().map(User::getEntityId).collect(Collectors.toSet());
+            return employeeMapper.getByIds(employeeIds);
+        }
+        return new ArrayList<>();
     }
 }
