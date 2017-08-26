@@ -25,5 +25,7 @@ public interface CourseStudentMapper {
                      @Param("studentId") String studentId,
                      @Param("score") Integer score);
 
+    void updateBuyHour(@Param("courseStudent") CourseStudent courseStudent);
+
     List<CourseStudent> getByCourseId(@Param("courseId") String courseId);
 }

@@ -216,4 +216,27 @@ public class CourseStudentService {
         return studentList;
 
     }
+
+    @Transactional
+    public void courseBack(String studentId, String courseId, Integer hourNum) {
+        CourseStudent courseStudent = courseStudentMapper.getBySIdAndCId(studentId, courseId);
+        if(null == courseStudent) {
+            throw new EducationException("学生尚未购买该课时");
+        }
+        courseStudent.setBuyHour(courseStudent.getBuyHour() - hourNum);
+        courseStudent.setUpdateTime(new Date());
+        courseStudentMapper.updateBuyHour(courseStudent);
+        StudentMoney studentMoney = studentMoneyMapper.getByStudentId(studentId);
+        if (null == studentMoney) {
+            throw new EducationException("未找到学生缴费信息");
+        }
+        Course course = courseMapper.getById(courseId);
+        if(null == course) {
+            throw new EducationException("课程信息不存在");
+        }
+        studentMoney.setHasUsed(studentMoney.getHasUsed() - (hourNum * course.getPrice()));
+        studentMoney.setTotalHour(studentMoney.getTotalHour() - hourNum);
+        studentMoney.setUpdateTime(new Date());
+        studentMoneyMapper.updateMoney(studentMoney);
+    }
 }

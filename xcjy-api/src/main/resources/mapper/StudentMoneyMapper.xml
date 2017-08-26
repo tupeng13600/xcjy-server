@@ -88,4 +88,10 @@
         ORDER BY update_time DESC
     </select>
 
+    <select id="getByStudentId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM student_money WHERE student_id = #{studentId}
+    </select>
+
 </mapper>

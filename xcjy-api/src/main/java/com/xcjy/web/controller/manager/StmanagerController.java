@@ -80,42 +80,42 @@ public class StmanagerController {
     @RequiresRoles({CommonUtil.STUDENTMANAGER_BOSS})
     @ApiOperation("获取教师课表信息")
     @GetMapping("/teacher/schedule")
-    public List<TeacherScheduleRes> getTeacherSchedule(@RequestParam Boolean finish){
+    public List<TeacherScheduleRes> getTeacherSchedule(@RequestParam Boolean finish) {
         return courseScheduleService.getTeacherSchedule(finish);
     }
 
     @RequiresRoles({CommonUtil.STUDENTMANAGER_BOSS})
     @ApiOperation("获取教师课时统计信息")
     @GetMapping("/teacher/schedule/stat")
-    public List<TeacherScheduleStatRes> getTeacherScheduleStat(TeacherScheduleStatReq req){
+    public List<TeacherScheduleStatRes> getTeacherScheduleStat(TeacherScheduleStatReq req) {
         return courseScheduleService.getTSStat(req);
     }
 
     @RequiresRoles({CommonUtil.STUDENTMANAGER_BOSS})
     @ApiOperation("获取学管师续费|退费统计列表")
     @GetMapping("/stmanager/back")
-    public List<StmanagerStatRes> getStmanagerBack(TeacherScheduleStatReq req){
+    public List<StmanagerStatRes> getStmanagerBack(TeacherScheduleStatReq req) {
         return stmanagerStudentService.getStmanagerBack(req);
     }
 
     @RequiresRoles({CommonUtil.STUDENTMANAGER})
     @ApiOperation("获取分配到的学生列表")
     @GetMapping("/student")
-    public List<Student> getStudentList(){
+    public List<Student> getStudentList() {
         return studentService.getForStmanager();
     }
 
     @RequiresRoles({CommonUtil.STUDENTMANAGER})
     @ApiOperation("获取分配到的学生上课列表详情")
     @GetMapping("/student/schedule")
-    public List<StudentScheduleRes> getStudentSchedule(){
+    public List<StudentScheduleRes> getStudentSchedule() {
         return courseScheduleStudentService.getForStmanager();
     }
 
     @RequiresRoles({CommonUtil.STUDENTMANAGER})
     @ApiOperation("确认课表已经完成")
     @GetMapping("/student/finish/{id}")
-    public void finishStudentCourse(@PathVariable String id){
+    public void finishStudentCourse(@PathVariable String id) {
         courseScheduleStudentService.finish(id);
     }
 
@@ -165,7 +165,7 @@ public class StmanagerController {
     @ApiOperation("录入学生成绩")
     @PutMapping("/score/{courseId}/{score}/{studentId}")
     public void setScore(@PathVariable String courseId, @PathVariable String studentId, @PathVariable Integer score) {
-        courseStudentService.updateScore(courseId,studentId, score);
+        courseStudentService.updateScore(courseId, studentId, score);
     }
 
     @RequiresRoles({CommonUtil.STUDENTMANAGER_BOSS})
@@ -178,8 +178,15 @@ public class StmanagerController {
     @RequiresRoles({CommonUtil.STUDENTMANAGER})
     @ApiOperation("获取学生退费详情列表")
     @GetMapping("/student/back/list")
-    public List<StudentBackRes> listStudentBack(){
+    public List<StudentBackRes> listStudentBack() {
         return studentService.listBack();
+    }
+
+    @RequiresRoles({CommonUtil.STUDENTMANAGER})
+    @ApiOperation("退购课时")
+    @GetMapping("/course/back/{studentId}/{courseId}/{hourNum}")
+    public void courseBack(@PathVariable String studentId, @PathVariable String courseId, @PathVariable Integer hourNum) {
+        courseStudentService.courseBack(studentId, courseId, hourNum);
     }
 
 }

@@ -49,6 +49,13 @@
         WHERE student_id = #{studentId} AND course_id = #{courseId};
     </update>
 
+    <update id="updateBuyHour">
+        UPDATE course_student SET
+        buy_hour = #{courseStudent.buyHour},
+        update_time = #{courseStudent.updateTime}
+        WHERE student_id = #{courseStudent.studentId} AND course_id = #{courseStudent.courseId};
+    </update>
+
     <select id="getBySIdAndCId" resultMap="BaseResultMap">
         SELECT
         <include refid="baseSql"/>

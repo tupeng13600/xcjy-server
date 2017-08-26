@@ -18,6 +18,8 @@ public interface StudentMoneyMapper {
 
     List<StudentMoney> getByStudentIds(@Param("studentIds") Set<String> studentIds);
 
+    StudentMoney getByStudentId(@Param("studentId") String studentId);
+
     void decreaseUsedHourBatch(@Param("studentIds") Set<String> studentIds, @Param("studyTime") Integer studyTime, @Param("updateTime") Date updateTime);
 
     void increaseUsedHour(@Param("studentIds") Set<String> studentIds, @Param("studyTime") Integer studyTime, @Param("updateTime") Date updateTime);
