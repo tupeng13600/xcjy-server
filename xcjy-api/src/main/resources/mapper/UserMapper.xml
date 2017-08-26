@@ -63,7 +63,7 @@
     <select id="getByRole" resultMap="BaseResultMap">
         SELECT
         <include refid="BaseTemplate"/>
-        FROM `user` WHERE role_id = #{roleCode} limit 1;
+        FROM `user` WHERE role_id = #{roleCode}
     </select>
 
     <select id="getAll" resultMap="BaseResultMap">
