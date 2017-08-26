@@ -175,4 +175,11 @@ public class StmanagerController {
         return studentService.getList4ByDisType(DistributionTypeEnum.COUNSELOR_DISTRIBUTION);
     }
 
+    @RequiresRoles({CommonUtil.STUDENTMANAGER})
+    @ApiOperation("获取学生退费详情列表")
+    @PutMapping("/student/back/list")
+    public List<StudentBackRes> listStudentBack(){
+        return studentService.listBack();
+    }
+
 }

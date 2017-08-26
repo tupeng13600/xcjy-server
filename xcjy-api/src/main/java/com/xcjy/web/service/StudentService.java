@@ -229,4 +229,33 @@ public class StudentService {
     public Student getById(String studentId) {
         return studentMapper.getById(studentId);
     }
+
+    public List<StudentBackRes> listBack() {
+        List<StudentBackRes> resList = new ArrayList<>();
+        List<String> studentIds = stmanagerStudentMapper.getSIdByEmployeeId(CurrentUserUtil.currentEmployeeId());
+        if (CollectionUtils.isNotEmpty(studentIds)) {
+            List<Student> studentList = studentMapper.getByIds(new HashSet<>(studentIds));
+            List<StudentMoney> studentMoneyList = studentMoneyMapper.getByStudentIds(new HashSet<>(studentIds));
+            studentList.forEach(student -> {
+                resList.add(getBackRes(student, studentMoneyList));
+            });
+        }
+        return resList;
+    }
+
+    private StudentBackRes getBackRes(Student student, List<StudentMoney> studentMoneyList) {
+        StudentBackRes res = new StudentBackRes();
+        res.setStudentId(student.getId());
+        res.setStudentName(student.getName());
+        for (StudentMoney studentMoney : studentMoneyList) {
+            if (student.getId().equals(studentMoney.getStudentId())) {
+                res.setTotalMoney(studentMoney.getHasPay());
+                res.setAlreadyBackMoney(studentMoney.getHasBack());
+                res.setUsedMoney(studentMoney.getHasUsed());
+                res.setCanBackMoney(studentMoney.getHasPay() - studentMoney.getHasBack() - studentMoney.getHasUsed());
+                break;
+            }
+        }
+        return res;
+    }
 }
