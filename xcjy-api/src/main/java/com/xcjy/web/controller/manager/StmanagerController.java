@@ -170,14 +170,14 @@ public class StmanagerController {
 
     @RequiresRoles({CommonUtil.STUDENTMANAGER_BOSS})
     @ApiOperation("获取未分配的学生列表")
-    @PutMapping("/student/distribution/no")
+    @GetMapping("/student/distribution/no")
     public List<StudentShowRes> getStudentNoManager() {
         return studentService.getList4ByDisType(DistributionTypeEnum.COUNSELOR_DISTRIBUTION);
     }
 
     @RequiresRoles({CommonUtil.STUDENTMANAGER})
     @ApiOperation("获取学生退费详情列表")
-    @PutMapping("/student/back/list")
+    @GetMapping("/student/back/list")
     public List<StudentBackRes> listStudentBack(){
         return studentService.listBack();
     }
