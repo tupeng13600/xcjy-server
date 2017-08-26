@@ -1,5 +1,7 @@
 package com.xcjy.web.common.handler;
 
+import com.xcjy.web.common.CurrentThreadLocal;
+import com.xcjy.web.common.util.CurrentUserUtil;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
@@ -37,6 +39,7 @@ public class ResponseHandler implements ResponseBodyAdvice<Object> {
 
         RespModel respModel = new RespModel(true);
         respModel.setData(body);
+        CurrentThreadLocal.removeSchoolId();
         return respModel;
     }
 
