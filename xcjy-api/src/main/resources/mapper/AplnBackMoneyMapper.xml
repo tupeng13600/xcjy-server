@@ -62,5 +62,15 @@
         <include refid="baseSql"/>
         FROM apln_back_money WHERE application_user_id = #{userId};
     </select>
+    <select id="getByStatusAndSIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM apln_back_money
+        WHERE application_status = #{applicationStatus}
+        AND student_id IN
+        <foreach collection="studentIds" item="studentId" open="(" separator="," close=")">
+            #{studentId}
+        </foreach>
+    </select>
 
 </mapper>

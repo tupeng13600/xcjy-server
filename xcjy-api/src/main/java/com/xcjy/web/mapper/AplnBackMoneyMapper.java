@@ -18,4 +18,6 @@ public interface AplnBackMoneyMapper {
     List<AplnSimpleRes> getSimpleResByIds(@Param("ids") Set<String> ids);
 
     List<AplnBackMoney> getByApplicationIds(@Param("userId") String userId);
+
+    List<AplnBackMoney> getByStatusAndSIds(@Param("applicationStatus") ApplicationStatusType applicationStatus, @Param("studentIds") List<String> studentIds);
 }

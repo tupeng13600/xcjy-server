@@ -1,25 +1,16 @@
 package com.xcjy.web.service;
 
-import com.xcjy.web.bean.CounselorStudent;
-import com.xcjy.web.bean.School;
-import com.xcjy.web.bean.Student;
-import com.xcjy.web.bean.StudentMoney;
+import com.xcjy.web.bean.*;
 import com.xcjy.web.common.CurrentThreadLocal;
 import com.xcjy.web.common.cache.CacheFactory;
-import com.xcjy.web.common.enums.CounselorStudentStatusType;
-import com.xcjy.web.common.enums.DistributionTypeEnum;
-import com.xcjy.web.common.enums.PayStatusType;
-import com.xcjy.web.common.enums.RoleEnum;
+import com.xcjy.web.common.enums.*;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.util.CurrentUserUtil;
 import com.xcjy.web.common.util.DateUtil;
 import com.xcjy.web.controller.req.StudentCreateReq;
 import com.xcjy.web.controller.req.StudentUpdateReq;
 import com.xcjy.web.controller.res.*;
-import com.xcjy.web.mapper.CounselorStudentMapper;
-import com.xcjy.web.mapper.StmanagerStudentMapper;
-import com.xcjy.web.mapper.StudentMapper;
-import com.xcjy.web.mapper.StudentMoneyMapper;
+import com.xcjy.web.mapper.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -47,6 +38,9 @@ public class StudentService {
 
     @Autowired
     private StmanagerStudentMapper stmanagerStudentMapper;
+
+    @Autowired
+    private AplnBackMoneyMapper aplnBackMoneyMapper;
 
     @Transactional
     public CreateIdRes create(StudentCreateReq req) {
@@ -236,24 +230,35 @@ public class StudentService {
         if (CollectionUtils.isNotEmpty(studentIds)) {
             List<Student> studentList = studentMapper.getByIds(new HashSet<>(studentIds));
             List<StudentMoney> studentMoneyList = studentMoneyMapper.getByStudentIds(new HashSet<>(studentIds));
+            List<AplnBackMoney> backMoneyList = aplnBackMoneyMapper.getByStatusAndSIds(ApplicationStatusType.AUDITING, studentIds);
             studentList.forEach(student -> {
-                resList.add(getBackRes(student, studentMoneyList));
+                resList.add(getBackRes(student, studentMoneyList, backMoneyList));
             });
         }
         return resList;
     }
 
-    private StudentBackRes getBackRes(Student student, List<StudentMoney> studentMoneyList) {
+    private StudentBackRes getBackRes(Student student, List<StudentMoney> studentMoneyList, List<AplnBackMoney> backMoneyList) {
         StudentBackRes res = new StudentBackRes();
         res.setStudentId(student.getId());
         res.setStudentName(student.getName());
-        for (StudentMoney studentMoney : studentMoneyList) {
-            if (student.getId().equals(studentMoney.getStudentId())) {
-                res.setTotalMoney(studentMoney.getHasPay());
-                res.setAlreadyBackMoney(studentMoney.getHasBack());
-                res.setUsedMoney(studentMoney.getHasUsed());
-                res.setCanBackMoney(studentMoney.getHasPay() - studentMoney.getHasBack() - studentMoney.getHasUsed());
-                break;
+        if (CollectionUtils.isNotEmpty(studentMoneyList)) {
+            for (StudentMoney studentMoney : studentMoneyList) {
+                if (student.getId().equals(studentMoney.getStudentId())) {
+                    res.setTotalMoney(studentMoney.getHasPay());
+                    res.setAlreadyBackMoney(studentMoney.getHasBack());
+                    res.setUsedMoney(studentMoney.getHasUsed());
+                    res.setCanBackMoney(studentMoney.getHasPay() - studentMoney.getHasBack() - studentMoney.getHasUsed());
+                    break;
+                }
+            }
+        }
+        if (CollectionUtils.isNotEmpty(backMoneyList)) {
+            for (AplnBackMoney aplnBackMoney : backMoneyList) {
+                if (aplnBackMoney.getStudentId().equals(student.getId())) {
+                    res.setInProcess(true);
+                    break;
+                }
             }
         }
         return res;

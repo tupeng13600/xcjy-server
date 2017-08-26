@@ -20,4 +20,6 @@ public class StudentBackRes {
 
     private Integer canBackMoney;
 
+    private Boolean inProcess = false;
+
 }
