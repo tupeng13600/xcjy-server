@@ -19,11 +19,6 @@ public class BackMoneyCreateReq {
     @NotNull
     private Integer returnAmount;
 
-    @NotNull
-    private ApplicationStatusType applicationStatus;
-
-    private Date applicationTime;
-
     private String remark;
 
 }
