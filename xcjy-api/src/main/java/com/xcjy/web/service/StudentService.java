@@ -95,6 +95,7 @@ public class StudentService {
         }
     }
 
+    @Transactional
     public void deleteLogic(String id) {
         Student student = studentMapper.getById(id);
         if (null == student) {

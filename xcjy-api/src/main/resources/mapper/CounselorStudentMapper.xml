@@ -143,4 +143,10 @@
         FROM counselor_student WHERE  student_id = #{studentId} AND employee_id = #{employeId}
     </select>
 
+    <select id="getByStudentId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM counselor_student WHERE  student_id = #{studentId}
+    </select>
+
 </mapper>

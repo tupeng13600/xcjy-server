@@ -72,6 +72,10 @@
         </foreach>
     </update>
 
+    <delete id="deleteLogicByStudentId">
+        UPDATE student_money SET deleted = TRUE, update_time = #{updateTime} WHERE student_id = #{studentId}
+    </delete>
+
     <select id="getBySchoolIdAndStudentId" resultMap="BaseResultMap">
         SELECT
         <include refid="baseSql"/>

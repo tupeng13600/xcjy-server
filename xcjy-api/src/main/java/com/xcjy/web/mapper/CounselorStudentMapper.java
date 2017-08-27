@@ -41,4 +41,6 @@ public interface CounselorStudentMapper {
     CounselorStudent getStuIdAndEmpId(@Param("employeId") String employeeId, @Param("studentId") String studentId);
 
     void updaStatus(@Param("counselorStudent") CounselorStudent counselorStudent);
+
+    CounselorStudent getByStudentId(@Param("studentId") String studentId);
 }

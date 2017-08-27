@@ -23,4 +23,6 @@ public interface StudentMoneyMapper {
     void decreaseUsedHourBatch(@Param("studentIds") Set<String> studentIds, @Param("studyTime") Integer studyTime, @Param("updateTime") Date updateTime);
 
     void increaseUsedHour(@Param("studentIds") Set<String> studentIds, @Param("studyTime") Integer studyTime, @Param("updateTime") Date updateTime);
+
+    void deleteLogicByStudentId(@Param("studentId") String studentId, @Param("updateTime") Date updateTime);
 }
