@@ -98,6 +98,22 @@
         <include refid="BaseTemplate"/>
         FROM `user` WHERE role_id = #{roleCode}
     </select>
+    <select id="search"  resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseTemplate"/>
+        FROM `user`
+        <where>
+            <if test="schoolId != null">
+              AND school_id = #{schoolId}
+            </if>
+            <if test="role != null">
+                AND role_id = #{role}
+            </if>
+            <if test="name != null">
+                AND `name` LIKE CONCAT("%", #{name}, "%");
+            </if>
+        </where>
+    </select>
 
     <update id="updateBase">
         UPDATE user SET

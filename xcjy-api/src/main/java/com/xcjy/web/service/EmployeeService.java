@@ -5,6 +5,7 @@ import com.xcjy.web.bean.Employee;
 import com.xcjy.web.bean.User;
 import com.xcjy.web.common.cache.CacheFactory;
 import com.xcjy.web.common.enums.RoleEnum;
+import com.xcjy.web.common.enums.StudentPayType;
 import com.xcjy.web.common.enums.UserType;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.util.CommonUtil;
@@ -15,8 +16,8 @@ import com.xcjy.web.controller.res.CreateIdRes;
 import com.xcjy.web.mapper.EmployeeMapper;
 import com.xcjy.web.mapper.SchoolMapper;
 import com.xcjy.web.mapper.UserMapper;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.util.CollectionUtils;
 import org.apache.shiro.util.SimpleByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,8 +56,8 @@ public class EmployeeService {
         if (null != userMapper.getByPhone(req.getPhone()) || null != userMapper.getByUsername(req.getUsername())) {
             throw new EducationException("用户名或者手机号码已存在");
         }
-        if(StringUtils.isNotEmpty(req.getSchoolId())) {
-            if(null == schoolMapper.getById(req.getSchoolId())) {
+        if (StringUtils.isNotEmpty(req.getSchoolId())) {
+            if (null == schoolMapper.getById(req.getSchoolId())) {
                 throw new EducationException("所属校区ID不存在");
             }
         }
@@ -158,7 +159,7 @@ public class EmployeeService {
 
     public List<Employee> getBySchoolId(String schoolId, RoleEnum role) {
         List<String> employeeIds = userMapper.getBySchoolId(schoolId, role);
-        if(CollectionUtils.isEmpty(employeeIds)) {
+        if (CollectionUtils.isEmpty(employeeIds)) {
             return new ArrayList<>();
         }
         return employeeMapper.getByIds(new HashSet<>(employeeIds));
@@ -166,10 +167,37 @@ public class EmployeeService {
 
     public List<Employee> getByRole(RoleEnum role) {
         List<User> userList = userMapper.getByRole(role);
-        if(org.apache.commons.collections.CollectionUtils.isNotEmpty(userList)) {
+        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(userList)) {
             Set<String> employeeIds = userList.stream().map(User::getEntityId).collect(Collectors.toSet());
             return employeeMapper.getByIds(employeeIds);
         }
         return new ArrayList<>();
+    }
+
+    public List<Employee> search(String schoolId, StudentPayType payType, String name) {
+        List<User> userList = new ArrayList<>();
+        List<RoleEnum> roleEnums = getRoleList(payType);
+        roleEnums.forEach(roleEnum -> {
+            List<User> roleUsers = userMapper.search(schoolId, roleEnum, name);
+            if (CollectionUtils.isNotEmpty(roleUsers)) {
+                userList.addAll(roleUsers);
+            }
+        });
+        if (CollectionUtils.isNotEmpty(userList)) {
+            Set<String> employeeIds = userList.stream().map(User::getEntityId).collect(Collectors.toSet());
+            return employeeMapper.getByIds(employeeIds);
+        }
+        return new ArrayList<>();
+    }
+
+    private List<RoleEnum> getRoleList(StudentPayType payType) {
+        List<RoleEnum> roleEnums = new ArrayList<>();
+        if (StudentPayType.COUNSELOR_PAY.equals(payType)) {
+            roleEnums.add(RoleEnum.CONSULTANT);
+            roleEnums.add(RoleEnum.CONSULTANT_BOSS);
+        } else {
+            roleEnums.add(RoleEnum.STUDENTMANAGER);
+        }
+        return roleEnums;
     }
 }

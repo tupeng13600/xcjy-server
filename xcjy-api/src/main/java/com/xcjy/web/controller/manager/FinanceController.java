@@ -1,17 +1,18 @@
 package com.xcjy.web.controller.manager;
 
+import com.xcjy.web.bean.Employee;
 import com.xcjy.web.bean.Student;
 import com.xcjy.web.common.CurrentThreadLocal;
 import com.xcjy.web.common.enums.DistributionTypeEnum;
+import com.xcjy.web.common.enums.PayStatusType;
+import com.xcjy.web.common.enums.RoleEnum;
+import com.xcjy.web.common.enums.StudentPayType;
 import com.xcjy.web.common.util.CommonUtil;
 import com.xcjy.web.controller.req.StudentPayReq;
 import com.xcjy.web.controller.res.FinanceStudentStatRes;
 import com.xcjy.web.controller.res.StudentPayLogDetailRes;
 import com.xcjy.web.controller.res.StudentShowRes;
-import com.xcjy.web.service.ExcelService;
-import com.xcjy.web.service.FinanceService;
-import com.xcjy.web.service.StudentPayLogService;
-import com.xcjy.web.service.StudentService;
+import com.xcjy.web.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections.CollectionUtils;
@@ -46,6 +47,9 @@ public class FinanceController {
     @Autowired
     private StudentService studentService;
 
+    @Autowired
+    private EmployeeService employeeService;
+
     @RequiresRoles({CommonUtil.PERSONNEL_CASHIER})
     @ApiOperation("学生缴费")
     @PutMapping("/student/pay")
@@ -58,6 +62,13 @@ public class FinanceController {
     @PutMapping("/student/pay/log/{schoolId}")
     public List<StudentPayLogDetailRes> getPayLogDetailRes(@PathVariable String schoolId) {
         return studentPayLogService.getPayLogDetailRes(schoolId);
+    }
+
+    @RequiresRoles({CommonUtil.PERSONNEL_CASHIER})
+    @ApiOperation("根据校区&角色&姓名获取员工列表")
+    @GetMapping("/employee/{schoolId}/{payType}/{name}")
+    public List<Employee> listEmployee(@PathVariable String schoolId, @PathVariable StudentPayType payType, @PathVariable String name) {
+        return employeeService.search(schoolId, payType, name);
     }
 
     @RequiresRoles({CommonUtil.FINANCE})

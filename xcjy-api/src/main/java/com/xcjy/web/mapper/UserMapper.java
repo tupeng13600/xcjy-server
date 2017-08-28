@@ -40,4 +40,6 @@ public interface UserMapper {
     List<String> getBySchoolId(@Param("schoolId") String schoolId, @Param("role") RoleEnum role);
 
     List<User> getListByRole(@Param("roleCode") RoleEnum roleCode);
+
+    List<User> search(@Param("schoolId") String schoolId, @Param("role") RoleEnum role, @Param("name") String name);
 }
