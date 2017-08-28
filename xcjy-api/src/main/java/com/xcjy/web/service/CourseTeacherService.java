@@ -7,10 +7,14 @@ import com.xcjy.web.common.CurrentThreadLocal;
 import com.xcjy.web.common.cache.CacheFactory;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.controller.req.CourseTeacherCreateReq;
+import com.xcjy.web.controller.res.CourseScheduleStatModel;
+import com.xcjy.web.controller.res.CourseTeacherRes;
 import com.xcjy.web.mapper.CourseMapper;
+import com.xcjy.web.mapper.CourseScheduleMapper;
 import com.xcjy.web.mapper.CourseTeacherMapper;
 import com.xcjy.web.mapper.EmployeeMapper;
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +38,8 @@ public class CourseTeacherService {
 
     @Autowired
     private EmployeeMapper employeeMapper;
+
+    private CourseScheduleMapper courseScheduleMapper;
 
     @Transactional
     public void save(CourseTeacherCreateReq req) {
@@ -66,12 +72,30 @@ public class CourseTeacherService {
         return courseTeacherList;
     }
 
-    public List<Employee> getByCourseId(String courseId) {
+    public List<CourseTeacherRes> getByCourseId(String courseId) {
+        List<CourseTeacherRes> resList = new ArrayList<>();
         List<CourseTeacher> courseTeacherList = courseTeacherMapper.getByCId(courseId);
         if(CollectionUtils.isEmpty(courseTeacherList)) {
-            return new ArrayList<>();
+            return resList;
         }
         Set<String> employeeIds = courseTeacherList.stream().map(CourseTeacher::getTeacherId).collect(Collectors.toSet());
-        return employeeMapper.getByIds(employeeIds);
+        List<Employee> employeeList = employeeMapper.getByIds(employeeIds);
+
+        if(CollectionUtils.isNotEmpty(employeeList)) {
+            List<CourseScheduleStatModel> statModelList =courseScheduleMapper.getByEmployeeIds(employeeIds, false);
+            employeeList.forEach(employee -> {
+                CourseTeacherRes res = new CourseTeacherRes();
+                BeanUtils.copyProperties(employee, res);
+                if(CollectionUtils.isNotEmpty(statModelList)) {
+                    for (CourseScheduleStatModel statModel : statModelList) {
+                        if(statModel.getEmployeeId().equals(employee.getId())) {
+                            res.setInCourse(true);
+                        }
+                    }
+                }
+                resList.add(res);
+            });
+        }
+        return resList;
     }
 }

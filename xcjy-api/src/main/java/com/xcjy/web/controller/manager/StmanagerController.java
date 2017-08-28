@@ -59,7 +59,7 @@ public class StmanagerController {
     @RequiresRoles({CommonUtil.STUDENTMANAGER})
     @ApiOperation("根据课程获取教师列表")
     @GetMapping("/course/teacher/{courseId}")
-    public List<Employee> getTeacherByCourseId(@PathVariable String courseId) {
+    public List<CourseTeacherRes> getTeacherByCourseId(@PathVariable String courseId) {
         return courseTeacherService.getByCourseId(courseId);
     }
 
