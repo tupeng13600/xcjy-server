@@ -13,6 +13,7 @@ import com.xcjy.web.controller.req.EmployeeCreateReq;
 import com.xcjy.web.controller.req.EmployeeUpdateReq;
 import com.xcjy.web.controller.res.CreateIdRes;
 import com.xcjy.web.mapper.EmployeeMapper;
+import com.xcjy.web.mapper.SchoolMapper;
 import com.xcjy.web.mapper.UserMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.util.CollectionUtils;
@@ -41,6 +42,9 @@ public class EmployeeService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private SchoolMapper schoolMapper;
+
     /**
      * 创建employee，user， user默认密码为用户名
      *
@@ -50,6 +54,11 @@ public class EmployeeService {
         validateArg(req.getRoleIds(), req.getSchoolId());
         if (null != userMapper.getByPhone(req.getPhone()) || null != userMapper.getByUsername(req.getUsername())) {
             throw new EducationException("用户名或者手机号码已存在");
+        }
+        if(StringUtils.isNotEmpty(req.getSchoolId())) {
+            if(null == schoolMapper.getById(req.getSchoolId())) {
+                throw new EducationException("所属校区ID不存在");
+            }
         }
         //创建Employee
         Employee employee = new Employee();
