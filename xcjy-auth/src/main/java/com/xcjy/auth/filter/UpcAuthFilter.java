@@ -5,6 +5,7 @@ import com.xcjy.auth.cache.AuthCache;
 import com.xcjy.auth.cache.TokenThreadLocal;
 import com.xcjy.auth.model.RespModel;
 import com.xcjy.auth.token.UpcToken;
+import com.xcjy.auth.util.CurrentThreadLocal;
 import com.xcjy.auth.util.UpcSecurityUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -38,6 +39,7 @@ public class UpcAuthFilter extends BasicHttpAuthenticationFilter {
 
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
+        CurrentThreadLocal.removeSchoolId();
         return false;
     }
 

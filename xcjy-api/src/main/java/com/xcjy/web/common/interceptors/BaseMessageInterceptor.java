@@ -3,7 +3,7 @@ package com.xcjy.web.common.interceptors;
 
 import com.xcjy.auth.util.UserUtil;
 import com.xcjy.web.bean.User;
-import com.xcjy.web.common.CurrentThreadLocal;
+import com.xcjy.auth.util.CurrentThreadLocal;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.model.UserModel;
 import com.xcjy.web.service.UserService;

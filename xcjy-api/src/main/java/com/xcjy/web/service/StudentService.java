@@ -1,7 +1,7 @@
 package com.xcjy.web.service;
 
 import com.xcjy.web.bean.*;
-import com.xcjy.web.common.CurrentThreadLocal;
+import com.xcjy.auth.util.CurrentThreadLocal;
 import com.xcjy.web.common.cache.CacheFactory;
 import com.xcjy.web.common.enums.*;
 import com.xcjy.web.common.exception.EducationException;

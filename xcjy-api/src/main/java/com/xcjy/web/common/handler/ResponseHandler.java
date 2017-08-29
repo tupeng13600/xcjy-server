@@ -1,6 +1,6 @@
 package com.xcjy.web.common.handler;
 
-import com.xcjy.web.common.CurrentThreadLocal;
+import com.xcjy.auth.util.CurrentThreadLocal;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;

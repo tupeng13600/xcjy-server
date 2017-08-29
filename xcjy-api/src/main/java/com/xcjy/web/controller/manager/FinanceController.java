@@ -1,11 +1,8 @@
 package com.xcjy.web.controller.manager;
 
 import com.xcjy.web.bean.Employee;
-import com.xcjy.web.bean.Student;
-import com.xcjy.web.common.CurrentThreadLocal;
+import com.xcjy.auth.util.CurrentThreadLocal;
 import com.xcjy.web.common.enums.DistributionTypeEnum;
-import com.xcjy.web.common.enums.PayStatusType;
-import com.xcjy.web.common.enums.RoleEnum;
 import com.xcjy.web.common.enums.StudentPayType;
 import com.xcjy.web.common.util.CommonUtil;
 import com.xcjy.web.controller.req.StudentPayReq;

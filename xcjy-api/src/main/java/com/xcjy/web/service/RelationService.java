@@ -2,7 +2,7 @@ package com.xcjy.web.service;
 
 import com.xcjy.web.bean.CounselorStudent;
 import com.xcjy.web.bean.StmanagerStudent;
-import com.xcjy.web.common.CurrentThreadLocal;
+import com.xcjy.auth.util.CurrentThreadLocal;
 import com.xcjy.web.common.cache.CacheFactory;
 import com.xcjy.web.common.enums.CounselorStudentStatusType;
 import com.xcjy.web.common.enums.DistributionTypeEnum;

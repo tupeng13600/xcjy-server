@@ -1,8 +1,7 @@
 package com.xcjy.web.common.interceptors;
 
-import com.xcjy.web.common.CurrentThreadLocal;
+import com.xcjy.auth.util.CurrentThreadLocal;
 import com.xcjy.web.common.util.ReflectUtil;
-import com.xcjy.web.controller.req.PageReq;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.executor.statement.RoutingStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
@@ -36,10 +35,6 @@ public class MybatisQueryInterceptors implements Interceptor {
 
     private static final String groupCondition = "group by";
 
-    private static final String limitCondition = " limit ";
-
-    private static final Integer defaultPageSize = 10;
-
     public static final String
             [] deletedMatches = new String[]{"wheredeleted=false", "anddeleted=false"};
 
@@ -51,41 +46,11 @@ public class MybatisQueryInterceptors implements Interceptor {
         StatementHandler delegate = (StatementHandler) ReflectUtil.getProperty(handler, "delegate");
         BoundSql boundSql = delegate.getBoundSql();
         if (isSelect(boundSql.getSql())) {
-            String sql = addLimit(appendDeleted(appendSchoolId(replaceEndOfSql(boundSql.getSql()))));
+            String sql = appendDeleted(appendSchoolId(replaceEndOfSql(boundSql.getSql())));
             ReflectUtil.setProperty(boundSql, "sql", sql);
             logger.debug("开始执行sql : {}", sql);
         }
         return invocation.proceed();
-    }
-
-    /**
-     * 添加分页操作
-     *
-     * @param sql
-     * @return
-     */
-    private String addLimit(String sql) {
-        PageReq pageReq = CurrentThreadLocal.getPageReq();
-        CurrentThreadLocal.removePageReq();
-        if (null != pageReq && !sql.toLowerCase().contains(limitCondition)) {
-            Integer pageStart = getPageStart(pageReq.getPage(), pageReq.getPageSize());
-            Integer pageEnd = getPageSize(pageReq.getPageSize());
-            return sql + limitCondition + pageStart + ", " + pageEnd;
-        }
-        return sql;
-    }
-
-    private Integer getPageSize(Integer pageSize) {
-        return null == pageSize || pageSize < 1 ? defaultPageSize : pageSize;
-    }
-
-    private Integer getPageStart(Integer page, Integer pageSize) {
-        if (null == page || page < 1) {
-            page = 1;
-        }
-        pageSize = getPageSize(pageSize);
-        return (page - 1) * pageSize;
-
     }
 
     private Boolean isSelect(String sql) {

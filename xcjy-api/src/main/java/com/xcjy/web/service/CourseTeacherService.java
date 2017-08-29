@@ -3,7 +3,7 @@ package com.xcjy.web.service;
 import com.xcjy.web.bean.Course;
 import com.xcjy.web.bean.CourseTeacher;
 import com.xcjy.web.bean.Employee;
-import com.xcjy.web.common.CurrentThreadLocal;
+import com.xcjy.auth.util.CurrentThreadLocal;
 import com.xcjy.web.common.cache.CacheFactory;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.controller.req.CourseTeacherCreateReq;
