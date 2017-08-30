@@ -1,7 +1,7 @@
 package com.xcjy.web.controller.manager;
 
-import com.xcjy.web.bean.Employee;
 import com.xcjy.auth.util.CurrentThreadLocal;
+import com.xcjy.web.bean.Employee;
 import com.xcjy.web.common.enums.DistributionTypeEnum;
 import com.xcjy.web.common.enums.StudentPayType;
 import com.xcjy.web.common.util.CommonUtil;
@@ -56,7 +56,7 @@ public class FinanceController {
 
     @RequiresRoles({CommonUtil.FINANCE})
     @ApiOperation("查看各校区学生缴费日志")
-    @PutMapping("/student/pay/log/{schoolId}")
+    @GetMapping("/student/pay/log/{schoolId}")
     public List<StudentPayLogDetailRes> getPayLogDetailRes(@PathVariable String schoolId) {
         return studentPayLogService.getPayLogDetailRes(schoolId);
     }
