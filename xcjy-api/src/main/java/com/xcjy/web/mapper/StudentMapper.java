@@ -43,4 +43,6 @@ public interface StudentMapper {
     List<Student> getByDisType(@Param("distributionType") DistributionTypeEnum distributionType);
 
     List<Student> getAll();
+
+    List<Student> searchByName(@Param("name") String name);
 }

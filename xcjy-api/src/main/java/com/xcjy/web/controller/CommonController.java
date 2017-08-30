@@ -120,5 +120,11 @@ public class CommonController {
         return employeeService.getByRole(role);
     }
 
+    @ApiOperation("根据学生名称模糊查询学生列表")
+    @GetMapping("/student")
+    public List<Student> listEmployeeByRole(String name) {
+        return studentService.searchByName(name);
+    }
+
 
 }

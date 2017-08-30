@@ -200,4 +200,10 @@
         ORDER BY create_time DESC
     </select>
 
+    <select id="searchByName" resultMap="InResMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM student WHERE name LIKE concat('%', #{name}, '%')
+    </select>
+
 </mapper>

@@ -18,4 +18,8 @@ public interface AplnChangeSchoolMapper {
     List<AplnSimpleRes> getSimpleResByIds(@Param("ids") Set<String> ids);
 
     List<AplnChangeSchool> getByApplicationIds(@Param("userId") String userId);
+
+    List<AplnChangeSchool> getByStudentIds(@Param("studentIds") Set<String> studentIds);
+
+    List<String> getStudentIds(@Param("studentIds") Set<String> studentIds);
 }

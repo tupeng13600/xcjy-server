@@ -61,4 +61,22 @@
         <include refid="baseSql"/>
         FROM apln_change_school WHERE application_user_id = #{userId}
     </select>
+
+    <select id="getByStudentIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM apln_change_school WHERE student_id IN
+        <foreach collection="studentIds" item="studentId" open="(" separator="," close=")">
+            #{studentId}
+        </foreach>
+    </select>
+
+    <select id="getStudentIds" resultType="java.lang.String">
+        SELECT
+        student_id
+        FROM apln_change_school WHERE student_id IN
+        <foreach collection="studentIds" item="studentId" open="(" separator="," close=")">
+            #{studentId}
+        </foreach>
+    </select>
 </mapper>

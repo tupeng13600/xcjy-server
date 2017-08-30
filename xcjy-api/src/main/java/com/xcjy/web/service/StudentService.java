@@ -1,7 +1,7 @@
 package com.xcjy.web.service;
 
-import com.xcjy.web.bean.*;
 import com.xcjy.auth.util.CurrentThreadLocal;
+import com.xcjy.web.bean.*;
 import com.xcjy.web.common.cache.CacheFactory;
 import com.xcjy.web.common.enums.*;
 import com.xcjy.web.common.exception.EducationException;
@@ -41,6 +41,9 @@ public class StudentService {
 
     @Autowired
     private AplnBackMoneyMapper aplnBackMoneyMapper;
+
+    @Autowired
+    private AplnChangeSchoolMapper aplnChangeSchoolMapper;
 
     @Transactional
     public CreateIdRes create(StudentCreateReq req) {
@@ -263,4 +266,25 @@ public class StudentService {
         return res;
     }
 
+    public List<Student> searchByName(String name) {
+        List<Student> resultList = new ArrayList<>();
+        if(StringUtils.isNotBlank(name)) {
+            List<Student> studentList = studentMapper.searchByName(name);
+            if(CollectionUtils.isNotEmpty(studentList)) {
+                Set<String> studentIds = studentList.stream().map(Student::getId).collect(Collectors.toSet());
+                CurrentThreadLocal.removeSchoolId(); //该请求无需使用school_id查询
+                List<String> inStudentIds = aplnChangeSchoolMapper.getStudentIds(studentIds);
+                if(CollectionUtils.isNotEmpty(inStudentIds)) {
+                    for (Student student : studentList) {
+                        if(!inStudentIds.contains(student.getId())) {
+                            resultList.add(student);
+                        }
+                    }
+                } else {
+                    resultList = studentList;
+                }
+            }
+        }
+        return resultList;
+    }
 }
