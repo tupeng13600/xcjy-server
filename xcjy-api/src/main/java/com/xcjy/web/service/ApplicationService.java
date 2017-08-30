@@ -69,6 +69,7 @@ public class ApplicationService {
         aplnBackMoney.setApplicationUserId(user.getId());
         aplnBackMoney.setSchoolId(user.getSchoolId());
         aplnBackMoney.setApplicationStatus(ApplicationStatusType.AUDITING);
+        aplnBackMoney.setApplicationTime(new Date());
         aplnBackMoneyMapper.insert(aplnBackMoney);
         createProcessLog(aplnBackMoney.getId(), aplnBackMoney.getSchoolId(), aplnBackMoney.getStudentId(),
                 0, CacheFactory.getNextBackMoneyProcess(null), ProcessLogType.BACK_MONEY);
