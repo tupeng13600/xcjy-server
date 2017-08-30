@@ -39,6 +39,7 @@ public class CourseTeacherService {
     @Autowired
     private EmployeeMapper employeeMapper;
 
+    @Autowired
     private CourseScheduleMapper courseScheduleMapper;
 
     @Transactional
