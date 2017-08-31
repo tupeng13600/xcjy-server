@@ -21,7 +21,7 @@
 
     <insert id="insert" parameterType="com.xcjy.web.bean.AplnChangeSchool">
     insert into apln_change_school (id, student_id, from_school_id, 
-      to_school_id, application_user_id, application_status,  application_time
+      to_school_id, application_user_id, application_status, application_time,
       remark, create_time, update_time, 
       deleted)
     values (#{id,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR}, #{fromSchoolId,jdbcType=VARCHAR}, 
