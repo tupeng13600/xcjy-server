@@ -35,7 +35,7 @@
      application_status = #{changeSchool.applicationStatus},
      application_time = #{changeSchool.applicationTime},
      update_time = #{changeSchool.updateTime}
-     WHERE id = #{changeSchool.} AND application_status = #{status} AND deleted = FALSE;
+     WHERE id = #{changeSchool.id} AND application_status = #{status} AND deleted = FALSE;
   </update>
 
     <select id="getById" resultMap="BaseResultMap">
@@ -47,6 +47,7 @@
     <select id="getSimpleResByIds" resultType="com.xcjy.web.controller.res.AplnSimpleRes">
         SELECT
         id,
+        from_school_id fromSchoolId,
         application_status applicationStatus,
         to_school_id toSchoolId,
         application_time applicationTime,

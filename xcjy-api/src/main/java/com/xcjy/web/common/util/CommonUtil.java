@@ -3,6 +3,7 @@ package com.xcjy.web.common.util;
 import com.xcjy.web.common.enums.RoleEnum;
 import org.apache.shiro.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,6 +38,17 @@ public abstract class CommonUtil {
     //咨询总监
     public static final String CONSULTANT_BOSS = "CONSULTANT_BOSS";
 
+    private static List<RoleEnum> notInSchoolRole = new ArrayList<>();
+
+    static {
+        notInSchoolRole.add(RoleEnum.PERSONNEL_MANAGER);
+        notInSchoolRole.add(RoleEnum.SUPER_ADMIN);
+        notInSchoolRole.add(RoleEnum.FINANCE);
+        notInSchoolRole.add(RoleEnum.PERSONNEL_CASHIER);
+        notInSchoolRole.add(RoleEnum.SCHOOLMASTER_BOSS);
+        notInSchoolRole.add(RoleEnum.CONSULTANT_BOSS);
+    }
+
     public static String getRolIdString(List<RoleEnum> roleEnums) {
         if (CollectionUtils.isEmpty(roleEnums)) {
             return "";
@@ -44,6 +56,10 @@ public abstract class CommonUtil {
         StringBuilder builder = new StringBuilder();
         roleEnums.forEach(roleEnum -> builder.append(roleEnum.name()).append(","));
         return builder.toString().substring(0, builder.toString().length() - 1);
+    }
+
+    public static Boolean belongToSchool(RoleEnum roleEnum){
+        return !notInSchoolRole.contains(roleEnum);
     }
 
 }

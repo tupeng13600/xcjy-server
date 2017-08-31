@@ -13,6 +13,8 @@ public class AplnSimpleRes {
 
     private String id;
 
+    private String fromSchoolId;
+
     private String toSchoolId;
 
     private Integer returnAmount;

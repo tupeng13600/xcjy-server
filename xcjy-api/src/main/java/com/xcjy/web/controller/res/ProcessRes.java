@@ -31,6 +31,8 @@ public class ProcessRes {
 
     private Integer returnAmount;
 
+    private String fromSchoolName;
+
     private String toSchoolName;
 
     private ApplicationStatusType applicationStatus;

@@ -6,6 +6,7 @@ import com.xcjy.web.common.cache.CacheFactory;
 import com.xcjy.web.common.enums.*;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.model.UserModel;
+import com.xcjy.web.common.util.CommonUtil;
 import com.xcjy.web.common.util.CurrentUserUtil;
 import com.xcjy.web.controller.req.BackMoneyCreateReq;
 import com.xcjy.web.controller.req.ChangeSchoolReq;
@@ -128,9 +129,10 @@ public class ApplicationService {
         aplnChangeSchool.setFromSchoolId(student.getSchoolId());
         aplnChangeSchool.setApplicationUserId(user.getId());
         aplnChangeSchool.setApplicationStatus(ApplicationStatusType.AUDITING);
+        aplnChangeSchool.setApplicationTime(new Date());
         aplnChangeSchoolMapper.insert(aplnChangeSchool);
         //创建审核流程
-        createProcessLog(aplnChangeSchool.getId(), aplnChangeSchool.getFromSchoolId(), aplnChangeSchool.getStudentId(),
+        createProcessLog(aplnChangeSchool.getId(), aplnChangeSchool.getToSchoolId(), aplnChangeSchool.getStudentId(),
                 0, CacheFactory.getNextChangeSchoolProcess(null), ProcessLogType.CHANGE_SCHOOL);
         return new CreateIdRes(aplnChangeSchool.getId());
     }
@@ -179,6 +181,7 @@ public class ApplicationService {
                 studentIds.add(processLog.getStudentId());
                 applicationIds.add(processLog.getApplicationId());
             });
+            CurrentThreadLocal.removeSchoolId();
             List<Student> studentList = studentMapper.getByIds(studentIds);
             List<AplnSimpleRes> aplnSimpleRes = getSimpleRes(processLogType, applicationIds);
             return getResult(processLogs, studentList, aplnSimpleRes);
@@ -197,15 +200,17 @@ public class ApplicationService {
             BeanUtils.copyProperties(processLog, res);
             res.setSchoolName(getSchoolName(processLog.getSchoolId()));
             res.setStudentName(getStudentName(studentList, processLog.getStudentId()));
-            aplnSimpleRes.forEach(apln -> {
+            for (AplnSimpleRes apln : aplnSimpleRes) {
                 if (processLog.getApplicationId().equals(apln.getId())) {
                     res.setApplicationRemark(apln.getApplicationRemark());
                     res.setApplicationTime(apln.getApplicationTime());
                     res.setApplicationStatus(apln.getApplicationStatus());
                     res.setReturnAmount(apln.getReturnAmount());
                     res.setToSchoolName(getSchoolName(apln.getToSchoolId()));
+                    res.setFromSchoolName(getSchoolName(apln.getFromSchoolId()));
+                    break;
                 }
-            });
+            }
             res.setApplicationName(getApplicationName(processLog.getHandlerUserId()));
             result.add(res);
         });
@@ -217,7 +222,10 @@ public class ApplicationService {
         if (ProcessLogType.BACK_MONEY.equals(processLogType)) {
             aplnSimpleRes = aplnBackMoneyMapper.getSimpleResByIds(applicationIds);
         } else {
+            String schoolId = CurrentThreadLocal.getSchoolId();
+            CurrentThreadLocal.removeSchoolId();
             aplnSimpleRes = aplnChangeSchoolMapper.getSimpleResByIds(applicationIds);
+            CurrentThreadLocal.setSchoolId(schoolId);
         }
         return aplnSimpleRes;
     }
@@ -263,6 +271,7 @@ public class ApplicationService {
 
     @Transactional
     private void updateStudentSchool(String studentId, String fromSchoolId, String toSchoolId) {
+        CurrentThreadLocal.setSchoolId(fromSchoolId);
         Student student = studentMapper.getById(studentId);
         if (null == student || !fromSchoolId.equals(student.getSchoolId())) {
             throw new EducationException("学生信息不存在");
@@ -274,7 +283,10 @@ public class ApplicationService {
 
     @Transactional
     private AplnChangeSchool updateChangeSchool(String applicationId, ApplicationStatusType applicationStatus) {
+        String schoolId = CurrentThreadLocal.getSchoolId();
+        CurrentThreadLocal.removeSchoolId();
         AplnChangeSchool aplnChangeSchool = aplnChangeSchoolMapper.getById(applicationId);
+        CurrentThreadLocal.setSchoolId(schoolId);
         if (null == aplnChangeSchool) {
             throw new EducationException("申请表中不存在该申请，请确认数据是否正确");
         }
@@ -283,7 +295,6 @@ public class ApplicationService {
         }
         aplnChangeSchool.setApplicationStatus(applicationStatus);
         aplnChangeSchool.setUpdateTime(new Date());
-        aplnChangeSchool.setApplicationTime(new Date());
         aplnChangeSchoolMapper.updateStatus(aplnChangeSchool, ApplicationStatusType.AUDITING);
         return aplnChangeSchool;
 
@@ -294,15 +305,22 @@ public class ApplicationService {
         ProcessLog processLog = new ProcessLog();
         processLog.setApplicationId(applicationId);
         processLog.setHandlerStatus(HandlerStatusType.WAIT_AUDIT);
-        List<User> roleUsers = userMapper.getByRole(roleEnum);
-        if (CollectionUtils.isEmpty(roleUsers)) {
-            throw new EducationException("不存在该角色的用户");
-        }
-        processLog.setHandlerUserId(roleUsers.get(0).getId());
         processLog.setProcessNum(processNum);
         processLog.setType(processLogType);
-        processLog.setSchoolId(schoolId);
+
         processLog.setStudentId(studentId);
+        if (CommonUtil.belongToSchool(roleEnum)) {
+            CurrentThreadLocal.setSchoolId(schoolId);
+            processLog.setSchoolId(schoolId);
+        } else {
+            CurrentThreadLocal.removeSchoolId();
+        }
+        List<User> roleUsers = userMapper.getByRole(roleEnum);
+        if (CollectionUtils.isEmpty(roleUsers)) {
+            logger.info("学校ID：{} 中未找到对应的角色 {}", schoolId, roleEnum.getName());
+            throw new EducationException("未找到对应的角色");
+        }
+        processLog.setHandlerUserId(roleUsers.get(0).getId());
         processLogMapper.insert(processLog);
     }
 
@@ -416,7 +434,7 @@ public class ApplicationService {
         School fromSchool = CacheFactory.idSchools.get(aplnChangeSchool.getFromSchoolId());
         School toSchool = CacheFactory.idSchools.get(aplnChangeSchool.getToSchoolId());
         if (null != fromSchool) {
-            res.setFromSchoolId(fromSchool.getName());
+            res.setFromSchoolName(fromSchool.getName());
         }
         if (null != toSchool) {
             res.setToSchoolName(toSchool.getName());
