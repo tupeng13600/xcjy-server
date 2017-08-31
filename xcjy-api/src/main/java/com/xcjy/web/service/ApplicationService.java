@@ -1,5 +1,6 @@
 package com.xcjy.web.service;
 
+import com.xcjy.auth.util.CurrentThreadLocal;
 import com.xcjy.web.bean.*;
 import com.xcjy.web.common.cache.CacheFactory;
 import com.xcjy.web.common.enums.*;
@@ -380,6 +381,7 @@ public class ApplicationService {
                 aplnBackMonies.forEach(aplnBackMoney -> resList.add(getMoneyRes(aplnBackMoney, studentList)));
             }
         } else {
+            CurrentThreadLocal.removeSchoolId();
             List<AplnChangeSchool> aplnChangeSchools = aplnChangeSchoolMapper.getByApplicationIds(CurrentUserUtil.currentUserId());
             if (CollectionUtils.isNotEmpty(aplnChangeSchools)) {
                 Set<String> studentIds = aplnChangeSchools.stream().map(AplnChangeSchool::getStudentId).collect(Collectors.toSet());
