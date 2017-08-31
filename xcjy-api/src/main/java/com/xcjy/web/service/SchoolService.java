@@ -1,5 +1,6 @@
 package com.xcjy.web.service;
 
+import com.xcjy.auth.util.CurrentThreadLocal;
 import com.xcjy.web.bean.School;
 import com.xcjy.web.common.cache.CacheFactory;
 import com.xcjy.web.common.exception.EducationException;
@@ -52,6 +53,7 @@ public class SchoolService {
      * @return
      */
     public List<School> list() {
+        CurrentThreadLocal.removeSchoolId();
         return schoolMapper.getAll();
     }
 
