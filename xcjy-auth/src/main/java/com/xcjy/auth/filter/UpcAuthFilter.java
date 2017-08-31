@@ -7,6 +7,7 @@ import com.xcjy.auth.model.RespModel;
 import com.xcjy.auth.token.UpcToken;
 import com.xcjy.auth.util.CurrentThreadLocal;
 import com.xcjy.auth.util.UpcSecurityUtil;
+import org.apache.catalina.connector.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
@@ -117,6 +118,7 @@ public class UpcAuthFilter extends BasicHttpAuthenticationFilter {
 
     private Boolean onAccessDenied(HttpServletRequest request, HttpServletResponse response, String message) throws Exception {
         RespModel respModel = new RespModel(false);
+        response.setStatus(Response.SC_UNAUTHORIZED);
         respModel.setData(message);
         String json = new Gson().toJson(respModel);
         response.setContentType("application/json");
