@@ -234,32 +234,33 @@ public class StudentService {
         if (CollectionUtils.isNotEmpty(studentIds)) {
             List<Student> studentList = studentMapper.getByIds(new HashSet<>(studentIds));
             List<StudentMoney> studentMoneyList = studentMoneyMapper.getByStudentIds(new HashSet<>(studentIds));
-            List<AplnBackMoney> backMoneyList = aplnBackMoneyMapper.getByStatusAndSIds(ApplicationStatusType.AUDITING, studentIds);
-            studentList.forEach(student -> resList.add(getBackRes(student, studentMoneyList, backMoneyList)));
+            if(CollectionUtils.isNotEmpty(studentMoneyList)) {
+                List<AplnBackMoney> backMoneyList = aplnBackMoneyMapper.getByStatusAndSIds(ApplicationStatusType.AUDITING, studentIds);
+                studentMoneyList.forEach(studentMoney -> resList.add(getBackRes(studentMoney, studentList, backMoneyList)));
+            }
         }
         return resList;
     }
 
-    private StudentBackRes getBackRes(Student student, List<StudentMoney> studentMoneyList, List<AplnBackMoney> backMoneyList) {
+    private StudentBackRes getBackRes(StudentMoney studentMoney, List<Student> studentList, List<AplnBackMoney> backMoneyList) {
         StudentBackRes res = new StudentBackRes();
-        res.setStudentId(student.getId());
-        res.setStudentName(student.getName());
-        if (CollectionUtils.isNotEmpty(studentMoneyList)) {
-            for (StudentMoney studentMoney : studentMoneyList) {
+        res.setTotalMoney(studentMoney.getHasPay());
+        res.setAlreadyBackMoney(studentMoney.getHasBack());
+        res.setUsedMoney(studentMoney.getHasUsed());
+        res.setCanBackMoney(studentMoney.getHasPay() - studentMoney.getHasBack() - studentMoney.getHasUsed());
+        if (CollectionUtils.isNotEmpty(studentList)) {
+            for (Student student : studentList) {
                 if (student.getId().equals(studentMoney.getStudentId())) {
-                    res.setTotalMoney(studentMoney.getHasPay());
-                    res.setAlreadyBackMoney(studentMoney.getHasBack());
-                    res.setUsedMoney(studentMoney.getHasUsed());
-                    res.setCanBackMoney(studentMoney.getHasPay() - studentMoney.getHasBack() - studentMoney.getHasUsed());
-                    break;
+                    res.setStudentId(student.getId());
+                    res.setStudentName(student.getName());
                 }
             }
-        }
-        if (CollectionUtils.isNotEmpty(backMoneyList)) {
-            for (AplnBackMoney aplnBackMoney : backMoneyList) {
-                if (aplnBackMoney.getStudentId().equals(student.getId())) {
-                    res.setInProcess(true);
-                    break;
+            if (CollectionUtils.isNotEmpty(backMoneyList)) {
+                for (AplnBackMoney aplnBackMoney : backMoneyList) {
+                    if (aplnBackMoney.getStudentId().equals(studentMoney.getStudentId())) {
+                        res.setInProcess(true);
+                        break;
+                    }
                 }
             }
         }
