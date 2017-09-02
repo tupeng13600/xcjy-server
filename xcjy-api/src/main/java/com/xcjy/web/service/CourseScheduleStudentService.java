@@ -47,14 +47,16 @@ public class CourseScheduleStudentService {
         }
         List<Student> students = studentMapper.getByIds(new HashSet<>(studentIds));
         List<CourseScheduleStudent> courseScheduleStudentList = courseScheduleStudentMapper.getByStudentIds(studentIds);
-        Set<String> courseScheduleIds = courseScheduleStudentList.stream().map(CourseScheduleStudent::getCourseScheduleId).collect(Collectors.toSet());
-        List<CourseSchedule> courseSchedules = courseScheduleMapper.getByIds(courseScheduleIds);
-        Set<String> courseIds = courseSchedules.stream().map(CourseSchedule::getCourseId).collect(Collectors.toSet());
-        List<Course> courseList = courseMapper.getByIds(courseIds);
-        Set<String> gradeIds = courseList.stream().map(Course::getGradeId).collect(Collectors.toSet());
-        List<Grade> gradeList = gradeMapper.getByIds(gradeIds);
-        for (CourseScheduleStudent courseScheduleStudent : courseScheduleStudentList) {
-            scheduleResList.add(getStudentScheduleRes(courseScheduleStudent, students, courseSchedules, courseList, gradeList));
+        if(CollectionUtils.isNotEmpty(courseScheduleStudentList)) {
+            Set<String> courseScheduleIds = courseScheduleStudentList.stream().map(CourseScheduleStudent::getCourseScheduleId).collect(Collectors.toSet());
+            List<CourseSchedule> courseSchedules = courseScheduleMapper.getByIds(courseScheduleIds);
+            Set<String> courseIds = courseSchedules.stream().map(CourseSchedule::getCourseId).collect(Collectors.toSet());
+            List<Course> courseList = courseMapper.getByIds(courseIds);
+            Set<String> gradeIds = courseList.stream().map(Course::getGradeId).collect(Collectors.toSet());
+            List<Grade> gradeList = gradeMapper.getByIds(gradeIds);
+            for (CourseScheduleStudent courseScheduleStudent : courseScheduleStudentList) {
+                scheduleResList.add(getStudentScheduleRes(courseScheduleStudent, students, courseSchedules, courseList, gradeList));
+            }
         }
         return scheduleResList;
     }

@@ -77,6 +77,8 @@ public class UpcAuthFilter extends BasicHttpAuthenticationFilter {
         } catch (Exception e) {
             filterThreadLocal.set("用户名或密码错误");
             LOGGER.error("登录失败，失败信息:{}", e.getMessage());
+            SecurityUtils.getSubject().logout();
+            AuthCache.remove(TokenThreadLocal.get());
             return false;
         }
         return true;
