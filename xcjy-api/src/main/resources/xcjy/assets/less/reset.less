@@ -33,6 +33,7 @@ body{
 
 .form-group, .input-group{
   label{
+    white-space: nowrap;
     line-height: 30px;
   }
   label.necessary{
@@ -62,12 +63,18 @@ app-collapse-box{
 
 
 /* select2 style reset */
-div.input-group.input-group-sm .select2-container--default,div.input-group.input-group-sm .select2-container{
+.select2{
+  width: 100%;
+}
+div.input-group.input-group-sm .select2-container--default,
+div.input-group.input-group-sm .select2-container,
+div.form-group.form-group-sm .select2-container{
   .select2-selection{
+    width: 100%;
     font-size: 12px;
     line-height: 30px;
     padding: 5px 7px;
-    height: 30px!important;
+    height: 30px;
   }
 }
 
@@ -123,6 +130,25 @@ div.input-group.input-group-sm .select2-container--default,div.input-group.input
           }
         }
       }
+    }
+  }
+}
+
+
+/* box 样式重置 */
+.box.box-divide{
+  .box-body{
+    border-top: 1px solid #ecf0f5;
+    .form-group{
+      margin-bottom: 0;
+    }
+  }
+}
+
+table.table-pointer{
+  tbody{
+    tr{
+      cursor: pointer;
     }
   }
 }

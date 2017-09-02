@@ -58,7 +58,7 @@ public class StudentService {
         }
         student.setAlreadyPaid(PayStatusType.NO);
 
-        if (null != CurrentThreadLocal.getSchoolId()) {
+        if (StringUtils.isNotBlank(CurrentThreadLocal.getSchoolId())) {
             student.setSchoolId(CurrentThreadLocal.getSchoolId());
             student.setDistributionType(DistributionTypeEnum.COUNSELOR_DISTRIBUTION);
         } else {
@@ -66,7 +66,7 @@ public class StudentService {
         }
         studentMapper.insert(student);
         //如果是咨询师创建,则创建关系
-        if (null != CurrentThreadLocal.getSchoolId()) {
+        if (StringUtils.isNotBlank(CurrentThreadLocal.getSchoolId())) {
             CounselorStudent counselorStudent = new CounselorStudent();
             counselorStudent.setSchoolId(CurrentThreadLocal.getSchoolId());
             counselorStudent.setStatus(CounselorStudentStatusType.CONNECTION_NO);

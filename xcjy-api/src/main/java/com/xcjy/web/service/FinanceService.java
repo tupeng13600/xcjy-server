@@ -83,7 +83,7 @@ public class FinanceService {
         studentPayLog.setRemark(req.getRemark());
         studentPayLogMapper.insert(studentPayLog);
 
-        Student student = studentMapper.getById(req.getSchoolId());
+        Student student = studentMapper.getById(req.getStudentId());
         if(null == student) {
             throw new EducationException("学生信息不存在");
         }

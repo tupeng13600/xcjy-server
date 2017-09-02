@@ -101,7 +101,7 @@
         <if test="endTime != null">
             AND create_time &lt;= #{endTime}
         </if>
-        GROUP BY employee_id ORDER BY create_time DESC
+        GROUP BY employee_id
     </select>
 
     <select id="getTimeAndEIds" resultMap="BaseResultMap">

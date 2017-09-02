@@ -198,6 +198,7 @@ var AdminService = (function () {
                     content: '成功添加新校区' + body.name,
                     type: 'success'
                 });
+                data.data.createTime = Date.now();
                 return data.data;
             }
             else {
@@ -225,7 +226,7 @@ var _a, _b;
 /***/ "../../../../../src/app/admin/schools/schools.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-content-header\r\n  [title]=\"'用户列表'\" [menus]=\"contentHeader\"></app-content-header>\r\n<div class=\"content\">\r\n\r\n  <app-collapse-box [collapse]=\"false\" [icon]=\"'filter'\" [boxTitle]=\"'校区过滤'\">\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        创建时间:\r\n      </label>\r\n      <app-date-ranger-picker\r\n        [startTime]=\"schoolCreatedFilterTime.start\"\r\n        (dateRangeSetEvent)=\"handleTimeRangeChange($event)\"\r\n        class=\"pull-left\"></app-date-ranger-picker>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        校区名称:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <input type=\"text\" class=\"form-control input-sm\" [(ngModel)]=\"schoolFilterName\" placeholder=\"输入校区名称\">\r\n        <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n      </div>\r\n    </div>\r\n  </app-collapse-box>\r\n\r\n  <div class=\"box box-primary\">\r\n    <div class=\"box-header with-border\">\r\n      <h3 class=\"box-title\"><i class=\"fa fa-building-o\"></i> 学校列表</h3>\r\n      <div class=\"box-tools\">\r\n        <div class=\"btn-group btn-group-sm\">\r\n          <button class=\"btn btn-primary\"\r\n          (click)=\"setCurSchool({name: '', remark: ''});\r\n            schoolModal.showModal({\r\n              title: '添加校区信息',\r\n              confirm: addSchool\r\n          })\">\r\n            <i class=\"fa fa-plus\"></i>\r\n            创建新校区\r\n          </button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div class=\"box-body\">\r\n      <p class=\"text-info text-center\" *ngIf=\"!schools\">暂无校区信息</p>\r\n      <div class=\"col-xs-12\">\r\n        <div class=\"row\">\r\n          <div class=\"col-xs-12 col-sm-6 col-md-4 col-lg-3\" *ngFor=\"let school of schools | timeRange: schoolCreatedFilterTime | matchItem: schoolFilterName:'name'\">\r\n            <div class=\"box box-primary box-solid \">\r\n              <div class=\"box-header with-border\">\r\n                <h4 class=\"box-title\">{{ school.name }}</h4>\r\n                <div class=\"box-tools\">\r\n                  <button class=\"btn btn-box-tool\" (click)=\"setCurSchool(school);schoolModal.showModal({\r\n                    title: '编辑校区信息',\r\n                    confirm: updateSchoolInfo\r\n                  })\">\r\n                    <i class=\"fa fa-sliders\"></i>\r\n                  </button>\r\n                </div>\r\n              </div>\r\n              <div class=\"box-body\">{{ school.remark }}</div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<app-modal #schoolModal [disabledAcceptBtn]=\"!(curSchool.name && curSchool.name)\">\r\n  <div class=\"form-group clearfix\">\r\n    <label for=\"schoolName\" class=\"control-label col-xs-3\">学校名称:</label>\r\n    <div class=\"col-xs-9\">\r\n      <input [(ngModel)]=\"curSchool.name\" id=\"schoolName\" class=\"form-control\" placeholder=\"请填写校区名称\">\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"form-group clearfix\">\r\n    <label for=\"schoolRemark\" class=\"control-label col-xs-3\">备注信息:</label>\r\n    <div class=\"col-xs-9\">\r\n      <textarea id=\"schoolRemark\" class=\"form-control\" rows=\"3\" placeholder=\"校区信息\" [(ngModel)]=\"curSchool.remark\"></textarea>\r\n    </div>\r\n  </div>\r\n</app-modal>\r\n"
+module.exports = "<app-content-header\r\n  [title]=\"'用户列表'\" [menus]=\"contentHeader\"></app-content-header>\r\n<div class=\"content\">\r\n\r\n  <app-collapse-box [collapse]=\"false\" [icon]=\"'filter'\" [boxTitle]=\"'校区过滤'\">\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        创建时间:\r\n      </label>\r\n      <app-date-ranger-picker\r\n        [startTime]=\"schoolCreatedFilterTime.start\"\r\n        (dateRangeSetEvent)=\"handleTimeRangeChange($event)\"\r\n        class=\"pull-left\"></app-date-ranger-picker>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        校区名称:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <input type=\"text\" class=\"form-control input-sm\" [(ngModel)]=\"schoolFilterName\" placeholder=\"输入校区名称\">\r\n        <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n      </div>\r\n    </div>\r\n  </app-collapse-box>\r\n\r\n  <div class=\"box box-primary\">\r\n    <div class=\"box-header with-border\">\r\n      <h3 class=\"box-title\"><i class=\"fa fa-building-o\"></i> 学校列表</h3>\r\n      <div class=\"box-tools\">\r\n        <div class=\"btn-group btn-group-sm\">\r\n          <button class=\"btn btn-primary\"\r\n          (click)=\"setCurSchool({name: '', remark: ''});\r\n            schoolModal.showModal({\r\n              title: '添加校区信息',\r\n              confirm: addSchool\r\n          })\">\r\n            <i class=\"fa fa-plus\"></i>\r\n            创建新校区\r\n          </button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div class=\"box-body\">\r\n      <p class=\"text-info text-center\" *ngIf=\"!schools\">暂无校区信息</p>\r\n      <div class=\"col-xs-12\">\r\n        <div class=\"row\">\r\n          <div class=\"col-xs-12 col-sm-6 col-md-4 col-lg-3\"\r\n               *ngFor=\"let school of schools | timeRange: schoolCreatedFilterTime : 'createTime' | matchItem: schoolFilterName:'name'\">\r\n            <div class=\"box box-primary box-solid \">\r\n              <div class=\"box-header with-border\">\r\n                <h4 class=\"box-title\">{{ school.name }}</h4>\r\n                <div class=\"box-tools\">\r\n                  <button class=\"btn btn-box-tool\" (click)=\"setCurSchool(school);schoolModal.showModal({\r\n                    title: '编辑校区信息',\r\n                    confirm: updateSchoolInfo\r\n                  })\">\r\n                    <i class=\"fa fa-sliders\"></i>\r\n                  </button>\r\n                </div>\r\n              </div>\r\n              <div class=\"box-body\">{{ school.remark }}</div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<app-modal #schoolModal [disabledAcceptBtn]=\"!(curSchool.name && curSchool.name)\">\r\n  <div class=\"form-group clearfix\">\r\n    <label for=\"schoolName\" class=\"control-label col-xs-3\">学校名称:</label>\r\n    <div class=\"col-xs-9\">\r\n      <input [(ngModel)]=\"curSchool.name\" id=\"schoolName\" class=\"form-control\" placeholder=\"请填写校区名称\">\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"form-group clearfix\">\r\n    <label for=\"schoolRemark\" class=\"control-label col-xs-3\">备注信息:</label>\r\n    <div class=\"col-xs-9\">\r\n      <textarea id=\"schoolRemark\" class=\"form-control\" rows=\"3\" placeholder=\"校区信息\" [(ngModel)]=\"curSchool.remark\"></textarea>\r\n    </div>\r\n  </div>\r\n</app-modal>\r\n"
 
 /***/ }),
 
@@ -322,7 +323,8 @@ var SchoolsComponent = (function () {
     SchoolsComponent.prototype.addSchool = function () {
         var _this = this;
         this.adminService.addSchool(this.curSchool).then(function (data) {
-            _this.schools.unshift(__assign({}, _this.curSchool, { createTime: Date.now(), id: data.id }));
+            _this.schools.unshift(__assign({}, _this.curSchool, data));
+            _this.schools = _this.schools.slice();
         });
     };
     /* handle school list filter */
@@ -352,7 +354,7 @@ var _a, _b;
 /***/ "../../../../../src/app/admin/users/users.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-content-header\r\n  [title]=\"'用户列表'\" [menus]=\"contentHeader\"></app-content-header>\r\n<div class=\"content\">\r\n\r\n  <app-collapse-box [collapse]=\"false\" [icon]=\"'filter'\" [boxTitle]=\"'用户过滤'\">\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        创建时间:\r\n      </label>\r\n      <app-date-ranger-picker\r\n        [startTime]=\"userCreatedFilterTime.start\"\r\n        (dateRangeSetEvent)=\"handleTimeRangeChange($event)\"\r\n        class=\"pull-left\"></app-date-ranger-picker>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        类型筛选:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <select2 (valueChanged)=\"switchFilterRoleId($event)\" [cssImport]=\"false\" [options]=\"{minimumResultsForSearch: -1}\" [data]=\"[{id:'',text:'全部'}].concat(rolesList)\" [width]=\"'148px'\"></select2>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        用户姓名:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <input type=\"text\" class=\"form-control input-sm\" [(ngModel)]=\"userFilterName\" placeholder=\"输入用户名称\">\r\n        <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        用户名:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <input type=\"text\" class=\"form-control input-sm\" [(ngModel)]=\"userFilterUserName\" placeholder=\"输入用户名\">\r\n        <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        电话:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <input type=\"text\" class=\"form-control input-sm\" [(ngModel)]=\"userFilterUserPhone\" placeholder=\"输入电话号码\">\r\n        <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n      </div>\r\n    </div>\r\n  </app-collapse-box>\r\n\r\n  <div class=\"box box-primary\">\r\n    <div class=\"box-header\">\r\n      <i class=\"fa fa-table\"></i><h3 class=\"box-title\">用户列表</h3>\r\n    </div>\r\n    <div class=\"box-body\" style=\"border-top: 1px solid #dddddd;\">\r\n      <div class=\"dataTables_wrapper form-inline dt-bootstrap\">\r\n        <div class=\"row\">\r\n          <div class=\"col-sm-12\">\r\n            <table class=\"table table-bordered table-hover dataTable\">\r\n              <thead>\r\n              <tr>\r\n                <th>姓名</th>\r\n                <th>电话</th>\r\n                <th>角色类型</th>\r\n                <th>用户类型</th>\r\n                <th>最后登录时间</th>\r\n                <th>最后登录IP</th>\r\n                <th>用户名</th>\r\n                <th class=\"text-center\">相关操作</th>\r\n              </tr>\r\n              </thead>\r\n              <tbody>\r\n                <tr *ngFor=\"let user of users |\r\n                  timeRange: userCreatedFilterTime |\r\n                  matchItem: userFilterName : 'name' |\r\n                  matchItem: userFilterUserName : 'username' |\r\n                  matchItem: userFilterUserPhone : 'phone' |\r\n                  matchItem: userFilterUserRoleId : 'roleId' \" >\r\n                  <td>{{ user.name }}</td>\r\n                  <td>{{ user.phone }}</td>\r\n                  <td>{{ roles[user.roleId] }}</td>\r\n                  <td>{{ user.userType === 'ADMIN' ? '系统管理员' : '员工' }}</td>\r\n                  <td>{{ user.lastLoginTime | date: 'yyyy-MM-dd HH:mm:ss' }}</td>\r\n                  <td>{{ user.lastLoginIp }}</td>\r\n                  <td>{{ user.username }}</td>\r\n                  <td class=\"text-center\">\r\n                    <div class=\"dropdown btn-group btn-group-sm\">\r\n                      <div class=\"btn-group btn-group-xs\">\r\n                        <button class=\"btn btn-primary dropdown-toggle\" data-toggle=\"dropdown\">\r\n                          操作\r\n                          <span class=\"caret\"></span>\r\n                        </button>\r\n                        <ul class=\"dropdown-menu dropdown-menu-right\">\r\n                          <li class=\"text-center\"\r\n                            (click)=\"setCurUsr(user);\r\n                            clearPassword();\r\n                            passwordModifyModal.showModal({\r\n                              title: '设置新密码 ' + curUsr.username,\r\n                              confirm: setNewPassword\r\n                            })\">\r\n                            <a href=\"javascript:void(0)\">\r\n                              <i class=\"fa fa-key\"></i>修改密码\r\n                            </a>\r\n                          </li>\r\n                          <li class=\"text-center\"\r\n                              (click)=\"setCurRoleId(user);\r\n                              roleSwitchModal.showModal({\r\n                                title: '修改用户类型',\r\n                                confirm: saveCurRoleId\r\n                              })\">\r\n                            <a href=\"javascript:void(0)\">\r\n                              <i class=\"fa fa-edit\"></i>编辑角色\r\n                            </a>\r\n                          </li>\r\n                        </ul>\r\n                      </div>\r\n                    </div>\r\n                  </td>\r\n                </tr>\r\n              </tbody>\r\n            </table>\r\n          </div>\r\n        </div>\r\n        <app-pagination></app-pagination>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<app-modal #passwordModifyModal\r\n   [disabledAcceptBtn]=\"!newPassword.password ||\r\n   !newPassword.rePassword ||\r\n   (newPassword.password !== newPassword.rePassword)\">\r\n  <div class=\"form-group clearfix\">\r\n    <label for=\"newPassword\" class=\"control-label col-sm-3\">新密码:</label>\r\n    <div class=\"col-sm-9\">\r\n      <input type=\"password\"\r\n             id=\"newPassword\"\r\n             name=\"newPassword\"\r\n             class=\"form-control\"\r\n             [(ngModel)]=\"newPassword.password\"\r\n             placeholder=\"新密码\">\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"form-group clearfix\">\r\n    <label for=\"newRePassword\" class=\"control-label col-sm-3\">再次输入:</label>\r\n    <div class=\"col-sm-9\">\r\n      <input type=\"password\"\r\n             id=\"newRePassword\"\r\n             name=\"newRePassword\"\r\n             class=\"form-control\"\r\n             [(ngModel)]=\"newPassword.rePassword\"\r\n             placeholder=\"再次输入新密码\">\r\n    </div>\r\n  </div>\r\n</app-modal>\r\n\r\n<app-modal #roleSwitchModal>\r\n  <div class=\"form-group\">\r\n    <select2 id=\"courseType\"\r\n             [value]=\"curUsr.roleId\"\r\n             [cssImport]=\"false\"\r\n             [width]=\"'100%'\"\r\n             (valueChanged)=\"switchRoleId($event)\"\r\n             [options]=\"{minimumResultsForSearch: -1}\"\r\n             [data]=\"roleList\"></select2>\r\n  </div>\r\n</app-modal>\r\n"
+module.exports = "<app-content-header\r\n  [title]=\"'用户列表'\" [menus]=\"contentHeader\"></app-content-header>\r\n<div class=\"content\">\r\n\r\n  <app-collapse-box [collapse]=\"false\" [icon]=\"'filter'\" [boxTitle]=\"'用户过滤'\">\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        创建时间:\r\n      </label>\r\n      <app-date-ranger-picker\r\n        [startTime]=\"userCreatedFilterTime.start\"\r\n        (dateRangeSetEvent)=\"handleTimeRangeChange($event)\"\r\n        class=\"pull-left\"></app-date-ranger-picker>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        类型筛选:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <select2 (valueChanged)=\"switchFilterRoleId($event)\" [cssImport]=\"false\" [options]=\"{minimumResultsForSearch: -1}\" [data]=\"[{id:'',text:'全部'}].concat(rolesList)\" [width]=\"'148px'\"></select2>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        用户姓名:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <input type=\"text\" class=\"form-control input-sm\" [(ngModel)]=\"userFilterName\" placeholder=\"输入用户名称\">\r\n        <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        用户名:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <input type=\"text\" class=\"form-control input-sm\" [(ngModel)]=\"userFilterUserName\" placeholder=\"输入用户名\">\r\n        <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        电话:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <input type=\"text\" class=\"form-control input-sm\" [(ngModel)]=\"userFilterUserPhone\" placeholder=\"输入电话号码\">\r\n        <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n      </div>\r\n    </div>\r\n  </app-collapse-box>\r\n\r\n  <div class=\"box box-primary\">\r\n    <div class=\"box-header\">\r\n      <i class=\"fa fa-table\"></i><h3 class=\"box-title\">用户列表</h3>\r\n    </div>\r\n    <div class=\"box-body\" style=\"border-top: 1px solid #dddddd;\">\r\n      <div class=\"dataTables_wrapper form-inline dt-bootstrap\">\r\n        <div class=\"row\">\r\n          <div class=\"col-sm-12\">\r\n            <table class=\"table table-bordered table-hover text-center\">\r\n              <thead>\r\n              <tr>\r\n                <th>姓名</th>\r\n                <th>电话</th>\r\n                <th>角色类型</th>\r\n                <th>用户类型</th>\r\n                <th>最后登录时间</th>\r\n                <th>最后登录IP</th>\r\n                <th>用户名</th>\r\n                <th class=\"text-center\">相关操作</th>\r\n              </tr>\r\n              </thead>\r\n              <tbody>\r\n                <tr *ngFor=\"let user of users |\r\n                  timeRange: userCreatedFilterTime |\r\n                  matchItem: userFilterName : 'name' |\r\n                  matchItem: userFilterUserName : 'username' |\r\n                  matchItem: userFilterUserPhone : 'phone' |\r\n                  matchItem: userFilterUserRoleId : 'roleId' \" >\r\n                  <td>{{ user.name }}</td>\r\n                  <td>{{ user.phone }}</td>\r\n                  <td>{{ roles[user.roleId] }}</td>\r\n                  <td>{{ user.userType === 'ADMIN' ? '系统管理员' : '员工' }}</td>\r\n                  <td>{{ user.lastLoginTime | date: 'yyyy-MM-dd HH:mm:ss' }}</td>\r\n                  <td>{{ user.lastLoginIp || '未登录' }}</td>\r\n                  <td>{{ user.username }}</td>\r\n                  <td class=\"text-center\">\r\n                    <div class=\"dropdown btn-group btn-group-sm\">\r\n                      <div class=\"btn-group btn-group-xs\">\r\n                        <button class=\"btn btn-primary dropdown-toggle\" data-toggle=\"dropdown\">\r\n                          操作\r\n                          <span class=\"caret\"></span>\r\n                        </button>\r\n                        <ul class=\"dropdown-menu dropdown-menu-right\">\r\n                          <li class=\"text-center\"\r\n                            (click)=\"setCurUsr(user);\r\n                            clearPassword();\r\n                            passwordModifyModal.showModal({\r\n                              title: '设置新密码 ' + curUsr.username,\r\n                              confirm: setNewPassword\r\n                            })\">\r\n                            <a href=\"javascript:void(0)\">\r\n                              <i class=\"fa fa-key\"></i>修改密码\r\n                            </a>\r\n                          </li>\r\n                          <li class=\"text-center\"\r\n                              (click)=\"setCurRoleId(user);\r\n                              roleSwitchModal.showModal({\r\n                                title: '修改用户类型',\r\n                                confirm: saveCurRoleId\r\n                              })\">\r\n                            <a href=\"javascript:void(0)\">\r\n                              <i class=\"fa fa-edit\"></i>编辑角色\r\n                            </a>\r\n                          </li>\r\n                        </ul>\r\n                      </div>\r\n                    </div>\r\n                  </td>\r\n                </tr>\r\n              </tbody>\r\n            </table>\r\n          </div>\r\n        </div>\r\n        <app-pagination></app-pagination>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<app-modal #passwordModifyModal\r\n   [disabledAcceptBtn]=\"!newPassword.password ||\r\n   !newPassword.rePassword ||\r\n   (newPassword.password !== newPassword.rePassword)\">\r\n  <div class=\"form-group clearfix\">\r\n    <label for=\"newPassword\" class=\"control-label col-sm-3\">新密码:</label>\r\n    <div class=\"col-sm-9\">\r\n      <input type=\"password\"\r\n             id=\"newPassword\"\r\n             name=\"newPassword\"\r\n             class=\"form-control\"\r\n             [(ngModel)]=\"newPassword.password\"\r\n             placeholder=\"新密码\">\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"form-group clearfix\">\r\n    <label for=\"newRePassword\" class=\"control-label col-sm-3\">再次输入:</label>\r\n    <div class=\"col-sm-9\">\r\n      <input type=\"password\"\r\n             id=\"newRePassword\"\r\n             name=\"newRePassword\"\r\n             class=\"form-control\"\r\n             [(ngModel)]=\"newPassword.rePassword\"\r\n             placeholder=\"再次输入新密码\">\r\n    </div>\r\n  </div>\r\n</app-modal>\r\n\r\n<app-modal #roleSwitchModal>\r\n  <div class=\"form-group\">\r\n    <select2 id=\"courseType\"\r\n             [value]=\"curUsr.roleId\"\r\n             [cssImport]=\"false\"\r\n             [width]=\"'100%'\"\r\n             (valueChanged)=\"switchRoleId($event)\"\r\n             [options]=\"{minimumResultsForSearch: -1}\"\r\n             [data]=\"roleList\"></select2>\r\n  </div>\r\n</app-modal>\r\n"
 
 /***/ }),
 
@@ -382,6 +384,7 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__admin_service__ = __webpack_require__("../../../../../src/app/admin/admin.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_user__ = __webpack_require__("../../../../../src/app/models/user.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_role_service__ = __webpack_require__("../../../../../src/app/common/role.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_enum__ = __webpack_require__("../../../../../src/app/common/enum.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UsersComponent; });
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -404,6 +407,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var UsersComponent = (function () {
     function UsersComponent(adminService, roleService) {
         this.adminService = adminService;
@@ -419,7 +423,7 @@ var UsersComponent = (function () {
             { name: '主页', icon: 'fa-dashboard' },
             { name: '用户列表页', icon: 'fa-users' }
         ];
-        this.roles = this.roleService.roles;
+        this.roles = __WEBPACK_IMPORTED_MODULE_4__common_enum__["k" /* roleMap */];
         this.roleList = this.roleService.roleList;
         this.curUsr = new __WEBPACK_IMPORTED_MODULE_2__models_user__["a" /* User */]();
         this.newPassword = { id: '', password: '', rePassword: '' };
@@ -718,49 +722,81 @@ AppComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__sidebar_sidebar_component__ = __webpack_require__("../../../../../src/app/sidebar/sidebar.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__basic_info_basic_info_component__ = __webpack_require__("../../../../../src/app/basic-info/basic-info.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__syllabus_syllabus_component__ = __webpack_require__("../../../../../src/app/syllabus/syllabus.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__employee_employee_component__ = __webpack_require__("../../../../../src/app/employee/employee.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__user_user_component__ = __webpack_require__("../../../../../src/app/user/user.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__role_role_component__ = __webpack_require__("../../../../../src/app/role/role.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__service_http_service__ = __webpack_require__("../../../../../src/app/service/http.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__alert_alert_component__ = __webpack_require__("../../../../../src/app/alert/alert.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__common_user_service__ = __webpack_require__("../../../../../src/app/common/user.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__syllabus_syllabus_service__ = __webpack_require__("../../../../../src/app/syllabus/syllabus.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__modal_modal_component__ = __webpack_require__("../../../../../src/app/modal/modal.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__modal_modal_service__ = __webpack_require__("../../../../../src/app/modal/modal.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__confirm_confirm_component__ = __webpack_require__("../../../../../src/app/confirm/confirm.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__confirm_confirm_service__ = __webpack_require__("../../../../../src/app/confirm/confirm.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__alert_alert_service__ = __webpack_require__("../../../../../src/app/alert/alert.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__collapse_box_collapse_box_component__ = __webpack_require__("../../../../../src/app/collapse-box/collapse-box.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__date_ranger_picker_date_ranger_picker_component__ = __webpack_require__("../../../../../src/app/date-ranger-picker/date-ranger-picker.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__employee_employee_service__ = __webpack_require__("../../../../../src/app/employee/employee.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__admin_admin_component__ = __webpack_require__("../../../../../src/app/admin/admin.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__common_role_service__ = __webpack_require__("../../../../../src/app/common/role.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__common_school_service__ = __webpack_require__("../../../../../src/app/common/school.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__content_header_content_header_component__ = __webpack_require__("../../../../../src/app/content-header/content-header.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__admin_users_users_component__ = __webpack_require__("../../../../../src/app/admin/users/users.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__admin_schools_schools_component__ = __webpack_require__("../../../../../src/app/admin/schools/schools.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__admin_admin_service__ = __webpack_require__("../../../../../src/app/admin/admin.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__pagination_pagination_component__ = __webpack_require__("../../../../../src/app/pagination/pagination.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__common_time_range_pipe__ = __webpack_require__("../../../../../src/app/common/time-range.pipe.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__common_match_item_pipe__ = __webpack_require__("../../../../../src/app/common/match-item.pipe.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__counselor_counselor_component__ = __webpack_require__("../../../../../src/app/counselor/counselor.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__counselor_students_asset_students_asset_component__ = __webpack_require__("../../../../../src/app/counselor/students-asset/students-asset.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__counselor_students_students_component__ = __webpack_require__("../../../../../src/app/counselor/students/students.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_42__counselor_counselor_service__ = __webpack_require__("../../../../../src/app/counselor/counselor.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_43__consultant_main_consultant_main_component__ = __webpack_require__("../../../../../src/app/consultant-main/consultant-main.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_44__consultant_main_unallocated_students_unallocated_students_component__ = __webpack_require__("../../../../../src/app/consultant-main/unallocated-students/unallocated-students.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_45__consultant_main_consultation_record_consultation_record_component__ = __webpack_require__("../../../../../src/app/consultant-main/consultation-record/consultation-record.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_46__consultant_main_consultant_main_service__ = __webpack_require__("../../../../../src/app/consultant-main/consultant-main.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_47__datepicker_datepicker_component__ = __webpack_require__("../../../../../src/app/datepicker/datepicker.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_48__stmanager_stmanager_component__ = __webpack_require__("../../../../../src/app/stmanager/stmanager.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_49__stmanager_course_course_component__ = __webpack_require__("../../../../../src/app/stmanager/course/course.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_50__stmanager_student_schedule_student_schedule_component__ = __webpack_require__("../../../../../src/app/stmanager/student-schedule/student-schedule.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_51__stmanager_student_class_period_student_class_period_component__ = __webpack_require__("../../../../../src/app/stmanager/student-class-period/student-class-period.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_52__stmanager_students_ststudents_component__ = __webpack_require__("../../../../../src/app/stmanager/students/ststudents.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_53__routes__ = __webpack_require__("../../../../../src/app/routes.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_54__stmanager_stmanager_service__ = __webpack_require__("../../../../../src/app/stmanager/stmanager.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_55__consultant_main_consult_record_consult_record_component__ = __webpack_require__("../../../../../src/app/consultant-main/consult-record/consult-record.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_56__counselor_sign_record_sign_record_component__ = __webpack_require__("../../../../../src/app/counselor/sign-record/sign-record.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__user_user_component__ = __webpack_require__("../../../../../src/app/user/user.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__role_role_component__ = __webpack_require__("../../../../../src/app/role/role.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__service_http_service__ = __webpack_require__("../../../../../src/app/service/http.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__alert_alert_component__ = __webpack_require__("../../../../../src/app/alert/alert.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__common_user_service__ = __webpack_require__("../../../../../src/app/common/user.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__syllabus_syllabus_service__ = __webpack_require__("../../../../../src/app/syllabus/syllabus.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__modal_modal_component__ = __webpack_require__("../../../../../src/app/modal/modal.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__modal_modal_service__ = __webpack_require__("../../../../../src/app/modal/modal.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__confirm_confirm_component__ = __webpack_require__("../../../../../src/app/confirm/confirm.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__confirm_confirm_service__ = __webpack_require__("../../../../../src/app/confirm/confirm.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__alert_alert_service__ = __webpack_require__("../../../../../src/app/alert/alert.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__collapse_box_collapse_box_component__ = __webpack_require__("../../../../../src/app/collapse-box/collapse-box.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__date_ranger_picker_date_ranger_picker_component__ = __webpack_require__("../../../../../src/app/date-ranger-picker/date-ranger-picker.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__admin_admin_component__ = __webpack_require__("../../../../../src/app/admin/admin.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__common_role_service__ = __webpack_require__("../../../../../src/app/common/role.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__common_school_service__ = __webpack_require__("../../../../../src/app/common/school.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__content_header_content_header_component__ = __webpack_require__("../../../../../src/app/content-header/content-header.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__admin_users_users_component__ = __webpack_require__("../../../../../src/app/admin/users/users.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__admin_schools_schools_component__ = __webpack_require__("../../../../../src/app/admin/schools/schools.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__admin_admin_service__ = __webpack_require__("../../../../../src/app/admin/admin.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__pagination_pagination_component__ = __webpack_require__("../../../../../src/app/pagination/pagination.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__common_time_range_pipe__ = __webpack_require__("../../../../../src/app/common/time-range.pipe.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__common_match_item_pipe__ = __webpack_require__("../../../../../src/app/common/match-item.pipe.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__counselor_counselor_component__ = __webpack_require__("../../../../../src/app/counselor/counselor.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__counselor_students_asset_students_asset_component__ = __webpack_require__("../../../../../src/app/counselor/students-asset/students-asset.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__counselor_students_students_component__ = __webpack_require__("../../../../../src/app/counselor/students/students.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__counselor_counselor_service__ = __webpack_require__("../../../../../src/app/counselor/counselor.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__consultant_main_consultant_main_component__ = __webpack_require__("../../../../../src/app/consultant-main/consultant-main.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_42__consultant_main_unallocated_students_unallocated_students_component__ = __webpack_require__("../../../../../src/app/consultant-main/unallocated-students/unallocated-students.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_43__consultant_main_consultation_record_consultation_record_component__ = __webpack_require__("../../../../../src/app/consultant-main/consultation-record/consultation-record.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_44__consultant_main_consultant_main_service__ = __webpack_require__("../../../../../src/app/consultant-main/consultant-main.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_45__datepicker_datepicker_component__ = __webpack_require__("../../../../../src/app/datepicker/datepicker.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_46__stmanager_stmanager_component__ = __webpack_require__("../../../../../src/app/stmanager/stmanager.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_47__stmanager_course_course_component__ = __webpack_require__("../../../../../src/app/stmanager/course/course.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_48__stmanager_student_schedule_student_schedule_component__ = __webpack_require__("../../../../../src/app/stmanager/student-schedule/student-schedule.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_49__stmanager_student_class_period_student_class_period_component__ = __webpack_require__("../../../../../src/app/stmanager/student-class-period/student-class-period.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_50__stmanager_students_ststudents_component__ = __webpack_require__("../../../../../src/app/stmanager/students/ststudents.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_51__routes__ = __webpack_require__("../../../../../src/app/routes.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_52__stmanager_stmanager_service__ = __webpack_require__("../../../../../src/app/stmanager/stmanager.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_53__consultant_main_consult_record_consult_record_component__ = __webpack_require__("../../../../../src/app/consultant-main/consult-record/consult-record.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_54__counselor_sign_record_sign_record_component__ = __webpack_require__("../../../../../src/app/counselor/sign-record/sign-record.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_55__stmanager_renews_returns_renews_returns_component__ = __webpack_require__("../../../../../src/app/stmanager/renews-returns/renews-returns.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_56__tc_director_tc_director_component__ = __webpack_require__("../../../../../src/app/tc-director/tc-director.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_57__tc_director_grade_grade_component__ = __webpack_require__("../../../../../src/app/tc-director/grade/grade.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_58__tc_director_origin_course_origin_course_component__ = __webpack_require__("../../../../../src/app/tc-director/origin-course/origin-course.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_59__tc_director_teacher_director_service__ = __webpack_require__("../../../../../src/app/tc-director/teacher-director.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_60__president_president_component__ = __webpack_require__("../../../../../src/app/president/president.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_61__president_transfer_transfer_component__ = __webpack_require__("../../../../../src/app/president/transfer/transfer.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_62__president_refund_refund_component__ = __webpack_require__("../../../../../src/app/president/refund/refund.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_63__personnel_cashier_personnel_cashier_component__ = __webpack_require__("../../../../../src/app/personnel-cashier/personnel-cashier.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_64__personnel_cashier_fees_fees_component__ = __webpack_require__("../../../../../src/app/personnel-cashier/fees/fees.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_65__personnel_cashier_personal_cashier_service__ = __webpack_require__("../../../../../src/app/personnel-cashier/personal-cashier.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_66__personnel_cashier_fees_school_table_school_table_component__ = __webpack_require__("../../../../../src/app/personnel-cashier/fees/school-table/school-table.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_67__personnel_cashier_fees_student_table_student_table_component__ = __webpack_require__("../../../../../src/app/personnel-cashier/fees/student-table/student-table.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_68__personnel_manager_personnel_manager_component__ = __webpack_require__("../../../../../src/app/personnel-manager/personnel-manager.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_69__personnel_manager_employee_employee_component__ = __webpack_require__("../../../../../src/app/personnel-manager/employee/employee.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_70__personnel_manager_personnel_service__ = __webpack_require__("../../../../../src/app/personnel-manager/personnel.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_71__personnel_manager_employee_detail_employee_detail_component__ = __webpack_require__("../../../../../src/app/personnel-manager/employee-detail/employee-detail.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_72__teacher_teacher_component__ = __webpack_require__("../../../../../src/app/teacher/teacher.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_73__teacher_teacher_schedule_teacher_schedule_component__ = __webpack_require__("../../../../../src/app/teacher/teacher-schedule/teacher-schedule.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_74__teacher_teacher_class_hour_teacher_class_hour_component__ = __webpack_require__("../../../../../src/app/teacher/teacher-class-hour/teacher-class-hour.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_75__teacher_teacher_service__ = __webpack_require__("../../../../../src/app/teacher/teacher.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_76__finance_finance_component__ = __webpack_require__("../../../../../src/app/finance/finance.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_77__finance_to_approvement_to_approvement_component__ = __webpack_require__("../../../../../src/app/finance/to-approvement/to-approvement.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_78__finance_stu_pay_stat_stu_pay_stat_component__ = __webpack_require__("../../../../../src/app/finance/stu-pay-stat/stu-pay-stat.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_79__finance_stu_pay_record_stu_pay_record_component__ = __webpack_require__("../../../../../src/app/finance/stu-pay-record/stu-pay-record.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_80__finance_finance_service__ = __webpack_require__("../../../../../src/app/finance/finance.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_81__president_boss_president_boss_component__ = __webpack_require__("../../../../../src/app/president-boss/president-boss.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_82__president_stat_stat_component__ = __webpack_require__("../../../../../src/app/president/stat/stat.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_83__president_president_service__ = __webpack_require__("../../../../../src/app/president/president.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_84__finance_stu_pay_stat_payments_payments_component__ = __webpack_require__("../../../../../src/app/finance/stu-pay-stat/payments/payments.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_85__finance_stu_pay_stat_school_table_school_table_component__ = __webpack_require__("../../../../../src/app/finance/stu-pay-stat/school-table/school-table.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_86__finance_stu_pay_record_payment_log_payment_log_component__ = __webpack_require__("../../../../../src/app/finance/stu-pay-record/payment-log/payment-log.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_87__finance_stu_pay_record_log_school_table_log_school_table_component__ = __webpack_require__("../../../../../src/app/finance/stu-pay-record/log-school-table/log-school-table.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_88__president_transfer_boss_transfer_boss_component__ = __webpack_require__("../../../../../src/app/president/transfer-boss/transfer-boss.component.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -768,6 +804,38 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -841,57 +909,89 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_11__sidebar_sidebar_component__["a" /* SidebarComponent */],
             __WEBPACK_IMPORTED_MODULE_12__basic_info_basic_info_component__["a" /* BasicInfoComponent */],
             __WEBPACK_IMPORTED_MODULE_13__syllabus_syllabus_component__["a" /* SyllabusComponent */],
-            __WEBPACK_IMPORTED_MODULE_14__employee_employee_component__["a" /* EmployeeComponent */],
-            __WEBPACK_IMPORTED_MODULE_15__user_user_component__["a" /* UserComponent */],
-            __WEBPACK_IMPORTED_MODULE_16__role_role_component__["a" /* RoleComponent */],
-            __WEBPACK_IMPORTED_MODULE_18__alert_alert_component__["a" /* AlertComponent */],
-            __WEBPACK_IMPORTED_MODULE_21__modal_modal_component__["a" /* ModalComponent */],
-            __WEBPACK_IMPORTED_MODULE_23__confirm_confirm_component__["a" /* ConfirmComponent */],
-            __WEBPACK_IMPORTED_MODULE_26__collapse_box_collapse_box_component__["a" /* CollapseBoxComponent */],
-            __WEBPACK_IMPORTED_MODULE_27__date_ranger_picker_date_ranger_picker_component__["a" /* DateRangerPickerComponent */],
-            __WEBPACK_IMPORTED_MODULE_29__admin_admin_component__["a" /* AdminComponent */],
-            __WEBPACK_IMPORTED_MODULE_32__content_header_content_header_component__["a" /* ContentHeaderComponent */],
-            __WEBPACK_IMPORTED_MODULE_33__admin_users_users_component__["a" /* UsersComponent */],
-            __WEBPACK_IMPORTED_MODULE_34__admin_schools_schools_component__["a" /* SchoolsComponent */],
-            __WEBPACK_IMPORTED_MODULE_36__pagination_pagination_component__["a" /* PaginationComponent */],
-            __WEBPACK_IMPORTED_MODULE_37__common_time_range_pipe__["a" /* TimeRangePipe */],
-            __WEBPACK_IMPORTED_MODULE_38__common_match_item_pipe__["a" /* MatchItemPipe */],
-            __WEBPACK_IMPORTED_MODULE_39__counselor_counselor_component__["a" /* CounselorComponent */],
-            __WEBPACK_IMPORTED_MODULE_40__counselor_students_asset_students_asset_component__["a" /* StudentsAssetComponent */],
-            __WEBPACK_IMPORTED_MODULE_41__counselor_students_students_component__["a" /* StudentsComponent */],
-            __WEBPACK_IMPORTED_MODULE_43__consultant_main_consultant_main_component__["a" /* ConsultantMainComponent */],
-            __WEBPACK_IMPORTED_MODULE_44__consultant_main_unallocated_students_unallocated_students_component__["a" /* UnallocatedStudentsComponent */],
-            __WEBPACK_IMPORTED_MODULE_45__consultant_main_consultation_record_consultation_record_component__["a" /* ConsultationRecordComponent */],
-            __WEBPACK_IMPORTED_MODULE_47__datepicker_datepicker_component__["a" /* DatepickerComponent */],
-            __WEBPACK_IMPORTED_MODULE_48__stmanager_stmanager_component__["a" /* StmanagerComponent */],
-            __WEBPACK_IMPORTED_MODULE_49__stmanager_course_course_component__["a" /* CourseComponent */],
-            __WEBPACK_IMPORTED_MODULE_50__stmanager_student_schedule_student_schedule_component__["a" /* StudentScheduleComponent */],
-            __WEBPACK_IMPORTED_MODULE_51__stmanager_student_class_period_student_class_period_component__["a" /* StudentClassPeriodComponent */],
-            __WEBPACK_IMPORTED_MODULE_52__stmanager_students_ststudents_component__["a" /* StStudentsComponent */],
-            __WEBPACK_IMPORTED_MODULE_55__consultant_main_consult_record_consult_record_component__["a" /* ConsultRecordComponent */],
-            __WEBPACK_IMPORTED_MODULE_56__counselor_sign_record_sign_record_component__["a" /* SignRecordComponent */],
+            __WEBPACK_IMPORTED_MODULE_14__user_user_component__["a" /* UserComponent */],
+            __WEBPACK_IMPORTED_MODULE_15__role_role_component__["a" /* RoleComponent */],
+            __WEBPACK_IMPORTED_MODULE_17__alert_alert_component__["a" /* AlertComponent */],
+            __WEBPACK_IMPORTED_MODULE_20__modal_modal_component__["a" /* ModalComponent */],
+            __WEBPACK_IMPORTED_MODULE_22__confirm_confirm_component__["a" /* ConfirmComponent */],
+            __WEBPACK_IMPORTED_MODULE_25__collapse_box_collapse_box_component__["a" /* CollapseBoxComponent */],
+            __WEBPACK_IMPORTED_MODULE_26__date_ranger_picker_date_ranger_picker_component__["a" /* DateRangerPickerComponent */],
+            __WEBPACK_IMPORTED_MODULE_27__admin_admin_component__["a" /* AdminComponent */],
+            __WEBPACK_IMPORTED_MODULE_30__content_header_content_header_component__["a" /* ContentHeaderComponent */],
+            __WEBPACK_IMPORTED_MODULE_31__admin_users_users_component__["a" /* UsersComponent */],
+            __WEBPACK_IMPORTED_MODULE_32__admin_schools_schools_component__["a" /* SchoolsComponent */],
+            __WEBPACK_IMPORTED_MODULE_34__pagination_pagination_component__["a" /* PaginationComponent */],
+            __WEBPACK_IMPORTED_MODULE_35__common_time_range_pipe__["a" /* TimeRangePipe */],
+            __WEBPACK_IMPORTED_MODULE_36__common_match_item_pipe__["a" /* MatchItemPipe */],
+            __WEBPACK_IMPORTED_MODULE_37__counselor_counselor_component__["a" /* CounselorComponent */],
+            __WEBPACK_IMPORTED_MODULE_38__counselor_students_asset_students_asset_component__["a" /* StudentsAssetComponent */],
+            __WEBPACK_IMPORTED_MODULE_39__counselor_students_students_component__["a" /* StudentsComponent */],
+            __WEBPACK_IMPORTED_MODULE_41__consultant_main_consultant_main_component__["a" /* ConsultantMainComponent */],
+            __WEBPACK_IMPORTED_MODULE_42__consultant_main_unallocated_students_unallocated_students_component__["a" /* UnallocatedStudentsComponent */],
+            __WEBPACK_IMPORTED_MODULE_43__consultant_main_consultation_record_consultation_record_component__["a" /* ConsultationRecordComponent */],
+            __WEBPACK_IMPORTED_MODULE_45__datepicker_datepicker_component__["a" /* DatepickerComponent */],
+            __WEBPACK_IMPORTED_MODULE_46__stmanager_stmanager_component__["a" /* StmanagerComponent */],
+            __WEBPACK_IMPORTED_MODULE_47__stmanager_course_course_component__["a" /* CourseComponent */],
+            __WEBPACK_IMPORTED_MODULE_48__stmanager_student_schedule_student_schedule_component__["a" /* StudentScheduleComponent */],
+            __WEBPACK_IMPORTED_MODULE_49__stmanager_student_class_period_student_class_period_component__["a" /* StudentClassPeriodComponent */],
+            __WEBPACK_IMPORTED_MODULE_50__stmanager_students_ststudents_component__["a" /* StStudentsComponent */],
+            __WEBPACK_IMPORTED_MODULE_53__consultant_main_consult_record_consult_record_component__["a" /* ConsultRecordComponent */],
+            __WEBPACK_IMPORTED_MODULE_54__counselor_sign_record_sign_record_component__["a" /* SignRecordComponent */],
+            __WEBPACK_IMPORTED_MODULE_55__stmanager_renews_returns_renews_returns_component__["a" /* RenewsReturnsComponent */],
+            __WEBPACK_IMPORTED_MODULE_56__tc_director_tc_director_component__["a" /* TcDirectorComponent */],
+            __WEBPACK_IMPORTED_MODULE_57__tc_director_grade_grade_component__["a" /* GradeComponent */],
+            __WEBPACK_IMPORTED_MODULE_58__tc_director_origin_course_origin_course_component__["a" /* OriginCourseComponent */],
+            __WEBPACK_IMPORTED_MODULE_60__president_president_component__["a" /* PresidentComponent */],
+            __WEBPACK_IMPORTED_MODULE_61__president_transfer_transfer_component__["a" /* TransferComponent */],
+            __WEBPACK_IMPORTED_MODULE_62__president_refund_refund_component__["a" /* RefundComponent */],
+            __WEBPACK_IMPORTED_MODULE_63__personnel_cashier_personnel_cashier_component__["a" /* PersonnelCashierComponent */],
+            __WEBPACK_IMPORTED_MODULE_64__personnel_cashier_fees_fees_component__["a" /* FeesComponent */],
+            __WEBPACK_IMPORTED_MODULE_66__personnel_cashier_fees_school_table_school_table_component__["a" /* SchoolTableComponent */],
+            __WEBPACK_IMPORTED_MODULE_67__personnel_cashier_fees_student_table_student_table_component__["a" /* StudentTableComponent */],
+            __WEBPACK_IMPORTED_MODULE_68__personnel_manager_personnel_manager_component__["a" /* PersonnelManagerComponent */],
+            __WEBPACK_IMPORTED_MODULE_69__personnel_manager_employee_employee_component__["a" /* EmployeeComponent */],
+            __WEBPACK_IMPORTED_MODULE_71__personnel_manager_employee_detail_employee_detail_component__["a" /* EmployeeDetailComponent */],
+            __WEBPACK_IMPORTED_MODULE_72__teacher_teacher_component__["a" /* TeacherComponent */],
+            __WEBPACK_IMPORTED_MODULE_73__teacher_teacher_schedule_teacher_schedule_component__["a" /* TeacherScheduleComponent */],
+            __WEBPACK_IMPORTED_MODULE_74__teacher_teacher_class_hour_teacher_class_hour_component__["a" /* TeacherClassHourComponent */],
+            __WEBPACK_IMPORTED_MODULE_76__finance_finance_component__["a" /* FinanceComponent */],
+            __WEBPACK_IMPORTED_MODULE_77__finance_to_approvement_to_approvement_component__["a" /* ToApprovementComponent */],
+            __WEBPACK_IMPORTED_MODULE_78__finance_stu_pay_stat_stu_pay_stat_component__["a" /* StuPayStatComponent */],
+            __WEBPACK_IMPORTED_MODULE_79__finance_stu_pay_record_stu_pay_record_component__["a" /* StuPayRecordComponent */],
+            __WEBPACK_IMPORTED_MODULE_81__president_boss_president_boss_component__["a" /* PresidentBossComponent */],
+            __WEBPACK_IMPORTED_MODULE_82__president_stat_stat_component__["a" /* StatComponent */],
+            __WEBPACK_IMPORTED_MODULE_84__finance_stu_pay_stat_payments_payments_component__["a" /* PaymentsComponent */],
+            __WEBPACK_IMPORTED_MODULE_85__finance_stu_pay_stat_school_table_school_table_component__["a" /* FinanceSchoolTableComponent */],
+            __WEBPACK_IMPORTED_MODULE_86__finance_stu_pay_record_payment_log_payment_log_component__["a" /* PaymentLogComponent */],
+            __WEBPACK_IMPORTED_MODULE_87__finance_stu_pay_record_log_school_table_log_school_table_component__["a" /* LogSchoolTableComponent */],
+            __WEBPACK_IMPORTED_MODULE_88__president_transfer_boss_transfer_boss_component__["a" /* TransferBossComponent */]
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_5_ng2_select2__["Select2Module"],
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
             __WEBPACK_IMPORTED_MODULE_4__angular_http__["a" /* HttpModule */],
-            __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* RouterModule */].forRoot(__WEBPACK_IMPORTED_MODULE_53__routes__["a" /* routes */], { useHash: true })
+            __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* RouterModule */].forRoot(__WEBPACK_IMPORTED_MODULE_51__routes__["a" /* routes */], { useHash: true })
         ],
         providers: [
-            __WEBPACK_IMPORTED_MODULE_17__service_http_service__["a" /* HttpService */],
-            __WEBPACK_IMPORTED_MODULE_19__common_user_service__["a" /* UserService */],
-            __WEBPACK_IMPORTED_MODULE_20__syllabus_syllabus_service__["a" /* SyllabusService */],
-            __WEBPACK_IMPORTED_MODULE_22__modal_modal_service__["a" /* ModalService */],
-            __WEBPACK_IMPORTED_MODULE_24__confirm_confirm_service__["a" /* ConfirmService */],
-            __WEBPACK_IMPORTED_MODULE_25__alert_alert_service__["a" /* AlertService */],
-            __WEBPACK_IMPORTED_MODULE_28__employee_employee_service__["a" /* EmployeeService */],
-            __WEBPACK_IMPORTED_MODULE_30__common_role_service__["a" /* RoleService */],
-            __WEBPACK_IMPORTED_MODULE_31__common_school_service__["a" /* SchoolService */],
-            __WEBPACK_IMPORTED_MODULE_35__admin_admin_service__["a" /* AdminService */],
-            __WEBPACK_IMPORTED_MODULE_42__counselor_counselor_service__["a" /* CounselorService */],
-            __WEBPACK_IMPORTED_MODULE_46__consultant_main_consultant_main_service__["a" /* ConsultantMainService */],
-            __WEBPACK_IMPORTED_MODULE_54__stmanager_stmanager_service__["a" /* StmanagerService */],
+            __WEBPACK_IMPORTED_MODULE_16__service_http_service__["a" /* HttpService */],
+            __WEBPACK_IMPORTED_MODULE_18__common_user_service__["a" /* UserService */],
+            __WEBPACK_IMPORTED_MODULE_19__syllabus_syllabus_service__["a" /* SyllabusService */],
+            __WEBPACK_IMPORTED_MODULE_21__modal_modal_service__["a" /* ModalService */],
+            __WEBPACK_IMPORTED_MODULE_23__confirm_confirm_service__["a" /* ConfirmService */],
+            __WEBPACK_IMPORTED_MODULE_24__alert_alert_service__["a" /* AlertService */],
+            __WEBPACK_IMPORTED_MODULE_28__common_role_service__["a" /* RoleService */],
+            __WEBPACK_IMPORTED_MODULE_29__common_school_service__["a" /* SchoolService */],
+            __WEBPACK_IMPORTED_MODULE_33__admin_admin_service__["a" /* AdminService */],
+            __WEBPACK_IMPORTED_MODULE_40__counselor_counselor_service__["a" /* CounselorService */],
+            __WEBPACK_IMPORTED_MODULE_44__consultant_main_consultant_main_service__["a" /* ConsultantMainService */],
+            __WEBPACK_IMPORTED_MODULE_52__stmanager_stmanager_service__["a" /* StmanagerService */],
+            __WEBPACK_IMPORTED_MODULE_59__tc_director_teacher_director_service__["a" /* TeacherDirectorService */],
+            __WEBPACK_IMPORTED_MODULE_65__personnel_cashier_personal_cashier_service__["a" /* PersonalCashierService */],
+            __WEBPACK_IMPORTED_MODULE_70__personnel_manager_personnel_service__["a" /* PersonnelService */],
+            __WEBPACK_IMPORTED_MODULE_75__teacher_teacher_service__["a" /* TeacherService */],
+            __WEBPACK_IMPORTED_MODULE_80__finance_finance_service__["a" /* FinanceService */],
+            __WEBPACK_IMPORTED_MODULE_83__president_president_service__["a" /* PresidentService */]
         ],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* AppComponent */]]
     })
@@ -1058,10 +1158,18 @@ var courseTypeList = [
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return state; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return states; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return payType; });
-/* unused harmony export payTypeList */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return state; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return states; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return auditState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return payType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return payTypeList; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return courseTypeMap; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return courseTypeList; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return roles; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return roleMap; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return roleList; });
+/* unused harmony export gender */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return genderList; });
 var state = {
     'CONNECTION_NO': '未联系',
     'NO_PAY': '已联系',
@@ -1072,17 +1180,82 @@ var states = [
     { id: 'NO_PAY', text: '已联系' },
     { id: 'HAS_PAY', text: '已缴费' }
 ];
+var auditState = {
+    'AUDITING': '审核中',
+    'AUDIT_SUCCESS': '审核通过',
+    'AUDIT_FAIL': '审核拒绝',
+};
 var payType = {
     'STUDENTMANAGER_PAY': '学管师续费',
     'COUNSELOR_PAY': '咨询师缴费',
-    'STUDENTMANAGER_BACK': '学管师退费',
-    'SELF_PAY': '自主缴费',
+    'STUDENTMANAGER_BACK': '学管师退费'
 };
 var payTypeList = [
     { id: 'STUDENTMANAGER_PAY', text: '学管师续费' },
     { id: 'COUNSELOR_PAY', text: '咨询师缴费' },
-    { id: 'STUDENTMANAGER_BACK', text: '学管师退费' },
-    { id: 'SELF_PAY', text: '自主缴费' }
+    { id: 'STUDENTMANAGER_BACK', text: '学管师退费' }
+];
+var courseTypeMap = {
+    NORMALGROUP: '常规班',
+    ONETOONE: '一对一课程',
+    BOUTIQUEGROUP: '精品小组'
+};
+var courseTypeList = [
+    { id: 'NORMALGROUP', text: '常规班' },
+    { id: 'ONETOONE', text: '一对一课程' },
+    { id: 'BOUTIQUEGROUP', text: '精品小组' }
+];
+var roles = {
+    'super_admin': 'SUPER_ADMIN',
+    'consultant': 'CONSULTANT',
+    'consultant_boss': 'CONSULTANT_BOSS',
+    'consultant_main': 'CONSULTANT_MAIN',
+    'studentmanager': 'STUDENTMANAGER',
+    'studentmanager_boss': 'studentmanager_boss',
+    'teacher': 'TEACHER',
+    'teacher_director': 'TEACHER_DIRECTOR',
+    'schoolmaster': 'SCHOOLMASTER',
+    'schoolmaster_boss': 'SCHOOLMASTER_BOSS',
+    'finance': 'FINANCE',
+    'personnel_cashier': 'PERSONNEL_CASHIER',
+    'personnel_manager': 'PERSONNEL_MANAGER',
+};
+var roleMap = {
+    'SUPER_ADMIN': '系统管理员',
+    'CONSULTANT': '咨询师',
+    'CONSULTANT_BOSS': '咨询主任',
+    'CONSULTANT_MAIN': '咨询总监',
+    'STUDENTMANAGER': '学管师',
+    'studentmanager_boss': '教管主任',
+    'TEACHER': '教师',
+    'TEACHER_DIRECTOR': '教研主任',
+    'SCHOOLMASTER': '分校长',
+    'SCHOOLMASTER_BOSS': '总校长',
+    'FINANCE': '财务',
+    'PERSONNEL_CASHIER': '人事专员出纳',
+    'PERSONNEL_MANAGER': '人事经理',
+};
+var roleList = [
+    { id: 'CONSULTANT', text: '咨询师' },
+    { id: 'CONSULTANT_BOSS', text: '咨询主任' },
+    { id: 'CONSULTANT_MAIN', text: '咨询总监' },
+    { id: 'STUDENTMANAGER', text: '学管师' },
+    { id: 'STUDENTMANAGER_BOSS', text: '教管主任' },
+    { id: 'TEACHER', text: '教师' },
+    { id: 'TEACHER_DIRECTOR', text: '教研主任' },
+    { id: 'SCHOOLMASTER', text: '分校长' },
+    { id: 'SCHOOLMASTER_BOSS', text: '总校长' },
+    { id: 'FINANCE', text: '财务' },
+    { id: 'PERSONNEL_CASHIER', text: '人事专员出纳' },
+    { id: 'PERSONNEL_MANAGER', text: '人事经理' },
+];
+var gender = {
+    'MALE': '男',
+    'FEMALE': '女'
+};
+var genderList = [
+    { id: 'MALE', text: '男' },
+    { id: 'FEMALE', text: '女' },
 ];
 //# sourceMappingURL=enum.js.map
 
@@ -1124,7 +1297,7 @@ var MatchItemPipe = (function () {
         }
         if (accuracy === 'exact') {
             return value.filter(function (val) {
-                return val[field] === filter;
+                return val[field].toString() === filter;
             });
         }
         else {
@@ -1153,6 +1326,7 @@ MatchItemPipe = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__service_http_service__ = __webpack_require__("../../../../../src/app/service/http.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__alert_alert_service__ = __webpack_require__("../../../../../src/app/alert/alert.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__enum__ = __webpack_require__("../../../../../src/app/common/enum.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RoleService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1163,6 +1337,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -1179,7 +1354,7 @@ var RoleService = (function () {
         var _this = this;
         this.http.get('common/role').then(function (data) {
             if (data.success) {
-                data.data.forEach(function (role) {
+                (data.data || []).forEach(function (role) {
                     role['text'] = role['roleName'];
                     role['id'] = role['roleId'];
                     _this.roles[role.roleId] = role.roleName;
@@ -1196,30 +1371,56 @@ var RoleService = (function () {
     RoleService.prototype.navigateByRole = function (roleId) {
         switch (roleId) {
             /*超级管理员*/
-            case 'SUPER_ADMIN':
+            case __WEBPACK_IMPORTED_MODULE_4__enum__["a" /* roles */]['super_admin']:
                 this.router.navigate(['dashboard/admin']);
                 break;
             /*咨询师*/
-            case 'CONSULTANT':
+            case __WEBPACK_IMPORTED_MODULE_4__enum__["a" /* roles */]['consultant']:
                 this.router.navigate(['dashboard/counselor']);
                 break;
-            case 'CONSULTANT_BOSS':
+            /*咨询总监*/
+            case __WEBPACK_IMPORTED_MODULE_4__enum__["a" /* roles */]['consultant_boss']:
                 this.router.navigate(['dashboard/counselor']);
                 break;
-            case 'FINANCE':
+            /*咨询财务*/
+            case __WEBPACK_IMPORTED_MODULE_4__enum__["a" /* roles */]['finance']:
                 this.router.navigate(['dashboard/finance']);
                 break;
-            case 'STUDENTMANAGER':
+            /*学管师*/
+            case __WEBPACK_IMPORTED_MODULE_4__enum__["a" /* roles */]['studentmanager']:
                 this.router.navigate(['dashboard/studentmanager']);
                 break;
-            case 'TEACHER':
+            /*教师*/
+            case __WEBPACK_IMPORTED_MODULE_4__enum__["a" /* roles */]['teacher']:
                 this.router.navigate(['dashboard/teacher']);
                 break;
-            case 'CONSULTANT_MAIN':
+            /*咨询主任*/
+            case __WEBPACK_IMPORTED_MODULE_4__enum__["a" /* roles */]['consultant_main']:
                 this.router.navigate(['dashboard/consultant-main']);
+                break;
+            /*教研主任*/
+            case __WEBPACK_IMPORTED_MODULE_4__enum__["a" /* roles */]['teacher_director']:
+                this.router.navigate(['dashboard/teacher-director']);
+                break;
+            /*分校长*/
+            case __WEBPACK_IMPORTED_MODULE_4__enum__["a" /* roles */]['schoolmaster']:
+                this.router.navigate(['dashboard/president-master']);
+                break;
+            // 总校长
+            case __WEBPACK_IMPORTED_MODULE_4__enum__["a" /* roles */]['schoolmaster_boss']:
+                this.router.navigate(['dashboard/president-master']);
+                break;
+            /*人事专员出纳*/
+            case __WEBPACK_IMPORTED_MODULE_4__enum__["a" /* roles */]['personnel_cashier']:
+                this.router.navigate(['dashboard/personal-cashier']);
+                break;
+            /*人事经理*/
+            case __WEBPACK_IMPORTED_MODULE_4__enum__["a" /* roles */]['personnel_manager']:
+                this.router.navigate(['dashboard/personnel-manager']);
                 break;
             default:
                 this.alertService.alert({ title: '提示', content: '角色异常', type: 'danger' });
+                // this.router.navigate(['login']);
                 return;
         }
     };
@@ -1242,6 +1443,7 @@ var _a, _b, _c;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__service_http_service__ = __webpack_require__("../../../../../src/app/service/http.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__alert_alert_service__ = __webpack_require__("../../../../../src/app/alert/alert.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__enum__ = __webpack_require__("../../../../../src/app/common/enum.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SchoolService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1255,6 +1457,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var SchoolService = (function () {
     function SchoolService(http, alertService) {
         this.http = http;
@@ -1262,8 +1465,9 @@ var SchoolService = (function () {
     }
     SchoolService.prototype.fetchSchoolList = function () {
         var _this = this;
-        return this.http.get('common/school').then(function (result) {
+        var xhr = this.http.get('common/school').then(function (result) {
             if (result.success) {
+                _this.schools = result.data;
                 return result.data;
             }
             else {
@@ -1275,12 +1479,16 @@ var SchoolService = (function () {
                 return [];
             }
         });
+        if (this.schools) {
+            return Promise.resolve(this.schools);
+        }
+        return xhr;
     };
     SchoolService.prototype.fetchCourses = function () {
         var _this = this;
         return this.http.get('common/course').then(function (data) {
             if (data.success) {
-                console.log(data.success);
+                data.data.forEach(function (course) { return course.text = course.name; });
                 return data.data;
             }
             else {
@@ -1290,6 +1498,68 @@ var SchoolService = (function () {
                     type: 'danger'
                 });
             }
+        });
+    };
+    SchoolService.prototype.fetchGrades = function () {
+        var _this = this;
+        return this.http.get('common/grade').then(function (data) {
+            if (data.success) {
+                return data.data;
+            }
+            else {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '获取班组列表失败',
+                    type: 'danger'
+                });
+            }
+        });
+    };
+    SchoolService.prototype.fetchTeachers = function () {
+        var _this = this;
+        return this.http.get("common/employee/" + __WEBPACK_IMPORTED_MODULE_3__enum__["a" /* roles */].teacher).then(function (result) {
+            if (result.success) {
+                return result.data;
+            }
+            else {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '获取教师列表失败',
+                    type: 'danger'
+                });
+            }
+        });
+    };
+    SchoolService.prototype.fetchPendingApproval = function (processType, processState) {
+        var _this = this;
+        return this.http.get("common/progress/" + processType + "/" + processState).then(function (result) {
+            if (result.success) {
+                return result.data;
+            }
+            else {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '获取审核列表失败,' + result.data,
+                    type: 'danger'
+                });
+            }
+        });
+    };
+    SchoolService.prototype.audit = function (handlerStatus, processId, remark) {
+        var _this = this;
+        var url = "president/money/" + handlerStatus + "/" + processId;
+        if (remark) {
+            url += "?remark=" + remark;
+        }
+        return this.http.put(url, {}).then(function (result) {
+            if (result.success) {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '审核成功',
+                    type: 'success'
+                });
+            }
+            return result.success;
         });
     };
     return SchoolService;
@@ -1324,8 +1594,7 @@ var TimeRangePipe = (function () {
         if (!arr || !args)
             return arr;
         return arr.filter(function (value) {
-            console.log(value[field || 'createTime'], args.start);
-            return (value[field || 'createTime'] > args.start) && (value[field || 'createTime'] < args.end);
+            return !value[field] || (value[field || 'createTime'] > args.start) && (value[field || 'createTime'] < args.end);
         });
     };
     return TimeRangePipe;
@@ -1347,6 +1616,8 @@ TimeRangePipe = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_user__ = __webpack_require__("../../../../../src/app/models/user.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__service_http_service__ = __webpack_require__("../../../../../src/app/service/http.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_BehaviorSubject__ = __webpack_require__("../../../../rxjs/BehaviorSubject.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_BehaviorSubject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_BehaviorSubject__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1360,10 +1631,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var UserService = UserService_1 = (function () {
     function UserService(http) {
         this.http = http;
         this.user = new __WEBPACK_IMPORTED_MODULE_1__models_user__["a" /* User */]();
+        this.userInfoChange = new __WEBPACK_IMPORTED_MODULE_3_rxjs_BehaviorSubject__["BehaviorSubject"](null);
     }
     UserService.saveAccessToken = function (token) {
         sessionStorage.setItem('AccessToken', token);
@@ -1376,16 +1649,16 @@ var UserService = UserService_1 = (function () {
     };
     UserService.prototype.getCurUserInfo = function (options) {
         var _this = this;
-        return this.http.get('auth/user/info', options).then(function (data) {
+        return this.http.get('auth/user/info', options)
+            .then(function (data) {
             if (data.success) {
                 _this.user = data.data;
+                _this.userInfoChange.next(_this.user.roleId);
                 return data.data;
             }
             else {
                 throw data.data;
             }
-        }).catch(function (err) {
-            console.log(err);
         });
     };
     UserService.prototype.emptyUsrInfo = function () {
@@ -1592,8 +1865,8 @@ var ConsultRecordComponent = (function () {
         ];
         this.consultRecords = [];
         this.fetchConsultRecord();
-        this.states = __WEBPACK_IMPORTED_MODULE_2__common_enum__["b" /* state */];
-        this.stateList = __WEBPACK_IMPORTED_MODULE_2__common_enum__["c" /* states */];
+        this.states = __WEBPACK_IMPORTED_MODULE_2__common_enum__["i" /* state */];
+        this.stateList = __WEBPACK_IMPORTED_MODULE_2__common_enum__["j" /* states */];
         this.filterStuName = '';
         this.filterEmployeeName = '';
     };
@@ -2492,7 +2765,7 @@ var SignRecordComponent = (function () {
         this.totalMoney = 0;
         this.studentFilterName = '';
         this.filterPayTime = { start: new Date(new Date().getFullYear() + '-01-01').getTime(), end: Infinity };
-        this.payType = __WEBPACK_IMPORTED_MODULE_2__common_enum__["a" /* payType */];
+        this.payType = __WEBPACK_IMPORTED_MODULE_2__common_enum__["b" /* payType */];
     };
     SignRecordComponent.prototype.fetchSignRecords = function () {
         var _this = this;
@@ -2676,7 +2949,7 @@ var Student = (function () {
 /***/ "../../../../../src/app/counselor/students/students.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-content-header\r\n  [title]=\"'学生列表'\" [menus]=\"contentHeader\"></app-content-header>\r\n<div class=\"content\">\r\n  <app-collapse-box [collapse]=\"false\" [icon]=\"'filter'\" [boxTitle]=\"'学生过滤'\">\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        姓名:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <input class=\"form-control input-sm\" [(ngModel)]=\"studentFilterName\" placeholder=\"输入学生名称\">\r\n        <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        跟进状态:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <select2 (valueChanged)=\"switchFilterState($event)\"\r\n                 [cssImport]=\"false\"\r\n                 [options]=\"{minimumResultsForSearch: -1}\"\r\n                 [data]=\"[{id: 'ALL', text: '全部'}].concat(stateList)\"\r\n                 [width]=\"'148px'\"></select2>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        学校:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <input name=\"filterSchool\" class=\"form-control\" [(ngModel)]=\"userFilterShool\" placeholder=\"请输入学校名称\">\r\n      </div>\r\n    </div>\r\n  </app-collapse-box>\r\n\r\n  <div class=\"box box-info\">\r\n    <div class=\"box-header\">\r\n      <h3 class=\"box-title\">学生列表</h3>\r\n      <div class=\"box-tools\">\r\n        <div class=\"btn-group btn-group-sm\">\r\n          <button class=\"btn btn-info\" (click)=\"resetCurStudent();\r\n          studentModal.showModal({\r\n            modalSize: 'lg',\r\n            title: '添加学生',\r\n            confirm: addStudent\r\n          })\">\r\n            <i class=\"fa fa-plus\"></i>\r\n            添加学生\r\n          </button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div class=\"box-body\" style=\"border-top: 1px solid #ecf0f5;\">\r\n      <div class=\"dataTables_wrapper form-inline dt-bootstrap\">\r\n        <div class=\"row\">\r\n          <div class=\"col-xs-12\">\r\n            <table class=\"table table-bordered table-hover dataTable\">\r\n              <thead>\r\n              <tr role=\"row\">\r\n                <th>姓名</th>\r\n                <th>性别</th>\r\n                <th>电话号码</th>\r\n                <th>年级</th>\r\n                <th>就读学校</th>\r\n                <th>学科</th>\r\n                <th>备注</th>\r\n                <th>跟进状态</th>\r\n                <th class=\"text-center\">操作</th>\r\n              </tr>\r\n              </thead>\r\n              <tbody>\r\n              <tr *ngFor=\"let student of students |\r\n                matchItem: studentFilterName: 'name' |\r\n                matchItem: userFilterState: 'status' : 'exact' |\r\n                matchItem: userFilterShool: 'orignSchool'\"\r\n                (click)=\"resetCurStudent(student.id);\r\n                studentModal.showModal({\r\n                  modalSize: 'lg',\r\n                  title: '编辑学生信息',\r\n                  confirm: updateStuInfo\r\n                })\">\r\n                <td>{{ student.name }}</td>\r\n                <td>{{ student.sex === 'MALE' ? '男': '女' }}</td>\r\n                <td>{{ student.phone }}</td>\r\n                <td>{{ student.grade || '-' }}</td>\r\n                <td>{{ student.orignSchool || '-' }}</td>\r\n                <td>{{ student.subject || '-' }}</td>\r\n                <td>{{ student.remark || '-' }}</td>\r\n                <td>{{ states[student.status]}}</td>\r\n                <td class=\"text-center\">\r\n                  <span *ngIf=\"student.status !== 'CONNECTION_NO'\">--</span>\r\n                  <div *ngIf=\"student.status === 'CONNECTION_NO'\" class=\"btn-group btn-group-xs\">\r\n                    <button class=\"btn btn-success btn-xs\" (click)=\"curStudent = student;\r\n                      $event.stopPropagation();\r\n                      confirm.showModal({\r\n                         title: '提示',\r\n                         content: '是否确认将该学生的跟进状态改为已联系？',\r\n                         confirm: switchState\r\n                      })\">\r\n                      <i class=\"fa fa-exchange\"></i>\r\n                      已联系\r\n                    </button>\r\n                  </div>\r\n                </td>\r\n              </tr>\r\n              <tr *ngIf=\"!students.length\">\r\n                <td colspan=\"9\" class=\"text-center\">暂无学生信息</td>\r\n              </tr>\r\n              </tbody>\r\n            </table>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n</div>\r\n\r\n<app-modal #studentModal [disabledAcceptBtn]=!stuForm.form.valid>\r\n  <form class=\"form clearfix\" autocomplete=\"off\" #stuForm=\"ngForm\">\r\n    <div class=\"col-xs-12\">\r\n      <div class=\"col-sm-5 col-xs-12\">\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"name\" class=\"control-label necessary col-xs-2\">姓名</label>\r\n          <div class=\"col-xs-10\">\r\n            <input class=\"form-control {{ (name.invalid && name.dirty) && 'error' }}\" #name=\"ngModel\" id=\"name\" name=\"name\" placeholder=\"学生姓名\" [(ngModel)]=\"curStudent.name\" [required]=\"true\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"gender\" class=\"control-label necessary col-xs-2\">性别</label>\r\n          <div class=\"col-xs-10\">\r\n            <select2 id=\"gender\"\r\n                     [value]=\"curStudent.sex\"\r\n                     [cssImport]=\"false\"\r\n                     [width]=\"'100%'\"\r\n                     (valueChanged)=\"switchGender($event)\"\r\n                     [options]=\"{minimumResultsForSearch: -1, placeholder: '请选择性别'}\"\r\n                     [data]=\"[{id: 'MALE', text: '男'}, {id: 'FEMALE', text: '女'}]\"></select2>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"phone\" class=\"control-label necessary col-xs-2\">电话</label>\r\n          <div class=\"col-xs-10\">\r\n            <input #phone=\"ngModel\" type=\"tel\" class=\"form-control {{ (phone.dirty && phone.invalid) && 'error' }}\" id=\"phone\" name=\"phone\" placeholder=\"请输入电话号码\" [(ngModel)]=\"curStudent.phone\" pattern=\"^\\d{11}$\" [required]=\"true\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"idCard\" class=\"control-label necessary col-xs-2\">身份证</label>\r\n          <div class=\"col-xs-10\">\r\n            <input #idCard=\"ngModel\" class=\"form-control {{ idCard.dirty && idCard.invalid && 'error' }}\" id=\"idCard\" name=\"idCard\" placeholder=\"请输入身份证号码\" [(ngModel)]=\"curStudent.idCard\" pattern=\"^\\d{18}$\" [required]=\"true\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"grade\" class=\"control-label necessary col-xs-2\">年级</label>\r\n          <div class=\"col-xs-10\">\r\n            <input #grade=\"ngModel\" class=\"form-control {{ grade.invalid && grade.dirty && 'error' }}\" id=\"grade\" name=\"grade\" placeholder=\"请输入年级\" [(ngModel)]=\"curStudent.grade\" [required]=\"true\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"subject\" class=\"control-label col-xs-2\">学科</label>\r\n          <div class=\"col-xs-10\">\r\n            <input class=\"form-control\" id=\"subject\" name=\"subject\" placeholder=\"请输入学科\" [(ngModel)]=\"curStudent.subject\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"orignSchool\" class=\"control-label col-xs-2\">学校</label>\r\n          <div class=\"col-xs-10\">\r\n            <input class=\"form-control\" id=\"orignSchool\" name=\"orignSchool\" placeholder=\"请输入就读学校\" [(ngModel)]=\"curStudent.orignSchool\">\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"col-sm-7 col-xs-12\">\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"address\" class=\"control-label col-xs-3 necessary col-md-2\">家庭地址</label>\r\n          <div class=\"col-xs-9 col-md-10\">\r\n            <input #address=\"ngModel\" class=\"form-control {{ address.invalid && address.dirty && 'error' }}\" id=\"address\" name=\"address\" placeholder=\"请输入家庭地址\" [(ngModel)]=\"curStudent.address\" [required]=\"true\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"source\" class=\"control-label col-xs-3 necessary col-md-2\">学生来源</label>\r\n          <div class=\"col-xs-9 col-md-10\">\r\n            <input #source=\"ngModel\" class=\"form-control {{ source.invalid && source.dirty && 'error' }}\" id=\"source\" name=\"source\" placeholder=\"请输入学生来源\" [(ngModel)]=\"curStudent.source\" [required]=\"true\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"parentName\" class=\"control-label col-xs-3 col-md-2\">家长姓名</label>\r\n          <div class=\"col-xs-9 col-md-10\">\r\n            <input class=\"form-control\" id=\"parentName\" name=\"parentName\" placeholder=\"请输入家长姓名\" [(ngModel)]=\"curStudent.parentName\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"parentIdCard\" class=\"control-label col-xs-3 col-md-2\">家长身份证</label>\r\n          <div class=\"col-xs-9 col-md-10\">\r\n            <input class=\"form-control\" id=\"parentIdCard\" name=\"parentIdCard\" placeholder=\"请输入家长身份证\" [(ngModel)]=\"curStudent.parentIdCard\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"parentPhone\" class=\"control-label col-xs-3 col-md-2\">家长电话</label>\r\n          <div class=\"col-xs-9 col-md-10\">\r\n            <input type=\"tel\" class=\"form-control\" id=\"parentPhone\" name=\"parentPhone\" placeholder=\"请输入家长电话\" [(ngModel)]=\"curStudent.parentPhone\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"gender\" class=\"control-label col-xs-2\">家长性别</label>\r\n          <div class=\"col-xs-10\">\r\n            <select2\r\n              [value]=\"curStudent.parentSex\"\r\n              [cssImport]=\"false\"\r\n              [width]=\"'100%'\"\r\n              (valueChanged)=\"switchParentGender($event)\"\r\n              [options]=\"{minimumResultsForSearch: -1, placeholder: '请输入家长性别'}\"\r\n              [data]=\"[{id: 'MALE', text: '男'}, {id: 'FEMALE', text: '女'}]\"></select2>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"remark\" class=\"control-label col-xs-3 col-md-2\">备注信息</label>\r\n          <div class=\"col-xs-9 col-md-10\">\r\n            <textarea class=\"form-control\" id=\"remark\" rows=\"1\" name=\"remark\" placeholder=\"请填写备注信息\" [(ngModel)]=\"curStudent.remark\"></textarea>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </form>\r\n</app-modal>\r\n\r\n<app-confirm #confirm></app-confirm>\r\n"
+module.exports = "<app-content-header\r\n  [title]=\"'学生列表'\" [menus]=\"contentHeader\"></app-content-header>\r\n<div class=\"content\">\r\n  <app-collapse-box [collapse]=\"false\" [icon]=\"'filter'\" [boxTitle]=\"'学生过滤'\">\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        姓名:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <input class=\"form-control input-sm\" [(ngModel)]=\"studentFilterName\" placeholder=\"输入学生名称\">\r\n        <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        跟进状态:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <select2 (valueChanged)=\"switchFilterState($event)\"\r\n                 [cssImport]=\"false\"\r\n                 [options]=\"{minimumResultsForSearch: -1}\"\r\n                 [data]=\"[{id: 'ALL', text: '全部'}].concat(stateList)\"\r\n                 [width]=\"'148px'\"></select2>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        学校:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <input name=\"filterSchool\" class=\"form-control\" [(ngModel)]=\"userFilterSchool\" placeholder=\"请输入学校名称\">\r\n      </div>\r\n    </div>\r\n  </app-collapse-box>\r\n\r\n  <div class=\"box box-info\">\r\n    <div class=\"box-header\">\r\n      <h3 class=\"box-title\">学生列表</h3>\r\n      <div class=\"box-tools\">\r\n        <div class=\"btn-group btn-group-sm\">\r\n          <button class=\"btn btn-info\" (click)=\"resetCurStudent();\r\n          studentModal.showModal({\r\n            modalSize: 'lg',\r\n            title: '添加学生',\r\n            confirm: addStudent\r\n          })\">\r\n            <i class=\"fa fa-plus\"></i>\r\n            添加学生\r\n          </button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div class=\"box-body\" style=\"border-top: 1px solid #ecf0f5;\">\r\n      <div class=\"dataTables_wrapper form-inline dt-bootstrap\">\r\n        <div class=\"row\">\r\n          <div class=\"col-xs-12\">\r\n            <table class=\"table table-bordered table-hover dataTable\">\r\n              <thead>\r\n              <tr role=\"row\">\r\n                <th>姓名</th>\r\n                <th>性别</th>\r\n                <th>电话号码</th>\r\n                <th>年级</th>\r\n                <th>就读学校</th>\r\n                <th>学科</th>\r\n                <th>备注</th>\r\n                <th>跟进状态</th>\r\n                <th class=\"text-center\">操作</th>\r\n              </tr>\r\n              </thead>\r\n              <tbody>\r\n              <tr *ngFor=\"let student of students |\r\n                matchItem: studentFilterName: 'name' |\r\n                matchItem: userFilterState: 'status' : 'exact' |\r\n                matchItem: userFilterSchool: 'orignSchool'\"\r\n                (click)=\"resetCurStudent(student.id);\r\n                studentModal.showModal({\r\n                  modalSize: 'lg',\r\n                  title: '编辑学生信息',\r\n                  confirm: updateStuInfo\r\n                })\">\r\n                <td>{{ student.name }}</td>\r\n                <td>{{ student.sex === 'MALE' ? '男': '女' }}</td>\r\n                <td>{{ student.phone }}</td>\r\n                <td>{{ student.grade || '-' }}</td>\r\n                <td>{{ student.orignSchool || '-' }}</td>\r\n                <td>{{ student.subject || '-' }}</td>\r\n                <td>{{ student.remark || '-' }}</td>\r\n                <td>{{ states[student.status]}}</td>\r\n                <td class=\"text-center\">\r\n                  <span *ngIf=\"student.status !== 'CONNECTION_NO'\">--</span>\r\n                  <div *ngIf=\"student.status === 'CONNECTION_NO'\" class=\"btn-group btn-group-xs\">\r\n                    <button class=\"btn btn-success btn-xs\" (click)=\"curStudent = student;\r\n                      $event.stopPropagation();\r\n                      confirm.showModal({\r\n                         title: '提示',\r\n                         content: '是否确认将该学生的跟进状态改为已联系？',\r\n                         confirm: switchState\r\n                      })\">\r\n                      <i class=\"fa fa-exchange\"></i>\r\n                      已联系\r\n                    </button>\r\n                  </div>\r\n                </td>\r\n              </tr>\r\n              <tr *ngIf=\"!students.length\">\r\n                <td colspan=\"9\" class=\"text-center\">暂无学生信息</td>\r\n              </tr>\r\n              </tbody>\r\n            </table>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n</div>\r\n\r\n<app-modal #studentModal [disabledAcceptBtn]=!stuForm.form.valid>\r\n  <form class=\"form clearfix\" autocomplete=\"off\" #stuForm=\"ngForm\">\r\n    <div class=\"col-xs-12\">\r\n      <div class=\"col-sm-5 col-xs-12\">\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"name\" class=\"control-label necessary col-xs-2\">姓名</label>\r\n          <div class=\"col-xs-10\">\r\n            <input class=\"form-control {{ (name.invalid && name.dirty) && 'error' }}\" #name=\"ngModel\" id=\"name\" name=\"name\" placeholder=\"学生姓名\" [(ngModel)]=\"curStudent.name\" [required]=\"true\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"gender\" class=\"control-label necessary col-xs-2\">性别</label>\r\n          <div class=\"col-xs-10\">\r\n            <select2 id=\"gender\"\r\n                     [value]=\"curStudent.sex\"\r\n                     [cssImport]=\"false\"\r\n                     [width]=\"'100%'\"\r\n                     (valueChanged)=\"switchGender($event)\"\r\n                     [options]=\"{minimumResultsForSearch: -1, placeholder: '请选择性别'}\"\r\n                     [data]=\"[{id: 'MALE', text: '男'}, {id: 'FEMALE', text: '女'}]\"></select2>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"phone\" class=\"control-label necessary col-xs-2\">电话</label>\r\n          <div class=\"col-xs-10\">\r\n            <input #phone=\"ngModel\" type=\"tel\" class=\"form-control {{ (phone.dirty && phone.invalid) && 'error' }}\" id=\"phone\" name=\"phone\" placeholder=\"请输入电话号码\" [(ngModel)]=\"curStudent.phone\" pattern=\"^\\d{11}$\" [required]=\"true\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"idCard\" class=\"control-label necessary col-xs-2\">身份证</label>\r\n          <div class=\"col-xs-10\">\r\n            <input #idCard=\"ngModel\" class=\"form-control {{ idCard.dirty && idCard.invalid && 'error' }}\" id=\"idCard\" name=\"idCard\" placeholder=\"请输入身份证号码\" [(ngModel)]=\"curStudent.idCard\" pattern=\"^\\d{18}$\" [required]=\"true\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"grade\" class=\"control-label necessary col-xs-2\">年级</label>\r\n          <div class=\"col-xs-10\">\r\n            <input #grade=\"ngModel\" class=\"form-control {{ grade.invalid && grade.dirty && 'error' }}\" id=\"grade\" name=\"grade\" placeholder=\"请输入年级\" [(ngModel)]=\"curStudent.grade\" [required]=\"true\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"subject\" class=\"control-label col-xs-2\">学科</label>\r\n          <div class=\"col-xs-10\">\r\n            <input class=\"form-control\" id=\"subject\" name=\"subject\" placeholder=\"请输入学科\" [(ngModel)]=\"curStudent.subject\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"orignSchool\" class=\"control-label col-xs-2\">学校</label>\r\n          <div class=\"col-xs-10\">\r\n            <input class=\"form-control\" id=\"orignSchool\" name=\"orignSchool\" placeholder=\"请输入就读学校\" [(ngModel)]=\"curStudent.orignSchool\">\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"col-sm-7 col-xs-12\">\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"address\" class=\"control-label col-xs-3 necessary col-md-2\">家庭地址</label>\r\n          <div class=\"col-xs-9 col-md-10\">\r\n            <input #address=\"ngModel\" class=\"form-control {{ address.invalid && address.dirty && 'error' }}\" id=\"address\" name=\"address\" placeholder=\"请输入家庭地址\" [(ngModel)]=\"curStudent.address\" [required]=\"true\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"source\" class=\"control-label col-xs-3 necessary col-md-2\">学生来源</label>\r\n          <div class=\"col-xs-9 col-md-10\">\r\n            <input #source=\"ngModel\" class=\"form-control {{ source.invalid && source.dirty && 'error' }}\" id=\"source\" name=\"source\" placeholder=\"请输入学生来源\" [(ngModel)]=\"curStudent.source\" [required]=\"true\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"parentName\" class=\"control-label col-xs-3 col-md-2\">家长姓名</label>\r\n          <div class=\"col-xs-9 col-md-10\">\r\n            <input class=\"form-control\" id=\"parentName\" name=\"parentName\" placeholder=\"请输入家长姓名\" [(ngModel)]=\"curStudent.parentName\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"parentIdCard\" class=\"control-label col-xs-3 col-md-2\">家长身份证</label>\r\n          <div class=\"col-xs-9 col-md-10\">\r\n            <input class=\"form-control\" id=\"parentIdCard\" name=\"parentIdCard\" placeholder=\"请输入家长身份证\" [(ngModel)]=\"curStudent.parentIdCard\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"parentPhone\" class=\"control-label col-xs-3 col-md-2\">家长电话</label>\r\n          <div class=\"col-xs-9 col-md-10\">\r\n            <input type=\"tel\" class=\"form-control\" id=\"parentPhone\" name=\"parentPhone\" placeholder=\"请输入家长电话\" [(ngModel)]=\"curStudent.parentPhone\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"gender\" class=\"control-label col-xs-2\">家长性别</label>\r\n          <div class=\"col-xs-10\">\r\n            <select2\r\n              [value]=\"curStudent.parentSex\"\r\n              [cssImport]=\"false\"\r\n              [width]=\"'100%'\"\r\n              (valueChanged)=\"switchParentGender($event)\"\r\n              [options]=\"{minimumResultsForSearch: -1, placeholder: '请输入家长性别'}\"\r\n              [data]=\"[{id: 'MALE', text: '男'}, {id: 'FEMALE', text: '女'}]\"></select2>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"remark\" class=\"control-label col-xs-3 col-md-2\">备注信息</label>\r\n          <div class=\"col-xs-9 col-md-10\">\r\n            <textarea class=\"form-control\" id=\"remark\" rows=\"1\" name=\"remark\" placeholder=\"请填写备注信息\" [(ngModel)]=\"curStudent.remark\"></textarea>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </form>\r\n</app-modal>\r\n\r\n<app-confirm #confirm></app-confirm>\r\n"
 
 /***/ }),
 
@@ -2751,9 +3024,9 @@ var StudentsComponent = (function () {
         };
         this.studentFilterName = '';
         this.userFilterState = '';
-        this.userFilterShool = '';
-        this.states = __WEBPACK_IMPORTED_MODULE_4__common_enum__["b" /* state */];
-        this.stateList = __WEBPACK_IMPORTED_MODULE_4__common_enum__["c" /* states */];
+        this.userFilterSchool = '';
+        this.states = __WEBPACK_IMPORTED_MODULE_4__common_enum__["i" /* state */];
+        this.stateList = __WEBPACK_IMPORTED_MODULE_4__common_enum__["j" /* states */];
         this.fetchStudents();
     };
     StudentsComponent.prototype.fetchStudents = function () {
@@ -2897,7 +3170,7 @@ var _a;
 /***/ "../../../../../src/app/date-ranger-picker/date-ranger-picker.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"input-group-sm\">\r\n  <input type=\"text\" id=\"daterangepicker\" class=\"form-control\" readonly>\r\n</div>\r\n"
+module.exports = "<div class=\"input-group-sm\">\r\n  <input class=\"date-range-picker form-control\" readonly>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -2944,32 +3217,39 @@ var DateRangerPickerComponent = (function () {
     }
     DateRangerPickerComponent.prototype.ngOnInit = function () {
         var _this = this;
-        $('#daterangepicker').daterangepicker({
-            locale: {
-                applyLabel: '确定',
-                cancelLabel: '取消',
-                fromLabel: '起始时间',
-                toLabel: '结束时间',
-                customRangeLabel: '自定义',
-                daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
-                monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-                firstDay: 1,
-                format: 'YYYY-MM-DD'
-            },
-            ranges: {
-                '今天': [__WEBPACK_IMPORTED_MODULE_1_moment__(), __WEBPACK_IMPORTED_MODULE_1_moment__()],
-                '昨天': [__WEBPACK_IMPORTED_MODULE_1_moment__().subtract(1, 'days'), __WEBPACK_IMPORTED_MODULE_1_moment__().subtract(1, 'days')],
-                '本周': [__WEBPACK_IMPORTED_MODULE_1_moment__().subtract(6, 'days'), __WEBPACK_IMPORTED_MODULE_1_moment__()],
-                '前30天': [__WEBPACK_IMPORTED_MODULE_1_moment__().subtract(29, 'days'), __WEBPACK_IMPORTED_MODULE_1_moment__()]
-            },
-            startDate: __WEBPACK_IMPORTED_MODULE_1_moment__(this.startTime).format('YYYY-MM-DD'),
-            minDate: '2000-01-01'
-        }, function (start, end) {
-            _this.dateRangeSetEvent.emit({ start: start.valueOf(), end: end.valueOf() });
+        setTimeout(function () {
+            $('.date-range-picker').daterangepicker({
+                locale: {
+                    applyLabel: '确定',
+                    cancelLabel: '取消',
+                    fromLabel: '起始时间',
+                    toLabel: '结束时间',
+                    customRangeLabel: '自定义',
+                    daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                    firstDay: 1,
+                    format: 'YYYY-MM-DD'
+                },
+                timePicker: _this.timePicker,
+                ranges: {
+                    '今天': [__WEBPACK_IMPORTED_MODULE_1_moment__(), __WEBPACK_IMPORTED_MODULE_1_moment__()],
+                    '昨天': [__WEBPACK_IMPORTED_MODULE_1_moment__().subtract(1, 'days'), __WEBPACK_IMPORTED_MODULE_1_moment__().subtract(1, 'days')],
+                    '本周': [__WEBPACK_IMPORTED_MODULE_1_moment__().subtract(6, 'days'), __WEBPACK_IMPORTED_MODULE_1_moment__()],
+                    '前30天': [__WEBPACK_IMPORTED_MODULE_1_moment__().subtract(29, 'days'), __WEBPACK_IMPORTED_MODULE_1_moment__()]
+                },
+                startDate: _this.startTime ? __WEBPACK_IMPORTED_MODULE_1_moment__(_this.startTime).format('YYYY-MM-DD') : Date.now(),
+                minDate: '1950-01-01'
+            }, function (start, end) {
+                _this.dateRangeSetEvent.emit({ start: start.valueOf(), end: end.valueOf() });
+            });
         });
     };
     return DateRangerPickerComponent;
 }());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Boolean)
+], DateRangerPickerComponent.prototype, "timePicker", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Number)
@@ -3082,14 +3362,14 @@ DatepickerComponent = __decorate([
 
 /***/ }),
 
-/***/ "../../../../../src/app/employee/employee.component.html":
+/***/ "../../../../../src/app/finance/finance.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"content-header\">\r\n  <h1>员工信息</h1>\r\n  <ol class=\"breadcrumb\">\r\n    <li><a><i class=\"fa fa-dashboard\"></i>基础信息管理</a></li>\r\n    <li class=\"active\"><a><i class=\"fa fa-book\"></i>员工信息</a></li>\r\n  </ol>\r\n</section>\r\n\r\n<section class=\"content\">\r\n  <div class=\"row\">\r\n    <div class=\"col-xs-12\">\r\n      <app-collapse-box [collapse]=\"false\" [icon]=\"'filter'\" [boxTitle]=\"'员工过滤'\">\r\n\r\n        <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n          <label class=\"pull-left\">\r\n            时间过滤:\r\n          </label>\r\n          <app-date-ranger-picker class=\"pull-left\"></app-date-ranger-picker>\r\n        </div>\r\n\r\n        <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n          <label class=\"pull-left\">\r\n            名称筛选:\r\n          </label>\r\n          <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n            <input type=\"text\" class=\"form-control input-sm\" placeholder=\"输入员工名称\">\r\n            <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n          <label class=\"pull-left\">\r\n            性别筛选:\r\n          </label>\r\n          <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n            <select2 [cssImport]=\"false\" [options]=\"{minimumResultsForSearch: -1}\" [data]=\"[{id:'ALL',text:'全部'}].concat(syllabusTypes)\" [width]=\"'148px'\"></select2>\r\n          </div>\r\n        </div>\r\n\r\n      </app-collapse-box>\r\n\r\n      <div class=\"box box-info\">\r\n        <div class=\"box-header\">\r\n          <i class=\"fa fa-table\"></i><h3 class=\"box-title\">员工列表</h3>\r\n          <div class=\"box-tools\">\r\n            <div class=\"btn-group btn-group-sm pull-right syllabus-add-btn\">\r\n              <button (click)=\"modal.showModal({\r\n                 title: '添加新员工',\r\n                 confirm: newEmployee\r\n            })\" class=\"btn btn-info\"><i class=\"fa fa-plus\"></i>新增员工</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <div class=\"box-body\" style=\"border-top: 1px solid #dddddd;\">\r\n          <div class=\"dataTables_wrapper form-inline dt-bootstrap\">\r\n            <div class=\"row\">\r\n              <div class=\"col-sm-12\">\r\n                <table class=\"table table-bordered dataTable\">\r\n                  <thead>\r\n                    <tr role=\"row\">\r\n                      <th>姓名</th>\r\n                      <th>性别</th>\r\n                      <th>电话</th>\r\n                      <th>邮箱</th>\r\n                      <th>生日</th>\r\n                      <th>学校</th>\r\n                      <th>专业</th>\r\n                      <th class=\"text-center\">操作</th>\r\n                    </tr>\r\n                  </thead>\r\n                  <tbody>\r\n                    <tr *ngFor=\"let employee of employees\">\r\n                      <td colspan=\"8\" class=\"box box-widget collapsed-box\">\r\n                        <div class=\"box-header\">\r\n                          <span>{{ employee.name }}</span>\r\n                          <span>{{ employee.sex == 'MALE' ? '男' : '女' }}</span>\r\n                          <span>{{ employee.phone }}</span>\r\n                          <span>{{ employee.email }}</span>\r\n                          <span>{{ employee.birthday | date: 'YYYY-MM-DD' }}</span>\r\n                          <span>{{ employee.education }}</span>\r\n                          <span>{{ employee.specialty }}</span>\r\n                          <span class=\"text-center\">\r\n                            <button (click)=\"removeEmployee(employee.id)\" class=\"btn btn-xs btn-danger\"><i class=\"fa fa-trash-o\"></i>删除</button>\r\n                            <button data-widget=\"collapse\" class=\"btn btn-xs btn-info\"><i class=\"fa fa-plus\"></i>更多</button>\r\n                          </span>\r\n                        </div>\r\n                        <div class=\"box-body\">\r\n                          <div class=\"detail-container clearfix\">\r\n\r\n                            <div>\r\n                              <div class=\"col-xs-2 text-right\">身份证号码: &nbsp;&nbsp;</div>\r\n                              <div class=\"col-xs-8\">{{ employee.idCard }}</div>\r\n                            </div>\r\n                            <div>\r\n                              <div class=\"col-xs-2 text-right\">毕业院校: &nbsp;&nbsp;</div>\r\n                              <div class=\"col-xs-8\">{{ employee.graduationSchool }}</div>\r\n                            </div>\r\n                            <div>\r\n                              <div class=\"col-xs-2 text-right\">紧急联系人姓名: &nbsp;&nbsp;</div>\r\n                              <div class=\"col-xs-8\">{{ employee.clamantName }}</div>\r\n                            </div>\r\n                            <div>\r\n                              <div class=\"col-xs-2 text-right\">紧急联系人电话: &nbsp;&nbsp;</div>\r\n                              <div class=\"col-xs-8\">{{ employee.clamantPhone }}</div>\r\n                            </div>\r\n                            <div>\r\n                              <div class=\"col-xs-2 text-right\">家庭住址: &nbsp;&nbsp;</div>\r\n                              <div class=\"col-xs-8\">{{ employee.address }}</div>\r\n                            </div>\r\n                            <div>\r\n                              <div class=\"col-xs-2 text-right\">描述信息: &nbsp;&nbsp;</div>\r\n                              <div class=\"col-xs-8\">{{ employee.remark }}</div>\r\n                            </div>\r\n\r\n                          </div>\r\n                        </div>\r\n                      </td>\r\n                    </tr>\r\n                  </tbody>\r\n                </table>\r\n              </div>\r\n            </div>\r\n            <div class=\"row\">\r\n              <div class=\"col-sm-5\">\r\n                <div class=\"dataTables_info\" id=\"example2_info\" role=\"status\" aria-live=\"polite\">Showing 11 to 20 of 57\r\n                  entries\r\n                </div>\r\n              </div>\r\n              <div class=\"col-sm-7\">\r\n                <div class=\"dataTables_paginate paging_simple_numbers pull-right\" id=\"example2_paginate\">\r\n                  <ul class=\"pagination\">\r\n                    <li class=\"paginate_button previous\" id=\"example2_previous\"><a href=\"#\" aria-controls=\"example2\" data-dt-idx=\"0\">Previous</a></li>\r\n                    <li class=\"paginate_button \"><a href=\"#\" aria-controls=\"example2\" data-dt-idx=\"1\">1</a></li>\r\n                    <li class=\"paginate_button active\"><a href=\"#\" aria-controls=\"example2\" data-dt-idx=\"2\">2</a></li>\r\n                    <li class=\"paginate_button \"><a href=\"#\" aria-controls=\"example2\" data-dt-idx=\"3\">3</a></li>\r\n                    <li class=\"paginate_button \"><a href=\"#\" aria-controls=\"example2\" data-dt-idx=\"4\">4</a></li>\r\n                    <li class=\"paginate_button \"><a href=\"#\" aria-controls=\"example2\" data-dt-idx=\"5\">5</a></li>\r\n                    <li class=\"paginate_button \"><a href=\"#\" aria-controls=\"example2\" data-dt-idx=\"6\">6</a></li>\r\n                    <li class=\"paginate_button next\" id=\"example2_next\"><a href=\"#\" aria-controls=\"example2\" data-dt-idx=\"7\">Next</a></li>\r\n                  </ul>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</section>\r\n\r\n<app-modal #modal [modalSize]=\"'lg'\">\r\n  <form class=\"form-horizontal\">\r\n    <div class=\"row\">\r\n      <div class=\"col-xs-12 col-md-5\">\r\n        <div class=\"form-group\">\r\n          <label for=\"name\" class=\"control-label col-md-2\">姓名: </label>\r\n          <div class=\"col-md-10\">\r\n            <input id=\"name\" name=\"name\" placeholder=\"请输入员工姓名\" class=\"form-control\" [(ngModel)]=\"curEmployee.name\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label for=\"gender\" class=\"control-label col-md-2\">性别: </label>\r\n          <div class=\"col-md-10\">\r\n            <select2\r\n              id=\"gender\"\r\n              (valueChanged)=\"switchEmployeeGender($event)\"\r\n              [value]=\"curEmployee.sex\"\r\n              [cssImport]=\"false\"\r\n              [options]=\"{minimumResultsForSearch: -1, placeholder: '请输入员工性别'}\"\r\n              [data]=\"[{id:'',text: ''},{id:'MALE',text:'男'},{id:'FEMALE',text:'女'}]\"\r\n              [width]=\"'100%'\"></select2>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label for=\"education\" class=\"control-label col-md-2\">学历: </label>\r\n          <div class=\"col-md-10\">\r\n            <input type=\"text\" id=\"education\" name=\"education\" placeholder=\"请输入员工学历\" class=\"form-control\" [(ngModel)]=\"curEmployee.education\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label for=\"phone\" class=\"control-label col-md-2\">电话: </label>\r\n          <div class=\"col-md-10\">\r\n            <input id=\"phone\" name=\"phone\" placeholder=\"请输入员工电话\" class=\"form-control\" [(ngModel)]=\"curEmployee.phone\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label for=\"email\" class=\"control-label col-md-2\">邮箱: </label>\r\n          <div class=\"col-md-10\">\r\n            <input type=\"text\" id=\"email\" name=\"email\" placeholder=\"请输入员工电话\" class=\"form-control\" [(ngModel)]=\"curEmployee.email\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label for=\"specialty\" class=\"control-label col-md-2\">专业: </label>\r\n          <div class=\"col-md-10\">\r\n            <input type=\"text\" id=\"specialty\" name=\"specialty\" placeholder=\"请输入员工电话\" class=\"form-control\" [(ngModel)]=\"curEmployee.specialty\">\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"col-xs-12 col-md-7\">\r\n        <div class=\"form-group\">\r\n          <label for=\"clamantName\" class=\"control-label col-md-3\">联系人姓名: </label>\r\n          <div class=\"col-md-9\">\r\n            <input type=\"text\" id=\"clamantName\" name=\"clamantName\" placeholder=\"请输入联系人姓名\" class=\"form-control\" [(ngModel)]=\"curEmployee.clamantName\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label for=\"clamantPhone\" class=\"control-label col-md-3\">联系人电话: </label>\r\n          <div class=\"col-md-9\">\r\n            <input type=\"number\" id=\"clamantPhone\" name=\"clamantPhone\" placeholder=\"请输入联系人电话\" class=\"form-control\" [(ngModel)]=\"curEmployee.phone\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label for=\"idCard\" class=\"control-label col-md-3\">身份证号: </label>\r\n          <div class=\"col-md-9\">\r\n            <input id=\"idCard\" name=\"idCard\" placeholder=\"请输入身份证\" class=\"form-control\" [(ngModel)]=\"curEmployee.idCard\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label for=\"graduationSchool\" class=\"control-label col-md-3\">毕业院校: </label>\r\n          <div class=\"col-md-9\">\r\n            <input id=\"graduationSchool\" name=\"graduationSchool\" placeholder=\"请输入毕业院校\" class=\"form-control\" [(ngModel)]=\"curEmployee.graduationSchool\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label for=\"address\" class=\"control-label col-md-3\">家庭住址: </label>\r\n          <div class=\"col-md-9\">\r\n            <input id=\"address\" name=\"address\" placeholder=\"请输入家庭住址\" class=\"form-control\" [(ngModel)]=\"curEmployee.address\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label for=\"remark\" class=\"control-label col-md-3\">描述信息: </label>\r\n          <div class=\"col-md-9\">\r\n            <textarea id=\"remark\" name=\"remark\" placeholder=\"请输入描述信息\" class=\"form-control\" cols=\"1\" rows=\"1\" [(ngModel)]=\"curEmployee.remark\"></textarea>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </form>\r\n</app-modal>\r\n"
+module.exports = "<app-sidebar [sidebarMenu]=\"sidebarMenu\"></app-sidebar>\n<div class=\"content-wrapper\">\n  <router-outlet></router-outlet>\n</div>\n"
 
 /***/ }),
 
-/***/ "../../../../../src/app/employee/employee.component.less":
+/***/ "../../../../../src/app/finance/finance.component.less":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
@@ -3097,7 +3377,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "app-collapse-box label {\n  display: inline-block;\n  line-height: 30px;\n  margin-right: 10px;\n}\n", ""]);
+exports.push([module.i, "", ""]);
 
 // exports
 
@@ -3107,15 +3387,12 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ "../../../../../src/app/employee/employee.component.ts":
+/***/ "../../../../../src/app/finance/finance.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__employee__ = __webpack_require__("../../../../../src/app/employee/employee.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__employee_service__ = __webpack_require__("../../../../../src/app/employee/employee.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__confirm_confirm_service__ = __webpack_require__("../../../../../src/app/confirm/confirm.service.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EmployeeComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FinanceComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3126,79 +3403,206 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-
-
-
-var EmployeeComponent = (function () {
-    function EmployeeComponent(confirmService, employeeService) {
-        this.confirmService = confirmService;
-        this.employeeService = employeeService;
-        this.newEmployee = this.newEmployee.bind(this);
+var FinanceComponent = (function () {
+    function FinanceComponent() {
     }
-    EmployeeComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.curEmployee = new __WEBPACK_IMPORTED_MODULE_1__employee__["a" /* Employee */]();
-        this.employees = [];
-        this.employeeService.fetchEmployees().then(function (employees) {
-            console.log(employees);
-            _this.employees = employees;
-        });
-    };
-    EmployeeComponent.prototype.switchEmployeeGender = function (event) {
-        this.curEmployee.sex = event.value;
-    };
-    EmployeeComponent.prototype.findEmployeeIndexById = function (id) {
-        return this.employees.find(function (employee) {
-            return employee.id === id;
-        });
-    };
-    EmployeeComponent.prototype.removeEmployee = function (id) {
-        var _this = this;
-        var toRemoveEmployee = this.findEmployeeIndexById(id);
-        var toRemoveIndex = this.employees.indexOf(toRemoveEmployee);
-        this.confirmService.confirm({
-            modalType: 'danger',
-            cancelBtn: true,
-            closeBtn: true,
-            content: "\u786E\u5B9A\u5220\u9664\u5458\u5DE5:" + toRemoveEmployee.name,
-            confirm: function () {
-                _this.employeeService.removeEmployee(id).then(function (result) {
-                    _this.employees.splice(toRemoveIndex, 1);
-                });
+    FinanceComponent.prototype.ngOnInit = function () {
+        this.sidebarMenu = [
+            {
+                name: '退费审批列表',
+                routerLink: ['to-approve'],
+                icon: 'fa-table'
+            },
+            {
+                name: '学生缴费日志',
+                routerLink: ['stu-pay-stat'],
+                icon: 'fa-th-list'
+            },
+            {
+                name: '学生缴费统计',
+                routerLink: ['stu-pay-record'],
+                icon: 'fa-pie-chart'
             }
-        });
+        ];
     };
-    EmployeeComponent.prototype.newEmployee = function () {
-        var _this = this;
-        this.employeeService.newEmployee(this.curEmployee).then(function (result) {
-            console.log(_this.curEmployee);
-            console.log(result);
-        });
-    };
-    return EmployeeComponent;
+    return FinanceComponent;
 }());
-EmployeeComponent = __decorate([
+FinanceComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'app-employee',
-        template: __webpack_require__("../../../../../src/app/employee/employee.component.html"),
-        styles: [__webpack_require__("../../../../../src/app/employee/employee.component.less")]
+        selector: 'app-finance',
+        template: __webpack_require__("../../../../../src/app/finance/finance.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/finance/finance.component.less")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__confirm_confirm_service__["a" /* ConfirmService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__confirm_confirm_service__["a" /* ConfirmService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__employee_service__["a" /* EmployeeService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__employee_service__["a" /* EmployeeService */]) === "function" && _b || Object])
-], EmployeeComponent);
+    __metadata("design:paramtypes", [])
+], FinanceComponent);
 
-var _a, _b;
-//# sourceMappingURL=employee.component.js.map
+//# sourceMappingURL=finance.component.js.map
 
 /***/ }),
 
-/***/ "../../../../../src/app/employee/employee.service.ts":
+/***/ "../../../../../src/app/finance/finance.service.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__service_http_service__ = __webpack_require__("../../../../../src/app/service/http.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__alert_alert_service__ = __webpack_require__("../../../../../src/app/alert/alert.service.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EmployeeService; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FinanceService; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var FinanceService = (function () {
+    function FinanceService(http) {
+        this.http = http;
+    }
+    FinanceService.prototype.fetchStudentPaymentsById = function (schoolId) {
+        return this.http.get("finance/student/stat/" + schoolId).then(function (result) {
+            if (result.success) {
+                return result.data;
+            }
+            else {
+                throw Error(result.data);
+            }
+        });
+    };
+    FinanceService.prototype.fetchStudentPayLogsById = function (schoolId) {
+        return this.http.get("finance/student/pay/log/" + schoolId).then(function (result) {
+            if (result.success) {
+                return result.data;
+            }
+            else {
+                throw Error(result.data);
+            }
+        });
+    };
+    return FinanceService;
+}());
+FinanceService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__service_http_service__["a" /* HttpService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__service_http_service__["a" /* HttpService */]) === "function" && _a || Object])
+], FinanceService);
+
+var _a;
+//# sourceMappingURL=finance.service.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/finance/stu-pay-record/log-school-table/log-school-table.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"box box-primary box-divide\">\n  <div class=\"box-header\">\n    <h3 class=\"box-title\">校区列表</h3>\n  </div>\n  <div class=\"box-body\">\n    <table class=\"table table-hover box-bordered\">\n      <thead>\n      <tr>\n        <th>校区名称</th>\n        <th>校区描述</th>\n        <th>操作</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr *ngFor=\"let school of schools\">\n        <td>{{ school.name }}</td>\n        <td>{{ school.remark }}</td>\n        <td>\n          <a [routerLink]=\"['../logs', {schoolId: school.id}]\">\n            查看校区学员>>\n          </a>\n        </td>\n      </tr>\n      </tbody>\n    </table>\n  </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/finance/stu-pay-record/log-school-table/log-school-table.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/finance/stu-pay-record/log-school-table/log-school-table.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_school_service__ = __webpack_require__("../../../../../src/app/common/school.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LogSchoolTableComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var LogSchoolTableComponent = (function () {
+    function LogSchoolTableComponent(schoolService) {
+        this.schoolService = schoolService;
+    }
+    LogSchoolTableComponent.prototype.ngOnInit = function () {
+        this.schools = [];
+        this.contentHeader = [
+            { name: '主页', icon: 'fa-dashboard' },
+            { name: '学生缴费统计', icon: 'fa-th-li' }
+        ];
+        this.fetchSchools();
+    };
+    LogSchoolTableComponent.prototype.fetchSchools = function () {
+        var _this = this;
+        this.schoolService.fetchSchoolList().then(function (schools) { return _this.schools = schools; });
+    };
+    return LogSchoolTableComponent;
+}());
+LogSchoolTableComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-log-school-table',
+        template: __webpack_require__("../../../../../src/app/finance/stu-pay-record/log-school-table/log-school-table.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/finance/stu-pay-record/log-school-table/log-school-table.component.less")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__common_school_service__["a" /* SchoolService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__common_school_service__["a" /* SchoolService */]) === "function" && _a || Object])
+], LogSchoolTableComponent);
+
+var _a;
+//# sourceMappingURL=log-school-table.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/finance/stu-pay-record/payment-log/payment-log.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"box box-primary box-divide\">\n  <div class=\"box-header\">\n    <h3 class=\"box-title\">学生缴费日志</h3>\n    <div class=\"box-tools\">\n      <a [routerLink]=\"['../school-table']\">\n        <button class=\"btn btn-sm btn-primary\">\n          <i class=\"fa fa-building\"></i>\n          返回校区列表\n        </button>\n      </a>\n    </div>\n  </div>\n  <div class=\"box-body\">\n    <table class=\"table table-hover box-bordered text-center\">\n      <thead>\n      <tr>\n        <th>缴费学生</th>\n        <th>缴费金额</th>\n        <th>缴款类型</th>\n        <th>所在校区</th>\n        <th>缴费人</th>\n        <th>备注信息</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr *ngFor=\"let log of logs\">\n        <td>{{ log.studentName }}</td>\n        <td>{{ log.money }}</td>\n        <td>{{ payType[log.payType] }}</td>\n        <td>{{ log.schoolName }}</td>\n        <td>{{ log.employeeName }}</td>\n        <td>{{ log.remark || '--' }}</td>\n      </tr>\n      <tr *ngIf=\"!logs.length\">\n        <td colspan=\"8\" class=\"text-muted\">暂无学员缴费信息</td>\n      </tr>\n      </tbody>\n    </table>\n  </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/finance/stu-pay-record/payment-log/payment-log.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/finance/stu-pay-record/payment-log/payment-log.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__finance_service__ = __webpack_require__("../../../../../src/app/finance/finance.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_enum__ = __webpack_require__("../../../../../src/app/common/enum.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PaymentLogComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3211,61 +3615,447 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var EmployeeService = (function () {
-    function EmployeeService(http, alertService) {
-        this.http = http;
-        this.alertService = alertService;
+
+var PaymentLogComponent = (function () {
+    function PaymentLogComponent(router, financeService) {
+        this.router = router;
+        this.financeService = financeService;
     }
-    EmployeeService.prototype.fetchEmployees = function () {
+    PaymentLogComponent.prototype.ngOnInit = function () {
         var _this = this;
-        return this.http.get('employee').then(function (result) {
-            if (result.success) {
-                return result.data;
-            }
-            else {
-                _this.alertService.alert({
-                    type: 'warning',
-                    title: '提示',
-                    content: '获取员工列表失败'
-                });
-                throw new Error('获取员工列表失败');
-            }
+        this.payType = __WEBPACK_IMPORTED_MODULE_3__common_enum__["b" /* payType */];
+        this.logs = [];
+        this.router.params.subscribe(function (params) {
+            _this.fetchPaymentLogsBySchoolId(params.schoolId);
         });
     };
-    EmployeeService.prototype.removeEmployee = function (id) {
-        return this.http.remove("employee/" + id).then(function (result) {
-            return result;
-        });
+    PaymentLogComponent.prototype.fetchPaymentLogsBySchoolId = function (schoolId) {
+        var _this = this;
+        this.financeService.fetchStudentPayLogsById(schoolId).then(function (logs) { return _this.logs = logs; });
     };
-    EmployeeService.prototype.newEmployee = function (employee) {
-        return this.http.post('employee', employee).then(function (result) {
-            return result;
-        });
-    };
-    return EmployeeService;
+    return PaymentLogComponent;
 }());
-EmployeeService = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__service_http_service__["a" /* HttpService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__service_http_service__["a" /* HttpService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__alert_alert_service__["a" /* AlertService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__alert_alert_service__["a" /* AlertService */]) === "function" && _b || Object])
-], EmployeeService);
+PaymentLogComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-payment-log',
+        template: __webpack_require__("../../../../../src/app/finance/stu-pay-record/payment-log/payment-log.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/finance/stu-pay-record/payment-log/payment-log.component.less")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__finance_service__["a" /* FinanceService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__finance_service__["a" /* FinanceService */]) === "function" && _b || Object])
+], PaymentLogComponent);
 
 var _a, _b;
-//# sourceMappingURL=employee.service.js.map
+//# sourceMappingURL=payment-log.component.js.map
 
 /***/ }),
 
-/***/ "../../../../../src/app/employee/employee.ts":
+/***/ "../../../../../src/app/finance/stu-pay-record/stu-pay-record.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<app-content-header\r\n  [title]=\"'学生缴费日志'\" [menus]=\"contentHeader\"></app-content-header>\r\n\r\n<div class=\"content\">\r\n  <router-outlet></router-outlet>\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/finance/stu-pay-record/stu-pay-record.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/finance/stu-pay-record/stu-pay-record.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Employee; });
-var Employee = (function () {
-    function Employee() {
-    }
-    return Employee;
-}());
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_school_service__ = __webpack_require__("../../../../../src/app/common/school.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return StuPayRecordComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 
-//# sourceMappingURL=employee.js.map
+
+var StuPayRecordComponent = (function () {
+    function StuPayRecordComponent(schoolService) {
+        this.schoolService = schoolService;
+    }
+    StuPayRecordComponent.prototype.ngOnInit = function () {
+        this.schools = [];
+        this.contentHeader = [
+            { name: '主页', icon: 'fa-dashboard' },
+            { name: '学生缴费日志', icon: 'fa-th-li' }
+        ];
+        this.fetchSchools();
+    };
+    StuPayRecordComponent.prototype.fetchSchools = function () {
+        var _this = this;
+        this.schoolService.fetchSchoolList().then(function (schools) { return _this.schools = schools; });
+    };
+    return StuPayRecordComponent;
+}());
+StuPayRecordComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-stu-pay-record',
+        template: __webpack_require__("../../../../../src/app/finance/stu-pay-record/stu-pay-record.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/finance/stu-pay-record/stu-pay-record.component.less")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__common_school_service__["a" /* SchoolService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__common_school_service__["a" /* SchoolService */]) === "function" && _a || Object])
+], StuPayRecordComponent);
+
+var _a;
+//# sourceMappingURL=stu-pay-record.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/finance/stu-pay-stat/payments/payments.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"box box-primary box-divide\">\n  <div class=\"box-header\">\n    <h3 class=\"box-title\">学生缴费统计</h3>\n    <div class=\"box-tools\">\n      <a [routerLink]=\"['../school-table']\">\n        <button class=\"btn btn-sm btn-primary\">\n          <i class=\"fa fa-building\"></i>\n          返回校区列表\n        </button>\n      </a>\n    </div>\n  </div>\n  <div class=\"box-body\">\n    <table class=\"table table-hover box-bordered text-center\">\n      <thead>\n        <tr>\n          <th>姓名</th>\n          <th>所在校区</th>\n          <th>电话</th>\n          <th>缴款金额</th>\n          <th>退款金额</th>\n          <th>使用金额</th>\n          <th>缴费状态</th>\n          <th>备注</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr *ngFor=\"let payment of payments\">\n          <td>{{ payment.name }}</td>\n          <td>{{ payment.schoolName }}</td>\n          <td>{{ payment.phone }}</td>\n          <td>{{ payment.hasPay || 0 }}</td>\n          <td>{{ payment.hasBack || 0 }}</td>\n          <td>{{ payment.hasUsed || 0 }}</td>\n          <td>{{ payment.alreadyPaid === 'YES' ? '已缴费':'未缴费' }}</td>\n          <td>{{ payment.remark || '--' }}</td>\n        </tr>\n        <tr *ngIf=\"!payments.length\">\n          <td colspan=\"8\" class=\"text-muted\">暂无学员缴费信息</td>\n        </tr>\n      </tbody>\n    </table>\n  </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/finance/stu-pay-stat/payments/payments.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/finance/stu-pay-stat/payments/payments.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__finance_service__ = __webpack_require__("../../../../../src/app/finance/finance.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PaymentsComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var PaymentsComponent = (function () {
+    function PaymentsComponent(router, financeService) {
+        this.router = router;
+        this.financeService = financeService;
+    }
+    PaymentsComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.payments = [];
+        this.router.params.subscribe(function (params) {
+            _this.fetchPaymentsBySchoolId(params.schoolId);
+        });
+    };
+    PaymentsComponent.prototype.fetchPaymentsBySchoolId = function (id) {
+        var _this = this;
+        this.financeService.fetchStudentPaymentsById(id).then(function (payments) {
+            _this.payments = payments;
+        });
+    };
+    return PaymentsComponent;
+}());
+PaymentsComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-payments',
+        template: __webpack_require__("../../../../../src/app/finance/stu-pay-stat/payments/payments.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/finance/stu-pay-stat/payments/payments.component.less")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__finance_service__["a" /* FinanceService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__finance_service__["a" /* FinanceService */]) === "function" && _b || Object])
+], PaymentsComponent);
+
+var _a, _b;
+//# sourceMappingURL=payments.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/finance/stu-pay-stat/school-table/school-table.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"box box-primary box-divide\">\n  <div class=\"box-header\">\n    <h3 class=\"box-title\">校区列表</h3>\n  </div>\n  <div class=\"box-body\">\n    <table class=\"table table-hover box-bordered\">\n      <thead>\n      <tr>\n        <th>校区名称</th>\n        <th>校区描述</th>\n        <th>操作</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr *ngFor=\"let school of schools\">\n        <td>{{ school.name }}</td>\n        <td>{{ school.remark }}</td>\n        <td>\n          <a [routerLink]=\"['../student-payments', {schoolId: school.id}]\">\n            查看校区学员>>\n          </a>\n        </td>\n      </tr>\n      </tbody>\n    </table>\n  </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/finance/stu-pay-stat/school-table/school-table.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/finance/stu-pay-stat/school-table/school-table.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_school_service__ = __webpack_require__("../../../../../src/app/common/school.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FinanceSchoolTableComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var FinanceSchoolTableComponent = (function () {
+    function FinanceSchoolTableComponent(schoolService) {
+        this.schoolService = schoolService;
+    }
+    FinanceSchoolTableComponent.prototype.ngOnInit = function () {
+        this.schools = [];
+        this.contentHeader = [
+            { name: '主页', icon: 'fa-dashboard' },
+            { name: '学生缴费统计', icon: 'fa-th-li' }
+        ];
+        this.fetchSchools();
+    };
+    FinanceSchoolTableComponent.prototype.fetchSchools = function () {
+        var _this = this;
+        this.schoolService.fetchSchoolList().then(function (schools) { return _this.schools = schools; });
+    };
+    return FinanceSchoolTableComponent;
+}());
+FinanceSchoolTableComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-finance-school-table',
+        template: __webpack_require__("../../../../../src/app/finance/stu-pay-stat/school-table/school-table.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/finance/stu-pay-stat/school-table/school-table.component.less")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__common_school_service__["a" /* SchoolService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__common_school_service__["a" /* SchoolService */]) === "function" && _a || Object])
+], FinanceSchoolTableComponent);
+
+var _a;
+//# sourceMappingURL=school-table.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/finance/stu-pay-stat/stu-pay-stat.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<app-content-header\n  [title]=\"'学生缴费统计'\" [menus]=\"contentHeader\"></app-content-header>\n\n<div class=\"content\">\n  <router-outlet></router-outlet>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/finance/stu-pay-stat/stu-pay-stat.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/finance/stu-pay-stat/stu-pay-stat.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_school_service__ = __webpack_require__("../../../../../src/app/common/school.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return StuPayStatComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var StuPayStatComponent = (function () {
+    function StuPayStatComponent(schoolService) {
+        this.schoolService = schoolService;
+    }
+    StuPayStatComponent.prototype.ngOnInit = function () {
+        this.schools = [];
+        this.contentHeader = [
+            { name: '主页', icon: 'fa-dashboard' },
+            { name: '学生缴费统计', icon: 'fa-th-li' }
+        ];
+        this.fetchSchools();
+    };
+    StuPayStatComponent.prototype.fetchSchools = function () {
+        var _this = this;
+        this.schoolService.fetchSchoolList().then(function (schools) { return _this.schools = schools; });
+    };
+    return StuPayStatComponent;
+}());
+StuPayStatComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-stu-pay-stat',
+        template: __webpack_require__("../../../../../src/app/finance/stu-pay-stat/stu-pay-stat.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/finance/stu-pay-stat/stu-pay-stat.component.less")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__common_school_service__["a" /* SchoolService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__common_school_service__["a" /* SchoolService */]) === "function" && _a || Object])
+], StuPayStatComponent);
+
+var _a;
+//# sourceMappingURL=stu-pay-stat.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/finance/to-approvement/to-approvement.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<app-content-header\n  [title]=\"'退费审批'\" [menus]=\"contentHeader\"></app-content-header>\n\n<div class=\"content\">\n  <div class=\"nav-tabs-custom\">\n    <ul class=\"nav nav-tabs\">\n      <li class=\"active\" (click)=\"fetchAuditPendingRecord()\"><a href=\"#waitAudit\" data-toggle=\"tab\">待审批退费</a></li>\n      <li class=\"\" (click)=\"fetchAuditSuccessRecords()\"><a href=\"#auditSuccess\" data-toggle=\"tab\">已通过退费</a></li>\n      <li class=\"\" (click)=\"fetchAuditFailedRecords()\"><a href=\"#auditFail\" data-toggle=\"tab\">已拒绝退费</a></li>\n    </ul>\n    <div class=\"tab-content\">\n      <div class=\"tab-pane active\" id=\"waitAudit\">\n        <table class=\"table table-bordered table-hover text-center\">\n          <thead>\n          <tr>\n            <th>申请时间</th>\n            <th>退款金额</th>\n            <th>所在学校</th>\n            <th>学生姓名</th>\n            <th>备注</th>\n            <th>操作</th>\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let record of auditPendingRecords;\">\n            <td>{{ record.applicationTime | date: 'yyyy-MM-dd HH-mm'}}</td>\n            <td>{{ record.returnAmount || 0}}</td>\n            <td>{{ record.schoolName}}</td>\n            <td>{{ record.studentName}}</td>\n            <td>{{ record.applicationRemark || '--'}}</td>\n            <td>\n              <div class=\"button-group button-group-xs\">\n                <button class=\"btn btn-xs btn-primary\" (click)=\"approve='AUDIT_SUCCESS';\n                  approveRemark = '';\n                  curAudit = record;\n                  auditModal.showModal({\n                    modalSize: 'sm',\n                    title: '是否通过审核?',\n                    confirm: checkBackApplication\n                  })\">审核</button>\n              </div>\n            </td>\n          </tr>\n          <tr *ngIf=\"!auditPendingRecords.length\">\n            <td colspan=\"7\">\n              <p class=\"text-center text-muted\">暂时无审批项信息</p>\n            </td>\n          </tr>\n          </tbody>\n        </table>\n      </div>\n\n      <div class=\"tab-pane\" id=\"auditSuccess\">\n        <table class=\"table table-bordered table-hover text-center\">\n          <thead>\n          <tr>\n            <th>申请时间</th>\n            <th>退款金额</th>\n            <th>所在学校</th>\n            <th>学生姓名</th>\n            <th>备注</th>\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let record of auditSuccessRecords;\">\n            <td>{{ record.applicationTime | date: 'yyyy-MM-dd HH-mm'}}</td>\n            <td>{{ record.returnAmount || 0}}</td>\n            <td>{{ record.schoolName}}</td>\n            <td>{{ record.studentName}}</td>\n            <td>{{ record.applicationRemark || '--'}}</td>\n          </tr>\n          <tr *ngIf=\"!auditSuccessRecords.length\">\n            <td colspan=\"6\">\n              <p class=\"text-center text-muted\">暂时无审批项信息</p>\n            </td>\n          </tr>\n          </tbody>\n        </table>\n      </div>\n\n      <div class=\"tab-pane\" id=\"auditFail\">\n        <table class=\"table table-bordered table-hover text-center\">\n          <thead>\n          <tr>\n            <th>申请时间</th>\n            <th>退款金额</th>\n            <th>所在学校</th>\n            <th>学生姓名</th>\n            <th>备注</th>\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let record of auditFailedRecords;\">\n            <td>{{ record.applicationTime | date: 'yyyy-MM-dd HH-mm'}}</td>\n            <td>{{ record.returnAmount || 0}}</td>\n            <td>{{ record.schoolName}}</td>\n            <td>{{ record.studentName}}</td>\n            <td>{{ record.applicationRemark || '--'}}</td>\n          </tr>\n          <tr *ngIf=\"!auditFailedRecords.length\">\n            <td colspan=\"6\">\n              <p class=\"text-center text-muted\">暂时无审批项信息</p>\n            </td>\n          </tr>\n          </tbody>\n        </table>\n      </div>\n    </div>\n  </div>\n</div>\n\n<app-modal #auditModal>\n  <form class=\"form text-center clearfix\">\n    <div class=\"radio\">\n      <label>\n        <input type=\"radio\" name=\"optionsRadios\" id=\"approve\" (change)=\"approve = 'AUDIT_SUCCESS'\" [checked]=\"approve === 'AUDIT_SUCCESS'\">\n        通过该退费申请\n      </label>\n    </div>\n\n    <div class=\"radio\">\n      <label>\n        <input type=\"radio\" name=\"optionsRadios\" id=\"reject\" value=\"option1\" (change)=\"approve = 'AUDIT_FAIL'\" [checked]=\"approve === 'AUDIT_FAIL'\">\n        拒绝该退费申请\n      </label>\n    </div>\n\n    <div class=\"form-group form-group-sm col-xs-6 col-xs-offset-3\">\n      <div>\n        <textarea name=\"remark\" id=\"remark\" class=\"form-control\" rows=\"2\" placeholder=\"请填写审核备注\" [(ngModel)]=\"approveRemark\"></textarea>\n      </div>\n    </div>\n  </form>\n</app-modal>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/finance/to-approvement/to-approvement.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/finance/to-approvement/to-approvement.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_school_service__ = __webpack_require__("../../../../../src/app/common/school.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ToApprovementComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var ToApprovementComponent = (function () {
+    function ToApprovementComponent(schoolService) {
+        this.schoolService = schoolService;
+        this.checkBackApplication = this.checkBackApplication.bind(this);
+    }
+    ToApprovementComponent.prototype.ngOnInit = function () {
+        this.curAudit = {};
+        this.approve = 'AUDIT_SUCCESS';
+        this.approveRemark = '';
+        this.auditPendingRecords = [];
+        this.auditSuccessRecords = [];
+        this.auditFailedRecords = [];
+        this.contentHeader = [
+            { name: '主页', icon: 'fa-dashboard' },
+            { name: '退费审批列表页', icon: 'fa-list' }
+        ];
+        this.fetchAuditPendingRecord();
+        this.fetchAuditSuccessRecords();
+        this.fetchAuditFailedRecords();
+    };
+    ToApprovementComponent.prototype.fetchAuditPendingRecord = function () {
+        var _this = this;
+        this.schoolService.fetchPendingApproval('BACK_MONEY', 'WAIT_AUDIT').then(function (records) {
+            _this.auditPendingRecords = records;
+        });
+    };
+    ToApprovementComponent.prototype.fetchAuditSuccessRecords = function () {
+        var _this = this;
+        this.schoolService.fetchPendingApproval('BACK_MONEY', 'AUDIT_SUCCESS').then(function (records) {
+            _this.auditSuccessRecords = records;
+        });
+    };
+    ToApprovementComponent.prototype.fetchAuditFailedRecords = function () {
+        var _this = this;
+        this.schoolService.fetchPendingApproval('BACK_MONEY', 'AUDIT_FAIL').then(function (records) {
+            _this.auditFailedRecords = records;
+        });
+    };
+    ToApprovementComponent.prototype.checkBackApplication = function () {
+        var _this = this;
+        this.schoolService.audit(this.approve, this.curAudit.id, this.approveRemark).then(function (success) {
+            if (success) {
+                var toRemoveRecordIndex = _this.auditPendingRecords.indexOf(_this.curAudit);
+                _this.auditPendingRecords.splice(toRemoveRecordIndex, 1);
+            }
+        });
+    };
+    return ToApprovementComponent;
+}());
+ToApprovementComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-to-approvement',
+        template: __webpack_require__("../../../../../src/app/finance/to-approvement/to-approvement.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/finance/to-approvement/to-approvement.component.less")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__common_school_service__["a" /* SchoolService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__common_school_service__["a" /* SchoolService */]) === "function" && _a || Object])
+], ToApprovementComponent);
+
+var _a;
+//# sourceMappingURL=to-approvement.component.js.map
 
 /***/ }),
 
@@ -3397,17 +4187,14 @@ var HeaderComponent = (function () {
         this.userService.getCurUserInfo()
             .then(function (user) {
             _this.user = user;
+            console.log(_this.user);
             _this.roleService.navigateByRole(user.roleId);
         });
     };
     HeaderComponent.prototype.signOut = function () {
-        var _this = this;
-        this.http.get('auth/logout').then(function (data) {
-            if (data.success) {
-                _this.userService.emptyUsrInfo();
-                _this.router.navigate(['/login']);
-            }
-        });
+        this.http.get('auth/logout');
+        this.userService.emptyUsrInfo();
+        this.router.navigate(['/login']);
     };
     return HeaderComponent;
 }());
@@ -3791,6 +4578,1629 @@ PaginationComponent = __decorate([
 
 /***/ }),
 
+/***/ "../../../../../src/app/personnel-cashier/fees/fees.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<app-content-header\r\n  [title]=\"'缴费管理'\" [menus]=\"contentHeader\"></app-content-header>\r\n<div class=\"content\">\r\n  <router-outlet></router-outlet>\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/personnel-cashier/fees/fees.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "table tr {\n  transition: background .3s ease;\n}\ntable tr th:last-of-type,\ntable tr td:last-of-type {\n  width: 25%;\n}\ntable tr.current {\n  background: #ecf0f5;\n  font-weight: bold;\n}\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/personnel-cashier/fees/fees.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FeesComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var FeesComponent = (function () {
+    function FeesComponent() {
+    }
+    FeesComponent.prototype.ngOnInit = function () {
+        this.contentHeader = [
+            { name: '主页', icon: 'fa-dashboard' },
+            { name: '缴费管理页', icon: 'fa-money' }
+        ];
+    };
+    return FeesComponent;
+}());
+FeesComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-fees',
+        template: __webpack_require__("../../../../../src/app/personnel-cashier/fees/fees.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/personnel-cashier/fees/fees.component.less")]
+    }),
+    __metadata("design:paramtypes", [])
+], FeesComponent);
+
+//# sourceMappingURL=fees.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/personnel-cashier/fees/school-table/school-table.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"box box-primary box-divide\">\n  <div class=\"box-header\">\n    <h3 class=\"box-title\">校区列表</h3>\n  </div>\n  <div class=\"box-body\">\n    <table class=\"table table-hover\">\n      <thead>\n        <tr>\n          <th>学校名称</th>\n          <th>校区描述</th>\n          <th>操作</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr *ngFor=\"let school of schools\" (click)=\"setCurSchool(school)\" [class.current]=\"school.current\">\n          <td>{{ school.name }}</td>\n          <td>{{ school.remark }}</td>\n          <td>\n            <a [routerLink]=\"[ '../' +school.id + '/students',{schoolName: school.name}]\">\n              查看校区学员 <i class=\"fa fa-angle-double-right\"></i>\n            </a>\n          </td>\n        </tr>\n      </tbody>\n    </table>\n  </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/personnel-cashier/fees/school-table/school-table.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/personnel-cashier/fees/school-table/school-table.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_school_service__ = __webpack_require__("../../../../../src/app/common/school.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SchoolTableComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var SchoolTableComponent = (function () {
+    function SchoolTableComponent(schoolService) {
+        this.schoolService = schoolService;
+    }
+    SchoolTableComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.schools = [];
+        this.curSchool = { name: '', id: '' };
+        this.fetchSchools().then(function (schools) {
+            if (schools.length) {
+                (_this.curSchool = schools[0]);
+                _this.curSchool.current = true;
+            }
+        });
+    };
+    SchoolTableComponent.prototype.fetchSchools = function () {
+        var _this = this;
+        return this.schoolService.fetchSchoolList().then(function (schools) {
+            _this.schools = schools;
+            return schools;
+        });
+    };
+    SchoolTableComponent.prototype.setCurSchool = function (curSchool) {
+        this.curSchool.current = false;
+        this.curSchool = curSchool;
+        this.curSchool.current = true;
+    };
+    return SchoolTableComponent;
+}());
+SchoolTableComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-school-table',
+        template: __webpack_require__("../../../../../src/app/personnel-cashier/fees/school-table/school-table.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/personnel-cashier/fees/school-table/school-table.component.less")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__common_school_service__["a" /* SchoolService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__common_school_service__["a" /* SchoolService */]) === "function" && _a || Object])
+], SchoolTableComponent);
+
+var _a;
+//# sourceMappingURL=school-table.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/personnel-cashier/fees/student-table/student-table.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<app-collapse-box [collapse]=\"false\" [boxTitle]=\"'学生信息筛选'\">\r\n  <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n    <label class=\"pull-left\">\r\n      姓名:\r\n    </label>\r\n    <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n      <input class=\"form-control input-sm\" [(ngModel)]=\"filterStudentName\" placeholder=\"输入学生名称\">\r\n      <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n    <label class=\"pull-left\">\r\n      电话号码:\r\n    </label>\r\n    <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n      <input class=\"form-control input-sm\" [(ngModel)]=\"filterStudentPhone\" placeholder=\"输入学生电话号码\">\r\n      <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n    </div>\r\n  </div>\r\n</app-collapse-box>\r\n\r\n<div class=\"box box-primary box-divide\">\r\n  <div class=\"box-header\">\r\n    <h3 class=\"box-title\">\r\n      {{ curSchoolName }}校区学员\r\n    </h3>\r\n    <div class=\"box-tools\">\r\n      <button class=\"btn btn-primary btn-xs\" [routerLink]=\"['../../schools']\">\r\n        <i class=\"fa fa-list\"></i>\r\n        校区列表\r\n      </button>\r\n    </div>\r\n  </div>\r\n  <div class=\"box-body\">\r\n    <table class=\"table table-hovered table-bordered text-center\">\r\n      <thead>\r\n      <tr>\r\n        <th>姓名</th>\r\n        <th>性别</th>\r\n        <th>电话</th>\r\n        <th>学科</th>\r\n        <th>操作</th>\r\n      </tr>\r\n      </thead>\r\n      <tbody>\r\n      <tr *ngFor=\"let student of students | matchItem: filterStudentName: 'name' | matchItem: filterStudentPhone: 'phone';\">\r\n        <td>{{ student.name }}</td>\r\n        <td>{{ student.sex === 'MALE' ? '男': '女' }}</td>\r\n        <td>{{ student.phone }}</td>\r\n        <td>{{ student.subject || '-' }}</td>\r\n        <td>\r\n          <div class=\"btn-group btn-group-xs\">\r\n            <button class=\"btn btn-primary btn-xs\" (click)=\"initPaymentEvent(student);\r\n            payModal.showModal({\r\n              title: '请填写缴费信息',\r\n              confirm: pay\r\n            })\">\r\n              <i class=\"fa fa-credit-card\"></i>缴费\r\n            </button>\r\n          </div>\r\n        </td>\r\n      </tr>\r\n      <tr>\r\n        <td *ngIf=\"students.length === 0\" colspan=\"5\">\r\n          <p class=\"text-muted\">该校区下暂无学员信息</p>\r\n        </td>\r\n      </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>\r\n</div>\r\n\r\n<app-modal #payModal [disabledAcceptBtn]=\"!(payOrRefundEvent.employeeId && payOrRefundEvent.money)\">\r\n  <form class=\"form\">\r\n    <div class=\"form-group clearfix\">\r\n      <label for=\"payType\" class=\"control-label col-xs-3\">缴费类型:</label>\r\n      <div class=\"col-xs-9\">\r\n        <select2 id=\"payType\"\r\n                 [cssImport]=\"false\"\r\n                 [width]=\"'100%'\"\r\n                 [data]=\"payTypeList\"\r\n                 (valueChanged)=\"switchPayType($event)\"\r\n                 [options]=\"{minimumResultsForSearch: -1}\"></select2>\r\n      </div>\r\n    </div>\r\n    <div class=\"form-group clearfix\">\r\n      <label for=\"submitter\" class=\"control-label col-xs-3\">代缴人员</label>\r\n      <div class=\"col-xs-9\">\r\n        <select2 [cssImport]=\"false\"\r\n                 [width]=\"'100%'\"\r\n                 id=\"submitter\"\r\n                 [value]=\"payOrRefundEvent.employeeId\"\r\n                 (valueChanged)=\"handlePayerSwitch($event)\"\r\n                 [data]=\"payer\"\r\n                 [options]=\"select2Options\"\r\n        ></select2>\r\n      </div>\r\n    </div>\r\n    <div class=\"form-group clearfix\">\r\n      <label for=\"payMoney\" class=\"control-label col-xs-3\">代缴金额</label>\r\n      <div class=\"col-xs-9\">\r\n        <input type=\"number\" class=\"form-control\" id=\"payMoney\" name=\"payMoney\" [(ngModel)]=\"payOrRefundEvent.money\" >\r\n      </div>\r\n    </div>\r\n    <div class=\"form-group clearfix\">\r\n      <label for=\"payRemark\" class=\"control-label col-xs-3\">缴费备注</label>\r\n      <div class=\"col-xs-9\">\r\n        <textarea class=\"form-control\" id=\"payRemark\" name=\"payRemark\" [(ngModel)]=\"payOrRefundEvent.remark\" rows=\"2\" placeholder=\"请输入缴费备注\"></textarea>\r\n      </div>\r\n    </div>\r\n  </form>\r\n</app-modal>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/personnel-cashier/fees/student-table/student-table.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/personnel-cashier/fees/student-table/student-table.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__personal_cashier_service__ = __webpack_require__("../../../../../src/app/personnel-cashier/personal-cashier.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_enum__ = __webpack_require__("../../../../../src/app/common/enum.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_user_service__ = __webpack_require__("../../../../../src/app/common/user.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_settings__ = __webpack_require__("../../../../../src/app/app-settings.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return StudentTableComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+var StudentTableComponent = (function () {
+    function StudentTableComponent(cashierService, route) {
+        this.cashierService = cashierService;
+        this.route = route;
+        this.pay = this.pay.bind(this);
+    }
+    StudentTableComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.payer = [];
+        this.students = [];
+        this.route.params.subscribe(function (params) {
+            _this.curSchoolName = params.schoolName;
+            _this.curSchoolId = params.schoolId;
+            _this.fetchStuBySchoolId(params.schoolId);
+        });
+        this.filterStudentName = '';
+        this.filterStudentPhone = '';
+        this.payType = __WEBPACK_IMPORTED_MODULE_3__common_enum__["b" /* payType */];
+        this.payTypeList = __WEBPACK_IMPORTED_MODULE_3__common_enum__["e" /* payTypeList */];
+        this.payOrRefundEvent = {
+            employeeId: '',
+            money: 0,
+            payType: Object.keys(__WEBPACK_IMPORTED_MODULE_3__common_enum__["b" /* payType */])[0],
+            remark: '',
+            schoolId: this.curSchoolId,
+            studentId: ''
+        };
+        this.curPayType = Object.keys(__WEBPACK_IMPORTED_MODULE_3__common_enum__["b" /* payType */])[0];
+        this.select2Options = {
+            placeholder: '请输入姓名搜索缴费/退费代理人',
+            minimumInputLength: 1,
+            ajax: {
+                dataType: 'json',
+                delay: 450,
+                headers: { 'Access-Token': __WEBPACK_IMPORTED_MODULE_4__common_user_service__["a" /* UserService */].getAccessToken() },
+                url: function (params) {
+                    return __WEBPACK_IMPORTED_MODULE_5__app_settings__["a" /* AppSettings */].API_ENDPOINT + ("finance/employee/" + _this.curSchoolId + "/" + _this.curPayType + "/" + (params.term || '1-1'));
+                },
+                processResults: function (data) {
+                    (data.data || []).forEach(function (item) { return item.text = item.name + '(' + item.idCard + ')'; });
+                    (_a = _this.payer).push.apply(_a, data.data);
+                    console.log(_this.payer);
+                    return {
+                        results: data.data
+                    };
+                    var _a;
+                },
+                results: function (term, page, context) {
+                    console.log(term, page, context);
+                }
+            }
+        };
+    };
+    StudentTableComponent.prototype.fetchStuBySchoolId = function (schoolId) {
+        var _this = this;
+        this.cashierService.fetchStuBySchoolId(schoolId).then(function (students) { return _this.students = students; });
+    };
+    StudentTableComponent.prototype.switchPayType = function ($event) {
+        this.payOrRefundEvent.payType = $event.value;
+        this.payer = [];
+    };
+    StudentTableComponent.prototype.handlePayerSwitch = function ($event) {
+        this.payOrRefundEvent.employeeId = $event.value;
+    };
+    StudentTableComponent.prototype.pay = function () {
+        this.cashierService.pay(this.payOrRefundEvent).then(function (success) { });
+    };
+    StudentTableComponent.prototype.initPaymentEvent = function (student) {
+        this.payOrRefundEvent.studentId = student.id;
+        this.payOrRefundEvent.remark = '';
+        this.payOrRefundEvent.money = 0;
+    };
+    return StudentTableComponent;
+}());
+StudentTableComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-student-table',
+        template: __webpack_require__("../../../../../src/app/personnel-cashier/fees/student-table/student-table.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/personnel-cashier/fees/student-table/student-table.component.less")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__personal_cashier_service__["a" /* PersonalCashierService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__personal_cashier_service__["a" /* PersonalCashierService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */]) === "function" && _b || Object])
+], StudentTableComponent);
+
+var _a, _b;
+//# sourceMappingURL=student-table.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/personnel-cashier/personal-cashier.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__service_http_service__ = __webpack_require__("../../../../../src/app/service/http.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__alert_alert_service__ = __webpack_require__("../../../../../src/app/alert/alert.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PersonalCashierService; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var PersonalCashierService = (function () {
+    function PersonalCashierService(http, alertService) {
+        this.http = http;
+        this.alertService = alertService;
+    }
+    PersonalCashierService.prototype.fetchStuBySchoolId = function (schoolId) {
+        var _this = this;
+        return this.http.get("finance/student/list?schoolId=" + schoolId).then(function (result) {
+            if (result.success) {
+                return result.data;
+            }
+            else {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '获取学生列表失败，' + result.data,
+                    type: 'danger'
+                });
+            }
+        });
+    };
+    PersonalCashierService.prototype.pay = function (payment) {
+        var _this = this;
+        return this.http.put('finance/student/pay', payment).then(function (result) {
+            if (result.success) {
+                _this.alertService.alert({
+                    title: '提示',
+                    type: 'success',
+                    content: '缴费成功'
+                });
+                return result.success;
+            }
+            else {
+                _this.alertService.alert({
+                    title: '提示',
+                    type: 'danger',
+                    content: '缴费失败，' + result.data
+                });
+            }
+        });
+    };
+    return PersonalCashierService;
+}());
+PersonalCashierService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__service_http_service__["a" /* HttpService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__service_http_service__["a" /* HttpService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__alert_alert_service__["a" /* AlertService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__alert_alert_service__["a" /* AlertService */]) === "function" && _b || Object])
+], PersonalCashierService);
+
+var _a, _b;
+//# sourceMappingURL=personal-cashier.service.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/personnel-cashier/personnel-cashier.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<app-sidebar [sidebarMenu]=\"sidebarMenu\"></app-sidebar>\r\n<div class=\"content-wrapper\">\r\n  <router-outlet></router-outlet>\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/personnel-cashier/personnel-cashier.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/personnel-cashier/personnel-cashier.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PersonnelCashierComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var PersonnelCashierComponent = (function () {
+    function PersonnelCashierComponent() {
+    }
+    PersonnelCashierComponent.prototype.ngOnInit = function () {
+        this.sidebarMenu = [
+            {
+                name: '学生缴费管理',
+                routerLink: ['fees'],
+                icon: 'fa-graduation-cap'
+            }
+        ];
+    };
+    return PersonnelCashierComponent;
+}());
+PersonnelCashierComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-personnel-cashier',
+        template: __webpack_require__("../../../../../src/app/personnel-cashier/personnel-cashier.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/personnel-cashier/personnel-cashier.component.less")]
+    }),
+    __metadata("design:paramtypes", [])
+], PersonnelCashierComponent);
+
+//# sourceMappingURL=personnel-cashier.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/personnel-manager/employee-detail/employee-detail.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"content\">\r\n  <div class=\"row\">\r\n    <div class=\"col-xs-4\">\r\n      <div class=\"box box-primary\">\r\n        <div class=\"box-body box-profile\">\r\n          <img class=\"profile-user-img img-responsive img-circle\" src=\"https://adminlte.io/themes/AdminLTE/dist/img/user4-128x128.jpg\" alt=\"User profile picture\">\r\n\r\n          <h3 class=\"profile-username text-center\">Nina Mcintire</h3>\r\n\r\n          <p class=\"text-muted text-center\">Software Engineer</p>\r\n\r\n          <ul class=\"list-group list-group-unbordered\">\r\n            <li class=\"list-group-item\">\r\n              <b>Followers</b> <a class=\"pull-right\">1,322</a>\r\n            </li>\r\n            <li class=\"list-group-item\">\r\n              <b>Following</b> <a class=\"pull-right\">543</a>\r\n            </li>\r\n            <li class=\"list-group-item\">\r\n              <b>Friends</b> <a class=\"pull-right\">13,287</a>\r\n            </li>\r\n          </ul>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div class=\"col-xs-8\">\r\n      <div class=\"box box-primary box-divide\">\r\n        <div class=\"box-header\">\r\n          <h3 class=\"box-title\">员工详细信息</h3>\r\n          <div class=\"box-tools\">\r\n            <button class=\"btn btn-primary btn-sm\">编辑员工</button>\r\n            <button class=\"btn btn-danger btn-sm\">删除员工</button>\r\n          </div>\r\n        </div>\r\n        <div class=\"box-body\">\r\n          <table class=\"table table-hover\">\r\n            <tbody>\r\n            <tr>\r\n              <td class=\"text-left text-bold\">aso</td>\r\n              <td class=\"text-right\">asd[pk</td>\r\n            </tr>\r\n            </tbody>\r\n          </table>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/personnel-manager/employee-detail/employee-detail.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/personnel-manager/employee-detail/employee-detail.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EmployeeDetailComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var EmployeeDetailComponent = (function () {
+    function EmployeeDetailComponent() {
+    }
+    EmployeeDetailComponent.prototype.ngOnInit = function () {
+        this.employee = {
+            "address": "啊是第几撒大啊的啊",
+            "birthday": "2017-08-29T01:58:01.932Z",
+            "clamantName": "啊速度集合",
+            "clamantPhone": "18849550032",
+            "createTime": "2017-08-29T01:58:01.932Z",
+            "deleted": true,
+            "education": "高中",
+            "email": "yjh2332@163.com",
+            "graduationSchool": "；哦嘀神3；呢1",
+            "id": "string",
+            "idCard": "350521199112226515",
+            "name": "哦阿斯顿",
+            "phone": "18859033232",
+            "remark": "啊的批发价啊是电脑哦哦的粉底撒",
+            "schoolId": "string",
+            "sex": "男",
+            "specialty": "撒的评价那",
+            "updateTime": "2017-08-29T01:58:01.932Z"
+        };
+    };
+    return EmployeeDetailComponent;
+}());
+EmployeeDetailComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-employee-detail',
+        template: __webpack_require__("../../../../../src/app/personnel-manager/employee-detail/employee-detail.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/personnel-manager/employee-detail/employee-detail.component.less")]
+    }),
+    __metadata("design:paramtypes", [])
+], EmployeeDetailComponent);
+
+//# sourceMappingURL=employee-detail.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/personnel-manager/employee/employee.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<app-content-header\r\n  [title]=\"'员工列表管理'\" [menus]=\"contentHeader\"></app-content-header>\r\n<div class=\"content\">\r\n  <app-collapse-box [collapse]=\"false\" [boxTitle]=\"'员工过滤'\">\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">姓名:</label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <input class=\"form-control\" [(ngModel)]=\"filterEmployeeName\" placeholder=\"请输入员工姓名\">\r\n        <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">电话:</label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <input class=\"form-control\" [(ngModel)]=\"filterEmployeePhone\" placeholder=\"请输入员工手机号\">\r\n        <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        性别:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <select2 [cssImport]=\"false\"\r\n                 [options]=\"{minimumResultsForSearch: -1}\"\r\n                 [data]=\"[{id: 'ALL', text: '全部'}].concat(genders)\"\r\n                 (valueChanged)=\"switchFilterGender($event)\"\r\n                 [width]=\"'148px'\"></select2>\r\n      </div>\r\n    </div>\r\n  </app-collapse-box>\r\n\r\n  <div class=\"box box-primary box-divide\">\r\n    <div class=\"box-header\">\r\n      <h3 class=\"box-title\">员工列表</h3>\r\n      <div class=\"box-tools\">\r\n        <button class=\"btn btn-sm btn-primary\" (click)=\"form.reset();\r\n        initCurEmployee();\r\n        employeeUpdaterOrCreator.showModal({\r\n          title: '添加新员工',\r\n          modalSize: 'lg',\r\n          confirm: createOrUpdateEmployee\r\n        })\">\r\n          <i class=\"fa fa-plus\"></i>\r\n          添加新员工\r\n        </button>\r\n      </div>\r\n    </div>\r\n    <div class=\"box-body\">\r\n      <div class=\"row\">\r\n        <div class=\"col-xs-12 xol-sm-6 col-md-4 col-lg-3\" *ngFor=\"let employee of employees |\r\n        matchItem: filterEmployeeName : 'name' |\r\n        matchItem: filterEmployeeGender : 'sex' : 'exact' |\r\n        matchItem: filterEmployeePhone: 'phone'\">\r\n          <div class=\"box box-widget widget-user\" (click)=\"initCurEmployee(employee);\r\n          employeeUpdaterOrCreator.showModal({\r\n            title: '编辑员工' + curEmployee.name + '的相关信息',\r\n            modalSize: 'lg',\r\n            confirm: createOrUpdateEmployee\r\n          })\">\r\n            <div class=\"widget-user-header {{ employee.sex === 'MALE' ? 'bg-aqua-active' : 'bg-yellow' }}\">\r\n              <h3 class=\"widget-user-username\">\r\n                {{ employee.name }}\r\n                <a class=\"pull-right\">\r\n                  <i class=\"fa fa-trash-o\" style=\"color: white\" (click)=\"$event.stopPropagation();\r\n                  initCurEmployee(employee);\r\n                  confirmDeleteModal.showModal({\r\n                    title: '提示',\r\n                    content: '是否删除员工' + curEmployee.name,\r\n                    confirm: deleteEmployee\r\n                  })\"></i>\r\n                </a>\r\n              </h3>\r\n              <h5 class=\"widget-user-desc\">\r\n                <i class=\"fa fa-{{  employee.sex === 'FEMALE' ?'venus':'mars' }}\"></i>\r\n                {{employee.sex === 'MALE' ? '男' : '女'}}\r\n              </h5>\r\n            </div>\r\n            <div class=\"widget-user-image\">\r\n              <img src=\"https://adminlte.io/themes/AdminLTE/dist/img/user{{ employee.sex === 'MALE' ? 1 : 3 }}-128x128.jpg\" alt=\"\" class=\"img-circle\">\r\n            </div>\r\n            <div class=\"box-footer\">\r\n              <ul class=\"nav nav-stacked\">\r\n                <li><a href=\"javascript:void(0)\">生日 <span class=\"pull-right\">{{ employee.birthday | date: 'yyyy-MM-dd' }}</span></a></li>\r\n                <li><a href=\"javascript:void(0)\">邮箱 <span class=\"pull-right\">{{ employee.email }}</span></a></li>\r\n                <li><a href=\"javascript:void(0)\">电话<span class=\"pull-right\">{{ employee.phone }}</span></a></li>\r\n                <li><a href=\"javascript:void(0)\">专业 <span class=\"pull-right\">{{ employee.specialty || '--' }}</span></a></li>\r\n                <li>\r\n                  <a href=\"javascript:void(0)\">\r\n                    学历/院校\r\n                    <span class=\"pull-right\">{{ employee.education || '--' }}\r\n                        <span *ngIf=\"employee.orignSchool\"> '(' {{ employee.orignSchool }} ')'</span>\r\n                    </span>\r\n                  </a>\r\n                </li>\r\n                <li>\r\n                  <a href=\"javascript: void(0)\">\r\n                    身份证 <span class=\"pull-right\">{{employee.idCard}}</span>\r\n                  </a>\r\n                </li>\r\n                <li>\r\n                  <a href=\"javascript:void(0)\">\r\n                    联系人\r\n                    <span class=\"pull-right\" data-toggle=\"tooltip\" data-placement=\"top\"title=\"电话：{{employee.clamantPhone || '--'}}\">\r\n                      {{ employee.clamantName || '--'}}\r\n                    </span>\r\n                  </a>\r\n                </li>\r\n              </ul>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n\r\n<app-modal #employeeUpdaterOrCreator [disabledAcceptBtn]=\"!form.valid\">\r\n  <form class=\"form\" #form=\"ngForm\">\r\n    <div class=\"row\">\r\n      <div class=\"col-sm-12 col-md-5\">\r\n\r\n        <div class=\"form-group form-group-sm clearfix\">\r\n          <label for=\"name\" class=\"control-label col-xs-3 necessary\">姓名</label>\r\n          <div class=\"col-xs-9\">\r\n            <input name=\"name\" #name=\"ngModel\" id=\"name\" placeholder=\"请输入姓名\" class=\"form-control {{ name.touched && name.invalid && 'error' }}\" [(ngModel)]=\"curEmployee.name\" required>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group form-group-sm clearfix\" [hidden]=\"curEmployee.id\">\r\n          <label for=\"username\" class=\"control-label col-xs-3 necessary\">用户名</label>\r\n          <div class=\"col-xs-9\">\r\n            <input name=\"username\" #username=ngModel id=\"username\" placeholder=\"请输入用户名\" class=\"form-control {{username.touched && username.invalid && 'error'}}\" [(ngModel)]=\"curEmployee.username\" [required]=\"!curEmployee.id\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group form-group-sm clearfix\">\r\n          <label for=\"gender\" class=\"control-label col-xs-3\">性别</label>\r\n          <div class=\"col-xs-9\">\r\n            <select2 [width]=\"229\" [cssImport]=\"false\" id=\"gender\" [data]=\"genders\" [options]=\"{minimumResultsForSearch: -1}\" (valueChanged)=\"switchCurEmployeeGender($event)\"></select2>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group form-group-sm clearfix\" *ngIf=\"!curEmployee.id\">\r\n          <label for=\"role\" class=\"control-label col-xs-3\">角色</label>\r\n          <div class=\"col-xs-9\">\r\n            <select2 [width]=\"229\" [value]=\"curEmployee.roleIds[0]\" [cssImport]=\"false\" id=\"role\" [data]=\"roles\" [options]=\"{minimumResultsForSearch: 5}\" (valueChanged)=\"switchCurEmployeeRole($event)\"></select2>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group form-group-sm clearfix\">\r\n          <label for=\"phone\" class=\"control-label col-xs-3 necessary\">电话</label>\r\n          <div class=\"col-xs-9\">\r\n            <input type=\"tel\" #phone=\"ngModel\" name=\"phone\" id=\"phone\" placeholder=\"电话\" class=\"form-control {{phone.touched && phone.invalid && 'error'}}\" [(ngModel)]=\"curEmployee.phone\" required pattern=\"[0-9]{11}\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group form-group-sm clearfix\">\r\n          <label for=\"email\" class=\"control-label col-xs-3 necessary\">邮箱</label>\r\n          <div class=\"col-xs-9\">\r\n            <input name=\"email\" #email=\"ngModel\" id=\"email\" placeholder=\"请输入邮箱\" class=\"form-control {{email.touched && email.invalid && 'error'}}\" [(ngModel)]=\"curEmployee.email\" required>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group form-group-sm clearfix\">\r\n          <label for=\"education\" class=\"control-label col-xs-3\">学历</label>\r\n          <div class=\"col-xs-9\">\r\n            <input name=\"education\" id=\"education\" placeholder=\"请输入学历信息\" class=\"form-control\" [(ngModel)]=\"curEmployee.education\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group form-group-sm clearfix\">\r\n          <label for=\"specialty\" class=\"control-label col-xs-3\">专业</label>\r\n          <div class=\"col-xs-9\">\r\n            <input name=\"specialty\" id=\"specialty\" placeholder=\"请输入专业信息\" class=\"form-control\" [(ngModel)]=\"curEmployee.specialty\">\r\n          </div>\r\n        </div>\r\n\r\n      </div>\r\n\r\n      <div class=\"col-sm-12 col-md-7\">\r\n\r\n        <div class=\"form-group form-group-sm clearfix\">\r\n          <label for=\"idCard\" class=\"control-label col-xs-3 necessary\">身份证号</label>\r\n          <div class=\"col-xs-9\">\r\n            <input name=\"idCard\" #idCard=\"ngModel\" id=\"idCard\" placeholder=\"请输入身份证号\" class=\"form-control {{idCard && idCard.touched && idCard.invalid && 'error'}}\" [(ngModel)]=\"curEmployee.idCard\" required pattern=\"[0-9]{18}\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group form-group-sm clearfix\">\r\n          <label for=\"graduationSchool\" class=\"control-label col-xs-3\">毕业院校</label>\r\n          <div class=\"col-xs-9\">\r\n            <input name=\"graduationSchool\" id=\"graduationSchool\" placeholder=\"请输入毕业学校信息\" class=\"form-control\" [(ngModel)]=\"curEmployee.graduationSchool\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group form-group-sm clearfix\">\r\n          <label for=\"address\" class=\"control-label col-xs-3 necessary\">居住地址</label>\r\n          <div class=\"col-xs-9\">\r\n            <input name=\"address\" #address=\"ngModel\" id=\"address\" placeholder=\"请输入居住地址\" class=\"form-control {{address.touched && address.invalid && 'error'}}\" [(ngModel)]=\"curEmployee.address\" required>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group form-group-sm clearfix\">\r\n          <label for=\"clamantName\" class=\"control-label col-xs-3\">联系人姓名</label>\r\n          <div class=\"col-xs-9\">\r\n            <input name=\"clamantName\" id=\"clamantName\" placeholder=\"请输入紧急联系人姓名\" class=\"form-control\" [(ngModel)]=\"curEmployee.clamantName\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group form-group-sm clearfix\">\r\n          <label for=\"clamantPhone\" class=\"control-label col-xs-3\">联系人电话</label>\r\n          <div class=\"col-xs-9\">\r\n            <input name=\"clamantPhone\" #clamantPhone=\"ngModel\" id=\"clamantPhone\" placeholder=\"请输入紧急联系人电话\" class=\"form-control {{ clamantPhone.touched && clamantPhone.invalid && 'error' }}\" [(ngModel)]=\"curEmployee.clamantPhone\" pattern=\"[0-9]{11}\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group form-group-sm clearfix\" [hidden]=\"curEmployee.id\" *ngIf=\"schools.length\">\r\n          <label for=\"school\" class=\"control-label col-xs-3\">所属校区</label>\r\n          <div class=\"col-xs-9\">\r\n            <select2 [value]=\"curEmployee.schoolId\" [disabled]=\"ifDisabledSchool()\" [width]=\"341\" [cssImport]=\"false\" id=\"school\" [data]=\"schools\" [options]=\"{minimumResultsForSearch: 5}\" (valueChanged)=\"switchCurEmployeeSchool($event)\"></select2>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group form-group-sm clearfix\">\r\n          <label for=\"remark\" class=\"control-label col-xs-3\">备注信息</label>\r\n          <div class=\"col-xs-9\">\r\n            <textarea name=\"remark\" id=\"remark\" placeholder=\"请输入备注信息\" class=\"form-control\" [(ngModel)]=\"curEmployee.remark\" rows=\"3\"></textarea>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </form>\r\n</app-modal>\r\n\r\n<app-modal #confirmDeleteModal></app-modal>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/personnel-manager/employee/employee.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".box.box-widget.widget-user {\n  cursor: pointer;\n  transition: box-shadow 0.2s linear, margin 0.2s linear, height 0.2s linear, max-height 0.2s linear, width 0.2s linear;\n  box-shadow: 0 0 3px #c4c4c4, 0 0 3px #c4c4c4;\n  max-height: 320px;\n  overflow: hidden;\n}\n.box.box-widget.widget-user .widget-user-username a {\n  font-size: 0;\n  transition: font-size 0.1s linear;\n}\n.box.box-widget.widget-user .nav-stacked {\n  height: 240px;\n}\n.box.box-widget.widget-user:hover {\n  box-shadow: 0 0 8px #ababab, 0 0 8px #ababab;\n  margin-top: -40px;\n  margin-left: -8px;\n  width: calc(100% + 16px);\n  max-height: 360px;\n}\n.box.box-widget.widget-user:hover .widget-user-username a {\n  font-size: 24px;\n}\n.box.box-widget.widget-user:hover .nav-stacked li a {\n  padding: 4px 15px;\n}\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/personnel-manager/employee/employee.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__personnel_service__ = __webpack_require__("../../../../../src/app/personnel-manager/personnel.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_enum__ = __webpack_require__("../../../../../src/app/common/enum.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_school_service__ = __webpack_require__("../../../../../src/app/common/school.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EmployeeComponent; });
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var EmployeeComponent = (function () {
+    function EmployeeComponent(personnelService, schoolService) {
+        this.personnelService = personnelService;
+        this.schoolService = schoolService;
+        this.initCurEmployee = this.initCurEmployee.bind(this);
+        this.createOrUpdateEmployee = this.createOrUpdateEmployee.bind(this);
+        this.deleteEmployee = this.deleteEmployee.bind(this);
+    }
+    EmployeeComponent.prototype.ngOnInit = function () {
+        this.schools = [];
+        this.roles = __WEBPACK_IMPORTED_MODULE_2__common_enum__["c" /* roleList */];
+        this.curEmployee = {};
+        this.genders = __WEBPACK_IMPORTED_MODULE_2__common_enum__["d" /* genderList */];
+        this.employees = [];
+        this.contentHeader = [
+            { name: '主页', icon: 'fa-dashboard' },
+            { name: '员工列表管理页', icon: 'fa-users' }
+        ];
+        this.filterEmployeeName = '';
+        this.filterEmployeeName = '';
+        this.filterEmployeePhone = '';
+        this.initCurEmployee();
+        this.fetchEmployee();
+        this.fetchSchools();
+    };
+    EmployeeComponent.prototype.initCurEmployee = function (employee) {
+        if (employee) {
+            this.curEmployee = __assign({}, employee);
+            console.log(this.curEmployee);
+        }
+        else {
+            var initRoleId = [this.roles[0]['id']];
+            var initSchoolId = this.schools.length ? this.schools[0]['id'] : '';
+            this.curEmployee = {
+                address: '',
+                clamantName: '',
+                clamantPhone: '',
+                education: '',
+                email: '',
+                graduationSchool: '',
+                idCard: '',
+                name: '',
+                phone: '',
+                remark: '',
+                roleIds: initRoleId,
+                schoolId: initSchoolId,
+                sex: 'MALE',
+                specialty: '',
+                username: ''
+            };
+        }
+    };
+    /* fetches */
+    EmployeeComponent.prototype.fetchEmployee = function () {
+        var _this = this;
+        this.personnelService.fetchEmployee().then(function (employees) { return _this.employees = employees; });
+    };
+    EmployeeComponent.prototype.fetchSchools = function () {
+        var _this = this;
+        this.schoolService.fetchSchoolList().then(function (schools) {
+            _this.schools = schools;
+            _this.schools.forEach(function (school) {
+                school.text = school.name;
+            });
+        });
+    };
+    EmployeeComponent.prototype.createOrUpdateEmployee = function () {
+        if (this.curEmployee.id) {
+            this.editEmployee();
+        }
+        else {
+            this.createEmployee();
+        }
+    };
+    EmployeeComponent.prototype.createEmployee = function () {
+        var _this = this;
+        this.personnelService.createEmployee(this.curEmployee).then(function (id) {
+            _this.curEmployee.id = id;
+            delete _this.curEmployee.roleIds;
+            _this.employees.unshift(__assign({}, _this.curEmployee));
+        });
+    };
+    EmployeeComponent.prototype.editEmployee = function () {
+        var _this = this;
+        this.personnelService.updateEmployeeInfo(this.curEmployee).then(function () {
+            var curEmployee = _this.findEmployeeById(_this.curEmployee.id);
+            var curEmployeeIndex = _this.employees.indexOf(curEmployee);
+            _this.employees[curEmployeeIndex] = __assign({}, _this.curEmployee);
+        });
+    };
+    EmployeeComponent.prototype.deleteEmployee = function () {
+        var _this = this;
+        this.personnelService.deleteEmployee(this.curEmployee.id).then(function (success) {
+            if (success) {
+                var curEmployee = _this.findEmployeeById(_this.curEmployee.id);
+                var toRemoveIndex = _this.employees.indexOf(curEmployee);
+                _this.employees.splice(toRemoveIndex, 1);
+            }
+        });
+    };
+    /* action */
+    EmployeeComponent.prototype.switchFilterGender = function ($event) {
+        this.filterEmployeeGender = $event.value == 'ALL' ? '' : $event.value;
+    };
+    EmployeeComponent.prototype.switchCurEmployeeGender = function ($event) {
+        this.curEmployee.sex = $event.value;
+    };
+    EmployeeComponent.prototype.switchCurEmployeeRole = function ($event) {
+        this.curEmployee.roleIds = [$event.value];
+    };
+    EmployeeComponent.prototype.switchCurEmployeeSchool = function ($event) {
+        this.curEmployee.schoolId = $event.value;
+    };
+    /* helpers */
+    EmployeeComponent.prototype.ifDisabledSchool = function () {
+        if (this.curEmployee.id) {
+            return true;
+        }
+        return this.curEmployee.roleIds.indexOf('PERSONNEL_MANAGER') >= 0 ||
+            this.curEmployee.roleIds.indexOf('SUPER_ADMIN') >= 0 ||
+            this.curEmployee.roleIds.indexOf('FINANCE') >= 0 ||
+            this.curEmployee.roleIds.indexOf('PERSONNEL_CASHIER') >= 0 ||
+            this.curEmployee.roleIds.indexOf('SCHOOLMASTER_BOSS') >= 0 ||
+            this.curEmployee.roleIds.indexOf('CONSULTANT_MAIN') >= 0;
+    };
+    EmployeeComponent.prototype.findEmployeeById = function (id) {
+        return this.employees.find(function (employee) { return employee.id === id; });
+    };
+    return EmployeeComponent;
+}());
+EmployeeComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-employee',
+        template: __webpack_require__("../../../../../src/app/personnel-manager/employee/employee.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/personnel-manager/employee/employee.component.less")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__personnel_service__["a" /* PersonnelService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__personnel_service__["a" /* PersonnelService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__common_school_service__["a" /* SchoolService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__common_school_service__["a" /* SchoolService */]) === "function" && _b || Object])
+], EmployeeComponent);
+
+var _a, _b;
+//# sourceMappingURL=employee.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/personnel-manager/personnel-manager.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<app-sidebar [sidebarMenu]=\"sidebarMenu\"></app-sidebar>\r\n<div class=\"content-wrapper\">\r\n  <router-outlet></router-outlet>\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/personnel-manager/personnel-manager.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/personnel-manager/personnel-manager.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PersonnelManagerComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var PersonnelManagerComponent = (function () {
+    function PersonnelManagerComponent() {
+    }
+    PersonnelManagerComponent.prototype.ngOnInit = function () {
+        this.sidebarMenu = [
+            {
+                name: '员工列表管理',
+                routerLink: ['employee'],
+                icon: 'fa-users'
+            }
+        ];
+    };
+    return PersonnelManagerComponent;
+}());
+PersonnelManagerComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-personnel-manager',
+        template: __webpack_require__("../../../../../src/app/personnel-manager/personnel-manager.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/personnel-manager/personnel-manager.component.less")]
+    }),
+    __metadata("design:paramtypes", [])
+], PersonnelManagerComponent);
+
+//# sourceMappingURL=personnel-manager.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/personnel-manager/personnel.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__service_http_service__ = __webpack_require__("../../../../../src/app/service/http.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__alert_alert_service__ = __webpack_require__("../../../../../src/app/alert/alert.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PersonnelService; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var PersonnelService = (function () {
+    function PersonnelService(http, alertService) {
+        this.http = http;
+        this.alertService = alertService;
+    }
+    PersonnelService.prototype.fetchEmployee = function () {
+        var _this = this;
+        return this.http.get('persion/employee').then(function (result) {
+            if (result.success) {
+                _this.employees = result.data;
+                return result.data;
+            }
+            else {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '员工列表获取失败',
+                    type: 'danger'
+                });
+            }
+        });
+    };
+    PersonnelService.prototype.createEmployee = function (newEmployeeInfo) {
+        var _this = this;
+        return this.http.post('persion/employee', newEmployeeInfo).then(function (result) {
+            if (result.success) {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '新员工已添加',
+                    type: 'success'
+                });
+                return result.data.id;
+            }
+        });
+    };
+    PersonnelService.prototype.updateEmployeeInfo = function (newEmployeeInfo) {
+        var _this = this;
+        return this.http.put('persion/employee', newEmployeeInfo).then(function (result) {
+            if (result.success) {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '员工信息已更新',
+                    type: 'success'
+                });
+                return result.data;
+            }
+        });
+    };
+    PersonnelService.prototype.deleteEmployee = function (id) {
+        var _this = this;
+        return this.http.remove("persion/employee/" + id).then(function (result) {
+            if (!result.success) {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '删除用户失败，' + result.data,
+                    type: 'danger'
+                });
+            }
+            return result.success;
+        });
+    };
+    return PersonnelService;
+}());
+PersonnelService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__service_http_service__["a" /* HttpService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__service_http_service__["a" /* HttpService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__alert_alert_service__["a" /* AlertService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__alert_alert_service__["a" /* AlertService */]) === "function" && _b || Object])
+], PersonnelService);
+
+var _a, _b;
+//# sourceMappingURL=personnel.service.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/president-boss/president-boss.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<app-sidebar [sidebarMenu]=\"sidebarMenu\"></app-sidebar>\n<div class=\"content-wrapper\">\n  <router-outlet></router-outlet>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/president-boss/president-boss.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/president-boss/president-boss.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PresidentBossComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var PresidentBossComponent = (function () {
+    function PresidentBossComponent() {
+    }
+    PresidentBossComponent.prototype.ngOnInit = function () {
+        this.sidebarMenu = [
+            {
+                name: '退费审批列表',
+                routerLink: ['to-approve'],
+                icon: 'fa-table'
+            },
+            {
+                name: '学生缴费日志',
+                routerLink: ['stu-pay-stat'],
+                icon: 'fa-th-list'
+            },
+            {
+                name: '学生缴费统计',
+                routerLink: ['stu-pay-record'],
+                icon: 'fa-pie-chart'
+            }
+        ];
+    };
+    return PresidentBossComponent;
+}());
+PresidentBossComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-president-boss',
+        template: __webpack_require__("../../../../../src/app/president-boss/president-boss.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/president-boss/president-boss.component.less")]
+    }),
+    __metadata("design:paramtypes", [])
+], PresidentBossComponent);
+
+//# sourceMappingURL=president-boss.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/president/president.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<app-sidebar [sidebarMenu]=\"sidebarMenu\"></app-sidebar>\n<div class=\"content-wrapper\">\n  <router-outlet></router-outlet>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/president/president.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/president/president.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_user_service__ = __webpack_require__("../../../../../src/app/common/user.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PresidentComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var PresidentComponent = (function () {
+    function PresidentComponent(userService, router) {
+        this.userService = userService;
+        this.router = router;
+    }
+    PresidentComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.sidebarMenu = [
+            {
+                name: '统计信息管理',
+                routerLink: ['stats'],
+                icon: 'fa-pie-chart'
+            },
+        ];
+        this.userService.userInfoChange.subscribe(function (value) {
+            if (value) {
+                if (value === 'SCHOOLMASTER_BOSS') {
+                    _this.sidebarMenu.push({
+                        name: '转校审核管理',
+                        routerLink: ['transfer-boss'],
+                        icon: 'fa-file-pdf-o'
+                    }, {
+                        name: '退费审核管理',
+                        routerLink: ['refund'],
+                        icon: 'fa-file-excel-o'
+                    });
+                }
+                else {
+                    _this.sidebarMenu.push({
+                        name: '转校申请管理',
+                        routerLink: ['transfer'],
+                        icon: 'fa-file-pdf-o'
+                    });
+                }
+            }
+        });
+    };
+    return PresidentComponent;
+}());
+PresidentComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-president',
+        template: __webpack_require__("../../../../../src/app/president/president.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/president/president.component.less")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__common_user_service__["a" /* UserService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__common_user_service__["a" /* UserService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]) === "function" && _b || Object])
+], PresidentComponent);
+
+var _a, _b;
+//# sourceMappingURL=president.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/president/president.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__service_http_service__ = __webpack_require__("../../../../../src/app/service/http.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__alert_alert_service__ = __webpack_require__("../../../../../src/app/alert/alert.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PresidentService; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var PresidentService = (function () {
+    function PresidentService(http, alertService) {
+        this.http = http;
+        this.alertService = alertService;
+    }
+    PresidentService.prototype.audit = function (handlerStatus, processId, remark) {
+        var _this = this;
+        var url = "president/money/" + handlerStatus + "/" + processId;
+        if (remark) {
+            url += "?remark=" + remark;
+        }
+        return this.http.put(url, {}).then(function (result) {
+            if (result.success) {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '审核成功',
+                    type: 'success'
+                });
+            }
+            return result.success;
+        });
+    };
+    PresidentService.prototype.fetchSignMoney = function () {
+        return this.http.get('president/stat/pay').then(function (result) {
+            if (result.success) {
+                return result.data;
+            }
+            else {
+                throw Error('操作失败');
+            }
+        });
+    };
+    PresidentService.prototype.fetchRenewMoney = function () {
+        return this.http.get('president/stat/renew').then(function (result) {
+            if (result.success) {
+                return result.data;
+            }
+            else {
+                throw Error('操作失败');
+            }
+        });
+    };
+    PresidentService.prototype.fetchClassHour = function () {
+        return this.http.get('president/stat/teacher/hour').then(function (result) {
+            if (result.success) {
+                return result.data;
+            }
+            else {
+                throw Error('操作失败');
+            }
+        });
+    };
+    PresidentService.prototype.transfer = function (transferEvent) {
+        var _this = this;
+        return this.http.post('president/school', transferEvent).then(function (result) {
+            if (result.success) {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '转校申请已发起， 正在审核中',
+                    type: 'success'
+                });
+            }
+            return result.success;
+        });
+    };
+    PresidentService.prototype.fetchAppRecords = function () {
+        return this.http.get('common/my/application/CHANGE_SCHOOL').then(function (result) {
+            if (result.success) {
+                console.log(result);
+                return result.data;
+            }
+            return [];
+        });
+    };
+    PresidentService.prototype.fetchStuTransferAppRecords = function (processLog, handlerStatus) {
+        return this.http.get("common/progress/" + processLog + "/" + handlerStatus).then(function (result) {
+            if (result.success) {
+                return result.data;
+            }
+            return [];
+        });
+    };
+    /*
+     *
+     */
+    PresidentService.prototype.checkBackApplication = function (handlerStatus, processId) {
+        var _this = this;
+        return this.http.put("president/school/" + handlerStatus + "/" + processId, {}).then(function (result) {
+            if (result.success) {
+                _this.alertService.alert({
+                    type: 'success',
+                    title: '成功提示',
+                    content: '审批成功'
+                });
+            }
+            return result.success;
+        });
+    };
+    return PresidentService;
+}());
+PresidentService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__service_http_service__["a" /* HttpService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__service_http_service__["a" /* HttpService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__alert_alert_service__["a" /* AlertService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__alert_alert_service__["a" /* AlertService */]) === "function" && _b || Object])
+], PresidentService);
+
+var _a, _b;
+//# sourceMappingURL=president.service.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/president/refund/refund.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<app-content-header\n  [title]=\"'退费审核管理'\" [menus]=\"contentHeader\"></app-content-header>\n\n<div class=\"content\">\n\n  <div class=\"nav-tabs-custom\">\n    <ul class=\"nav nav-tabs\">\n      <li class=\"active\" (click)=\"fetchBackRecord()\"><a href=\"#waitAudit\" data-toggle=\"tab\" aria-expanded=\"true\">待审批退费</a></li>\n      <li class=\"\" (click)=\"fetchAuditApprovedRecord()\"><a href=\"#auditSuccess\" data-toggle=\"tab\" aria-expanded=\"false\">已通过退费</a></li>\n      <li class=\"\" (click)=\"fetchAuditRejectRecord()\"><a href=\"#auditFail\" data-toggle=\"tab\" aria-expanded=\"false\">已拒绝退费</a></li>\n    </ul>\n    <div class=\"tab-content\">\n      <div class=\"tab-pane active\" id=\"waitAudit\">\n        <table class=\"table table-bordered table-hover text-center\">\n          <thead>\n          <tr>\n            <th>退费金额</th>\n            <th>所属校区</th>\n            <th>退费学生姓名</th>\n            <th>退费金额</th>\n            <th>退费说明</th>\n            <th>操作</th>\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let record of auditingList;\">\n            <td>{{ record.returnAmount }}</td>\n            <td>{{ record.schoolName }}</td>\n            <td>{{ record.studentName }}</td>\n            <td>{{ record.returnAmount }}</td>\n            <td>{{ record.applicationRemark }}</td>\n            <td>\n              <div class=\"button-group button-group-xs\">\n                <button class=\"btn btn-xs btn-primary\" (click)=\"approve='AUDIT_SUCCESS';\n                approveRemark = '';\n                curAudit = record;\n                auditModal.showModal({\n                  modalSize: 'sm',\n                  title: '是否通过审核?',\n                  confirm: checkBackApplication\n                })\">审核</button>\n              </div>\n            </td>\n          </tr>\n          <tr *ngIf=\"!auditingList.length\">\n            <td colspan=\"6\">\n              <p class=\"text-center text-muted\">暂时无审批项信息</p>\n            </td>\n          </tr>\n          </tbody>\n        </table>\n      </div>\n\n      <div class=\"tab-pane\" id=\"auditSuccess\">\n        <table class=\"table table-bordered table-hover text-center\">\n          <thead>\n            <tr>\n              <th>退费金额</th>\n              <th>所属校区</th>\n              <th>退费学生姓名</th>\n              <th>退费金额</th>\n              <th>退费说明</th>\n              <th>审批时间</th>\n            </tr>\n          </thead>\n          <tbody>\n            <tr *ngFor=\"let record of auditApprovedList;\">\n              <td>{{ record.returnAmount }}</td>\n              <td>{{ record.schoolName }}</td>\n              <td>{{ record.studentName }}</td>\n              <td>{{ record.returnAmount }}</td>\n              <td>{{ record.applicationRemark }}</td>\n              <td>{{record.handlerTime | date: 'yyyy-MM-dd'}}</td>\n            </tr>\n            <tr *ngIf=\"!auditApprovedList.length\">\n              <td colspan=\"6\">\n                <p class=\"text-center text-muted\">暂时无审批项信息</p>\n              </td>\n            </tr>\n          </tbody>\n        </table>\n      </div>\n\n      <div class=\"tab-pane\" id=\"auditFail\">\n        <table class=\"table table-bordered table-hover text-center\">\n          <thead>\n          <tr>\n            <th>退费金额</th>\n            <th>所属校区</th>\n            <th>退费学生姓名</th>\n            <th>退费金额</th>\n            <th>退费说明</th>\n            <th>审批时间</th>\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let record of auditRejectedList;\">\n            <td>{{ record.returnAmount }}</td>\n            <td>{{ record.schoolName }}</td>\n            <td>{{ record.studentName }}</td>\n            <td>{{ record.returnAmount }}</td>\n            <td>{{ record.applicationRemark }}</td>\n            <td>{{record.handlerTime | date: 'yyyy-MM-dd'}}</td>\n          </tr>\n          <tr *ngIf=\"!auditRejectedList.length\">\n            <td colspan=\"6\">\n              <p class=\"text-center text-muted\">暂时无审批项信息</p>\n            </td>\n          </tr>\n          </tbody>\n        </table>\n      </div>\n    </div>\n  </div>\n</div>\n\n<app-modal #auditModal>\n  <form class=\"form text-center clearfix\">\n    <div class=\"radio\">\n      <label>\n        <input type=\"radio\" name=\"optionsRadios\" id=\"approve\" (change)=\"approve = 'AUDIT_SUCCESS'\" [checked]=\"approve === 'AUDIT_SUCCESS'\">\n        通过该退费申请\n      </label>\n    </div>\n\n    <div class=\"radio\">\n      <label>\n        <input type=\"radio\" name=\"optionsRadios\" id=\"reject\" value=\"option1\" (change)=\"approve = 'AUDIT_FAIL'\" [checked]=\"approve === 'AUDIT_FAIL'\">\n        拒绝该退费申请\n      </label>\n    </div>\n\n    <div class=\"form-group form-group-sm col-xs-6 col-xs-offset-3\">\n      <div>\n        <textarea name=\"remark\" id=\"remark\" class=\"form-control\" rows=\"2\" placeholder=\"请填写审核备注\" [(ngModel)]=\"approveRemark\"></textarea>\n      </div>\n    </div>\n  </form>\n</app-modal>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/president/refund/refund.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/president/refund/refund.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_school_service__ = __webpack_require__("../../../../../src/app/common/school.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__president_service__ = __webpack_require__("../../../../../src/app/president/president.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RefundComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var RefundComponent = (function () {
+    function RefundComponent(schoolService, presidentService) {
+        this.schoolService = schoolService;
+        this.presidentService = presidentService;
+        this.checkBackApplication = this.checkBackApplication.bind(this);
+    }
+    RefundComponent.prototype.ngOnInit = function () {
+        this.approve = 'AUDIT_SUCCESS';
+        this.approveRemark = '';
+        this.curAudit = {};
+        this.auditingList = [];
+        this.auditApprovedList = [];
+        this.auditRejectedList = [];
+        this.contentHeader = this.contentHeader = [
+            { name: '主页', icon: 'fa-dashboard' },
+            { name: '退费审核管理', icon: 'fa-th-li' }
+        ];
+        this.fetchBackRecord();
+        this.fetchAuditApprovedRecord();
+        this.fetchAuditRejectRecord();
+    };
+    RefundComponent.prototype.fetchBackRecord = function () {
+        var _this = this;
+        this.schoolService.fetchPendingApproval('BACK_MONEY', 'WAIT_AUDIT').then(function (results) {
+            _this.auditingList = results;
+        });
+    };
+    RefundComponent.prototype.fetchAuditApprovedRecord = function () {
+        var _this = this;
+        this.schoolService.fetchPendingApproval('BACK_MONEY', 'AUDIT_SUCCESS').then(function (results) {
+            _this.auditApprovedList = results;
+        });
+    };
+    RefundComponent.prototype.fetchAuditRejectRecord = function () {
+        var _this = this;
+        this.schoolService.fetchPendingApproval('BACK_MONEY', 'AUDIT_FAIL').then(function (results) {
+            _this.auditRejectedList = results;
+        });
+    };
+    RefundComponent.prototype.checkBackApplication = function () {
+        var _this = this;
+        this.presidentService.audit(this.approve, this.curAudit.id, this.approveRemark).then(function (success) {
+            if (success) {
+                var toRemoveIndex = _this.auditingList.indexOf(_this.curAudit);
+                _this.auditingList.splice(toRemoveIndex, 1);
+            }
+        });
+    };
+    return RefundComponent;
+}());
+RefundComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-refund',
+        template: __webpack_require__("../../../../../src/app/president/refund/refund.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/president/refund/refund.component.less")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__common_school_service__["a" /* SchoolService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__common_school_service__["a" /* SchoolService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__president_service__["a" /* PresidentService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__president_service__["a" /* PresidentService */]) === "function" && _b || Object])
+], RefundComponent);
+
+var _a, _b;
+//# sourceMappingURL=refund.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/president/stat/stat.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<app-content-header\n  [title]=\"'签约/缴费/课时统计'\" [menus]=\"contentHeader\"></app-content-header>\n\n<div class=\"content\">\n\n  <div class=\"nav-tabs-custom\">\n    <ul class=\"nav nav-tabs\">\n      <li class=\"active\" (click)=\"fetchSignRecord()\"><a href=\"#waitAudit\" data-toggle=\"tab\" aria-expanded=\"true\">签约统计</a></li>\n      <li class=\"\" (click)=\"fetchRenewRecord()\"><a href=\"#auditSuccess\" data-toggle=\"tab\" aria-expanded=\"false\">续约统计</a></li>\n      <li class=\"\" (click)=\"fetchClassHourRecord()\"><a href=\"#auditFail\" data-toggle=\"tab\" aria-expanded=\"false\">课时统计</a></li>\n    </ul>\n    <div class=\"tab-content\">\n      <div class=\"tab-pane active\" id=\"waitAudit\">\n        <div class=\"table-title clearfix\">\n          <p class=\"text-muted pull-left\">签约总人数: {{signMoneyRecord.num || 0}}</p>\n          <p class=\"text-muted pull-left\">签约总金额: {{signMoneyRecord.total || 0}}</p>\n        </div>\n        <table class=\"table table-bordered table-hover text-center\">\n          <thead>\n          <tr>\n            <th>咨询师姓名</th>\n            <th>咨询师电话</th>\n            <th>签约个数</th>\n            <th>签约金额</th>\n            <th>所属校区</th>\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let record of signMoneyRecord.details;\">\n            <td>{{ record.name }}</td>\n            <td>{{ record.phone }}</td>\n            <td>{{ record.num }}</td>\n            <td>{{ record.total }}</td>\n            <td>{{ record.schoolName }}</td>\n          </tr>\n          <tr *ngIf=\"!signMoneyRecord.details.length\">\n            <td colspan=\"6\">\n              <p class=\"text-center text-muted\">暂时无统计信息</p>\n            </td>\n          </tr>\n          </tbody>\n        </table>\n      </div>\n\n      <div class=\"tab-pane\" id=\"auditSuccess\">\n        <div class=\"table-title clearfix\">\n          <p class=\"text-muted pull-left\">续约总人数: {{renewMoneyRecord.num || 0}}</p>\n          <p class=\"text-muted pull-left\">续约总金额: {{renewMoneyRecord.total || 0}}</p>\n        </div>\n        <table class=\"table table-bordered table-hover text-center\">\n          <thead>\n          <tr>\n            <th>咨询师姓名</th>\n            <th>咨询师电话</th>\n            <th>签约个数</th>\n            <th>签约金额</th>\n            <th>所属校区</th>\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let record of renewMoneyRecord.details;\">\n            <td>{{ record.name }}</td>\n            <td>{{ record.phone }}</td>\n            <td>{{ record.num }}</td>\n            <td>{{ record.total }}</td>\n            <td>{{ record.schoolName }}</td>\n          </tr>\n          <tr *ngIf=\"!renewMoneyRecord.details.length\">\n            <td colspan=\"6\">\n              <p class=\"text-center text-muted\">暂时无统计信息</p>\n            </td>\n          </tr>\n          </tbody>\n        </table>\n      </div>\n\n      <div class=\"tab-pane\" id=\"auditFail\">\n        <div class=\"table-title clearfix\">\n          <p class=\"text-muted pull-left\">总课时: {{classHourRecord.totalHour || 0}}</p>\n          <p class=\"text-muted pull-left\">已完成课时: {{classHourRecord.finishHour || 0}}</p>\n          <p class=\"text-muted pull-left\">未完成课时: {{classHourRecord.unFinishHour || 0}}</p>\n        </div>\n        <table class=\"table table-bordered table-hover text-center\">\n          <thead>\n          <tr>\n            <th>教师姓名</th>\n            <th>教师电话</th>\n            <th>完成课时</th>\n            <th>未完成课时</th>\n            <th>总课时</th>\n            <th>所属校区</th>\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let record of classHourRecord.details;\">\n            <td>{{ record.name }}</td>\n            <td>{{ record.phone }}</td>\n            <td>{{ record.finishHour }}</td>\n            <td>{{ record.unFinishHour }}</td>\n            <td>{{ record.totalHour }}</td>\n            <td>{{record.schoolName}}</td>\n          </tr>\n          <tr *ngIf=\"!classHourRecord.details.length\">\n            <td colspan=\"6\">\n              <p class=\"text-center text-muted\">暂时无统计信息</p>\n            </td>\n          </tr>\n          </tbody>\n        </table>\n      </div>\n    </div>\n  </div>\n</div>\n\n<app-modal #auditModal>\n  <form class=\"form text-center clearfix\">\n    <div class=\"radio\">\n      <label>\n        <input type=\"radio\" name=\"optionsRadios\" id=\"approve\" (change)=\"approve = 'AUDIT_SUCCESS'\" [checked]=\"approve === 'AUDIT_SUCCESS'\">\n        通过该退费申请\n      </label>\n    </div>\n\n    <div class=\"radio\">\n      <label>\n        <input type=\"radio\" name=\"optionsRadios\" id=\"reject\" value=\"option1\" (change)=\"approve = 'AUDIT_FAIL'\" [checked]=\"approve === 'AUDIT_FAIL'\">\n        拒绝该退费申请\n      </label>\n    </div>\n\n    <div class=\"form-group form-group-sm col-xs-6 col-xs-offset-3\">\n      <div>\n        <textarea name=\"remark\" id=\"remark\" class=\"form-control\" rows=\"2\" placeholder=\"请填写审核备注\" [(ngModel)]=\"approveRemark\"></textarea>\n      </div>\n    </div>\n  </form>\n</app-modal>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/president/stat/stat.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".table-title {\n  margin-bottom: 10px;\n}\n.table-title p {\n  margin-right: 5px;\n}\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/president/stat/stat.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__president_service__ = __webpack_require__("../../../../../src/app/president/president.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return StatComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var StatComponent = (function () {
+    function StatComponent(presidentService) {
+        this.presidentService = presidentService;
+    }
+    StatComponent.prototype.ngOnInit = function () {
+        this.signMoneyRecord = { details: [], num: 0, total: 0 };
+        this.renewMoneyRecord = { details: [], num: 0, total: 0 };
+        this.classHourRecord = { details: [], finishHour: 0, unFinishHour: 0, totalHour: 0 };
+        this.contentHeader = [
+            { name: '主页', icon: 'fa-dashboard' },
+            { name: '签约/缴费/课时统计页', icon: 'fa-th-li' }
+        ];
+        this.fetchSignRecord();
+        this.fetchRenewRecord();
+        this.fetchClassHourRecord();
+    };
+    StatComponent.prototype.fetchSignRecord = function () {
+        var _this = this;
+        this.presidentService.fetchSignMoney().then(function (results) {
+            _this.signMoneyRecord = results;
+        });
+    };
+    StatComponent.prototype.fetchRenewRecord = function () {
+        var _this = this;
+        this.presidentService.fetchRenewMoney().then(function (results) {
+            _this.renewMoneyRecord = results;
+        });
+    };
+    StatComponent.prototype.fetchClassHourRecord = function () {
+        var _this = this;
+        this.presidentService.fetchClassHour().then(function (results) {
+            _this.classHourRecord = results;
+        });
+    };
+    return StatComponent;
+}());
+StatComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-stat',
+        template: __webpack_require__("../../../../../src/app/president/stat/stat.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/president/stat/stat.component.less")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__president_service__["a" /* PresidentService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__president_service__["a" /* PresidentService */]) === "function" && _a || Object])
+], StatComponent);
+
+var _a;
+//# sourceMappingURL=stat.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/president/transfer-boss/transfer-boss.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<app-content-header\n  [title]=\"'转校审核页'\" [menus]=\"contentHeader\"></app-content-header>\n\n<div class=\"content\">\n  <div class=\"nav-tabs-custom\">\n    <ul class=\"nav nav-tabs\">\n      <li class=\"active\" (click)=\"fetchAuditPendingRecord()\"><a href=\"#waitAudit\" data-toggle=\"tab\">待审批转校</a></li>\n      <li class=\"\" (click)=\"fetchAuditSuccessRecords()\"><a href=\"#auditSuccess\" data-toggle=\"tab\">已通过转校</a></li>\n      <li class=\"\" (click)=\"fetchAuditFailedRecords()\"><a href=\"#auditFail\" data-toggle=\"tab\">已拒绝转校</a></li>\n    </ul>\n    <div class=\"tab-content\">\n      <div class=\"tab-pane active\" id=\"waitAudit\">\n        <table class=\"table table-bordered table-hover text-center\">\n          <thead>\n          <tr>\n            <th>申请人</th>\n            <th>申请时间</th>\n            <th>原始学校</th>\n            <th>目标学校(本校)</th>\n            <th>转校学生</th>\n            <th>申请备注</th>\n            <th>操作</th>\n          </tr>\n          </thead>\n          <tbody>\n            <tr *ngFor=\"let record of auditPendingRecords;\">\n              <td>{{ record.applicationName}}</td>\n              <td>{{ record.applicationTime | date: 'yyyyMM-dd' }}</td>\n              <td>{{ record.fromSchoolName }}</td>\n              <td>{{ record.toSchoolName }}</td>\n              <td>{{ record.studentName }}</td>\n              <td>{{ record.applicationRemark }}</td>\n              <td>\n                <div class=\"button-group button-group-xs\">\n                  <button class=\"btn btn-xs btn-primary\" (click)=\"approve='AUDIT_SUCCESS';\n                  approveRemark = '';\n                  curAudit = record;\n                  auditModal.showModal({\n                    modalSize: 'sm',\n                    title: '是否通过审核?',\n                    confirm: checkBackApplication\n                  })\">审核</button>\n                </div>\n              </td>\n            </tr>\n          <tr *ngIf=\"!auditPendingRecords.length\">\n            <td colspan=\"7\">\n              <p class=\"text-center text-muted\">暂时无审批项信息</p>\n            </td>\n          </tr>\n          </tbody>\n        </table>\n      </div>\n\n      <div class=\"tab-pane\" id=\"auditSuccess\">\n        <table class=\"table table-bordered table-hover text-center\">\n          <thead>\n          <tr>\n            <th>申请人</th>\n            <th>申请时间</th>\n            <th>原始学校</th>\n            <th>目标学校</th>\n            <th>转校学生</th>\n            <th>申请备注</th>\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let record of auditSuccessRecords;\">\n            <td>{{ record.applicationName }}</td>\n            <td>{{ record.applicationTime | date: 'yyyyMM-dd' }}</td>\n            <td>{{ record.fromSchoolName }}</td>\n            <td>{{ record.toSchoolName }}</td>\n            <td>{{ record.studentName }}</td>\n            <td>{{record.applicationRemark }}</td>\n          </tr>\n          <tr *ngIf=\"!auditSuccessRecords.length\">\n            <td colspan=\"6\">\n              <p class=\"text-center text-muted\">暂时无审批项信息</p>\n            </td>\n          </tr>\n          </tbody>\n        </table>\n      </div>\n\n      <div class=\"tab-pane\" id=\"auditFail\">\n        <table class=\"table table-bordered table-hover text-center\">\n          <thead>\n          <tr>\n            <th>申请人</th>\n            <th>申请时间</th>\n            <th>原始学校</th>\n            <th>目标学校</th>\n            <th>转校学生</th>\n            <th>申请备注</th>\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let record of auditFailedRecords;\">\n            <td>{{ record.applicationName }}</td>\n            <td>{{ record.applicationTime | date: 'yyyy-MM-dd' }}</td>\n            <td>{{ record.fromSchoolName }}</td>\n            <td>{{ record.toSchoolName }}</td>\n            <td>{{ record.studentName }}</td>\n            <td>{{record.applicationRemark}}</td>\n          </tr>\n          <tr *ngIf=\"!auditFailedRecords.length\">\n            <td colspan=\"6\">\n              <p class=\"text-center text-muted\">暂时无审批项信息</p>\n            </td>\n          </tr>\n          </tbody>\n        </table>\n      </div>\n    </div>\n  </div>\n</div>\n\n\n<app-modal #auditModal>\n  <form class=\"form text-center clearfix\">\n    <div class=\"radio\">\n      <label>\n        <input type=\"radio\" name=\"optionsRadios\" id=\"approve\" (change)=\"approve = 'AUDIT_SUCCESS'\" [checked]=\"approve === 'AUDIT_SUCCESS'\">\n        通过该退费申请\n      </label>\n    </div>\n\n    <div class=\"radio\">\n      <label>\n        <input type=\"radio\" name=\"optionsRadios\" id=\"reject\" value=\"option1\" (change)=\"approve = 'AUDIT_FAIL'\" [checked]=\"approve === 'AUDIT_FAIL'\">\n        拒绝该退费申请\n      </label>\n    </div>\n\n    <div class=\"form-group form-group-sm col-xs-6 col-xs-offset-3\">\n      <div>\n        <textarea name=\"remark\" id=\"remark\" class=\"form-control\" rows=\"2\" placeholder=\"请填写审核备注\" [(ngModel)]=\"approveRemark\"></textarea>\n      </div>\n    </div>\n  </form>\n</app-modal>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/president/transfer-boss/transfer-boss.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/president/transfer-boss/transfer-boss.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__president_service__ = __webpack_require__("../../../../../src/app/president/president.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TransferBossComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var TransferBossComponent = (function () {
+    function TransferBossComponent(presidentService) {
+        this.presidentService = presidentService;
+        this.checkBackApplication = this.checkBackApplication.bind(this);
+    }
+    TransferBossComponent.prototype.ngOnInit = function () {
+        this.auditPendingRecords = [];
+        this.auditSuccessRecords = [];
+        this.auditFailedRecords = [];
+        this.curAudit = {};
+        this.approve = 'AUDIT_SUCCESS';
+        this.approveRemark = '';
+        this.contentHeader = [
+            { name: '主页', icon: 'fa-dashboard' },
+            { name: '转校审核页', icon: 'fa-th-li' }
+        ];
+        this.fetchAuditPendingRecord();
+        this.fetchAuditSuccessRecords();
+        this.fetchAuditFailedRecords();
+    };
+    TransferBossComponent.prototype.fetchAuditPendingRecord = function () {
+        var _this = this;
+        this.presidentService
+            .fetchStuTransferAppRecords('CHANGE_SCHOOL', 'WAIT_AUDIT')
+            .then(function (records) { return _this.auditPendingRecords = records; });
+    };
+    TransferBossComponent.prototype.fetchAuditSuccessRecords = function () {
+        var _this = this;
+        this.presidentService
+            .fetchStuTransferAppRecords('CHANGE_SCHOOL', 'AUDIT_SUCCESS')
+            .then(function (records) { return _this.auditSuccessRecords = records; });
+    };
+    TransferBossComponent.prototype.fetchAuditFailedRecords = function () {
+        var _this = this;
+        this.presidentService
+            .fetchStuTransferAppRecords('CHANGE_SCHOOL', 'AUDIT_FAIL')
+            .then(function (records) { return _this.auditFailedRecords = records; });
+    };
+    TransferBossComponent.prototype.checkBackApplication = function () {
+        var _this = this;
+        this.presidentService.checkBackApplication(this.approve, this.curAudit.id).then(function (success) {
+            if (success) {
+                var toRemoveRecordIndex = _this.auditPendingRecords.indexOf(_this.curAudit);
+                _this.auditPendingRecords.splice(toRemoveRecordIndex, 1);
+            }
+        });
+    };
+    return TransferBossComponent;
+}());
+TransferBossComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-transfer-boss',
+        template: __webpack_require__("../../../../../src/app/president/transfer-boss/transfer-boss.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/president/transfer-boss/transfer-boss.component.less")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__president_service__["a" /* PresidentService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__president_service__["a" /* PresidentService */]) === "function" && _a || Object])
+], TransferBossComponent);
+
+var _a;
+//# sourceMappingURL=transfer-boss.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/president/transfer/transfer.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<app-content-header\r\n  [title]=\"'转校申请页'\" [menus]=\"contentHeader\"></app-content-header>\r\n\r\n<div class=\"content\">\r\n  <div class=\"box box-primary box-divide\">\r\n    <div class=\"box-header\">\r\n      <h3 class=\"box-title\">转校申请</h3>\r\n    </div>\r\n    <div class=\"box-body\">\r\n\r\n      <table class=\"table table-hover\">\r\n        <thead>\r\n          <tr>\r\n            <th>审核学生</th>\r\n            <th>原始校区</th>\r\n            <th>目标校区</th>\r\n            <th>发起时间</th>\r\n            <th>审核备注</th>\r\n            <th>审核状态</th>\r\n          </tr>\r\n        </thead>\r\n        <tbody>\r\n          <tr *ngFor=\"let record of appRecords\">\r\n            <td>{{ record.studentName }}</td>\r\n            <td>{{ record.fromSchoolName }}</td>\r\n            <td>{{ record.toSchoolName }}</td>\r\n            <td>{{ record.applicationTime | date:'yyyy-MM-dd' }}</td>\r\n            <td>{{ record.remark }}</td>\r\n            <td>\r\n              <span class=\"label\"\r\n                    [class.label-danger]=\"record.applicationStatus === 'AUDIT_FAIL'\"\r\n                    [class.label-success]=\"record.applicationStatus === 'AUDIT_SUCCESS'\"\r\n                    [class.label-warning]=\"record.applicationStatus === 'AUDITING'\">\r\n                {{ auditState[record.applicationStatus] }}\r\n              </span>\r\n            </td>\r\n          </tr>\r\n          <tr>\r\n            <td colspan=\"6\">\r\n              <p class=\"text-muted text-center\">暂无转校申请记录</p>\r\n            </td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n\r\n      <form  class=\"form center-block\">\r\n\r\n        <div class=\"row\">\r\n          <div class=\"form-group col-xs-6 col-xs-offset-3\">\r\n            <label class=\"control-label pull-left\">转校学生</label>\r\n            <div class=\"pull-left\">\r\n              <div class=\"input-group input-group-sm\">\r\n                <select2 [cssImport]=\"false\"\r\n                         [width]=\"240\"\r\n                         [data]=\"students\"\r\n                         (valueChanged)=\"switchStudent($event)\"\r\n                         [options]=\"select2Options\"></select2>\r\n              </div>\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"form-group col-xs-6 col-xs-offset-3\">\r\n            <label class=\"control-label pull-left\">转校校区</label>\r\n            <div class=\"pull-left\">\r\n              <div class=\"input-group input-group-sm\">\r\n                <select2 [cssImport]=\"false\"\r\n                         [width]=\"'240'\"\r\n                         [data]=\"schools\"\r\n                         (valueChanged)=\"switchSchool($event)\"></select2>\r\n              </div>\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"form-group col-xs-6 col-xs-offset-3\">\r\n            <label class=\"control-label pull-left\" id=\"remark\">备注信息</label>\r\n            <div class=\"pull-left\">\r\n              <div class=\"input-group input-group-sm\">\r\n                <textarea style=\"width: 240px;\"\r\n                          rows=\"2\"\r\n                          class=\"form-control\"\r\n                          name=\"remark\"\r\n                          placeholder=\"请输入备注信息\"\r\n                          [(ngModel)]=\"transferEvent.remark\"></textarea>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n\r\n        <button type=\"button\"\r\n                class=\"btn btn-default center-block\"\r\n                style=\"width: 310px;\"\r\n                (click)=\"transfer()\"\r\n                [disabled]=\"!transferEvent.studentId || !transferEvent.remark\">\r\n          <i class=\"fa fa-hand-o-hand\"></i>\r\n          发起退费申请\r\n        </button>\r\n      </form>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/president/transfer/transfer.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".box-body {\n  min-height: 420px;\n}\n.box-body .form {\n  margin: 30px auto;\n  width: 90%;\n  border: 1px solid #dddddd;\n  border-radius: 5px;\n  background-color: #f6f8fa;\n  padding: 30px 10px;\n}\n.box-body .form .form-group {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  margin-bottom: 10px;\n}\n.box-body .form .form-group label {\n  margin-right: 10px;\n}\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/president/transfer/transfer.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_school_service__ = __webpack_require__("../../../../../src/app/common/school.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_user_service__ = __webpack_require__("../../../../../src/app/common/user.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_settings__ = __webpack_require__("../../../../../src/app/app-settings.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__president_service__ = __webpack_require__("../../../../../src/app/president/president.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_enum__ = __webpack_require__("../../../../../src/app/common/enum.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TransferComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+var TransferComponent = (function () {
+    function TransferComponent(schoolService, presidentService) {
+        this.schoolService = schoolService;
+        this.presidentService = presidentService;
+        this.transfer = this.transfer.bind(this);
+    }
+    TransferComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.auditState = __WEBPACK_IMPORTED_MODULE_5__common_enum__["f" /* auditState */];
+        this.appRecords = [];
+        this.students = [];
+        this.transferEvent = {
+            toSchoolId: '',
+            remark: '',
+            studentId: ''
+        };
+        this.schools = [];
+        this.contentHeader = [
+            { name: '主页', icon: 'fa-dashboard' },
+            { name: '转校申请页', icon: 'fa-th-li' }
+        ];
+        this.fetchSchools();
+        this.fetchAppRecords();
+        this.select2Options = {
+            placeholder: '请输入姓名搜索学生',
+            minimumInputLength: 1,
+            ajax: {
+                dataType: 'json',
+                delay: 450,
+                headers: { 'Access-Token': __WEBPACK_IMPORTED_MODULE_2__common_user_service__["a" /* UserService */].getAccessToken() },
+                url: function (params) {
+                    return __WEBPACK_IMPORTED_MODULE_3__app_settings__["a" /* AppSettings */].API_ENDPOINT + ("common/student?name=" + params.term);
+                },
+                processResults: function (data) {
+                    (data.data || []).forEach(function (item) { return item.text = item.name + '(' + item.idCard + ')'; });
+                    (_a = _this.students).push.apply(_a, data.data);
+                    return {
+                        results: data.data
+                    };
+                    var _a;
+                },
+                results: function (term, page, context) {
+                    console.log(term, page, context);
+                }
+            }
+        };
+    };
+    TransferComponent.prototype.fetchSchools = function () {
+        var _this = this;
+        this.schoolService.fetchSchoolList().then(function (schools) {
+            _this.schools = schools;
+            _this.schools.forEach(function (school) { return school.text = school.name; });
+            _this.transferEvent.toSchoolId = _this.schools.length ? _this.schools[0]['id'] : '';
+        });
+    };
+    TransferComponent.prototype.switchSchool = function ($event) {
+        this.transferEvent.toSchoolId = $event.value;
+    };
+    TransferComponent.prototype.switchStudent = function ($event) {
+        this.transferEvent.studentId = $event.value;
+    };
+    TransferComponent.prototype.transfer = function () {
+        var _this = this;
+        this.presidentService.transfer(this.transferEvent)
+            .then(function (success) { return success && _this.fetchAppRecords(); });
+    };
+    TransferComponent.prototype.fetchAppRecords = function () {
+        var _this = this;
+        this.presidentService.fetchAppRecords().then(function (records) {
+            _this.appRecords = records;
+        });
+    };
+    return TransferComponent;
+}());
+TransferComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-transfer',
+        template: __webpack_require__("../../../../../src/app/president/transfer/transfer.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/president/transfer/transfer.component.less")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__common_school_service__["a" /* SchoolService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__common_school_service__["a" /* SchoolService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__president_service__["a" /* PresidentService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__president_service__["a" /* PresidentService */]) === "function" && _b || Object])
+], TransferComponent);
+
+var _a, _b;
+//# sourceMappingURL=transfer.component.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/role/role.component.html":
 /***/ (function(module, exports) {
 
@@ -3874,7 +6284,61 @@ RoleComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__stmanager_students_ststudents_component__ = __webpack_require__("../../../../../src/app/stmanager/students/ststudents.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__consultant_main_consult_record_consult_record_component__ = __webpack_require__("../../../../../src/app/consultant-main/consult-record/consult-record.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__counselor_sign_record_sign_record_component__ = __webpack_require__("../../../../../src/app/counselor/sign-record/sign-record.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__stmanager_renews_returns_renews_returns_component__ = __webpack_require__("../../../../../src/app/stmanager/renews-returns/renews-returns.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__tc_director_grade_grade_component__ = __webpack_require__("../../../../../src/app/tc-director/grade/grade.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__tc_director_origin_course_origin_course_component__ = __webpack_require__("../../../../../src/app/tc-director/origin-course/origin-course.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__tc_director_tc_director_component__ = __webpack_require__("../../../../../src/app/tc-director/tc-director.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__president_transfer_transfer_component__ = __webpack_require__("../../../../../src/app/president/transfer/transfer.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__president_refund_refund_component__ = __webpack_require__("../../../../../src/app/president/refund/refund.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__president_president_component__ = __webpack_require__("../../../../../src/app/president/president.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__personnel_cashier_personnel_cashier_component__ = __webpack_require__("../../../../../src/app/personnel-cashier/personnel-cashier.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__personnel_cashier_fees_fees_component__ = __webpack_require__("../../../../../src/app/personnel-cashier/fees/fees.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__personnel_cashier_fees_school_table_school_table_component__ = __webpack_require__("../../../../../src/app/personnel-cashier/fees/school-table/school-table.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__personnel_cashier_fees_student_table_student_table_component__ = __webpack_require__("../../../../../src/app/personnel-cashier/fees/student-table/student-table.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__personnel_manager_personnel_manager_component__ = __webpack_require__("../../../../../src/app/personnel-manager/personnel-manager.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__personnel_manager_employee_employee_component__ = __webpack_require__("../../../../../src/app/personnel-manager/employee/employee.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__personnel_manager_employee_detail_employee_detail_component__ = __webpack_require__("../../../../../src/app/personnel-manager/employee-detail/employee-detail.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__teacher_teacher_component__ = __webpack_require__("../../../../../src/app/teacher/teacher.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__teacher_teacher_schedule_teacher_schedule_component__ = __webpack_require__("../../../../../src/app/teacher/teacher-schedule/teacher-schedule.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__teacher_teacher_class_hour_teacher_class_hour_component__ = __webpack_require__("../../../../../src/app/teacher/teacher-class-hour/teacher-class-hour.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__finance_finance_component__ = __webpack_require__("../../../../../src/app/finance/finance.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__finance_to_approvement_to_approvement_component__ = __webpack_require__("../../../../../src/app/finance/to-approvement/to-approvement.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__finance_stu_pay_stat_stu_pay_stat_component__ = __webpack_require__("../../../../../src/app/finance/stu-pay-stat/stu-pay-stat.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__finance_stu_pay_record_stu_pay_record_component__ = __webpack_require__("../../../../../src/app/finance/stu-pay-record/stu-pay-record.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__president_stat_stat_component__ = __webpack_require__("../../../../../src/app/president/stat/stat.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__finance_stu_pay_stat_payments_payments_component__ = __webpack_require__("../../../../../src/app/finance/stu-pay-stat/payments/payments.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__finance_stu_pay_stat_school_table_school_table_component__ = __webpack_require__("../../../../../src/app/finance/stu-pay-stat/school-table/school-table.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_42__finance_stu_pay_record_log_school_table_log_school_table_component__ = __webpack_require__("../../../../../src/app/finance/stu-pay-record/log-school-table/log-school-table.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_43__finance_stu_pay_record_payment_log_payment_log_component__ = __webpack_require__("../../../../../src/app/finance/stu-pay-record/payment-log/payment-log.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_44__president_transfer_boss_transfer_boss_component__ = __webpack_require__("../../../../../src/app/president/transfer-boss/transfer-boss.component.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return routes; });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3996,7 +6460,178 @@ var routes = [
                     {
                         path: 'stu-class-period',
                         component: __WEBPACK_IMPORTED_MODULE_13__stmanager_student_class_period_student_class_period_component__["a" /* StudentClassPeriodComponent */]
+                    },
+                    {
+                        path: 'renews-returns',
+                        component: __WEBPACK_IMPORTED_MODULE_18__stmanager_renews_returns_renews_returns_component__["a" /* RenewsReturnsComponent */]
                     }
+                ]
+            },
+            {
+                path: 'teacher-director',
+                component: __WEBPACK_IMPORTED_MODULE_21__tc_director_tc_director_component__["a" /* TcDirectorComponent */],
+                children: [
+                    {
+                        path: '',
+                        redirectTo: 'course',
+                        pathMatch: 'full'
+                    },
+                    {
+                        path: 'course',
+                        component: __WEBPACK_IMPORTED_MODULE_20__tc_director_origin_course_origin_course_component__["a" /* OriginCourseComponent */],
+                    },
+                    {
+                        path: 'grade',
+                        component: __WEBPACK_IMPORTED_MODULE_19__tc_director_grade_grade_component__["a" /* GradeComponent */],
+                    }
+                ]
+            },
+            {
+                path: 'teacher',
+                component: __WEBPACK_IMPORTED_MODULE_32__teacher_teacher_component__["a" /* TeacherComponent */],
+                children: [
+                    {
+                        path: '',
+                        redirectTo: 'teacher-schedule',
+                        pathMatch: 'full'
+                    },
+                    {
+                        path: 'teacher-schedule',
+                        component: __WEBPACK_IMPORTED_MODULE_33__teacher_teacher_schedule_teacher_schedule_component__["a" /* TeacherScheduleComponent */],
+                    },
+                    {
+                        path: 'teacher-class-hour',
+                        component: __WEBPACK_IMPORTED_MODULE_34__teacher_teacher_class_hour_teacher_class_hour_component__["a" /* TeacherClassHourComponent */],
+                    }
+                ]
+            },
+            {
+                path: 'president-master',
+                component: __WEBPACK_IMPORTED_MODULE_24__president_president_component__["a" /* PresidentComponent */],
+                children: [
+                    {
+                        path: '',
+                        redirectTo: 'stats',
+                        pathMatch: 'full',
+                    },
+                    {
+                        path: 'refund',
+                        component: __WEBPACK_IMPORTED_MODULE_23__president_refund_refund_component__["a" /* RefundComponent */],
+                    },
+                    {
+                        path: 'transfer',
+                        component: __WEBPACK_IMPORTED_MODULE_22__president_transfer_transfer_component__["a" /* TransferComponent */]
+                    },
+                    {
+                        path: 'transfer-boss',
+                        component: __WEBPACK_IMPORTED_MODULE_44__president_transfer_boss_transfer_boss_component__["a" /* TransferBossComponent */]
+                    },
+                    {
+                        path: 'stats',
+                        component: __WEBPACK_IMPORTED_MODULE_39__president_stat_stat_component__["a" /* StatComponent */]
+                    }
+                ]
+            },
+            {
+                path: 'personal-cashier',
+                component: __WEBPACK_IMPORTED_MODULE_25__personnel_cashier_personnel_cashier_component__["a" /* PersonnelCashierComponent */],
+                children: [
+                    {
+                        path: '',
+                        redirectTo: 'fees',
+                        pathMatch: 'full'
+                    },
+                    {
+                        path: 'fees',
+                        component: __WEBPACK_IMPORTED_MODULE_26__personnel_cashier_fees_fees_component__["a" /* FeesComponent */],
+                        children: [
+                            {
+                                path: '',
+                                redirectTo: 'schools',
+                                pathMatch: 'full'
+                            },
+                            {
+                                path: 'schools',
+                                component: __WEBPACK_IMPORTED_MODULE_27__personnel_cashier_fees_school_table_school_table_component__["a" /* SchoolTableComponent */]
+                            },
+                            {
+                                path: ':schoolId/students',
+                                component: __WEBPACK_IMPORTED_MODULE_28__personnel_cashier_fees_student_table_student_table_component__["a" /* StudentTableComponent */]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                path: 'personnel-manager',
+                component: __WEBPACK_IMPORTED_MODULE_29__personnel_manager_personnel_manager_component__["a" /* PersonnelManagerComponent */],
+                children: [
+                    {
+                        path: '',
+                        redirectTo: 'employee',
+                        pathMatch: 'full'
+                    },
+                    {
+                        path: 'employee',
+                        component: __WEBPACK_IMPORTED_MODULE_30__personnel_manager_employee_employee_component__["a" /* EmployeeComponent */]
+                    },
+                    {
+                        path: 'employee/:employeeId',
+                        component: __WEBPACK_IMPORTED_MODULE_31__personnel_manager_employee_detail_employee_detail_component__["a" /* EmployeeDetailComponent */]
+                    }
+                ]
+            },
+            {
+                path: 'finance',
+                component: __WEBPACK_IMPORTED_MODULE_35__finance_finance_component__["a" /* FinanceComponent */],
+                children: [
+                    {
+                        path: '',
+                        redirectTo: 'to-approve',
+                        pathMatch: 'full'
+                    },
+                    {
+                        path: 'to-approve',
+                        component: __WEBPACK_IMPORTED_MODULE_36__finance_to_approvement_to_approvement_component__["a" /* ToApprovementComponent */],
+                    },
+                    {
+                        path: 'stu-pay-stat',
+                        component: __WEBPACK_IMPORTED_MODULE_37__finance_stu_pay_stat_stu_pay_stat_component__["a" /* StuPayStatComponent */],
+                        children: [
+                            {
+                                path: '',
+                                redirectTo: 'school-table',
+                                pathMatch: 'full'
+                            },
+                            {
+                                path: 'student-payments',
+                                component: __WEBPACK_IMPORTED_MODULE_40__finance_stu_pay_stat_payments_payments_component__["a" /* PaymentsComponent */]
+                            },
+                            {
+                                path: 'school-table',
+                                component: __WEBPACK_IMPORTED_MODULE_41__finance_stu_pay_stat_school_table_school_table_component__["a" /* FinanceSchoolTableComponent */]
+                            }
+                        ]
+                    },
+                    {
+                        path: 'stu-pay-record',
+                        component: __WEBPACK_IMPORTED_MODULE_38__finance_stu_pay_record_stu_pay_record_component__["a" /* StuPayRecordComponent */],
+                        children: [
+                            {
+                                path: '',
+                                redirectTo: 'school-table',
+                                pathMatch: 'full'
+                            },
+                            {
+                                path: 'school-table',
+                                component: __WEBPACK_IMPORTED_MODULE_42__finance_stu_pay_record_log_school_table_log_school_table_component__["a" /* LogSchoolTableComponent */]
+                            },
+                            {
+                                path: 'logs',
+                                component: __WEBPACK_IMPORTED_MODULE_43__finance_stu_pay_record_payment_log_payment_log_component__["a" /* PaymentLogComponent */]
+                            }
+                        ]
+                    },
                 ]
             }
         ]
@@ -4080,7 +6715,7 @@ var HttpService = HttpService_1 = (function () {
     HttpService.prototype._handle500 = function (status, msg) {
         if (status === 500) {
             this.alertService.alert({
-                title: '警告',
+                title: '警告,操作失败',
                 content: msg,
                 type: 'danger'
             });
@@ -4106,8 +6741,8 @@ var HttpService = HttpService_1 = (function () {
             .then(HttpService_1._successHandle)
             .catch(function (err) {
             _this._handle401(err.status);
-            _this._handle500(err.status, err.data);
-            return { success: false, data: null };
+            console.log(err);
+            _this._handle500(err.status, err.json().data);
         });
     };
     HttpService.prototype.remove = function (url, options) {
@@ -4214,11 +6849,204 @@ SidebarComponent = __decorate([
 /***/ "../../../../../src/app/stmanager/course/course.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-content-header\n  [title]=\"'用户列表'\" [menus]=\"contentHeader\"></app-content-header>\n<div class=\"content\">\n\n  <app-collapse-box [collapse]=\"false\" [icon]=\"'filter'\" [boxTitle]=\"'课程过滤'\">\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\n      <label class=\"pull-left\">教师姓名:</label>\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\n        <input class=\"form-control\" [(ngModel)]=\"filterTeacherName\" placeholder=\"请输入教师名称\">\n        <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\n      </div>\n    </div>\n\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\n      <label class=\"pull-left\">课程名称:</label>\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\n        <input class=\"form-control\" [(ngModel)]=\"filterTeacherName\" placeholder=\"请输入课程名称\">\n        <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\n      </div>\n    </div>\n\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\n      <label class=\"pull-left\">完成状态:</label>\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\n        <select2\n          [width]=\"148\"\n          [value]=\"filterScheduleState\"\n          [cssImport]=\"false\"\n          (valueChanged)=\"changeFilterScheduleState($event)\"\n          [options]=\"{minimumResultsForSearch: -1, placeholder: '全部'}\"\n          [data]=\"[{id: 'ALL',text: '全部'}, {id: true, text: '是'}, {id: false, text: '否'}]\"></select2>\n      </div>\n    </div>\n\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\n      <label class=\"pull-left\">上课时间:</label>\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\n        <input class=\"form-control\" [(ngModel)]=\"filterTeacherName\" placeholder=\"请输入课程名称\">\n        <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\n      </div>\n    </div>\n\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\n      <app-date-ranger-picker\n        [startTime]=\"filterTimeRange.start\"\n        (dateRangeSetEvent)=\"handleTimeRangeChange($event)\"\n        class=\"pull-left\"></app-date-ranger-picker>\n    </div>\n  </app-collapse-box>\n\n  <div class=\"box box-primary\">\n    <div class=\"box-header\">\n      <i class=\"fa fa-table\"></i><h3 class=\"box-title\">课程列表</h3>\n    </div>\n    <div class=\"box-body\" style=\"border-top: 1px solid #dddddd;\">\n      <div class=\"dataTables_wrapper form-inline dt-bootstrap\">\n        <div class=\"row\">\n          <div class=\"col-sm-12\">\n            <table class=\"table table-bordered table-hover dataTable\">\n              <thead>\n              <tr>\n                <th>课程名称</th>\n                <th>执行教师</th>\n                <th>开始时间</th>\n                <th>结束时间</th>\n                <th>是否完成</th>\n                <th class=\"text-center\">操作</th>\n              </tr>\n              </thead>\n              <tbody>\n                <tr *ngFor=\"let course of schedule;let i = index\">\n                  <td>{{ course.courseName }}</td>\n                  <td>{{ course.teacherName }}</td>\n                  <td>{{ course.startTime | date: 'yyyy-MM-dd HH:mm' }}</td>\n                  <td>{{ course.endTime | date: 'yyyy-MM-dd HH:mm' }}</td>\n                  <td>{{ course.finish ? '是': '否' }}</td>\n                  <td class=\"text-center\">\n                    <button class=\"btn btn-xs btn-primary\">\n                      <i class=\"fa fa-pencil\"></i>编辑\n                    </button>\n                  </td>\n                </tr>\n              </tbody>\n            </table>\n          </div>\n        </div>\n        <app-pagination></app-pagination>\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<app-content-header\r\n  [title]=\"'课程列表'\" [menus]=\"contentHeader\"></app-content-header>\r\n<div class=\"content\">\r\n\r\n  <app-collapse-box [collapse]=\"false\" [icon]=\"'filter'\" [boxTitle]=\"'课表过滤'\">\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">教师姓名:</label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <input class=\"form-control\" [(ngModel)]=\"filterTeacherName\" placeholder=\"请输入教师名称\">\r\n        <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">课程名称:</label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <input class=\"form-control\" [(ngModel)]=\"filterCourseName\" placeholder=\"请输入课程名称\">\r\n        <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">完成状态:</label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <select2\r\n          [width]=\"148\"\r\n          [value]=\"filterScheduleState\"\r\n          [cssImport]=\"false\"\r\n          (valueChanged)=\"changeFilterScheduleState($event)\"\r\n          [options]=\"{minimumResultsForSearch: -1, placeholder: '全部'}\"\r\n          [data]=\"[{id: 'ALL',text: '全部'}, {id: true, text: '是'}, {id: false, text: '否'}]\"></select2>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">上课时间:</label>\r\n      <app-date-ranger-picker\r\n        [timePicker]=\"false\"\r\n        [startTime]=\"filterTimeRange.start\"\r\n        (dateRangeSetEvent)=\"handleTimeRangeChange($event)\">\r\n      </app-date-ranger-picker>\r\n    </div>\r\n  </app-collapse-box>\r\n\r\n  <div class=\"box box-primary\">\r\n    <div class=\"box-header\">\r\n      <i class=\"fa fa-table\"></i><h3 class=\"box-title\">课表</h3>\r\n      <div class=\"box-tools\">\r\n        <div class=\"btn-group btn-group-sm\">\r\n          <button class=\"btn btn-primary\" (click)=\"courseCreator.showModal({\r\n              title: '创建新课表',\r\n              modalSize: 'lg',\r\n              confirmBtnText: '确认分配',\r\n              cancelBtnText: '取消分配',\r\n              confirm: createSchedule\r\n          })\">\r\n            <i class=\"fa fa-plus\"></i>\r\n            创建课表\r\n          </button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div class=\"box-body\" style=\"border-top: 1px solid #dddddd;\">\r\n      <div class=\"dataTables_wrapper form-inline dt-bootstrap\">\r\n        <div class=\"row\">\r\n          <div class=\"col-sm-12\">\r\n            <table class=\"table table-bordered table-hover dataTable\">\r\n              <thead>\r\n                <tr>\r\n                  <th>课程名称</th>\r\n                  <th>执行教师</th>\r\n                  <th>开始时间</th>\r\n                  <th>结束时间</th>\r\n                  <th>是否完成</th>\r\n                </tr>\r\n              </thead>\r\n              <tbody>\r\n                <tr *ngFor=\"let course of schedule |\r\n                matchItem: filterTeacherName: 'teacherName' |\r\n                matchItem: filterCourseName: 'courseName' |\r\n                matchItem: filterScheduleState: 'finish' : 'exact' |\r\n                timeRange: filterTimeRange : 'startTime'|\r\n                timeRange: filterTimeRange : 'endTime';\r\n                let i = index\" (click)=\"scheduleEvent = course;courseCreator.showModal({\r\n                modalSize: 'lg',\r\n                  title: '编辑课表',\r\n                  confirm: updateSchedule\r\n                })\">\r\n                  <td>{{ course.courseName }}</td>\r\n                  <td>{{ course.teacherName }}</td>\r\n                  <td>{{ course.startTime | date: 'yyyy-MM-dd HH:mm' }}</td>\r\n                  <td>{{ course.endTime | date: 'yyyy-MM-dd HH:mm' }}</td>\r\n                  <td>{{ course.finish ? '是': '否' }}</td>\r\n                </tr>\r\n              </tbody>\r\n            </table>\r\n          </div>\r\n        </div>\r\n        <app-pagination></app-pagination>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<app-modal #courseCreator [disabledAcceptBtn]=\"ifZeroStuChosen() || !scheduleEvent.studyTime\">\r\n  <div class=\"row\">\r\n    <div class=\"col-xs-12\">\r\n      <div class=\"col-xs-4\">\r\n        <div class=\"form-group\">\r\n          <label for=\"schedule\" class=\"control-label\">选择课程: </label>\r\n          <select2\r\n            id=\"schedule\"\r\n            [cssImport]=\"false\"\r\n            [data]=\"courses\"\r\n            [width]=\"150\"\r\n            [options]=\"{minimumResultsForSearch: 3}\"\r\n            (valueChanged)=\"handleCourseSwitch($event)\"></select2>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"col-xs-4\">\r\n        <div class=\"form-group\">\r\n          <label for=\"teacher\" class=\"control-label\">选择老师: </label>\r\n          <select2\r\n            id=\"teacher\"\r\n            [cssImport]=\"false\"\r\n            [data]=\"teachers\"\r\n            [width]=\"150\"\r\n            (valueChanged)=\"handleTeacherSwitch($event)\"\r\n            [options]=\"{minimumResultsForSearch: 3}\"\r\n          ></select2>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"col-xs-4\">\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"studyHour\" class=\"control-label pull-left\">课程课时:</label>\r\n          <div class=\"pull-left\">\r\n            <div class=\"input-group input-group-sm\">\r\n              <input class=\"form-control\"\r\n                     type=\"number\"\r\n                     min=\"0\"\r\n                     name=\"studyHour\"\r\n                     id=\"studyHour\"\r\n                     style=\"width: 148px;\"\r\n                     [(ngModel)]=\"scheduleEvent.studyTime\">\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"col-xs-4\">\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"scheduleTime\" class=\"control-label pull-left\">上课时间: </label>\r\n          <app-date-ranger-picker\r\n            id=\"scheduleTime\"\r\n            class=\"pull-left\"\r\n            [timePicker]=\"true\"\r\n            (dateRangeSetEvent)=\"setScheduleTime($event)\"\r\n          ></app-date-ranger-picker>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div class=\"row\">\r\n    <div class=\"col-xs-12 table-container\">\r\n      <table class=\"table table-bordered table-hover table-strip\">\r\n        <thead>\r\n        <tr>\r\n          <th></th>\r\n          <th>姓名</th>\r\n          <th>性别</th>\r\n          <th>电话</th>\r\n          <th>地址</th>\r\n          <th>学校</th>\r\n          <th>专业</th>\r\n        </tr>\r\n        </thead>\r\n        <tbody>\r\n          <tr *ngFor=\"let student of students\">\r\n            <td class=\"text-center\">\r\n              <input type=\"checkbox\"\r\n                     [(ngModel)]=\"student.inCourse\"\r\n                     (change)=\"student.inCourse = !student.inCourse\">\r\n            </td>\r\n            <td>{{ student.name }}</td>\r\n            <td>{{ student.sex === 'MALE' ? '男': '女' }}</td>\r\n            <td>{{ student.phone }}</td>\r\n            <td>{{ student.address }}</td>\r\n            <td>{{ student.orignSchool }}</td>\r\n            <td>{{ student.specialty }}</td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n    </div>\r\n  </div>\r\n</app-modal>\r\n"
 
 /***/ }),
 
 /***/ "../../../../../src/app/stmanager/course/course.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "table tr {\n  cursor: pointer;\n}\nlabel.control-label.pull-left {\n  margin-right: 3px;\n}\n.table-container {\n  max-height: 280px;\n  overflow-y: scroll;\n}\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/stmanager/course/course.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stmanager_service__ = __webpack_require__("../../../../../src/app/stmanager/stmanager.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_school_service__ = __webpack_require__("../../../../../src/app/common/school.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CourseComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var CourseComponent = (function () {
+    function CourseComponent(stmanagerService, schoolService) {
+        this.stmanagerService = stmanagerService;
+        this.schoolService = schoolService;
+        this.createSchedule = this.createSchedule.bind(this);
+        this.updateSchedule = this.updateSchedule.bind(this);
+    }
+    CourseComponent.prototype.ngOnInit = function () {
+        this.contentHeader = [
+            { name: '主页', icon: 'fa-dashboard' },
+            { name: '教学课表管理页', icon: 'fa-users' }
+        ];
+        this.filterTimeRange = {
+            start: new Date(new Date().getFullYear() + '-01-01').getTime(),
+            end: Infinity
+        };
+        this.filterTeacherName = '';
+        this.filterCourseName = '';
+        this.filterScheduleState = '';
+        this.schedule = [];
+        this.teachers = [];
+        this.students = [];
+        this.fetchSchedule();
+        this.fetchCourse();
+        this.setCurSchedule();
+    };
+    /*课表查看功能*/
+    CourseComponent.prototype.fetchSchedule = function () {
+        var _this = this;
+        this.stmanagerService.fetchSchedule().then(function (schedule) {
+            _this.schedule = schedule;
+        });
+    };
+    CourseComponent.prototype.changeFilterScheduleState = function ($event) {
+        console.log($event);
+        this.filterScheduleState = $event.value === 'ALL' ? '' : $event.value;
+    };
+    CourseComponent.prototype.handleTimeRangeChange = function ($event) {
+        this.filterTimeRange = {
+            start: $event.start,
+            end: $event.end,
+        };
+    };
+    /*课表创建功能*/
+    // 获取课程列表
+    CourseComponent.prototype.fetchCourse = function () {
+        var _this = this;
+        this.schoolService.fetchCourses().then(function (course) {
+            _this.courses = course;
+            var curCourseId = course[0]['id'];
+            _this.scheduleEvent.courseId = curCourseId;
+            _this.fetchTeachersByCourseId(curCourseId);
+        });
+    };
+    // 获取对应课程的授课教师
+    CourseComponent.prototype.fetchTeachersByCourseId = function (courseId) {
+        var _this = this;
+        this.stmanagerService.fetchTeachersByCourseId(courseId).then(function (teachers) {
+            _this.teachers = teachers;
+            _this.scheduleEvent.employeeId = _this.teachers[0].id;
+        });
+    };
+    // 初始化新课表
+    CourseComponent.prototype.setCurSchedule = function () {
+        this.scheduleEvent = {
+            courseId: '',
+            courseName: '',
+            employeeId: '',
+            teacherName: '',
+            finish: false,
+            endTime: new Date(new Date().getTime() + 1000 * 60 * 60 * 24).getTime(),
+            startTime: Date.now(),
+            studyTime: 0,
+            studentIds: [],
+        };
+    };
+    // 创建课表时切换课表处理函数
+    CourseComponent.prototype.handleCourseSwitch = function ($event) {
+        this.scheduleEvent.courseId = $event.value;
+        this.fetchTeachersByCourseId($event.value);
+        var curCourse = this.findCourseById($event.value);
+        this.scheduleEvent.courseName = curCourse.name;
+    };
+    // 切换教师时设定新的教师ID
+    CourseComponent.prototype.handleTeacherSwitch = function ($event) {
+        this.scheduleEvent.employeeId = $event.value;
+        var curTeacher = this.findTeacherById($event.value);
+        this.scheduleEvent.teacherName = curTeacher.name;
+    };
+    // 通过课程ID搜索教师
+    CourseComponent.prototype.findTeacherById = function (teacherId) {
+        return this.teachers.find(function (teacher) { return teacher.id === teacherId; });
+    };
+    // 通过课程ID搜索课程系你先
+    CourseComponent.prototype.findCourseById = function (courseId) {
+        return this.courses.find(function (course) { return course.id === courseId; });
+    };
+    // 设定创建课程的上课时间
+    CourseComponent.prototype.setScheduleTime = function ($event) {
+        this.scheduleEvent.startTime = $event.start;
+        this.scheduleEvent.endTime = $event.end;
+    };
+    // 根据课程ID获取报名该课程的学生
+    CourseComponent.prototype.fetchScheduleStu = function (courseId) {
+        var _this = this;
+        this.stmanagerService.fetchStudents(courseId).then(function (students) {
+            _this.students = students;
+        });
+    };
+    // 分配学生的时候
+    // 创建课表分配学生的时候是否未选中任何学生
+    CourseComponent.prototype.ifZeroStuChosen = function () {
+        return this.students.every(function (stu) { return !stu.inCourse; });
+    };
+    // 创建课表
+    CourseComponent.prototype.createSchedule = function () {
+        var _this = this;
+        this.students.forEach(function (stu) {
+            if (stu.inCourse) {
+                _this.scheduleEvent.studentIds.push(stu.id);
+            }
+        });
+        this.stmanagerService.createSchedule(this.scheduleEvent).then(function (result) {
+            _this.scheduleEvent.courseScheduleId = result.id;
+            _this.schedule.unshift(_this.scheduleEvent);
+            console.log(_this.schedule);
+        });
+    };
+    CourseComponent.prototype.updateSchedule = function () {
+        this.stmanagerService.updateSchedule(this.scheduleEvent).then(function (success) {
+        });
+    };
+    return CourseComponent;
+}());
+CourseComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-course',
+        template: __webpack_require__("../../../../../src/app/stmanager/course/course.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/stmanager/course/course.component.less")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__stmanager_service__["a" /* StmanagerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__stmanager_service__["a" /* StmanagerService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__common_school_service__["a" /* SchoolService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__common_school_service__["a" /* SchoolService */]) === "function" && _b || Object])
+], CourseComponent);
+
+var _a, _b;
+//# sourceMappingURL=course.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/stmanager/renews-returns/renews-returns.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<app-content-header [title]=\"'学生资产'\" [menus]=\"contentHeader\"></app-content-header>\r\n\r\n<div class=\"content\">\r\n  <app-collapse-box [collapse]=\"false\" [boxTitle]=\"'学生资产列表过滤'\">\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">学生姓名:</label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <input class=\"form-control\" [(ngModel)]=\"filterStuName\" placeholder=\"请输入学生名称\">\r\n        <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\r\n      </div>\r\n    </div>\r\n  </app-collapse-box>\r\n\r\n  <div class=\"box box-primary box-divide\">\r\n    <div class=\"box-header\">\r\n      <h3 class=\"box-title\">\r\n        学生资产列表\r\n      </h3>\r\n    </div>\r\n    <div class=\"box-body\">\r\n      <table class=\"table table-hover table-bordered text-center\">\r\n        <thead>\r\n        <tr>\r\n          <th>学生姓名</th>\r\n          <th>缴费总额</th>\r\n          <th>使用金额</th>\r\n          <th>退费金额</th>\r\n          <th>可退金额</th>\r\n          <th>操作</th>\r\n        </tr>\r\n        </thead>\r\n        <tbody>\r\n        <tr *ngFor=\"let asset of assets | matchItem: filterStuName : 'studentName'\">\r\n          <td>{{ asset.studentName }}</td>\r\n          <td>{{ asset.totalMoney }}</td>\r\n          <td>{{ asset.usedMoney }}</td>\r\n          <td>{{ asset.alreadyBackMoney }}</td>\r\n          <td>{{ asset.canBackMoney }}</td>\r\n          <td>\r\n            <span *ngIf=\"(asset.inProgress)\" class=\"text-muted\">退费申请中</span>\r\n            <div class=\"btn-group btn-group-xs\" *ngIf=\"!asset.inProgress\">\r\n              <button class=\"btn btn-xs btn-danger\"\r\n                      [disabled]=\"!asset.canBackMoney\"\r\n                      (click)=\"curAsset = asset;withDrawEvent.returnAmount = '';\r\n                        drawback.showModal({\r\n                          modalSize: 'sm',\r\n                          title: '申请退费',\r\n                          type: 'default',\r\n                          confirm: drawbackMoney\r\n                        })\">申请退费</button>\r\n            </div>\r\n          </td>\r\n        </tr>\r\n        </tbody>\r\n      </table>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<app-modal #drawback [disabledAcceptBtn]=\"!withDrawEvent.returnAmount || (withDrawEvent.returnAmount > (curAsset.hasPay - curAsset.hasUsed))\">\r\n  <div class=\"form-group clearfix\">\r\n    <label for=\"wantDrawbackMoney\" class=\"control-label col-xs-3\">退费金额:</label>\r\n    <div class=\"col-xs-9\">\r\n      <div class=\"input-group input-group-sm\">\r\n        <input type=\"number\"\r\n               style=\"width: 100%;\"\r\n               id=\"wantDrawbackMoney\"\r\n               class=\"form-control {{ withDrawEvent.returnAmount > (curAsset.canBackMoney) && 'error' }}\"\r\n               [(ngModel)]=\"withDrawEvent.returnAmount\"\r\n               min=\"0\"\r\n               max=\"{{curAsset.canBackMoney}}\"\r\n               placeholder=\"最多可退金额{{ curAsset.canBackMoney }}\">\r\n        <span class=\"input-group-addon\">元</span>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"form-group clearfix\">\r\n    <label for=\"drawbackRemark\" class=\"control-label col-xs-3\">\r\n      退费说明:\r\n    </label>\r\n    <div class=\"col-xs-9\">\r\n      <textarea name=\"drawbackRemark\"\r\n                style=\"width: 100%;\"\r\n                id=\"drawbackRemark\"\r\n                rows=\"3\"\r\n                class=\"form-control\"\r\n                placeholder=\"请输入退费说明\"\r\n                [(ngModel)]=\"withDrawEvent.remark\"></textarea>\r\n    </div>\r\n  </div>\r\n</app-modal>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/stmanager/renews-returns/renews-returns.component.less":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
@@ -4236,13 +7064,13 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ "../../../../../src/app/stmanager/course/course.component.ts":
+/***/ "../../../../../src/app/stmanager/renews-returns/renews-returns.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stmanager_service__ = __webpack_require__("../../../../../src/app/stmanager/stmanager.service.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CourseComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RenewsReturnsComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4254,48 +7082,45 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-var CourseComponent = (function () {
-    function CourseComponent(stmanagerService) {
-        this.stmanagerService = stmanagerService;
+var RenewsReturnsComponent = (function () {
+    function RenewsReturnsComponent(stManagerService) {
+        this.stManagerService = stManagerService;
+        this.drawbackMoney = this.drawbackMoney.bind(this);
     }
-    CourseComponent.prototype.ngOnInit = function () {
+    RenewsReturnsComponent.prototype.ngOnInit = function () {
         this.contentHeader = [
             { name: '主页', icon: 'fa-dashboard' },
-            { name: '课程列表页', icon: 'fa-users' }
+            { name: '学生退费管理页', icon: 'fa-exchange' }
         ];
-        this.filterTimeRange = {
-            start: new Date(new Date().getFullYear() + '-01-01').getTime(),
-            end: Infinity
-        };
-        this.filterTeacherName = '';
-        this.filterScheduleState = '';
-        this.schedule = [];
-        this.fetchSchedule();
+        this.assets = [];
+        this.filterStuName = '';
+        this.curAsset = {};
+        this.withDrawEvent = { returnAmount: '', remark: '', studentId: '' };
+        this.fetchStuAssets();
     };
-    CourseComponent.prototype.fetchSchedule = function () {
+    RenewsReturnsComponent.prototype.fetchStuAssets = function () {
         var _this = this;
-        this.stmanagerService.fetchSchedule().then(function (schedule) {
-            console.log(schedule);
-            _this.schedule = schedule;
+        this.stManagerService.fetchStuAssets().then(function (assets) {
+            _this.assets = assets;
         });
     };
-    CourseComponent.prototype.changeFilterScheduleState = function ($event) {
-        this.filterScheduleState = $event.value;
+    RenewsReturnsComponent.prototype.drawbackMoney = function () {
+        this.withDrawEvent.studentId = this.curAsset.studentId;
+        this.stManagerService.drawback(this.withDrawEvent);
     };
-    CourseComponent.prototype.handleTimeRangeChange = function ($event) { };
-    return CourseComponent;
+    return RenewsReturnsComponent;
 }());
-CourseComponent = __decorate([
+RenewsReturnsComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'app-course',
-        template: __webpack_require__("../../../../../src/app/stmanager/course/course.component.html"),
-        styles: [__webpack_require__("../../../../../src/app/stmanager/course/course.component.less")]
+        selector: 'app-renews-returns',
+        template: __webpack_require__("../../../../../src/app/stmanager/renews-returns/renews-returns.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/stmanager/renews-returns/renews-returns.component.less")]
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__stmanager_service__["a" /* StmanagerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__stmanager_service__["a" /* StmanagerService */]) === "function" && _a || Object])
-], CourseComponent);
+], RenewsReturnsComponent);
 
 var _a;
-//# sourceMappingURL=course.component.js.map
+//# sourceMappingURL=renews-returns.component.js.map
 
 /***/ }),
 
@@ -4346,25 +7171,30 @@ var StmanagerComponent = (function () {
     StmanagerComponent.prototype.ngOnInit = function () {
         this.sidebarMenu = [
             {
-                name: '课表管理',
+                name: '教学课表管理',
                 routerLink: ['schedule'],
                 icon: 'fa-table'
             },
             {
-                name: '学生列表',
+                name: '学生列表管理',
                 routerLink: ['students'],
                 icon: 'fa-graduation-cap'
             },
             {
-                name: '学生课表',
+                name: '学生课表管理',
                 routerLink: ['student-schedule'],
                 icon: 'fa-calendar'
             },
             {
-                name: '学生课时',
+                name: '学生课时列表',
                 routerLink: ['stu-class-period'],
                 icon: 'fa-clock-o'
             },
+            {
+                name: '续费/退费管理',
+                routerLink: ['renews-returns'],
+                icon: 'fa-credit-card'
+            }
         ];
     };
     return StmanagerComponent;
@@ -4388,6 +7218,7 @@ StmanagerComponent = __decorate([
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__service_http_service__ = __webpack_require__("../../../../../src/app/service/http.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__alert_alert_service__ = __webpack_require__("../../../../../src/app/alert/alert.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return StmanagerService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -4400,37 +7231,302 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 var StmanagerService = (function () {
-    function StmanagerService(http) {
+    function StmanagerService(http, alertService) {
         this.http = http;
+        this.alertService = alertService;
     }
-    /* 获取课程列表 */
+    /* 课表列表相关服务 */
+    //  获取课程列表
     StmanagerService.prototype.fetchSchedule = function () {
+        var _this = this;
         return this.http.get('stmanager/course/schedule').then(function (data) {
             if (data.success) {
                 return data.data;
             }
             else {
-                return [
+                _this.alertService.alert({
+                    type: 'danger',
+                    title: '提示',
+                    content: '获取课程列表失败'
+                });
+            }
+        });
+    };
+    // 根据课程ID获取教师列表
+    StmanagerService.prototype.fetchTeachersByCourseId = function (courseId, courseScheduleId) {
+        var _this = this;
+        var url = "stmanager/course/teacher/" + courseId;
+        if (courseScheduleId) {
+            url += "?courseScheduleId=" + courseScheduleId;
+        }
+        return this.http.get(url).then(function (result) {
+            if (result.success) {
+                (result.data || []).forEach(function (teacher) { return teacher.text = teacher.name; });
+                return result.data;
+            }
+            else {
+                _this.alertService.alert({
+                    type: 'danger',
+                    title: '提示',
+                    content: '获取教师列表失败'
+                });
+            }
+            return [];
+        });
+    };
+    //  根据课程ID获取学生列表
+    StmanagerService.prototype.fetchStudents = function (courseId) {
+        var _this = this;
+        return this.http.get("stmanager/course/student/" + courseId).then(function (res) {
+            if (res.success) {
+                return res.data;
+            }
+            else {
+                _this.alertService.alert({
+                    type: 'danger',
+                    title: '提示',
+                    content: '获取报名学生列表失败'
+                });
+            }
+        });
+    };
+    //  创建课表
+    StmanagerService.prototype.createSchedule = function (body) {
+        var _this = this;
+        return this.http.post('stmanager/course/schedule', body).then(function (result) {
+            if (result.success) {
+                _this.alertService.alert({
+                    type: 'success',
+                    title: '提示',
+                    content: '新课表已成功创建'
+                });
+                return result.data;
+            }
+            else {
+                _this.alertService.alert({
+                    type: 'danger',
+                    title: '提示',
+                    content: '创建课表失败'
+                });
+            }
+        });
+    };
+    //  更新课表
+    StmanagerService.prototype.updateSchedule = function (body) {
+        var _this = this;
+        return this.http.put('stmanager/course/schedule', body).then(function (result) {
+            if (result.success) {
+                _this.alertService.alert({
+                    type: 'success',
+                    title: '提示',
+                    content: '课表信息已更新'
+                });
+            }
+            else {
+                _this.alertService.alert({
+                    type: 'danger',
+                    title: '提示',
+                    content: '更新课表信息失败'
+                });
+            }
+            return result.success;
+        });
+    };
+    /* 学生课表相关服务 */
+    StmanagerService.prototype.fetchStuSchedule = function () {
+        var _this = this;
+        return this.http.get('stmanager/student/schedule').then(function (result) {
+            console.log(result);
+            if (result.success) {
+                return result.data;
+            }
+            else {
+                _this.alertService.alert({
+                    type: 'danger',
+                    title: '提示',
+                    content: '获取学生课表失败'
+                });
+            }
+        });
+    };
+    // 结束学生课表
+    StmanagerService.prototype.finishSchedule = function (id) {
+        var _this = this;
+        return this.http.post("/stmanager/student/finish/" + id).then(function (result) {
+            if (result.success) {
+                _this.alertService.alert({
+                    type: 'success',
+                    title: '提示',
+                    content: '已更新'
+                });
+            }
+            else {
+                _this.alertService.alert({
+                    type: 'danger',
+                    title: '提示',
+                    content: '操作失败'
+                });
+            }
+            return result.success;
+        });
+    };
+    // 取消课程
+    StmanagerService.prototype.cancelRegisterSchedule = function (courseScheduleId, studentId) {
+        var _this = this;
+        return this.http.post("stmanager/student/schedule/cancel/" + courseScheduleId + "/" + studentId).then(function (result) {
+            if (result.success) {
+                _this.alertService.alert({
+                    type: 'success',
+                    title: '提示',
+                    content: '课程已取消'
+                });
+                return result.success;
+            }
+            else {
+                _this.alertService.alert({
+                    type: 'danger',
+                    title: '提示',
+                    content: '操作失败'
+                });
+            }
+        });
+    };
+    /* 学生列表 */
+    StmanagerService.prototype.fetchAllocatedStudents = function () {
+        return this.http.get('stmanager/student').then(function (result) {
+            return result.data;
+        });
+    };
+    /* 学生课时信息 */
+    StmanagerService.prototype.fetchStudentStat = function () {
+        var _this = this;
+        return this.http.get('stmanager/student/stat').then(function (result) {
+            if (result.success) {
+                return result.data;
+            }
+            else {
+                _this.alertService.alert({
+                    type: 'danger',
+                    title: '提示',
+                    content: '操作失败'
+                });
+            }
+        });
+    };
+    /* 更新学生课时信息的成绩 */
+    StmanagerService.prototype.updateStuScore = function (courseId, score, studentId) {
+        var _this = this;
+        return this.http.put("stmanager/score/" + courseId + "/" + score + "/" + studentId, {}).then(function (result) {
+            if (result.success) {
+                _this.alertService.alert({
+                    type: 'success',
+                    title: '提示',
+                    content: '成绩已录入'
+                });
+                return result.data;
+            }
+            else {
+                _this.alertService.alert({
+                    type: 'danger',
+                    title: '提示',
+                    content: '成绩录入失败'
+                });
+                throw Error(result);
+            }
+        });
+    };
+    // 退购课程
+    StmanagerService.prototype.returnCoursePurchase = function (studentId, courseId, hourNum) {
+        var _this = this;
+        return this.http.post("stmanager/course/back/" + studentId + "/" + courseId + "/" + hourNum).then(function (result) {
+            if (result.success) {
+                _this.alertService.alert({
+                    content: '已成功退课',
+                    type: 'success',
+                    title: '提示'
+                });
+            }
+            else {
+                _this.alertService.alert({
+                    type: 'danger',
+                    title: '提示',
+                    content: '成绩录入失败, ' + result.data
+                });
+            }
+        });
+    };
+    StmanagerService.prototype.fetchStuAssets = function () {
+        var _this = this;
+        return this.http.get('stmanager/student/back/list').then(function (result) {
+            if (result.success) {
+                return result.data;
+            }
+            else {
+                _this.alertService.alert({
+                    content: '获取学生资产信息失败, ' + result.data,
+                    type: 'danger',
+                    title: '提示'
+                });
+            }
+        });
+    };
+    StmanagerService.prototype.drawback = function (drawback) {
+        var _this = this;
+        return this.http.post('stmanager/back/money', drawback).then(function (res) {
+            if (res.success) {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '退费申请已发起, 请等待审核',
+                    type: 'success'
+                });
+            }
+            else {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '退费申请发起失败,' + res.data + ' 请重试',
+                    type: 'danger'
+                });
+            }
+        });
+    };
+    // 退费统计
+    StmanagerService.prototype.fetchDrawbackRecord = function () {
+        var _this = this;
+        return this.http.get('stmanager/stmanager/back').then(function (result) {
+            if (result.success) {
+                result.data = [
                     {
-                        courseName: '哈哈大笑课',
-                        courseScheduleId: '12312',
-                        endTime: 1503112133160,
-                        finish: false,
-                        schoolId: 'asdf',
-                        startTime: 1503111133160,
-                        teacherName: '面目可憎的老师',
+                        backMoney: 0,
+                        renewMoney: 0,
+                        teacherId: 'string',
+                        teacherName: 'string',
+                        teacherPhone: 'string'
                     },
                     {
-                        courseName: '呵呵大笑课',
-                        courseScheduleId: '12112',
-                        endTime: 1503122133160,
-                        finish: false,
-                        schoolId: 'asdf',
-                        startTime: 1502111133160,
-                        teacherName: '啊增老师'
+                        backMoney: 0,
+                        renewMoney: 0,
+                        teacherId: 'string',
+                        teacherName: 'string',
+                        teacherPhone: 'string'
+                    },
+                    {
+                        backMoney: 0,
+                        renewMoney: 0,
+                        teacherId: 'string',
+                        teacherName: 'string',
+                        teacherPhone: 'string'
                     }
                 ];
+                return result.data;
+            }
+            else {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '获取退费统计列表失败',
+                    type: 'danger'
+                });
             }
         });
     };
@@ -4438,10 +7534,10 @@ var StmanagerService = (function () {
 }());
 StmanagerService = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__service_http_service__["a" /* HttpService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__service_http_service__["a" /* HttpService */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__service_http_service__["a" /* HttpService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__service_http_service__["a" /* HttpService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__alert_alert_service__["a" /* AlertService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__alert_alert_service__["a" /* AlertService */]) === "function" && _b || Object])
 ], StmanagerService);
 
-var _a;
+var _a, _b;
 //# sourceMappingURL=stmanager.service.js.map
 
 /***/ }),
@@ -4449,7 +7545,7 @@ var _a;
 /***/ "../../../../../src/app/stmanager/student-class-period/student-class-period.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  student-class-period works!\n</p>\n"
+module.exports = "<app-content-header\r\n  [title]=\"'学生课时管理'\" [menus]=\"contentHeader\"></app-content-header>\r\n\r\n<div class=\"content\">\r\n\r\n  <app-collapse-box [collapse]=\"false\" [boxTitle]=\"'学生课时列表筛选'\">\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">学生姓名:</label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <input class=\"form-control\" [(ngModel)]=\"filterStudentName\" placeholder=\"请输入学生名称\">\r\n        <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">购买时间:</label>\r\n      <app-date-ranger-picker\r\n        [timePicker]=\"false\"\r\n        [startTime]=\"buyTimeRange.start\"\r\n        (dateRangeSetEvent)=\"handleTimeRangeChange($event)\">\r\n      </app-date-ranger-picker>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">课程名称:</label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <input class=\"form-control\" [(ngModel)]=\"filterCourseName\" placeholder=\"请输入课程名称\">\r\n        <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\r\n      </div>\r\n    </div>\r\n  </app-collapse-box>\r\n\r\n  <div class=\"row\">\r\n    <div class=\"col-xs-12\">\r\n      <div class=\"box box-info\">\r\n        <div class=\"box-header\">\r\n          <h3 class=\"box-title\">\r\n            学生课时列表\r\n          </h3>\r\n        </div>\r\n        <div class=\"box-body\" style=\"border-top: 1px solid #ecf0f5;\">\r\n          <table class=\"table table-hover table-bordered text-center\">\r\n            <thead>\r\n              <tr>\r\n                <th>学生姓名</th>\r\n                <th>课程名称</th>\r\n                <th>总课时</th>\r\n                <th>已用课时</th>\r\n                <th>成绩</th>\r\n                <th>购买时间</th>\r\n                <th class=\"text-center\">操作</th>\r\n              </tr>\r\n            </thead>\r\n            <tbody>\r\n              <tr *ngFor=\"let stat of stuCourseHourStats |\r\n                matchItem: filterStudentName:'studentName' |\r\n                matchItem: filterCourseName: 'courseName' |\r\n                timeRange: buyTimeRange : 'buyTime'\">\r\n                <td>{{ stat.studentName }}</td>\r\n                <td>{{ stat.courseName }}</td>\r\n                <td>{{ stat.buyHour }}</td>\r\n                <td>{{ stat.usedHour }}</td>\r\n                <td>{{ stat.score || '未录入' }}</td>\r\n                <td>{{ stat.buyTime | date: 'yyyy-MM-dd: HH:mm:ss' }}</td>\r\n                <td class=\"text-center\">\r\n                  <div class=\"btn-group btn-group-xs\">\r\n                    <button class=\"btn btn-success btn-xs\"\r\n                    (click)=\"curStatScore = stat.score;\r\n                    curStat = stat;\r\n                    markInputModal.showModal({\r\n                      title: '请输入' + curStat.studentName + '学生成绩',\r\n                      confirm: updateStuScore\r\n                    })\">\r\n                      录入成绩\r\n                    </button>\r\n                    <button class=\"btn btn-warning btn-xs\"\r\n                    (click)=\"curStat = stat;\r\n                    cancelPurchaseHour = 0;\r\n                    returnCoursePurchaseModal.showModal({\r\n                      title: '退购课时',\r\n                      type: 'default',\r\n                      modalConfirmText: '确定退购',\r\n                      confirm: cancelCoursePurchase\r\n                    })\">\r\n                      退课申请\r\n                    </button>\r\n                  </div>\r\n                </td>\r\n              </tr>\r\n            </tbody>\r\n          </table>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<app-modal #markInputModal>\r\n  <div class=\"form-group clearfix\" style=\"margin-bottom: 0;\">\r\n    <label for=\"mark\" class=\"control-label col-xs-2 col-xs-offset-2\" style=\"margin-bottom: 0;\">成绩:</label>\r\n    <div class=\"col-xs-5\">\r\n      <div class=\"input-group input-group-sm\">\r\n        <input type=\"number\" min=\"0\" class=\"form-control\" name=\"mark\" id=\"mark\" [(ngModel)]=\"curStatScore\">\r\n        <span class=\"input-group-addon\">分</span>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</app-modal>\r\n\r\n<app-modal #returnCoursePurchaseModal>\r\n  <div class=\"col-xs-12 purchase-info\">\r\n    <p class=\"text-muted\">已购课时{{ curStat.buyHour }}</p>\r\n    <p class=\"text-muted\">已用课时{{ curStat.usedHour }}</p>\r\n    <p class=\"text-muted\">可退课时{{ curStat.buyHour - curStat.usedHour }}</p>\r\n  </div>\r\n  <div class=\"form-group form-group-sm clearfix\">\r\n    <label for=\"cancelHour\" class=\"control-label col-xs-3\">退选课时数:</label>\r\n    <div class=\"col-xs-9\">\r\n      <input id=\"cancelHour\"\r\n             class=\"form-control\"\r\n             type=\"number\"\r\n             placeholder=\"请输入要退课的课时数\"\r\n             [(ngModel)]=\"cancelPurchaseHour\"\r\n             min=\"0\"\r\n             max=\"{{ curStat.buyHour - curStat.usedHour }}\">\r\n    </div>\r\n  </div>\r\n</app-modal>\r\n"
 
 /***/ }),
 
@@ -4461,7 +7557,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".form-group {\n  margin-bottom: 0;\n}\n.purchase-info {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  margin-bottom: 12px;\n}\n", ""]);
 
 // exports
 
@@ -4476,6 +7572,7 @@ module.exports = module.exports.toString();
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stmanager_service__ = __webpack_require__("../../../../../src/app/stmanager/stmanager.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return StudentClassPeriodComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -4487,10 +7584,55 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var StudentClassPeriodComponent = (function () {
-    function StudentClassPeriodComponent() {
+    function StudentClassPeriodComponent(stManagerService) {
+        this.stManagerService = stManagerService;
+        this.updateStuScore = this.updateStuScore.bind(this);
+        this.cancelCoursePurchase = this.cancelCoursePurchase.bind(this);
     }
     StudentClassPeriodComponent.prototype.ngOnInit = function () {
+        this.contentHeader = [
+            { name: '主页', icon: 'fa-dashboard' },
+            { name: '学生课时管理', icon: 'fa-users' }
+        ];
+        this.cancelPurchaseHour = 0;
+        this.curStat = {};
+        this.curStatScore = '';
+        this.filterCourseName = '';
+        this.filterStudentName = '';
+        this.buyTimeRange = {
+            start: new Date(new Date().getFullYear() + '-01-01').getTime(),
+            end: Date.now(),
+        };
+        this.fetchStudentStat();
+    };
+    StudentClassPeriodComponent.prototype.fetchStudentStat = function () {
+        var _this = this;
+        this.stManagerService.fetchStudentStat().then(function (data) {
+            _this.stuCourseHourStats = data;
+        });
+    };
+    StudentClassPeriodComponent.prototype.handleTimeRangeChange = function ($event) {
+        this.buyTimeRange = {
+            start: $event.start,
+            end: $event.end,
+        };
+    };
+    StudentClassPeriodComponent.prototype.updateStuScore = function () {
+        var _this = this;
+        var courseId = this.curStat.courseId;
+        var score = this.curStatScore;
+        var studentId = this.curStat.studentId;
+        this.stManagerService.updateStuScore(courseId, score, studentId).then(function (result) {
+            _this.curStat.score = _this.curStatScore;
+        });
+    };
+    StudentClassPeriodComponent.prototype.cancelCoursePurchase = function () {
+        var _this = this;
+        this.stManagerService.returnCoursePurchase(this.curStat.studentId, this.curStat.courseId, this.cancelPurchaseHour).then(function () {
+            _this.curStat.buyHour -= _this.cancelPurchaseHour;
+        });
     };
     return StudentClassPeriodComponent;
 }());
@@ -4500,9 +7642,10 @@ StudentClassPeriodComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/stmanager/student-class-period/student-class-period.component.html"),
         styles: [__webpack_require__("../../../../../src/app/stmanager/student-class-period/student-class-period.component.less")]
     }),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__stmanager_service__["a" /* StmanagerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__stmanager_service__["a" /* StmanagerService */]) === "function" && _a || Object])
 ], StudentClassPeriodComponent);
 
+var _a;
 //# sourceMappingURL=student-class-period.component.js.map
 
 /***/ }),
@@ -4510,7 +7653,7 @@ StudentClassPeriodComponent = __decorate([
 /***/ "../../../../../src/app/stmanager/student-schedule/student-schedule.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  student-schedule works!\n</p>\n"
+module.exports = "<app-content-header\r\n  [title]=\"'学生课表管理'\" [menus]=\"contentHeader\"></app-content-header>\r\n<div class=\"content\">\r\n\r\n  <app-collapse-box [collapse]=\"false\" [icon]=\"'filter'\" [boxTitle]=\"'学生课表过滤'\">\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">姓名:</label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <input class=\"form-control\" [(ngModel)]=\"filterStuName\" placeholder=\"请输入学生名称\">\r\n        <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">课程名称:</label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <input class=\"form-control\" [(ngModel)]=\"filterCourseName\" placeholder=\"请输入课程名称\">\r\n        <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">完成状态:</label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <select2\r\n          [width]=\"148\"\r\n          [value]=\"filterScheduleState\"\r\n          [cssImport]=\"false\"\r\n          (valueChanged)=\"changeFilterScheduleState($event)\"\r\n          [options]=\"{minimumResultsForSearch: -1, placeholder: '全部'}\"\r\n          [data]=\"[{id: 'ALL',text: '全部'}, {id: true, text: '是'}, {id: false, text: '否'}]\"></select2>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">上课时间:</label>\r\n      <app-date-ranger-picker\r\n        [timePicker]=\"false\"\r\n        [startTime]=\"filterTimeRange.start\"\r\n        (dateRangeSetEvent)=\"handleTimeRangeChange($event)\">\r\n      </app-date-ranger-picker>\r\n    </div>\r\n  </app-collapse-box>\r\n\r\n  <div class=\"row\">\r\n    <div class=\"col-xs-12\">\r\n      <div class=\"box box-info\">\r\n        <div class=\"box-header\">\r\n          <h3 class=\"box-title\">\r\n            学生课表\r\n          </h3>\r\n        </div>\r\n        <div class=\"box-body\">\r\n          <table class=\"table table-bordered table-hover\">\r\n            <thead>\r\n              <tr>\r\n                <th>学生厦姓名</th>\r\n                <th>年级</th>\r\n                <th>课程名称</th>\r\n                <th>开始时间</th>\r\n                <th>结束时间</th>\r\n                <th>是否结课</th>\r\n                <th class=\"text-center\">操作</th>\r\n              </tr>\r\n            </thead>\r\n            <tbody>\r\n              <tr *ngFor=\"let record of schedule |\r\n                matchItem: filterStuName: 'studentName' |\r\n                matchItem: filterCourseName: 'courseName' |\r\n                matchItem: filterScheduleState: 'finish' : 'exact' |\r\n                timeRange: filterTimeRange : 'startTime'|\r\n                timeRange: filterTimeRange : 'endTime';\">\r\n                <td>{{ record.studentName }}</td>\r\n                <td>{{ record.gradeName }}</td>\r\n                <td>{{ record.courseName }}</td>\r\n                <td>{{ record.startTime | date: 'yyyy-MM-dd' }}</td>\r\n                <td>{{ record.endTime | date: 'yyyy-MM-dd' }}</td>\r\n                <td>{{ record.finish ? '是': '否' }}</td>\r\n                <td class=\"text-center\">\r\n                  <div class=\"btn-group btn-group-xs\" *ngIf=\"!record.finish\">\r\n                    <button class=\"btn btn-success btn-xs\" (click)=\"curScheduleId = record.courseScheduleStudentId;\r\n                    confirm.showModal({\r\n                      title: '提示',\r\n                      content: '是否确认结束该课程',\r\n                      confirm: finishSchedule\r\n                    })\">确认完成</button>\r\n                    <button class=\"btn btn-warning btn-xs\" (click)=\"curScheduleId = record.courseScheduleStudentId;\r\n                    confirm.showModal({\r\n                      title: '提示',\r\n                      content:'确认取消该课程吗？',\r\n                      confirm: delSchedule\r\n                    })\">取消课程</button>\r\n                  </div>\r\n                  <span *ngIf=\"record.finish\">--</span>\r\n                </td>\r\n              </tr>\r\n              <tr *ngIf=\"!schedule.length\">\r\n                <td colspan=\"7\">\r\n                  <p class=\"text-center\">暂无学生课表信息</p>\r\n                </td>\r\n              </tr>\r\n            </tbody>\r\n          </table>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<app-confirm #confirm></app-confirm>\r\n"
 
 /***/ }),
 
@@ -4537,6 +7680,7 @@ module.exports = module.exports.toString();
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stmanager_service__ = __webpack_require__("../../../../../src/app/stmanager/stmanager.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return StudentScheduleComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -4548,10 +7692,69 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var StudentScheduleComponent = (function () {
-    function StudentScheduleComponent() {
+    function StudentScheduleComponent(stmanagerService) {
+        this.stmanagerService = stmanagerService;
+        this.finishSchedule = this.finishSchedule.bind(this);
+        this.delSchedule = this.delSchedule.bind(this);
     }
     StudentScheduleComponent.prototype.ngOnInit = function () {
+        this.contentHeader = [
+            { name: '主页', icon: 'fa-dashboard' },
+            { name: '学生课表管理页', icon: 'fa-graduation-cap' }
+        ];
+        this.schedule = [];
+        this.curScheduleId = '';
+        this.filterStuName = '';
+        this.filterCourseName = '';
+        this.filterScheduleState = '';
+        this.filterTimeRange = {
+            start: new Date(new Date().getFullYear() + '-01-01').getTime(),
+            end: Infinity
+        };
+        this.fetchStuSchedule();
+    };
+    /* 展示课程列表 */
+    // 获取学生课程列表
+    StudentScheduleComponent.prototype.fetchStuSchedule = function () {
+        var _this = this;
+        this.stmanagerService.fetchStuSchedule().then(function (schedule) { return _this.schedule = schedule; });
+    };
+    // 筛选课程列表(课程完成状态筛选)
+    StudentScheduleComponent.prototype.changeFilterScheduleState = function ($event) {
+        this.filterScheduleState = $event.value === 'ALL' ? '' : $event.value;
+    };
+    // 筛选课程列表 课程上课时间筛选
+    StudentScheduleComponent.prototype.handleTimeRangeChange = function ($event) {
+        this.filterTimeRange = {
+            start: $event.start,
+            end: $event.end,
+        };
+    };
+    /* 编辑课程列表 */
+    StudentScheduleComponent.prototype.finishSchedule = function () {
+        var _this = this;
+        this.stmanagerService.finishSchedule(this.curScheduleId).then(function (success) {
+            if (success) {
+                _this.findScheduleById(_this.curScheduleId).finish = true;
+            }
+        });
+    };
+    // 搜索该课程
+    StudentScheduleComponent.prototype.findScheduleById = function (id) {
+        return this.schedule.find(function (item) { return item.courseScheduleStudentId === id; });
+    };
+    // 取消某个课程
+    StudentScheduleComponent.prototype.delSchedule = function () {
+        var _this = this;
+        var curSchedule = this.findScheduleById(this.curScheduleId);
+        this.stmanagerService.cancelRegisterSchedule(curSchedule.courseScheduleId, curSchedule.studentId).
+            then(function () {
+            var curScheduleIndex = _this.schedule.indexOf(curSchedule);
+            _this.schedule.splice(curScheduleIndex, 1);
+            _this.schedule = _this.schedule.slice();
+        });
     };
     return StudentScheduleComponent;
 }());
@@ -4561,9 +7764,10 @@ StudentScheduleComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/stmanager/student-schedule/student-schedule.component.html"),
         styles: [__webpack_require__("../../../../../src/app/stmanager/student-schedule/student-schedule.component.less")]
     }),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__stmanager_service__["a" /* StmanagerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__stmanager_service__["a" /* StmanagerService */]) === "function" && _a || Object])
 ], StudentScheduleComponent);
 
+var _a;
 //# sourceMappingURL=student-schedule.component.js.map
 
 /***/ }),
@@ -4571,7 +7775,7 @@ StudentScheduleComponent = __decorate([
 /***/ "../../../../../src/app/stmanager/students/ststudents.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  students works!\n</p>\n"
+module.exports = "<app-content-header\r\n  [title]=\"'学生列表'\" [menus]=\"contentHeader\"></app-content-header>\r\n\r\n<div class=\"content\">\r\n\r\n  <app-collapse-box >\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        姓名:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <input class=\"form-control input-sm\" [(ngModel)]=\"studentFilterName\" placeholder=\"输入学生名称\">\r\n        <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">生日:</label>\r\n      <app-date-ranger-picker\r\n        [timePicker]=\"false\"\r\n        [startTime]=\"studentBirthdayFilterTime.start\"\r\n        (dateRangeSetEvent)=\"handleBirthdayRangeChange($event)\">\r\n      </app-date-ranger-picker>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        电话:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <input class=\"form-control input-sm\" [(ngModel)]=\"studentFilterPhone\" placeholder=\"输入学生电话号码\">\r\n        <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n      </div>\r\n    </div>\r\n  </app-collapse-box>\r\n\r\n  <div class=\"row\">\r\n    <div class=\"col-xs-12\">\r\n      <div class=\"box box-info\">\r\n        <div class=\"box-header\">\r\n          <h3 class=\"box-title\">学生列表</h3>\r\n        </div>\r\n        <div class=\"box-body\" style=\"border-top: 1px solid #ecf0f5\">\r\n          <table class=\"table table-bordered table-hover\">\r\n            <thead>\r\n              <tr>\r\n                <th>名称</th>\r\n                <th>电话</th>\r\n                <th>性别</th>\r\n                <th>生日</th>\r\n                <th>地址</th>\r\n                <th>描述</th>\r\n              </tr>\r\n            </thead>\r\n            <tbody>\r\n              <tr *ngFor=\"let student of students |\r\n              matchItem: studentFilterName: 'name' |\r\n              matchItem: studentFilterPhone : 'phone' |\r\n              timeRange: studentBirthdayFilterTime: 'birthday'\">\r\n                <td>{{student.name}}</td>\r\n                <td>{{student.phone}}</td>\r\n                <td>{{student.sex === 'MALE' ? '男': '女'}}</td>\r\n                <td>{{ (student.birthday | date: 'yyyy-MM-dd') || '--' }}</td>\r\n                <td>{{student.address}}</td>\r\n                <td>{{student.remark}}</td>\r\n              </tr>\r\n            </tbody>\r\n          </table>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -4598,6 +7802,7 @@ module.exports = module.exports.toString();
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stmanager_service__ = __webpack_require__("../../../../../src/app/stmanager/stmanager.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return StStudentsComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -4609,10 +7814,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var StStudentsComponent = (function () {
-    function StStudentsComponent() {
+    function StStudentsComponent(stmanagerService) {
+        this.stmanagerService = stmanagerService;
     }
     StStudentsComponent.prototype.ngOnInit = function () {
+        this.students = [];
+        this.studentFilterName = '';
+        this.studentFilterPhone = '';
+        this.studentBirthdayFilterTime = {
+            start: new Date(new Date(1950, 0, 1).getFullYear() + '-01-01').getTime(),
+            end: Infinity
+        };
+        this.fetchStudents();
+    };
+    StStudentsComponent.prototype.fetchStudents = function () {
+        var _this = this;
+        this.stmanagerService.fetchAllocatedStudents().then(function (students) {
+            _this.students = students;
+        });
+    };
+    StStudentsComponent.prototype.handleBirthdayRangeChange = function ($event) {
+        this.studentBirthdayFilterTime = {
+            start: $event.start,
+            end: $event.end,
+        };
     };
     return StStudentsComponent;
 }());
@@ -4622,9 +7849,10 @@ StStudentsComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/stmanager/students/ststudents.component.html"),
         styles: [__webpack_require__("../../../../../src/app/stmanager/students/ststudents.component.less")]
     }),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__stmanager_service__["a" /* StmanagerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__stmanager_service__["a" /* StmanagerService */]) === "function" && _a || Object])
 ], StStudentsComponent);
 
+var _a;
 //# sourceMappingURL=ststudents.component.js.map
 
 /***/ }),
@@ -4896,6 +8124,886 @@ SyllabusService = __decorate([
 
 var _a, _b;
 //# sourceMappingURL=syllabus.service.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/tc-director/grade/grade.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<app-content-header\r\n  [title]=\"'班组列表'\" [menus]=\"contentHeader\"></app-content-header>\r\n\r\n<div class=\"content\">\r\n  <app-collapse-box [collapse]=\"false\" [icon]=\"'filter'\" [boxTitle]=\"'班组过滤'\">\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">班组:</label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <input class=\"form-control\" [(ngModel)]=\"filterGradeName\" placeholder=\"请输入班组\">\r\n        <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\r\n      </div>\r\n    </div>\r\n  </app-collapse-box>\r\n\r\n  <div class=\"box box-primary\">\r\n    <div class=\"box-header\">\r\n      <h3 class=\"box-title\">班组列表</h3>\r\n      <div class=\"box-tools\">\r\n        <button class=\"btn btn-primary btn-sm\" (click)=\"setCurGrade();\r\n        gradeCreatorOrUpdator.showModal({\r\n          modalSize: 'sm',\r\n          title: '创建新的班组',\r\n          confirmBtnText: '创建',\r\n          confirm: createGrade\r\n        })\">\r\n          <i class=\"fa fa-plus\"></i>\r\n          创建班组\r\n        </button>\r\n      </div>\r\n    </div>\r\n    <div class=\"box-body\" style=\"border-top: 1px solid #ecf0f5;\">\r\n      <table class=\"table table-hover table-bordered\">\r\n        <thead>\r\n          <tr>\r\n            <th>班组</th>\r\n            <th>价格</th>\r\n            <th>备注</th>\r\n            <th class=\"text-center\">操作</th>\r\n          </tr>\r\n        </thead>\r\n        <tbody>\r\n          <tr *ngFor=\"let grade of grades |\r\n             matchItem: filterGradeName : 'name'\"\r\n            (click)=\"setCurGrade(grade);\r\n            gradeCreatorOrUpdator.showModal({\r\n              modalSize: 'sm',\r\n              title: '编辑班组' + curGrade.name,\r\n              confirm: updateGrade\r\n            })\">\r\n            <td>{{ grade.name }}</td>\r\n            <td>{{ grade.price }}</td>\r\n            <td>{{ grade.remark }}</td>\r\n            <td class=\"text-center\">\r\n              <div class=\"form-group form-group-xs\">\r\n                <button class=\"btn btn-xs btn-danger\"\r\n                (click)=\"setCurGrade(grade);\r\n                $event.stopPropagation();\r\n                deleteGradeConfirm.showModal({\r\n                  title: '提示',\r\n                  content: '确定删除该班组吗',\r\n                  confirm: deleteGrade\r\n                })\">\r\n                  <i class=\"fa fa-trash\"></i> 删除班组\r\n                </button>\r\n              </div>\r\n            </td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<app-modal #gradeCreatorOrUpdator [disabledAcceptBtn]=\"!(curGrade.name && curGrade.price && curGrade.remark)\">\r\n  <form class=\"form\">\r\n    <div class=\"form-group clearfix\">\r\n      <label for=\"name\" class=\"control-label col-xs-3\">班组名称</label>\r\n      <div class=\"col-xs-9\">\r\n        <input id=\"name\" name=\"name\" [(ngModel)]=\"curGrade.name\" class=\"form-control\" placeholder=\"请输入班组名称\">\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"form-group clearfix\">\r\n      <label for=\"price\" class=\"control-label col-xs-3\">班组价格</label>\r\n      <div class=\"col-xs-9\">\r\n        <input type=\"number\" id=\"price\" name=\"price\" [(ngModel)]=\"curGrade.price\" class=\"form-control\" placeholder=\"请输入班组价格\">\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"form-group clearfix\">\r\n      <label for=\"remark\" class=\"control-label col-xs-3\">备注</label>\r\n      <div class=\"col-xs-9\">\r\n        <input id=\"remark\" name=\"remark\" [(ngModel)]=\"curGrade.remark\" class=\"form-control\" placeholder=\"请输入班组的备注信息\">\r\n      </div>\r\n    </div>\r\n  </form>\r\n</app-modal>\r\n\r\n<app-modal #deleteGradeConfirm></app-modal>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/tc-director/grade/grade.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "table tr {\n  cursor: pointer;\n}\ntable tr .form-group {\n  margin-bottom: 0;\n}\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/tc-director/grade/grade.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_school_service__ = __webpack_require__("../../../../../src/app/common/school.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__teacher_director_service__ = __webpack_require__("../../../../../src/app/tc-director/teacher-director.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GradeComponent; });
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var GradeComponent = (function () {
+    function GradeComponent(schoolService, teacherDirectorService) {
+        this.schoolService = schoolService;
+        this.teacherDirectorService = teacherDirectorService;
+        this.createGrade = this.createGrade.bind(this);
+        this.updateGrade = this.updateGrade.bind(this);
+        this.deleteGrade = this.deleteGrade.bind(this);
+    }
+    GradeComponent.prototype.ngOnInit = function () {
+        this.contentHeader = [
+            { name: '主页', icon: 'fa-dashboard' },
+            { name: '教学班组管理页', icon: 'fa-users' }
+        ];
+        this.filterGradeName = '';
+        this.setCurGrade();
+        this.fetchGrades();
+    };
+    GradeComponent.prototype.setCurGrade = function (grade) {
+        this.curGrade = __assign({}, grade) || { name: '', remark: '', price: '' };
+    };
+    GradeComponent.prototype.fetchGrades = function () {
+        var _this = this;
+        this.schoolService.fetchGrades().then(function (grades) {
+            _this.grades = grades;
+        });
+    };
+    GradeComponent.prototype.createGrade = function () {
+        var _this = this;
+        this.teacherDirectorService.createGrade(this.curGrade).then(function (id) {
+            _this.curGrade.id = id;
+            _this.grades.unshift(_this.curGrade);
+        });
+    };
+    GradeComponent.prototype.updateGrade = function () {
+        var _this = this;
+        this.teacherDirectorService.updateGrade(this.curGrade).then(function (success) {
+            var curGrade = _this.findGradeById(_this.curGrade.id);
+            var curGradeIndex = _this.grades.indexOf(curGrade);
+            _this.grades[curGradeIndex] = __assign({}, _this.curGrade);
+        });
+    };
+    GradeComponent.prototype.deleteGrade = function () {
+        var _this = this;
+        this.teacherDirectorService.deleteGrade(this.curGrade.id).then(function (success) {
+            var curGrade = _this.findGradeById(_this.curGrade.id);
+            var curGradeIndex = _this.grades.indexOf(curGrade);
+            _this.grades.splice(curGradeIndex, 1);
+        });
+    };
+    GradeComponent.prototype.findGradeById = function (id) {
+        return this.grades.find(function (grade) { return id === grade.id; });
+    };
+    return GradeComponent;
+}());
+GradeComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-grade',
+        template: __webpack_require__("../../../../../src/app/tc-director/grade/grade.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/tc-director/grade/grade.component.less")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__common_school_service__["a" /* SchoolService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__common_school_service__["a" /* SchoolService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__teacher_director_service__["a" /* TeacherDirectorService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__teacher_director_service__["a" /* TeacherDirectorService */]) === "function" && _b || Object])
+], GradeComponent);
+
+var _a, _b;
+//# sourceMappingURL=grade.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/tc-director/origin-course/origin-course.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<app-content-header\r\n  [title]=\"'课程列表'\" [menus]=\"contentHeader\"></app-content-header>\r\n\r\n<div class=\"content\">\r\n  <app-collapse-box [collapse]=\"false\" [icon]=\"'filter'\" [boxTitle]=\"'课程过滤'\">\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">课程名称:</label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <input class=\"form-control\" [(ngModel)]=\"filterCourseName\" placeholder=\"请输入课程名称\">\r\n        <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\r\n      <label class=\"pull-left\">课程类型:</label>\r\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\r\n        <select2\r\n          [width]=\"148\"\r\n          [value]=\"filterCourseType\"\r\n          [cssImport]=\"false\"\r\n          (valueChanged)=\"changeFilterCourseState($event)\"\r\n          [options]=\"{minimumResultsForSearch: -1, placeholder: '全部'}\"\r\n          [data]=\"[{id: 'ALL', text: '全部'}].concat(courseTypeList)\"></select2>\r\n      </div>\r\n    </div>  </app-collapse-box>\r\n\r\n  <div class=\"box box-primary box-divide\">\r\n    <div class=\"box-header\">\r\n      <h3 class=\"box-title\">课程列表</h3>\r\n      <div class=\"box-tools\">\r\n        <div class=\"btn-group btn-group-sm\">\r\n          <button class=\"btn btn-sm btn-primary\"\r\n          (click)=\"initCurCourse();\r\n          courseCreatorAndUpdater.showModal({\r\n            modalSize: 'sm',\r\n            title: '创建新课程',\r\n            confirm: createCourse\r\n          })\">\r\n            <i class=\"fa fa-plus\"></i>\r\n            添加课程\r\n          </button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div class=\"box-body\">\r\n      <table class=\"table table-hover table-bordered table-pointer text-center\">\r\n        <thead>\r\n          <tr>\r\n            <th>名称</th>\r\n            <th>价格</th>\r\n            <th>课时</th>\r\n            <th>班组</th>\r\n            <th>选课人数</th>\r\n            <th>退课人数</th>\r\n            <th>类型</th>\r\n            <th>操作</th>\r\n          </tr>\r\n        </thead>\r\n        <tbody>\r\n          <tr *ngFor=\"let course of courses |\r\n            matchItem: filterCourseName : 'name' |\r\n            matchItem: filterCourseType : 'type' : 'exact'\"\r\n            (click)=\"initCurCourse(course);\r\n            courseCreatorAndUpdater.showModal({\r\n              modalSize: 'sm',\r\n              title: '编辑课程',\r\n              confirm: updateCourse\r\n            })\">\r\n            <td>{{ course.name }}</td>\r\n            <td>{{ course.price }}</td>\r\n            <td>{{ course.studyHour || 0 }}</td>\r\n            <td>{{ dynamicGradeMap[course.gradeId] }}</td>\r\n            <td>{{ course.selectedNum || 0 }}</td>\r\n            <td>{{ course.backNum }}</td>\r\n            <td>{{ courseTypeMap[course.type] }}</td>\r\n            <td>\r\n              <div class=\"btn-group btn-group-xs\">\r\n                <button class=\"btn btn-xs btn-danger\"\r\n                (click)=\"$event.stopPropagation();\r\n                curCourse = course;\r\n                delConfirmModal.showModal({\r\n                  title: '提示',\r\n                  content: '确认删除该课程',\r\n                  confirm: deleteCourse\r\n                })\">\r\n                  <i class=\"fa fa-trash\"></i>\r\n                  删除课程\r\n                </button>\r\n                <button class=\"btn btn-primary btn-xs\"\r\n                (click)=\"assignment.courseId = course.id;\r\n                  assignedTeachers = [];\r\n                  $event.stopPropagation();\r\n                  teacherAssigner.showModal({\r\n                    modalSize: 'sm',\r\n                    title: '分配教师',\r\n                    confirm: assignTeachers\r\n                  })\">\r\n                  <i class=\"fa fa-tags\"></i>\r\n                  分配教师\r\n                </button>\r\n              </div>\r\n            </td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<app-modal #courseCreatorAndUpdater [disabledAcceptBtn]=\"!(curCourse.name && curCourse.studentNum && curCourse.studyHour)\">\r\n\r\n  <div class=\"form-group clearfix\">\r\n    <label for=\"courseName\" class=\"control-label col-xs-3\">课程名称：</label>\r\n    <div class=\"col-xs-9\">\r\n      <input\r\n        class=\"form-control\"\r\n        id=\"courseName\"\r\n        name=\"courseName\"\r\n        placeholder=\"请输入课程名称\"\r\n        [(ngModel)]=\"curCourse.name\">\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"form-group clearfix\">\r\n    <label for=\"studentNum\" class=\"control-label col-xs-3\">可选人数：</label>\r\n    <div class=\"col-xs-9\">\r\n      <input\r\n        type=\"number\"\r\n        class=\"form-control\"\r\n        id=\"studentNum\"\r\n        name=\"studentNum\"\r\n        placeholder=\"请输入学生人数\"\r\n        [(ngModel)]=\"curCourse.studentNum\">\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"form-group clearfix\">\r\n    <label for=\"courseHour\" class=\"control-label col-xs-3\">课程课时：</label>\r\n    <div class=\"col-xs-9\">\r\n      <input\r\n        type=\"number\"\r\n        class=\"form-control\"\r\n        id=\"courseHour\"\r\n        name=\"courseHour\"\r\n        placeholder=\"请输入课程课时\"\r\n        [(ngModel)]=\"curCourse.studyHour\">\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"form-group clearfix\">\r\n    <label for=\"gradeId\" class=\"control-label col-xs-3\">选择班组：</label>\r\n    <div class=\"col-xs-9\">\r\n      <select2\r\n        *ngIf=\"dynamicGradeList.length\"\r\n        id=\"gradeId\"\r\n        [cssImport]=\"false\"\r\n        [width]=\"247\"\r\n        [value]=\"curCourse.gradeId\"\r\n        (valueChanged)=\"handleGradeChange($event)\"\r\n        [options]=\"{ minimumResultsForSearch: 3 }\"\r\n        [data]=\"dynamicGradeList\"></select2>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"form-group clearfix\">\r\n    <label for=\"courseType\" class=\"control-label col-xs-3\">课程类型：</label>\r\n    <div class=\"col-xs-9\">\r\n      <select2\r\n        id=\"courseType\"\r\n        [cssImport]=\"false\"\r\n        [width]=\"247\"\r\n        [value]=\"curCourse.type\"\r\n        (valueChanged)=\"handleCourseTypeChange($event)\"\r\n        [options]=\"{ minimumResultsForSearch: -1 }\"\r\n        [data]=\"courseTypeList\"></select2>\r\n    </div>\r\n  </div>\r\n</app-modal>\r\n\r\n<app-modal #delConfirmModal></app-modal>\r\n\r\n<app-modal #teacherAssigner>\r\n  <div class=\"form-group\" style=\"margin-bottom: 0;\">\r\n    <label class=\"control-label\">选择任课教师:</label>\r\n    <select2 [data]=\"teachers\"\r\n              [width]=\"270\"\r\n              [value]=\"assignedTeachers\"\r\n              (valueChanged)=\"handleSelectEvent($event)\"\r\n              [options]=\"{ multiple: true, minimumResultsForSearch: 3 ,placeholder: '输入姓名搜索'}\"\r\n              [cssImport]=\"false\"></select2>\r\n  </div>\r\n</app-modal>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/tc-director/origin-course/origin-course.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/tc-director/origin-course/origin-course.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_school_service__ = __webpack_require__("../../../../../src/app/common/school.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_enum__ = __webpack_require__("../../../../../src/app/common/enum.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__teacher_director_service__ = __webpack_require__("../../../../../src/app/tc-director/teacher-director.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return OriginCourseComponent; });
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var OriginCourseComponent = (function () {
+    function OriginCourseComponent(schoolService, teacherDirectorService) {
+        this.schoolService = schoolService;
+        this.teacherDirectorService = teacherDirectorService;
+        this.createCourse = this.createCourse.bind(this);
+        this.deleteCourse = this.deleteCourse.bind(this);
+        this.updateCourse = this.updateCourse.bind(this);
+        this.assignTeachers = this.assignTeachers.bind(this);
+    }
+    OriginCourseComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.contentHeader = [
+            { name: '主页', icon: 'fa-dashboard' },
+            { name: '教学课程管理页', icon: 'fa-book' }
+        ];
+        this.assignment = { courseId: '', teacherIds: [] };
+        this.dynamicGradeMap = {};
+        this.dynamicGradeList = [];
+        this.courseTypeMap = __WEBPACK_IMPORTED_MODULE_2__common_enum__["g" /* courseTypeMap */];
+        this.courseTypeList = __WEBPACK_IMPORTED_MODULE_2__common_enum__["h" /* courseTypeList */];
+        this.teachers = [];
+        this.fetchCourse();
+        this.fetchTeachers();
+        this.initCurCourse();
+        this.fetchGrades().then(function (grades) {
+            _this.createGradeMap(grades);
+        });
+        this.filterCourseName = '';
+        this.filterCourseType = '';
+    };
+    OriginCourseComponent.prototype.initCurCourse = function (course) {
+        if (course) {
+            this.curCourse = __assign({}, course);
+        }
+        else {
+            var gradeId = '';
+            if (this.dynamicGradeList.length) {
+                gradeId = this.dynamicGradeList[0].id;
+            }
+            this.curCourse = {
+                gradeId: gradeId,
+                name: '',
+                studentNum: '',
+                studyHour: '',
+                type: 'NORMALGROUP'
+            };
+        }
+    };
+    OriginCourseComponent.prototype.fetchCourse = function () {
+        var _this = this;
+        this.schoolService.fetchCourses().then(function (courses) { return _this.courses = courses; });
+    };
+    OriginCourseComponent.prototype.fetchGrades = function () {
+        var _this = this;
+        return this.schoolService.fetchGrades().then(function (grades) {
+            _this.grades = grades;
+            return grades;
+        });
+    };
+    OriginCourseComponent.prototype.createGradeMap = function (grades) {
+        var _this = this;
+        grades.forEach(function (grade) {
+            _this.dynamicGradeMap[grade.id] = grade.name;
+            _this.dynamicGradeList.push({ id: grade.id, text: grade.name });
+            _this.dynamicGradeList = _this.dynamicGradeList.slice();
+        });
+    };
+    OriginCourseComponent.prototype.handleGradeChange = function ($event) {
+        this.curCourse.gradeId = $event.value;
+    };
+    OriginCourseComponent.prototype.handleCourseTypeChange = function ($event) {
+        this.curCourse.type = $event.value;
+    };
+    OriginCourseComponent.prototype.createCourse = function () {
+        var _this = this;
+        this.teacherDirectorService.createCourse(this.curCourse).then(function (newCourseId) {
+            var curGradeInfo = _this.findGradeById(_this.curCourse.gradeId);
+            _this.curCourse.id = newCourseId;
+            _this.curCourse.selectedNum = 0;
+            _this.curCourse.studentNum = 0;
+            _this.curCourse.backNum = 0;
+            _this.curCourse.price = curGradeInfo.price;
+            _this.courses.unshift(__assign({}, _this.curCourse));
+        });
+    };
+    OriginCourseComponent.prototype.deleteCourse = function () {
+        var _this = this;
+        var courseId = this.curCourse.id;
+        var toDeleteCourse = this.findCourseById(courseId);
+        var toDeleteIndex = this.courses.indexOf(toDeleteCourse);
+        this.teacherDirectorService.deleteCourse(courseId).then(function (success) {
+            if (success) {
+                _this.courses.splice(toDeleteIndex, 1);
+            }
+        });
+    };
+    OriginCourseComponent.prototype.updateCourse = function () {
+        var _this = this;
+        this.teacherDirectorService.updateCourse(this.curCourse).then(function (success) {
+            var curCourse = _this.courses.find(function (course) { return _this.curCourse.id === course.id; });
+            var toUpdateCourseIndex = _this.courses.indexOf(curCourse);
+            _this.courses[toUpdateCourseIndex] = __assign({}, _this.curCourse);
+        });
+    };
+    OriginCourseComponent.prototype.findCourseById = function (id) {
+        return this.courses.find(function (course) { return course.id === id; });
+    };
+    OriginCourseComponent.prototype.findGradeById = function (id) {
+        return this.grades.find(function (grade) { return grade.id === id; });
+    };
+    OriginCourseComponent.prototype.fetchTeachers = function () {
+        var _this = this;
+        this.schoolService.fetchTeachers().then(function (teachers) {
+            _this.teachers = teachers;
+            _this.teachers.forEach(function (teacher) {
+                teacher.text = teacher.name;
+            });
+        });
+    };
+    OriginCourseComponent.prototype.assignTeachers = function () {
+        this.teacherDirectorService.assignTeachers(this.assignment);
+    };
+    OriginCourseComponent.prototype.handleSelectEvent = function ($event) {
+        this.assignment.teacherIds = $event.value;
+    };
+    OriginCourseComponent.prototype.changeFilterCourseState = function ($event) {
+        this.filterCourseType = $event.value === 'ALL' ? '' : $event.value;
+    };
+    return OriginCourseComponent;
+}());
+OriginCourseComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-origin-course',
+        template: __webpack_require__("../../../../../src/app/tc-director/origin-course/origin-course.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/tc-director/origin-course/origin-course.component.less")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__common_school_service__["a" /* SchoolService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__common_school_service__["a" /* SchoolService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__teacher_director_service__["a" /* TeacherDirectorService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__teacher_director_service__["a" /* TeacherDirectorService */]) === "function" && _b || Object])
+], OriginCourseComponent);
+
+var _a, _b;
+//# sourceMappingURL=origin-course.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/tc-director/tc-director.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<app-sidebar [sidebarMenu]=\"sidebarMenu\"></app-sidebar>\r\n<div class=\"content-wrapper\">\r\n  <router-outlet></router-outlet>\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/tc-director/tc-director.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/tc-director/tc-director.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TcDirectorComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var TcDirectorComponent = (function () {
+    function TcDirectorComponent() {
+    }
+    TcDirectorComponent.prototype.ngOnInit = function () {
+        this.sidebarMenu = [
+            {
+                name: '教学课程管理',
+                routerLink: ['course'],
+                icon: 'fa-table'
+            },
+            {
+                name: '教学班组管理',
+                routerLink: ['grade'],
+                icon: 'fa-th-list'
+            }
+        ];
+    };
+    return TcDirectorComponent;
+}());
+TcDirectorComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-tc-director',
+        template: __webpack_require__("../../../../../src/app/tc-director/tc-director.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/tc-director/tc-director.component.less")]
+    }),
+    __metadata("design:paramtypes", [])
+], TcDirectorComponent);
+
+//# sourceMappingURL=tc-director.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/tc-director/teacher-director.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__service_http_service__ = __webpack_require__("../../../../../src/app/service/http.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__alert_alert_service__ = __webpack_require__("../../../../../src/app/alert/alert.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TeacherDirectorService; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var TeacherDirectorService = (function () {
+    function TeacherDirectorService(http, alertService) {
+        this.http = http;
+        this.alertService = alertService;
+    }
+    /* 班组信息的CURD */
+    // 班组的C
+    TeacherDirectorService.prototype.createGrade = function (grade) {
+        var _this = this;
+        return this.http.post('director/grade', grade).then(function (result) {
+            if (result.success) {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '新班组创建成功',
+                    type: 'success'
+                });
+                return result.data.id;
+            }
+            else {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '班组创建失败',
+                    type: 'danger'
+                });
+            }
+        });
+    };
+    // 班组的U
+    TeacherDirectorService.prototype.updateGrade = function (newGrade) {
+        var _this = this;
+        return this.http.put('director/grade', newGrade).then(function (result) {
+            if (result.success) {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '班组信息更新成功',
+                    type: 'success'
+                });
+                return result.success;
+            }
+            else {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '班组信息更新失败',
+                    type: 'danger'
+                });
+            }
+        });
+    };
+    // 班组的D
+    TeacherDirectorService.prototype.deleteGrade = function (gradeId) {
+        var _this = this;
+        return this.http.post("director/grade/" + gradeId).then(function (result) {
+            if (result.success) {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '班组信息已删除',
+                    type: 'success'
+                });
+            }
+            else {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '删除班组信息失败',
+                    type: 'danger'
+                });
+            }
+            return result.success;
+        });
+    };
+    /*课程信息的CURD*/
+    // 课程的C
+    TeacherDirectorService.prototype.createCourse = function (course) {
+        var _this = this;
+        return this.http.post('director/course', course).then(function (result) {
+            if (result.success) {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '新课程创建成功',
+                    type: 'success'
+                });
+                return result.data.id;
+            }
+            else {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '新课程创建失败',
+                    type: 'danger'
+                });
+            }
+        });
+    };
+    // 课程的D
+    TeacherDirectorService.prototype.deleteCourse = function (courseId) {
+        var _this = this;
+        return this.http.remove("director/course/" + courseId).then(function (result) {
+            if (result.success) {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '课程已删除',
+                    type: 'success'
+                });
+                return result.success;
+            }
+            else {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '删除课程失败',
+                    type: 'danger'
+                });
+            }
+        });
+    };
+    // 课程的U
+    TeacherDirectorService.prototype.updateCourse = function (course) {
+        var _this = this;
+        return this.http.put('director/course', course).then(function (result) {
+            if (result.success) {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '课程信息已更新',
+                    type: 'success'
+                });
+                return result.success;
+            }
+            else {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '更新课程失败',
+                    type: 'danger'
+                });
+            }
+        });
+    };
+    // 分配教师
+    TeacherDirectorService.prototype.assignTeachers = function (assignment) {
+        var _this = this;
+        return this.http.post('director/teacher', assignment).then(function (result) {
+            if (result.success) {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '教师分配成功',
+                    type: 'success'
+                });
+                return result.success;
+            }
+            else {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '教师分配失败,请重试',
+                    type: 'danger'
+                });
+            }
+        });
+    };
+    return TeacherDirectorService;
+}());
+TeacherDirectorService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__service_http_service__["a" /* HttpService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__service_http_service__["a" /* HttpService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__alert_alert_service__["a" /* AlertService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__alert_alert_service__["a" /* AlertService */]) === "function" && _b || Object])
+], TeacherDirectorService);
+
+var _a, _b;
+//# sourceMappingURL=teacher-director.service.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/teacher/teacher-class-hour/teacher-class-hour.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<app-content-header\n  [title]=\"'教学课时'\" [menus]=\"contentHeader\"></app-content-header>\n\n<div class=\"content\">\n  <div class=\"box box-primary box-divide\">\n    <div class=\"box-header\">\n      <h3 class=\"box-title\">课时信息</h3>\n      <div class=\"box-tools\">\n        总 {{ classHourTotal || 0 }} 课时\n      </div>\n    </div>\n    <div class=\"box-body\">\n      <table class=\"table table-hover table-bordered text-center\">\n        <thead>\n          <tr>\n            <th>课程名称</th>\n            <th>课时</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr *ngFor=\"let stat of classHourRecords\">\n            <td>{{ stat.courseName }}</td>\n            <td>{{ stat.hours || 0 }}</td>\n          </tr>\n          <tr>\n            <td colspan=\"2\">\n              <p class=\"text-muted text-center\">\n                暂无课时信息\n              </p>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/teacher/teacher-class-hour/teacher-class-hour.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/teacher/teacher-class-hour/teacher-class-hour.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__teacher_service__ = __webpack_require__("../../../../../src/app/teacher/teacher.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TeacherClassHourComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var TeacherClassHourComponent = (function () {
+    function TeacherClassHourComponent(teacherService) {
+        this.teacherService = teacherService;
+    }
+    TeacherClassHourComponent.prototype.ngOnInit = function () {
+        this.classHourRecords = [];
+        this.contentHeader = [
+            { name: '主页', icon: 'fa-dashboard' },
+            { name: '教学课时', icon: 'fa-list' }
+        ];
+        this.classHourTotal = 0;
+        this.fetchClassHourStats();
+    };
+    TeacherClassHourComponent.prototype.fetchClassHourStats = function () {
+        var _this = this;
+        this.teacherService.fetchSchedules().then(function (data) {
+            _this.classHourRecords = data.details;
+            _this.classHourTotal = data.totalHours;
+        });
+    };
+    return TeacherClassHourComponent;
+}());
+TeacherClassHourComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-teacher-class-hour',
+        template: __webpack_require__("../../../../../src/app/teacher/teacher-class-hour/teacher-class-hour.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/teacher/teacher-class-hour/teacher-class-hour.component.less")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__teacher_service__["a" /* TeacherService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__teacher_service__["a" /* TeacherService */]) === "function" && _a || Object])
+], TeacherClassHourComponent);
+
+var _a;
+//# sourceMappingURL=teacher-class-hour.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/teacher/teacher-schedule/teacher-schedule.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<app-content-header\n  [title]=\"'教学课表'\" [menus]=\"contentHeader\"></app-content-header>\n\n<div class=\"content\">\n  <app-collapse-box [collapse]=\"false\" [icon]=\"'filter'\" [boxTitle]=\"'课表筛选'\">\n    <div class=\"col-xs-12 col-md-4 input-group-sm\">\n      <label class=\"pull-left\">课程名称:</label>\n      <div class=\"input-group input-group-sm\" style=\"width: 148px;\">\n        <input class=\"form-control\" [(ngModel)]=\"filterCourseName\" placeholder=\"请输入课程名称\">\n        <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\n      </div>\n    </div>\n\n    <div class=\"col-xs-12 col-md-4 input-group input-group-sm\">\n      <label class=\"pull-left\">是否结课:</label>\n      <select2 [options]=\"{minimumResultsForSearch: -1}\" [cssImport]=\"false\" [width]=\"148\" [data]=\"[{id: 'ALL' ,text: '全部'}, {id: true ,text: '已结课'}, {id: false ,text: '未结课'}]\" (valueChanged)=\"switchCourseState($event)\"></select2>\n    </div>\n  </app-collapse-box>\n\n  <div class=\"box box-primary box-divide\">\n    <div class=\"box-header\">\n      <div class=\"h3 box-title\">\n        课表信息\n      </div>\n    </div>\n    <div class=\"box-body\">\n      <table class=\"table table-hover table-bordered text-center\">\n        <thead>\n          <tr>\n            <th>课程名称</th>\n            <th>开课时间</th>\n            <th>结课时间</th>\n            <th>是否结课</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr *ngFor=\"let schedule of schedules | matchItem: filterCourseName : 'courseName' | matchItem: filterCourseState: 'finish': 'exact' \">\n            <td>{{ schedule.courseName }}</td>\n            <td>{{ schedule.startTime | date: 'yyyy-MM-dd HH:mm:ss' }}</td>\n            <td>{{ schedule.endTime | date: 'yyyy-MM-dd HH:mm:ss' }}</td>\n            <td>{{ schedule.finish ? '是' : '否' }}</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/teacher/teacher-schedule/teacher-schedule.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/teacher/teacher-schedule/teacher-schedule.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__teacher_service__ = __webpack_require__("../../../../../src/app/teacher/teacher.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TeacherScheduleComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var TeacherScheduleComponent = (function () {
+    function TeacherScheduleComponent(teacherService) {
+        this.teacherService = teacherService;
+    }
+    TeacherScheduleComponent.prototype.ngOnInit = function () {
+        this.schedules = [];
+        this.contentHeader = [
+            { name: '主页', icon: 'fa-dashboard' },
+            { name: '教学课表', icon: 'fa-table' }
+        ];
+        this.filterCourseName = '';
+        this.filterCourseState = '';
+        this.fetchSchedules();
+    };
+    TeacherScheduleComponent.prototype.fetchSchedules = function () {
+        var _this = this;
+        this.teacherService.fetchSchedules().then(function (schedules) {
+            _this.schedules = schedules;
+        });
+    };
+    TeacherScheduleComponent.prototype.switchCourseState = function ($event) {
+        this.filterCourseState = $event.value === 'ALL' ? '' : $event.value;
+    };
+    return TeacherScheduleComponent;
+}());
+TeacherScheduleComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-teacher-schedule',
+        template: __webpack_require__("../../../../../src/app/teacher/teacher-schedule/teacher-schedule.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/teacher/teacher-schedule/teacher-schedule.component.less")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__teacher_service__["a" /* TeacherService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__teacher_service__["a" /* TeacherService */]) === "function" && _a || Object])
+], TeacherScheduleComponent);
+
+var _a;
+//# sourceMappingURL=teacher-schedule.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/teacher/teacher.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<app-sidebar [sidebarMenu]=\"sidebarMenu\"></app-sidebar>\n<div class=\"content-wrapper\">\n  <router-outlet></router-outlet>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/teacher/teacher.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/teacher/teacher.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TeacherComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var TeacherComponent = (function () {
+    function TeacherComponent() {
+    }
+    TeacherComponent.prototype.ngOnInit = function () {
+        this.sidebarMenu = [
+            {
+                name: '教学课程',
+                routerLink: ['teacher-schedule'],
+                icon: 'fa-table'
+            },
+            {
+                name: '教学课时',
+                routerLink: ['teacher-class-hour'],
+                icon: 'fa-th-list'
+            }
+        ];
+    };
+    return TeacherComponent;
+}());
+TeacherComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-teacher',
+        template: __webpack_require__("../../../../../src/app/teacher/teacher.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/teacher/teacher.component.less")]
+    }),
+    __metadata("design:paramtypes", [])
+], TeacherComponent);
+
+//# sourceMappingURL=teacher.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/teacher/teacher.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__service_http_service__ = __webpack_require__("../../../../../src/app/service/http.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__alert_alert_service__ = __webpack_require__("../../../../../src/app/alert/alert.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TeacherService; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var TeacherService = (function () {
+    function TeacherService(http, alertService) {
+        this.http = http;
+        this.alertService = alertService;
+    }
+    TeacherService.prototype.fetchSchedules = function () {
+        var _this = this;
+        return this.http.get('teacher/schedule').then(function (results) {
+            if (results.success) {
+                return results.data;
+            }
+            else {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '获取课程列表失败' + results.data,
+                    type: 'danger'
+                });
+            }
+        });
+    };
+    TeacherService.prototype.fetchClassHourStat = function () {
+        var _this = this;
+        return this.http.get('teacher/course/stat').then(function (results) {
+            if (results.success) {
+                return results.data;
+            }
+            else {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '获取课时信息失败' + results.data,
+                    type: 'danger'
+                });
+            }
+        });
+    };
+    return TeacherService;
+}());
+TeacherService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__service_http_service__["a" /* HttpService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__service_http_service__["a" /* HttpService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__alert_alert_service__["a" /* AlertService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__alert_alert_service__["a" /* AlertService */]) === "function" && _b || Object])
+], TeacherService);
+
+var _a, _b;
+//# sourceMappingURL=teacher.service.js.map
 
 /***/ }),
 
