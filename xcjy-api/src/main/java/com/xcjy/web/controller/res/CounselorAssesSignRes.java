@@ -24,4 +24,6 @@ public class CounselorAssesSignRes {
 
     private Integer signNum = 0;
 
+    private Integer totalBack = 0;
+
 }

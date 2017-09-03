@@ -1,6 +1,5 @@
 package com.xcjy.web.controller.manager;
 
-import com.xcjy.web.bean.Student;
 import com.xcjy.web.common.enums.DistributionTypeEnum;
 import com.xcjy.web.common.util.CommonUtil;
 import com.xcjy.web.controller.req.*;
@@ -61,7 +60,7 @@ public class CounselorController {
     @RequiresRoles({CommonUtil.CONSULTANT, CommonUtil.CONSULTANT_MAIN})
     @ApiOperation("咨询师查看自己金额和总和")
     @GetMapping("/student/stat")
-    public CounselorStatRes getCounselorStat(CounselorStatReq req) {
+    public EmployeeMoneyStatRes getCounselorStat(CounselorStatReq req) {
         return studentAssetService.getCounselorStat(req);
     }
 

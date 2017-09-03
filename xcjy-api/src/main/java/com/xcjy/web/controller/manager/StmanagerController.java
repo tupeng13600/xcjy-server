@@ -190,4 +190,11 @@ public class StmanagerController {
         courseStudentService.courseBack(studentId, courseId, hourNum);
     }
 
+    @RequiresRoles({CommonUtil.STUDENTMANAGER})
+    @ApiOperation("学管师获取自己的退费缴费记录")
+    @GetMapping("/self/money/stat")
+    public EmployeeMoneyStatRes get4Stmanager(StmanagerStatReq req) {
+        return stmanagerStudentService.getStat(req);
+    }
+
 }

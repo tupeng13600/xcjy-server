@@ -129,6 +129,7 @@ public class StudentService {
                 if (counselorStudent.getStudentId().equals(student.getId())) {
                     res.setStatus(counselorStudent.getStatus());
                     res.setMoney(counselorStudent.getMoney());
+                    res.setHasBack(counselorStudent.getHasBack());
                     break;
                 }
             }

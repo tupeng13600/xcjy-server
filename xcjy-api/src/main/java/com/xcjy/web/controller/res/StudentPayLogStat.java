@@ -23,6 +23,8 @@ public class StudentPayLogStat {
 
     private Integer money;
 
+    private Integer hasBack;
+
     private String remark;
 
     private Date payTime;

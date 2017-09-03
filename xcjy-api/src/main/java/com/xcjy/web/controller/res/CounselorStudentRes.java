@@ -50,4 +50,6 @@ public class CounselorStudentRes {
 
     private Integer money;
 
+    private Integer hasBack;
+
 }

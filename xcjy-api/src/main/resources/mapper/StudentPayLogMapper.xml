@@ -49,7 +49,9 @@
         employee_id AS employeeId,
         count(id) AS signNum,
         SUM(money) AS totalMoney
-        FROM student_pay_log WHERE employee_id IN
+        FROM student_pay_log
+        WHERE op_pay_type = #{payType}
+        AND employee_id IN
         <foreach collection="employeeIds" item="employeeId" open="(" separator="," close=")">
             #{employeeId}
         </foreach>

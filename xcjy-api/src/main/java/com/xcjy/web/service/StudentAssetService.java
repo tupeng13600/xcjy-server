@@ -6,6 +6,7 @@ import com.xcjy.web.bean.Student;
 import com.xcjy.web.bean.StudentPayLog;
 import com.xcjy.web.common.cache.CacheFactory;
 import com.xcjy.web.common.enums.RoleEnum;
+import com.xcjy.web.common.enums.StudentPayType;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.util.CurrentUserUtil;
 import com.xcjy.web.controller.req.AssetsSignReq;
@@ -41,8 +42,8 @@ public class StudentAssetService {
     @Autowired
     private UserMapper userMapper;
 
-    public CounselorStatRes getCounselorStat(CounselorStatReq req) {
-        CounselorStatRes statRes = new CounselorStatRes();
+    public EmployeeMoneyStatRes getCounselorStat(CounselorStatReq req) {
+        EmployeeMoneyStatRes statRes = new EmployeeMoneyStatRes();
         Set<RoleEnum> roleEnums = CurrentUserUtil.currentRoles();
         if (!roleEnums.contains(RoleEnum.CONSULTANT) && !roleEnums.contains(RoleEnum.CONSULTANT_BOSS)) {
             throw new EducationException("您不是咨询师或者咨询主任");
@@ -60,13 +61,19 @@ public class StudentAssetService {
             Set<String> studentIds = payLogs.stream().map(StudentPayLog::getStudentId).collect(Collectors.toSet());
             List<Student> students = studentMapper.getByIds(studentIds);
             Integer totalMoney = 0;
+            Integer totalBack = 0;
             List<StudentPayLogStat> payLogStatList = new ArrayList<>();
             for (StudentPayLog payLog : payLogs) {
-                totalMoney += payLog.getMoney();
+                if (StudentPayType.COUNSELOR_PAY.equals(payLog.getOpPayType())) {
+                    totalMoney += payLog.getMoney();
+                } else if (StudentPayType.COUNSELOR_BACK.equals(payLog.getOpPayType())) {
+                    totalBack += payLog.getMoney();
+                }
                 payLogStatList.add(getPayLogStat(payLog, students, employeeName));
             }
             statRes.setDetail(payLogStatList);
             statRes.setTotalMoney(totalMoney);
+            statRes.setTotalBack(totalBack);
         }
         return statRes;
     }
@@ -75,16 +82,21 @@ public class StudentAssetService {
         StudentPayLogStat payLogStat = new StudentPayLogStat();
         payLogStat.setEmployeeId(payLog.getEmployeeId());
         payLogStat.setEmployeeName(employeeName);
-        payLogStat.setMoney(payLog.getMoney());
+        if (StudentPayType.COUNSELOR_PAY.equals(payLog.getOpPayType())) {
+            payLogStat.setMoney(payLog.getMoney());
+        } else if (StudentPayType.COUNSELOR_BACK.equals(payLog.getOpPayType())) {
+            payLogStat.setHasBack(payLog.getMoney());
+        }
         payLogStat.setOpPayType(payLog.getOpPayType());
         payLogStat.setRemark(payLog.getRemark());
         payLogStat.setPayTime(payLog.getCreateTime());
         payLogStat.setStudentId(payLog.getStudentId());
-        students.forEach(student -> {
+        for (Student student : students) {
             if (student.getId().equals(payLog.getStudentId())) {
                 payLogStat.setStudentName(student.getName());
+                break;
             }
-        });
+        }
         return payLogStat;
     }
 
@@ -104,8 +116,9 @@ public class StudentAssetService {
             Set<String> employeeIds = employeeList.stream().map(Employee::getId).collect(Collectors.toSet());
 
             List<CounselorStuNumModel> counModels = counselorStudentMapper.getStudentNumByEIds(employeeIds);
-            List<PayStatModel> statModelList = studentPayLogMapper.getStatModelByEmpIds(employeeIds);
-            employeeList.forEach(employee -> signResList.add(getSign(employee, statModelList, counModels)));
+            List<PayStatModel> payModelList = studentPayLogMapper.getStatModelByEmpIds(employeeIds, StudentPayType.COUNSELOR_PAY);
+            List<PayStatModel> backModelList = studentPayLogMapper.getStatModelByEmpIds(employeeIds, StudentPayType.COUNSELOR_BACK);
+            employeeList.forEach(employee -> signResList.add(getSign(employee, payModelList, counModels, backModelList)));
             signResList.sort(Comparator.comparing(CounselorAssesSignRes::getTotalMoney));
         }
         return signResList;
@@ -124,15 +137,20 @@ public class StudentAssetService {
         return employeeIds;
     }
 
-    private CounselorAssesSignRes getSign(Employee employee, List<PayStatModel> statModelList, List<CounselorStuNumModel> countModels) {
+    private CounselorAssesSignRes getSign(Employee employee, List<PayStatModel> payModelList, List<CounselorStuNumModel> countModels, List<PayStatModel> backModelList) {
         CounselorAssesSignRes signRes = new CounselorAssesSignRes();
         signRes.setEmployeeId(employee.getId());
         signRes.setName(employee.getName());
         signRes.setPhone(employee.getPhone());
-        statModelList.forEach(statModel -> {
+        payModelList.forEach(statModel -> {
             if (employee.getId().equals(statModel.getEmployeeId())) {
                 signRes.setSignNum(statModel.getSignNum());
                 signRes.setTotalMoney(statModel.getTotalMoney());
+            }
+        });
+        backModelList.forEach(statModel -> {
+            if (employee.getId().equals(statModel.getEmployeeId())) {
+                signRes.setTotalBack(statModel.getTotalMoney());
             }
         });
         countModels.forEach(countModel -> {
