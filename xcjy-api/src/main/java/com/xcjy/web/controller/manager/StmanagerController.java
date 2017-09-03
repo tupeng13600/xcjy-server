@@ -3,6 +3,7 @@ package com.xcjy.web.controller.manager;
 import com.xcjy.web.bean.Employee;
 import com.xcjy.web.bean.Student;
 import com.xcjy.web.common.enums.DistributionTypeEnum;
+import com.xcjy.web.common.enums.PayStatusType;
 import com.xcjy.web.common.util.CommonUtil;
 import com.xcjy.web.controller.req.*;
 import com.xcjy.web.controller.res.*;
@@ -172,7 +173,7 @@ public class StmanagerController {
     @ApiOperation("获取未分配的学生列表")
     @GetMapping("/student/distribution/no")
     public List<StudentShowRes> getStudentNoManager() {
-        return studentService.getList4ByDisType(DistributionTypeEnum.COUNSELOR_DISTRIBUTION);
+        return studentService.getList4ByDisType(DistributionTypeEnum.COUNSELOR_DISTRIBUTION, PayStatusType.YES);
     }
 
     @RequiresRoles({CommonUtil.STUDENTMANAGER})

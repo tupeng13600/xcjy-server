@@ -48,6 +48,13 @@
         WHERE id = #{id}
     </update>
 
+    <update id="finish">
+        UPDATE course_schedule SET
+        finish = #{courseSchedule.finish},
+        update_time = #{courseSchedule.updateTime}
+        WHERE id = #{courseSchedule.id};
+    </update>
+
     <select id="getById" resultMap="BaseResultMap">
         SELECT
         <include refid="baseSql"/>
@@ -130,7 +137,7 @@
             AND end_time &lt;= #{endTime}
         </if>
     </select>
-    
+
     <select id="getByEmployeeIdsAndTime" resultType="com.xcjy.web.controller.res.CourseScheduleStatModel">
         SELECT
         employee_id AS employeeId,

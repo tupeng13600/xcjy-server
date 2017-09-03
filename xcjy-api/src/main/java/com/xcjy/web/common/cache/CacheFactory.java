@@ -57,6 +57,8 @@ public class CacheFactory {
         List<School> schoolList = schoolService.list();
         nameSchools = schoolList.stream().collect(Collectors.toMap(School::getName, school -> school));
         idSchools = schoolList.stream().collect(Collectors.toMap(School::getId, school -> school));
+        backMoneyAuditRoleChain.add(RoleEnum.STUDENTMANAGER_BOSS);
+        backMoneyAuditRoleChain.add(RoleEnum.SCHOOLMASTER);
         backMoneyAuditRoleChain.add(RoleEnum.SCHOOLMASTER_BOSS);
         backMoneyAuditRoleChain.add(RoleEnum.FINANCE);
         changeSchoolAuditRoleChain.add(RoleEnum.SCHOOLMASTER);

@@ -173,10 +173,13 @@ public class StudentService {
         return studentMapper.getByIds(new HashSet<>(studentIds));
     }
 
-    public List<StudentShowRes> getList4ByDisType(DistributionTypeEnum distributionType) {
+    public List<StudentShowRes> getList4ByDisType(DistributionTypeEnum distributionType, PayStatusType payType) {
         List<StudentShowRes> showResList = new ArrayList<>();
         List<Student> studentList = studentMapper.getByDisType(distributionType);
         if (CollectionUtils.isNotEmpty(studentList)) {
+            if(null != payType) {
+                studentList = studentList.stream().filter(student -> payType.equals(student.getAlreadyPaid())).collect(Collectors.toList());
+            }
             studentList.forEach(student -> {
                 StudentShowRes showRes = new StudentShowRes();
                 BeanUtils.copyProperties(student, showRes);

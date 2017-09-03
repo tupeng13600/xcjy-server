@@ -198,7 +198,7 @@ public class ApplicationService {
         processLogs.forEach(processLog -> {
             ProcessRes res = new ProcessRes();
             BeanUtils.copyProperties(processLog, res);
-            res.setSchoolName(getSchoolName(processLog.getSchoolId()));
+            res.setSchoolName(getSchoolName(studentList, processLog.getStudentId()));
             res.setStudentName(getStudentName(studentList, processLog.getStudentId()));
             for (AplnSimpleRes apln : aplnSimpleRes) {
                 if (processLog.getApplicationId().equals(apln.getId())) {
@@ -247,6 +247,21 @@ public class ApplicationService {
         } else {
             return school.getName();
         }
+    }
+
+    private String getSchoolName(List<Student> studentList, String studentId) {
+        for (Student student : studentList) {
+            if (student.getId().equals(studentId)) {
+                School school = CacheFactory.idSchools.get(student.getSchoolId());
+                if (null != school) {
+                    return school.getName();
+                } else {
+                    logger.warn("无法获取校区信息，校区ID：{}", student.getSchoolId());
+                }
+                break;
+            }
+        }
+        return "-";
     }
 
     private String getStudentName(List<Student> studentList, String studentId) {

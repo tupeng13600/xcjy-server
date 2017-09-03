@@ -41,4 +41,5 @@ public interface CourseScheduleMapper {
                                                   @Param("endTime") Date endTime,
                                                   @Param("finish") Boolean finish);
 
+    void updateFinish(@Param("courseSchedule") CourseSchedule courseSchedule);
 }

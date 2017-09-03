@@ -83,7 +83,7 @@ public class CounselorController {
     @ApiOperation("获取未分配的学生列表")
     @GetMapping("/student/distribution/no")
     public List<StudentShowRes> getList4NoCounselor() {
-        return studentService.getList4ByDisType(DistributionTypeEnum.NO_DISTRIBUTION);
+        return studentService.getList4ByDisType(DistributionTypeEnum.NO_DISTRIBUTION, null);
     }
 
     @RequiresRoles({CommonUtil.CONSULTANT_BOSS})

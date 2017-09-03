@@ -3,6 +3,7 @@ package com.xcjy.web.controller.manager;
 import com.xcjy.auth.util.CurrentThreadLocal;
 import com.xcjy.web.bean.Employee;
 import com.xcjy.web.common.enums.DistributionTypeEnum;
+import com.xcjy.web.common.enums.PayStatusType;
 import com.xcjy.web.common.enums.StudentPayType;
 import com.xcjy.web.common.util.CommonUtil;
 import com.xcjy.web.controller.req.StudentPayReq;
@@ -88,11 +89,11 @@ public class FinanceController {
     public List<StudentShowRes> studentList(String schoolId) throws IOException {
         CurrentThreadLocal.setSchoolId(schoolId);
         List<StudentShowRes> resList = new ArrayList<>();
-        List<StudentShowRes> counList = studentService.getList4ByDisType(DistributionTypeEnum.COUNSELOR_DISTRIBUTION);
+        List<StudentShowRes> counList = studentService.getList4ByDisType(DistributionTypeEnum.COUNSELOR_DISTRIBUTION, null);
         if (CollectionUtils.isNotEmpty(counList)) {
             resList.addAll(counList);
         }
-        List<StudentShowRes> stmanaList = studentService.getList4ByDisType(DistributionTypeEnum.STMANAGER_DISTRIBUTION);
+        List<StudentShowRes> stmanaList = studentService.getList4ByDisType(DistributionTypeEnum.STMANAGER_DISTRIBUTION, PayStatusType.YES);
         if (CollectionUtils.isNotEmpty(stmanaList)) {
             resList.addAll(stmanaList);
         }

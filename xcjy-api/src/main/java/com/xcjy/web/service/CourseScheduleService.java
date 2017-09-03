@@ -316,4 +316,15 @@ public class CourseScheduleService {
         }
         return res;
     }
+
+    @Transactional
+    public void finish4Teacher(String scheduleId) {
+        CourseSchedule courseSchedule = courseScheduleMapper.getById(scheduleId);
+        if(null == courseSchedule) {
+            throw new EducationException("课表信息不存在");
+        }
+        courseSchedule.setFinish(true);
+        courseSchedule.setUpdateTime(new Date());
+        courseScheduleMapper.updateFinish(courseSchedule);
+    }
 }
