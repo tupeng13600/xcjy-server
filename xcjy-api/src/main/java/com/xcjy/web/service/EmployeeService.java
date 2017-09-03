@@ -12,7 +12,9 @@ import com.xcjy.web.common.util.CommonUtil;
 import com.xcjy.web.common.util.DateUtil;
 import com.xcjy.web.controller.req.EmployeeCreateReq;
 import com.xcjy.web.controller.req.EmployeeUpdateReq;
+import com.xcjy.web.controller.res.BaseEmployeeRes;
 import com.xcjy.web.controller.res.CreateIdRes;
+import com.xcjy.web.controller.res.PersonCreateRes;
 import com.xcjy.web.mapper.EmployeeMapper;
 import com.xcjy.web.mapper.SchoolMapper;
 import com.xcjy.web.mapper.UserMapper;
@@ -51,7 +53,7 @@ public class EmployeeService {
      *
      * @param req
      */
-    public CreateIdRes create(EmployeeCreateReq req) {
+    public PersonCreateRes create(EmployeeCreateReq req) {
         validateArg(req.getRoleIds(), req.getSchoolId());
         if (null != userMapper.getByPhone(req.getPhone()) || null != userMapper.getByUsername(req.getUsername())) {
             throw new EducationException("用户名或者手机号码已存在");
@@ -84,7 +86,7 @@ public class EmployeeService {
         userMapper.insert(user);
         CacheFactory.updateUserCache(user);
 
-        return new CreateIdRes(employee.getId());
+        return new PersonCreateRes(employee.getId(), employee.getBirthday());
     }
 
     private void validateArg(List<RoleEnum> roleIds, String schoolId) {
@@ -153,6 +155,26 @@ public class EmployeeService {
      *
      * @return
      */
+    public List<BaseEmployeeRes> list4Res() {
+        List<BaseEmployeeRes> resList = new ArrayList<>();
+        List<Employee> employeeList = employeeMapper.getAll();
+        if (CollectionUtils.isNotEmpty(employeeList)) {
+            Set<String> employeeIds = employeeList.stream().map(Employee::getId).collect(Collectors.toSet());
+            List<User> userList = userMapper.getByEntityIds(employeeIds);
+            employeeList.forEach(employee -> {
+                BaseEmployeeRes res = new BaseEmployeeRes();
+                BeanUtils.copyProperties(employee, res);
+                for (User user : userList) {
+                    if (employee.getId().equals(user.getEntityId())) {
+                        res.setRole(RoleEnum.getByCode(user.getRoleId()));
+                    }
+                }
+                resList.add(res);
+            });
+        }
+        return resList;
+    }
+
     public List<Employee> list() {
         return employeeMapper.getAll();
     }

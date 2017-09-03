@@ -33,16 +33,26 @@ public enum RoleEnum {
         return name;
     }
 
-    public static Set<RoleEnum> getRoleList(List<String> roleIds){
+    public static Set<RoleEnum> getRoleList(List<String> roleIds) {
         RoleEnum[] roleEnums = RoleEnum.values();
         return Arrays.stream(roleEnums).
                 filter(roleEnum -> roleIds.contains(roleEnum.name()))
                 .collect(Collectors.toSet());
     }
 
-    public static List<RoleEnum> getAll(){
+    public static List<RoleEnum> getAll() {
         RoleEnum[] roleEnums = RoleEnum.values();
         return Arrays.stream(roleEnums).collect(Collectors.toList());
+    }
+
+    public static RoleEnum getByCode(String roleCode) {
+        RoleEnum[] roleEnums = RoleEnum.values();
+        for (RoleEnum roleEnum : roleEnums) {
+            if (roleEnum.name().equals(roleCode.trim())) {
+                return roleEnum;
+            }
+        }
+        return null;
     }
 
 }

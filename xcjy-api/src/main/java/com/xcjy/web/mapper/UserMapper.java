@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 public interface UserMapper {
 
@@ -42,4 +43,6 @@ public interface UserMapper {
     List<User> getListByRole(@Param("roleCode") RoleEnum roleCode);
 
     List<User> search(@Param("schoolId") String schoolId, @Param("role") RoleEnum role, @Param("name") String name);
+
+    List<User> getByEntityIds(@Param("employeeIds") Set<String> employeeIds);
 }
