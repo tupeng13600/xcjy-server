@@ -1,6 +1,7 @@
 package com.xcjy.web.controller.manager;
 
 import com.xcjy.web.bean.Course;
+import com.xcjy.web.bean.Employee;
 import com.xcjy.web.bean.Grade;
 import com.xcjy.web.common.util.CommonUtil;
 import com.xcjy.web.controller.req.*;
@@ -93,6 +94,13 @@ public class TCDirectorController {
     @PostMapping("/schedule/finish/{scheduleId}")
     public void finishSchedule(@PathVariable String scheduleId) {
         courseScheduleService.finish4Teacher(scheduleId);
+    }
+
+    @RequiresRoles({CommonUtil.TEACHER_DIRECTOR})
+    @ApiOperation("根据课程获取教师列表")
+    @PostMapping("/course/teacher/{courseId}")
+    public List<Employee> getTeacherByCourseId(@PathVariable String courseId) {
+        return courseScheduleService.getByCourseId(courseId);
     }
 
 }

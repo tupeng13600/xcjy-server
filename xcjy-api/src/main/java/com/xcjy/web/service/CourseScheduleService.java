@@ -327,4 +327,13 @@ public class CourseScheduleService {
         courseSchedule.setUpdateTime(new Date());
         courseScheduleMapper.updateFinish(courseSchedule);
     }
+
+    public List<Employee> getByCourseId(String courseId) {
+        List<CourseTeacher> courseTeacherList = courseTeacherMapper.getByCId(courseId);
+        if(CollectionUtils.isNotEmpty(courseTeacherList)) {
+            Set<String> employeeIds = courseTeacherList.stream().map(CourseTeacher::getTeacherId).collect(Collectors.toSet());
+            return employeeMapper.getByIds(employeeIds);
+        }
+        return new ArrayList<>();
+    }
 }
