@@ -17,6 +17,8 @@ public class CounselorStudent {
 
     private Integer money;
 
+    private Integer hasBack;
+
     private CounselorStudentStatusType status;
 
     private Date createTime;

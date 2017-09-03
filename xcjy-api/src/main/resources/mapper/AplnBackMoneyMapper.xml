@@ -73,4 +73,12 @@
         </foreach>
     </select>
 
+    <select id="getByStatusAndSId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM apln_back_money
+        WHERE application_status = #{applicationStatus}
+        AND student_id = #{studentId}
+    </select>
+
 </mapper>

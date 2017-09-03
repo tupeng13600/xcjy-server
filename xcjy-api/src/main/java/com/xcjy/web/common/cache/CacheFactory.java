@@ -39,7 +39,9 @@ public class CacheFactory {
 
     public static Map<String, UserModel> empIdUsers = new ConcurrentHashMap<>();
 
-    public static List<RoleEnum> backMoneyAuditRoleChain = new ArrayList<>(); //退费审核链
+    public static List<RoleEnum> stmanagerBackMoneyAuditRoleChain = new ArrayList<>(); //退费审核链
+
+    public static List<RoleEnum> counselorBackMoneyAuditRoleChain = new ArrayList<>(); //退费审核链
 
     public static List<RoleEnum> changeSchoolAuditRoleChain = new ArrayList<>(); //转校审核链
 
@@ -57,11 +59,20 @@ public class CacheFactory {
         List<School> schoolList = schoolService.list();
         nameSchools = schoolList.stream().collect(Collectors.toMap(School::getName, school -> school));
         idSchools = schoolList.stream().collect(Collectors.toMap(School::getId, school -> school));
-        backMoneyAuditRoleChain.add(RoleEnum.STUDENTMANAGER_BOSS);
-        backMoneyAuditRoleChain.add(RoleEnum.SCHOOLMASTER);
-        backMoneyAuditRoleChain.add(RoleEnum.SCHOOLMASTER_BOSS);
-        backMoneyAuditRoleChain.add(RoleEnum.FINANCE);
+
+        stmanagerBackMoneyAuditRoleChain.add(RoleEnum.STUDENTMANAGER_BOSS);
+        stmanagerBackMoneyAuditRoleChain.add(RoleEnum.SCHOOLMASTER);
+        stmanagerBackMoneyAuditRoleChain.add(RoleEnum.SCHOOLMASTER_BOSS);
+        stmanagerBackMoneyAuditRoleChain.add(RoleEnum.FINANCE);
+
+        counselorBackMoneyAuditRoleChain.add(RoleEnum.CONSULTANT_BOSS);
+        counselorBackMoneyAuditRoleChain.add(RoleEnum.SCHOOLMASTER);
+        counselorBackMoneyAuditRoleChain.add(RoleEnum.CONSULTANT_MAIN);
+        counselorBackMoneyAuditRoleChain.add(RoleEnum.SCHOOLMASTER_BOSS);
+        counselorBackMoneyAuditRoleChain.add(RoleEnum.FINANCE);
+
         changeSchoolAuditRoleChain.add(RoleEnum.SCHOOLMASTER);
+
         List<User> users = userService.getAll();
         if(CollectionUtils.isNotEmpty(users)) {
             users.forEach(user -> {
@@ -130,12 +141,13 @@ public class CacheFactory {
         empIdUsers.put(userModel.getEntityId(), userModel);
     }
 
-    public static RoleEnum getNextBackMoneyProcess(Integer index) {
-        try {
-            return null == index ? backMoneyAuditRoleChain.get(0) : backMoneyAuditRoleChain.get(index + 1);
-        } catch (Exception e) {
-            return null;
+    public static RoleEnum getNextBackMoneyProcess(RoleEnum role, Integer index) {
+        if(RoleEnum.CONSULTANT.equals(role)) {
+            return null == index ? counselorBackMoneyAuditRoleChain.get(0) : counselorBackMoneyAuditRoleChain.get(index + 1);
+        } else if (RoleEnum.STUDENTMANAGER.equals(role)) {
+            return null == index ? stmanagerBackMoneyAuditRoleChain.get(0) : stmanagerBackMoneyAuditRoleChain.get(index + 1);
         }
+        return null;
     }
 
     public static RoleEnum getNextChangeSchoolProcess(Integer index) {

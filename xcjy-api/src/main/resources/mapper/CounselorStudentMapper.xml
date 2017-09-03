@@ -7,6 +7,7 @@
         <result column="employee_id" jdbcType="VARCHAR" property="employeeId"/>
         <result column="student_id" jdbcType="VARCHAR" property="studentId"/>
         <result column="money" jdbcType="INTEGER" property="money"/>
+        <result column="has_back" jdbcType="INTEGER" property="hasBack"/>
         <result column="status" jdbcType="VARCHAR" property="status"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
@@ -14,38 +15,42 @@
     </resultMap>
 
     <sql id="baseSql">
-    id, school_id, employee_id, student_id, money, status, create_time, update_time, deleted
+    id, school_id, employee_id, student_id, money, has_back, status, create_time, update_time, deleted
   </sql>
 
     <insert id="insert" parameterType="com.xcjy.web.bean.CounselorStudent">
     insert into counselor_student (id, school_id, employee_id,
-      student_id, money, status, 
+      student_id, money, has_back, status,
       create_time, update_time, deleted
       )
     values (#{id,jdbcType=VARCHAR}, #{schoolId,jdbcType=VARCHAR}, #{employeeId,jdbcType=VARCHAR}, 
-      #{studentId,jdbcType=VARCHAR}, #{money,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, 
+      #{studentId,jdbcType=VARCHAR}, #{money,jdbcType=INTEGER}, #{hasBack,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR},
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}
       )
   </insert>
     <insert id="insertBatch">
         insert into counselor_student (id, school_id, employee_id,
-        student_id, money, status,
+        student_id, money, has_back, status,
         create_time, update_time, deleted
         ) VALUES
         <foreach collection="list" item="stu" separator=",">
             (#{stu.id,jdbcType=VARCHAR}, #{stu.schoolId,jdbcType=VARCHAR}, #{stu.employeeId,jdbcType=VARCHAR},
-            #{stu.studentId,jdbcType=VARCHAR}, #{stu.money,jdbcType=INTEGER}, #{stu.status,jdbcType=VARCHAR},
+            #{stu.studentId,jdbcType=VARCHAR}, #{stu.money,jdbcType=INTEGER}, #{hasBack,jdbcType=INTEGER},
+            #{stu.status,jdbcType=VARCHAR},
             #{stu.createTime,jdbcType=TIMESTAMP}, #{stu.updateTime,jdbcType=TIMESTAMP}, #{stu.deleted,jdbcType=BIT}
             )
         </foreach>
     </insert>
+
     <update id="updateMoney" parameterType="com.xcjy.web.bean.CounselorStudent">
         UPDATE counselor_student SET
         money = #{money},
         status = #{status},
+        has_back = #{hasBack}
         update_time = #{updateTime}
         WHERE id = #{id} AND deleted = false;
     </update>
+
     <update id="updaStatus">
         UPDATE counselor_student SET
         status = #{counselorStudent.status},
@@ -53,7 +58,7 @@
         WHERE id = #{counselorStudent.id} AND deleted = false;
     </update>
 
-    <select id="getByEIdStuIdScId" resultType="com.xcjy.web.bean.CounselorStudent">
+    <select id="getByEIdStuIdScId" resultMap="BaseResultMap">
         SELECT
         <include refid="baseSql"/>
         FROM counselor_student WHERE school_id = #{schoolId} AND employee_id = #{employeeId} AND
@@ -126,6 +131,7 @@
             </if>
         </where>
     </select>
+
     <select id="getStudentNumByEIds" resultType="com.xcjy.web.controller.res.CounselorStuNumModel">
         SELECT
         COUNT(1) studentNum,
@@ -140,13 +146,20 @@
     <select id="getStuIdAndEmpId" resultMap="BaseResultMap">
         SELECT
         <include refid="baseSql"/>
-        FROM counselor_student WHERE  student_id = #{studentId} AND employee_id = #{employeId}
+        FROM counselor_student WHERE student_id = #{studentId} AND employee_id = #{employeId}
     </select>
 
     <select id="getByStudentId" resultMap="BaseResultMap">
         SELECT
         <include refid="baseSql"/>
-        FROM counselor_student WHERE  student_id = #{studentId}
+        FROM counselor_student WHERE student_id = #{studentId}
+    </select>
+
+    <select id="getBySES" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM counselor_student WHERE school_id = #{schoolId} AND employee_id = #{employeeId} AND student_id =
+        #{studentId};
     </select>
 
 </mapper>

@@ -1,6 +1,7 @@
 package com.xcjy.web.mapper;
 
 import com.xcjy.web.bean.CounselorStudent;
+import com.xcjy.web.bean.StmanagerStudent;
 import com.xcjy.web.common.enums.CounselorStudentStatusType;
 import com.xcjy.web.controller.res.CounselorStuNumModel;
 import org.apache.ibatis.annotations.Mapper;
@@ -43,4 +44,6 @@ public interface CounselorStudentMapper {
     void updaStatus(@Param("counselorStudent") CounselorStudent counselorStudent);
 
     CounselorStudent getByStudentId(@Param("studentId") String studentId);
+
+    CounselorStudent getBySES(@Param("schoolId") String schoolId, @Param("employeeId") String employeeId, @Param("studentId") String studentId);
 }
