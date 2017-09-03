@@ -1,13 +1,11 @@
 package com.xcjy.web.controller.manager;
 
 import com.xcjy.web.common.enums.HandlerStatusType;
-import com.xcjy.web.common.enums.ProcessLogType;
 import com.xcjy.web.common.util.CommonUtil;
 import com.xcjy.web.controller.req.ChangeSchoolReq;
 import com.xcjy.web.controller.res.CreateIdRes;
 import com.xcjy.web.controller.res.PresidentStatRes;
 import com.xcjy.web.controller.res.PresidentTeacherStatRes;
-import com.xcjy.web.controller.res.ProcessRes;
 import com.xcjy.web.service.ApplicationService;
 import com.xcjy.web.service.PresidentService;
 import io.swagger.annotations.Api;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by tupeng on 2017/8/12.
@@ -56,13 +53,6 @@ public class PresidentController {
     }
 
     @RequiresRoles({CommonUtil.SCHOOLMASTER})
-    @ApiOperation("退费申请审核")
-    @PutMapping("/money/{handlerStatus}/{processId}")
-    public void auditMoney(@PathVariable String processId, @PathVariable HandlerStatusType handlerStatus, String remark) {
-        applicationService.auditBackMoney(processId, handlerStatus, remark);
-    }
-
-    @RequiresRoles({CommonUtil.SCHOOLMASTER})
     @ApiOperation("创建转校申请")
     @PostMapping("/school")
     public CreateIdRes changeSchool(@RequestBody @Valid ChangeSchoolReq req) {
@@ -70,7 +60,7 @@ public class PresidentController {
     }
 
     @RequiresRoles({CommonUtil.SCHOOLMASTER})
-    @ApiOperation("转校申请申请审核")
+    @ApiOperation("转校申请审核")
     @PutMapping("/school/{handlerStatus}/{processId}")
     public void auditChangeSchool(@PathVariable String processId, @PathVariable HandlerStatusType handlerStatus, String remark) {
         applicationService.auditChangeSchool(processId, handlerStatus, remark);

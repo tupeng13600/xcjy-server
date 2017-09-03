@@ -127,4 +127,10 @@ public class CommonController {
     }
 
 
+    @ApiOperation("退费申请审核")
+    @PutMapping("/money/{handlerStatus}/{processId}")
+    public void auditMoney(@PathVariable String processId, @PathVariable HandlerStatusType handlerStatus, String remark) {
+        applicationService.auditBackMoney(processId, handlerStatus, remark);
+    }
+
 }
