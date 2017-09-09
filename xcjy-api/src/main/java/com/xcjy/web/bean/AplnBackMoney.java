@@ -1,6 +1,7 @@
 package com.xcjy.web.bean;
 
 import com.xcjy.web.common.enums.ApplicationStatusType;
+import com.xcjy.web.common.enums.BackMoneyType;
 import lombok.Data;
 
 import java.util.Date;
@@ -23,6 +24,8 @@ public class AplnBackMoney {
     private Date applicationTime;
 
     private String remark;
+
+    private BackMoneyType backMoneyType;
 
     private Date createTime;
 

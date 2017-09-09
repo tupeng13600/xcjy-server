@@ -75,16 +75,28 @@ public class ApplicationService {
         if (null == user) {
             throw new EducationException("无法获取申请人信息");
         }
+        RoleEnum roleEnum = RoleEnum.getByCode(user.getRoleId());
+        BackMoneyType backMoneyType = getBackMoneyType(roleEnum);
+        aplnBackMoney.setBackMoneyType(backMoneyType);
+
         aplnBackMoney.setApplicationUserId(user.getId());
         aplnBackMoney.setSchoolId(user.getSchoolId());
         aplnBackMoney.setApplicationStatus(ApplicationStatusType.AUDITING);
         aplnBackMoney.setApplicationTime(new Date());
         aplnBackMoneyMapper.insert(aplnBackMoney);
 
-        RoleEnum roleEnum = RoleEnum.getByCode(user.getRoleId());
         createProcessLog(aplnBackMoney.getId(), aplnBackMoney.getSchoolId(), aplnBackMoney.getStudentId(),
-                0, CacheFactory.getNextBackMoneyProcess(roleEnum, null), ProcessLogType.BACK_MONEY);
+                0, CacheFactory.getNextBackMoneyProcess(backMoneyType, null), ProcessLogType.BACK_MONEY);
         return new CreateIdRes(aplnBackMoney.getId());
+    }
+
+    private BackMoneyType getBackMoneyType(RoleEnum role){
+        if(RoleEnum.CONSULTANT.equals(role) || RoleEnum.CONSULTANT_BOSS.equals(role) ) {
+            return BackMoneyType.COUNSELOR;
+        } else if (RoleEnum.STUDENTMANAGER.equals(role)) {
+            return BackMoneyType.STMANAGER;
+        }
+        throw new EducationException("该用户无法创建退费申请");
     }
 
     /**
@@ -107,7 +119,8 @@ public class ApplicationService {
         if (null == user) {
             throw new EducationException("申请用户信息不存在");
         }
-        RoleEnum roleEnum = CacheFactory.getNextBackMoneyProcess(RoleEnum.getByCode(user.getRoleId()), processLog.getProcessNum());
+
+        RoleEnum roleEnum = CacheFactory.getNextBackMoneyProcess(aplnBackMoney.getBackMoneyType(), processLog.getProcessNum());
         if (HandlerStatusType.AUDIT_SUCCESS.equals(handlerStatus)) {
             if (null == roleEnum) {
                 //审核流程完毕 更新申请表状态

@@ -10,23 +10,24 @@
         <result column="application_status" jdbcType="VARCHAR" property="applicationStatus"/>
         <result column="application_time" jdbcType="TIMESTAMP" property="applicationTime"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="back_money_type" jdbcType="VARCHAR" property="backMoneyType" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="deleted" jdbcType="BIT" property="deleted"/>
     </resultMap>
 
     <sql id="baseSql">
-    id, school_id, student_id, application_user_id, return_amount, application_status, application_time, remark, create_time, update_time, deleted
+    id, school_id, student_id, application_user_id, return_amount, application_status, application_time, remark, back_money_type, create_time, update_time, deleted
   </sql>
 
     <insert id="insert" parameterType="com.xcjy.web.bean.AplnBackMoney">
     insert into apln_back_money (id, school_id, student_id, application_user_id,
       return_amount, application_status, application_time, 
-      remark, create_time, update_time, 
+      remark, back_money_type,  create_time, update_time,
       deleted)
     values (#{id,jdbcType=VARCHAR}, #{schoolId,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR}, #{applicationUserId,jdbcType=VARCHAR},
       #{returnAmount,jdbcType=INTEGER}, #{applicationStatus,jdbcType=VARCHAR}, #{applicationTime,jdbcType=TIMESTAMP}, 
-      #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=VARCHAR}, #{backMoneyType,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
       #{deleted,jdbcType=BIT})
   </insert>
 

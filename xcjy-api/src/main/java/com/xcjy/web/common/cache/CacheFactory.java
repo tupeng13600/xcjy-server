@@ -3,6 +3,7 @@ package com.xcjy.web.common.cache;
 import com.xcjy.web.bean.Employee;
 import com.xcjy.web.bean.School;
 import com.xcjy.web.bean.User;
+import com.xcjy.web.common.enums.BackMoneyType;
 import com.xcjy.web.common.enums.RoleEnum;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.model.UserModel;
@@ -141,13 +142,13 @@ public class CacheFactory {
         empIdUsers.put(userModel.getEntityId(), userModel);
     }
 
-    public static RoleEnum getNextBackMoneyProcess(RoleEnum role, Integer index) {
-        if(RoleEnum.CONSULTANT.equals(role) || RoleEnum.CONSULTANT_BOSS.equals(role) ) {
+    public static RoleEnum getNextBackMoneyProcess(BackMoneyType backMoneyType, Integer index) {
+        if(BackMoneyType.COUNSELOR.equals(backMoneyType)) {
             return null == index ? counselorBackMoneyAuditRoleChain.get(0) : counselorBackMoneyAuditRoleChain.get(index + 1);
-        } else if (RoleEnum.STUDENTMANAGER.equals(role)) {
+        } else if (BackMoneyType.STMANAGER.equals(backMoneyType)) {
             return null == index ? stmanagerBackMoneyAuditRoleChain.get(0) : stmanagerBackMoneyAuditRoleChain.get(index + 1);
         }
-        return null;
+        throw new EducationException("未找到相应的退费类型:" + backMoneyType);
     }
 
     public static RoleEnum getNextChangeSchoolProcess(Integer index) {
