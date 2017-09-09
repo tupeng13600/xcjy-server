@@ -128,9 +128,9 @@ public class ApplicationService {
                 //更新学生退款金额
                 updateStudentMoney(aplnBackMoney.getSchoolId(), aplnBackMoney.getStudentId(), aplnBackMoney.getReturnAmount());
                 //更新关系表数据
-                updateRelationMess(roleEnum, aplnBackMoney);
+                updateRelationMess(aplnBackMoney.getBackMoneyType(), aplnBackMoney);
                 //创建退费日志
-                createPayLog(processLog, aplnBackMoney.getReturnAmount(), roleEnum);
+                createPayLog(processLog, aplnBackMoney.getReturnAmount(), aplnBackMoney.getBackMoneyType());
             } else {
                 //创建下一个审核流程
                 createProcessLog(processLog.getApplicationId(), processLog.getSchoolId(), processLog.getStudentId(),
@@ -144,16 +144,16 @@ public class ApplicationService {
     /**
      * 更新关系表数据
      *
-     * @param roleEnum
+     * @param backMoneyType
      * @param aplnBackMoney
      */
     @Transactional
-    private void updateRelationMess(RoleEnum roleEnum, AplnBackMoney aplnBackMoney) {
-        if (RoleEnum.CONSULTANT.equals(roleEnum)) {
+    private void updateRelationMess(BackMoneyType backMoneyType, AplnBackMoney aplnBackMoney) {
+        if (BackMoneyType.COUNSELOR.equals(backMoneyType)) {
             //更新咨询师退费金额
             updateCounselorBackMoney(aplnBackMoney.getSchoolId(), aplnBackMoney.getApplicationUserId(),
                     aplnBackMoney.getStudentId(), aplnBackMoney.getReturnAmount());
-        } else if (RoleEnum.STUDENTMANAGER.equals(roleEnum)) {
+        } else if (BackMoneyType.STMANAGER.equals(backMoneyType)) {
             //更新学管师退款金额
             updateStmanagerBackMoney(aplnBackMoney.getSchoolId(), aplnBackMoney.getApplicationUserId(),
                     aplnBackMoney.getStudentId(), aplnBackMoney.getReturnAmount());
@@ -342,15 +342,15 @@ public class ApplicationService {
         return "-";
     }
 
-    private void createPayLog(ProcessLog processLog, Integer returnAmount, RoleEnum roleEnum) {
+    private void createPayLog(ProcessLog processLog, Integer returnAmount, BackMoneyType backMoneyType) {
         StudentPayLog studentPayLog = new StudentPayLog();
         studentPayLog.setSchoolId(processLog.getSchoolId());
         studentPayLog.setStudentId(processLog.getStudentId());
         studentPayLog.setMoney(returnAmount);
         studentPayLog.setEmployeeId(studentPayLog.getEmployeeId());
-        if (RoleEnum.CONSULTANT.equals(roleEnum)) {
+        if (BackMoneyType.COUNSELOR.equals(backMoneyType)) {
             studentPayLog.setOpPayType(StudentPayType.COUNSELOR_BACK);
-        } else if (RoleEnum.STUDENTMANAGER.equals(roleEnum)) {
+        } else if (BackMoneyType.STMANAGER.equals(backMoneyType)) {
             studentPayLog.setOpPayType(StudentPayType.STUDENTMANAGER_BACK);
         } else {
             throw new EducationException("该角色无申请退费的权限");
