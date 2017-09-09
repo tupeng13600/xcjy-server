@@ -142,7 +142,7 @@ public class CacheFactory {
     }
 
     public static RoleEnum getNextBackMoneyProcess(RoleEnum role, Integer index) {
-        if(RoleEnum.CONSULTANT.equals(role)) {
+        if(RoleEnum.CONSULTANT.equals(role) || RoleEnum.CONSULTANT_BOSS.equals(role) ) {
             return null == index ? counselorBackMoneyAuditRoleChain.get(0) : counselorBackMoneyAuditRoleChain.get(index + 1);
         } else if (RoleEnum.STUDENTMANAGER.equals(role)) {
             return null == index ? stmanagerBackMoneyAuditRoleChain.get(0) : stmanagerBackMoneyAuditRoleChain.get(index + 1);

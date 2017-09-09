@@ -67,7 +67,7 @@ public class ApplicationService {
     public CreateIdRes backMoney(BackMoneyCreateReq req) {
         List<AplnBackMoney> aplnBackMoneyList = aplnBackMoneyMapper.getByStatusAndSId(ApplicationStatusType.AUDITING, req.getStudentId());
         if(CollectionUtils.isNotEmpty(aplnBackMoneyList)) {
-            throw new EducationException("该学生存在退费申请为完成，无法创建新的退费申请");
+            throw new EducationException("该学生存在退费申请未完成，无法创建新的退费申请");
         }
         AplnBackMoney aplnBackMoney = new AplnBackMoney();
         BeanUtils.copyProperties(req, aplnBackMoney);

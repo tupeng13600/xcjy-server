@@ -46,7 +46,7 @@ public abstract class CommonUtil {
         notInSchoolRole.add(RoleEnum.FINANCE);
         notInSchoolRole.add(RoleEnum.PERSONNEL_CASHIER);
         notInSchoolRole.add(RoleEnum.SCHOOLMASTER_BOSS);
-        notInSchoolRole.add(RoleEnum.CONSULTANT_BOSS);
+        notInSchoolRole.add(RoleEnum.CONSULTANT_MAIN);
     }
 
     public static String getRolIdString(List<RoleEnum> roleEnums) {
