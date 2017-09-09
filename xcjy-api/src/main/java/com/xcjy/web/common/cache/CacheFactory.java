@@ -143,10 +143,14 @@ public class CacheFactory {
     }
 
     public static RoleEnum getNextBackMoneyProcess(BackMoneyType backMoneyType, Integer index) {
-        if(BackMoneyType.COUNSELOR.equals(backMoneyType)) {
-            return null == index ? counselorBackMoneyAuditRoleChain.get(0) : counselorBackMoneyAuditRoleChain.get(index + 1);
-        } else if (BackMoneyType.STMANAGER.equals(backMoneyType)) {
-            return null == index ? stmanagerBackMoneyAuditRoleChain.get(0) : stmanagerBackMoneyAuditRoleChain.get(index + 1);
+        try{
+            if(BackMoneyType.COUNSELOR.equals(backMoneyType)) {
+                return null == index ? counselorBackMoneyAuditRoleChain.get(0) : counselorBackMoneyAuditRoleChain.get(index + 1);
+            } else if (BackMoneyType.STMANAGER.equals(backMoneyType)) {
+                return null == index ? stmanagerBackMoneyAuditRoleChain.get(0) : stmanagerBackMoneyAuditRoleChain.get(index + 1);
+            }
+        } catch (Exception e) {
+            return null;
         }
         throw new EducationException("未找到相应的退费类型:" + backMoneyType);
     }
