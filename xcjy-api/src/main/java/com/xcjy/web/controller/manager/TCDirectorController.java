@@ -1,8 +1,6 @@
 package com.xcjy.web.controller.manager;
 
-import com.xcjy.web.bean.Course;
 import com.xcjy.web.bean.Employee;
-import com.xcjy.web.bean.Grade;
 import com.xcjy.web.common.util.CommonUtil;
 import com.xcjy.web.controller.req.*;
 import com.xcjy.web.controller.res.CreateIdRes;
@@ -87,13 +85,6 @@ public class TCDirectorController {
     @PostMapping("/teacher")
     public void teacher(@RequestBody @Valid CourseTeacherCreateReq req) {
         courseTeacherService.save(req);
-    }
-
-    @RequiresRoles({CommonUtil.TEACHER_DIRECTOR})
-    @ApiOperation("确认教师完成课程")
-    @PostMapping("/schedule/finish/{scheduleId}")
-    public void finishSchedule(@PathVariable String scheduleId) {
-        courseScheduleService.finish4Teacher(scheduleId);
     }
 
     @RequiresRoles({CommonUtil.TEACHER_DIRECTOR})

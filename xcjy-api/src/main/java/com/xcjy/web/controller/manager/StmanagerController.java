@@ -197,4 +197,11 @@ public class StmanagerController {
         return stmanagerStudentService.getStat(req);
     }
 
+    @RequiresRoles({CommonUtil.STUDENTMANAGER_BOSS})
+    @ApiOperation("确认教师完成课程")
+    @PostMapping("/schedule/finish/{scheduleId}")
+    public void finishSchedule(@PathVariable String scheduleId) {
+        courseScheduleService.finish4Teacher(scheduleId);
+    }
+
 }

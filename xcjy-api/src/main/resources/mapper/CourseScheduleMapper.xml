@@ -48,7 +48,7 @@
         WHERE id = #{id}
     </update>
 
-    <update id="finish">
+    <update id="updateFinish">
         UPDATE course_schedule SET
         finish = #{courseSchedule.finish},
         update_time = #{courseSchedule.updateTime}
