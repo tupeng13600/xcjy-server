@@ -35,7 +35,7 @@
         ) VALUES
         <foreach collection="list" item="stu" separator=",">
             (#{stu.id,jdbcType=VARCHAR}, #{stu.schoolId,jdbcType=VARCHAR}, #{stu.employeeId,jdbcType=VARCHAR},
-            #{stu.studentId,jdbcType=VARCHAR}, #{stu.money,jdbcType=INTEGER}, #{hasBack,jdbcType=INTEGER},
+            #{stu.studentId,jdbcType=VARCHAR}, #{stu.money,jdbcType=INTEGER}, #{stu.hasBack,jdbcType=INTEGER},
             #{stu.status,jdbcType=VARCHAR},
             #{stu.createTime,jdbcType=TIMESTAMP}, #{stu.updateTime,jdbcType=TIMESTAMP}, #{stu.deleted,jdbcType=BIT}
             )
@@ -46,7 +46,7 @@
         UPDATE counselor_student SET
         money = #{money},
         status = #{status},
-        has_back = #{hasBack}
+        has_back = #{hasBack},
         update_time = #{updateTime}
         WHERE id = #{id} AND deleted = false;
     </update>
