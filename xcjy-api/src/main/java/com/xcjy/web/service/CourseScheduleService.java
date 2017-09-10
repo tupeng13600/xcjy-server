@@ -160,7 +160,7 @@ public class CourseScheduleService {
     }
 
     @Transactional
-    public void update(CourseScheduleUpdateReq req) {
+    public CourseSchedule update(CourseScheduleUpdateReq req) {
         CourseSchedule courseSchedule = courseScheduleMapper.getById(req.getId());
         if (null == courseSchedule) {
             throw new EducationException("课表信息不存在");
@@ -176,6 +176,7 @@ public class CourseScheduleService {
         }
         BeanUtils.copyProperties(req, courseSchedule);
         courseScheduleMapper.updateBase(courseSchedule);
+        return courseSchedule;
     }
 
     public List<ScheduleRes> list() {

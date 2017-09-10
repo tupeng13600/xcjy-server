@@ -1,5 +1,6 @@
 package com.xcjy.web.controller.manager;
 
+import com.xcjy.web.bean.CourseSchedule;
 import com.xcjy.web.bean.Employee;
 import com.xcjy.web.bean.Student;
 import com.xcjy.web.common.enums.DistributionTypeEnum;
@@ -151,8 +152,8 @@ public class StmanagerController {
     @RequiresRoles({CommonUtil.STUDENTMANAGER})
     @ApiOperation("更新课表")
     @PutMapping("/course/schedule")
-    public void update(@RequestBody @Valid CourseScheduleUpdateReq req) {
-        courseScheduleService.update(req);
+    public CourseSchedule update(@RequestBody @Valid CourseScheduleUpdateReq req) {
+        return courseScheduleService.update(req);
     }
 
     @RequiresRoles({CommonUtil.STUDENTMANAGER})
