@@ -28,4 +28,6 @@ public class ScheduleRes {
 
     private Boolean finish;
 
+    private Integer studyTime;
+
 }

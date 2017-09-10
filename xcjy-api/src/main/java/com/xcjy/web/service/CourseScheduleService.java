@@ -194,7 +194,7 @@ public class CourseScheduleService {
             ScheduleRes res = new ScheduleRes();
             BeanUtils.copyProperties(courseSchedule, res);
             res.setCourseScheduleId(courseSchedule.getId());
-
+            res.setStudyTime(courseSchedule.getStudyTime());
             courseList.forEach(course -> {
                 if (course.getId().equals(courseSchedule.getCourseId())) {
                     res.setCourseName(course.getName());
