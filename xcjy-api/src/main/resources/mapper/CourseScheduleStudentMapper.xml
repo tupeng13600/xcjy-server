@@ -50,7 +50,7 @@
 
     <delete id="deleteByIds">
         DELETE FROM course_schedule_student
-        WHERE course_schedule_id
+        WHERE id
         IN
         <foreach collection="ids" item="id" open="(" separator="," close=")">
             #{id}

@@ -11,6 +11,6 @@ import lombok.EqualsAndHashCode;
 @Data
 public class StudentInRes extends Student {
 
-    private Boolean inCourse;
+    private Boolean inCourse = false;
 
 }
