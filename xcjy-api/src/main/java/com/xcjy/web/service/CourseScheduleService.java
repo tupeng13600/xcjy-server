@@ -198,11 +198,13 @@ public class CourseScheduleService {
             courseList.forEach(course -> {
                 if (course.getId().equals(courseSchedule.getCourseId())) {
                     res.setCourseName(course.getName());
+                    res.setCourseId(course.getId());
                 }
             });
             employeeList.forEach(employee -> {
                 if (employee.getId().equals(courseSchedule.getEmployeeId())) {
                     res.setTeacherName(employee.getName());
+                    res.setTeacherId(employee.getId());
                 }
             });
             resList.add(res);

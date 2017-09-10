@@ -14,7 +14,11 @@ public class ScheduleRes {
 
     private String schoolId;
 
+    private String courseId;
+
     private String courseName;
+
+    private String teacherId;
 
     private String teacherName;
 
