@@ -83,7 +83,7 @@
         SELECT
         employee_id AS employeeId,
         sum(study_time) total
-        FROM course_schedule WHERE
+        FROM course_schedule
         <where>
             <if test="startTime != null">
                 start_time >= #{startTime}

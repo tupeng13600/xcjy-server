@@ -258,7 +258,7 @@ public class CourseScheduleService {
     public List<TeacherScheduleStatRes> getTSStat(TeacherScheduleStatReq req) {
         List<TeacherScheduleStatRes> scheduleResList = new ArrayList<>();
         List<CourseScheduleStatModel> totalModels = courseScheduleMapper.getByStartEndFinish(req.getStartTime(), req.getEndTime(), null);
-        if (CollectionUtils.isNotEmpty(scheduleResList)) {
+        if (CollectionUtils.isNotEmpty(totalModels)) {
             Set<String> teacherIds = totalModels.stream().map(CourseScheduleStatModel::getEmployeeId).collect(Collectors.toSet());
             List<CourseScheduleStatModel> finishModels = courseScheduleMapper.getByEmployeeIds(teacherIds, true);
             List<Employee> employeeList = employeeMapper.getByIds(teacherIds);
