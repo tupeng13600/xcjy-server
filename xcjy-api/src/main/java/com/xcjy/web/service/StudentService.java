@@ -72,6 +72,7 @@ public class StudentService {
             counselorStudent.setStatus(CounselorStudentStatusType.CONNECTION_NO);
             counselorStudent.setEmployeeId(CurrentUserUtil.currentEmployeeId());
             counselorStudent.setMoney(0);
+            counselorStudent.setHasBack(0);
             counselorStudent.setStudentId(student.getId());
             counselorStudentMapper.insert(counselorStudent);
         }

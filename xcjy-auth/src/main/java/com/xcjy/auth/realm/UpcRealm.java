@@ -75,7 +75,7 @@ public class UpcRealm extends AuthorizingRealm {
         }
         String accessToken = TokenThreadLocal.get();
         AuthCache.put(accessToken, (UpcToken) token);
-        authMessageService.saveUserMessage(new UpcLoginSuccessModel(new Date()));
+        authMessageService.saveUserMessage(new UpcLoginSuccessModel(new Date(), ((UpcToken) token).getHost()));
         return new SimpleAuthenticationInfo(token.getPrincipal(), user.getPassword(), new SimpleByteSource(user.getSalt()), getName());
     }
 

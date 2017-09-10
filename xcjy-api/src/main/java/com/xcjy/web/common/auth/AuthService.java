@@ -36,15 +36,15 @@ public class AuthService implements AuthMessageService {
 
     @Override
     public Set<String> getRole(String username) {
-        User user = userService.getByUsernameOrPhone(username, username);
-        if (null != user && StringUtils.isNotBlank(user.getRoleId())) {
-            Set<RoleEnum> roleSet = roleService.getRoleByIds(Arrays.asList(user.getRoleId().split(",")));
-            if (CollectionUtils.isNotEmpty(roleSet)) {
-                return roleSet.stream().map(RoleEnum::name).collect(Collectors.toSet());
-            }
-        }
-        return new HashSet<>();
-//        return getAllRoles(); // TODO: 2017/8/15 暂时使用，获取所有权限，方便调试
+//        User user = userService.getByUsernameOrPhone(username, username);
+//        if (null != user && StringUtils.isNotBlank(user.getRoleId())) {
+//            Set<RoleEnum> roleSet = roleService.getRoleByIds(Arrays.asList(user.getRoleId().split(",")));
+//            if (CollectionUtils.isNotEmpty(roleSet)) {
+//                return roleSet.stream().map(RoleEnum::name).collect(Collectors.toSet());
+//            }
+//        }
+//        return new HashSet<>();
+        return getAllRoles(); // TODO: 2017/8/15 暂时使用，获取所有权限，方便调试
     }
 
     @Override

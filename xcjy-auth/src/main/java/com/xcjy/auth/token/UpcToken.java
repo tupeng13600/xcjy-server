@@ -7,6 +7,8 @@ import org.apache.shiro.authc.AuthenticationToken;
  */
 public class UpcToken implements AuthenticationToken {
 
+    private String host;
+
     private String username;
 
     private String password;
@@ -14,9 +16,10 @@ public class UpcToken implements AuthenticationToken {
     public UpcToken() {
     }
 
-    public UpcToken(String username, String password) {
+    public UpcToken(String username, String password, String host) {
         this.username = username;
         this.password = password;
+        this.host = host;
     }
 
     @Override
@@ -43,5 +46,13 @@ public class UpcToken implements AuthenticationToken {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
     }
 }

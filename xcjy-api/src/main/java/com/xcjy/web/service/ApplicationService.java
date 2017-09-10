@@ -191,6 +191,9 @@ public class ApplicationService {
             throw new EducationException("无法获取申请人信息");
         }
         Student student = studentMapper.getById(req.getStudentId());
+        if(student.getSchoolId().equals(req.getToSchoolId())) {
+            throw new EducationException("该学生已经在该校区，无需转校操作");
+        }
         if (null == student) {
             throw new EducationException("学生信息不存在");
         }

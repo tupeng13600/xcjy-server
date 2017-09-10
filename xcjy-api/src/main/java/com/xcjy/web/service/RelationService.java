@@ -63,6 +63,7 @@ public class RelationService {
             counselorStudent.setEmployeeId(employeeId);
             counselorStudent.setStudentId(studentId);
             counselorStudent.setMoney(0);
+            counselorStudent.setHasBack(0);
             counselorStudent.setStatus(CounselorStudentStatusType.CONNECTION_NO);
             counselorStudentList.add(counselorStudent);
         }

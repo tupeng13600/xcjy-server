@@ -96,7 +96,7 @@ public class UpcAuthFilter extends BasicHttpAuthenticationFilter {
             filterThreadLocal.set("用户名或者密码不能为空");
             return null;
         }
-        return new UpcToken(username, password);
+        return new UpcToken(username, password, request.getRemoteHost());
     }
 
     private String getToken(HttpServletRequest request) {

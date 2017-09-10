@@ -9,7 +9,7 @@ body{
   background: #ecf0f5;
   overflow-y: scroll;
   .content-wrapper{
-    min-height: e("calc(100vh - 100px)");
+    min-height: e("calc(100vh - 51px)");
   }
 }
 
@@ -63,18 +63,28 @@ app-collapse-box{
 
 
 /* select2 style reset */
-.select2{
+.input-group.input-group-sm{
   width: 100%;
+  max-width: 206px;
+}
+div.input-group.input-group-sm .select2-container{
+  width: 100%!important;
 }
 div.input-group.input-group-sm .select2-container--default,
 div.input-group.input-group-sm .select2-container,
 div.form-group.form-group-sm .select2-container{
   .select2-selection{
-    width: 100%;
+    width: 100%!important;
     font-size: 12px;
-    line-height: 30px;
-    padding: 5px 7px;
+    line-height: 28px;
     height: 30px;
+    padding: 5px 7px;
+  }
+}
+
+div.input-group.input-group-sm .select2-container{
+  .select2-selection{
+    line-height: 24px;
   }
 }
 
