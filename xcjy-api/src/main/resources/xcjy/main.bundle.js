@@ -647,7 +647,7 @@ var AppSettings = (function () {
     return AppSettings;
 }());
 
-AppSettings.API_ENDPOINT = 'http://localhost:8412/';
+AppSettings.API_ENDPOINT = 'http://www.qianhengnet.com:8412/';
 //# sourceMappingURL=app-settings.js.map
 
 /***/ }),
