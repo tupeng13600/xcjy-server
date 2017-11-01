@@ -15,4 +15,6 @@ public interface CourseTeacherMapper {
     CourseTeacher getByCIdAndTId(@Param("courseId") String courseId, @Param("employeeId") String employeeId);
 
     List<CourseTeacher> getByCId(@Param("courseId") String courseId);
+
+    List<CourseTeacher> getByEmployeeId(@Param("employeeId") String employeeId);
 }

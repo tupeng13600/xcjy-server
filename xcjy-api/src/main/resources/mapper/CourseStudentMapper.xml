@@ -86,4 +86,13 @@
         FROM course_student WHERE course_id = #{courseId}
     </select>
 
+    <select id="getByCourseIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM course_student WHERE course_id IN
+        <foreach collection="courseIds" item="courseId" open="(" separator="," close=")">
+            #{courseId}
+        </foreach>
+    </select>
+
 </mapper>

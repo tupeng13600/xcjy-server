@@ -1,7 +1,7 @@
 package com.xcjy.web.service;
 
-import com.xcjy.web.bean.*;
 import com.xcjy.auth.util.CurrentThreadLocal;
+import com.xcjy.web.bean.*;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.common.util.CurrentUserUtil;
 import com.xcjy.web.controller.req.CourseScheduleCreateReq;
@@ -48,6 +48,12 @@ public class CourseScheduleService {
 
     @Autowired
     private StudentMoneyMapper studentMoneyMapper;
+
+    @Autowired
+    private GradeMapper gradeMapper;
+
+    @Autowired
+    private StudentMapper studentMapper;
 
     /**
      * 学管师创建课表，选择课表上课时间，上课老师，上课学生等
@@ -305,6 +311,7 @@ public class CourseScheduleService {
             for (Course course : courseList) {
                 TeacherCourseHourStat stat = new TeacherCourseHourStat();
                 stat.setCourseName(course.getName());
+                stat.setStudyHour(course.getStudyHour());
                 for (CourseSchedule courseSchedule : courseScheduleList) {
                     if (courseSchedule.getCourseId().equals(course.getId())) {
                         stat.setHours(stat.getHours() + courseSchedule.getStudyTime());
@@ -323,7 +330,7 @@ public class CourseScheduleService {
     @Transactional
     public void finish4Teacher(String scheduleId) {
         CourseSchedule courseSchedule = courseScheduleMapper.getById(scheduleId);
-        if(null == courseSchedule) {
+        if (null == courseSchedule) {
             throw new EducationException("课表信息不存在");
         }
         courseSchedule.setFinish(true);
@@ -333,10 +340,120 @@ public class CourseScheduleService {
 
     public List<Employee> getByCourseId(String courseId) {
         List<CourseTeacher> courseTeacherList = courseTeacherMapper.getByCId(courseId);
-        if(CollectionUtils.isNotEmpty(courseTeacherList)) {
+        if (CollectionUtils.isNotEmpty(courseTeacherList)) {
             Set<String> employeeIds = courseTeacherList.stream().map(CourseTeacher::getTeacherId).collect(Collectors.toSet());
             return employeeMapper.getByIds(employeeIds);
         }
         return new ArrayList<>();
     }
+
+    public List<TeacherCourseHisRes> getHis4Teacher() {
+        List<TeacherCourseHisRes> resultList = new ArrayList<>();
+        String employeeId = CurrentUserUtil.currentEmployeeId();
+        List<CourseSchedule> courseScheduleList = courseScheduleMapper.getByEmployeeId(employeeId);
+        if (CollectionUtils.isNotEmpty(courseScheduleList)) {
+            Set<String> courseIds = courseScheduleList.stream().map(CourseSchedule::getCourseId).collect(Collectors.toSet());
+            List<Course> courseList = courseMapper.getByIds(courseIds);
+            List<Grade> gradeList = null;
+            if (CollectionUtils.isNotEmpty(courseList)) {
+                Set<String> gradeIds = courseList.stream().map(Course::getGradeId).collect(Collectors.toSet());
+                gradeList = gradeMapper.getByIds(gradeIds);
+            }
+            for (CourseSchedule courseSchedule : courseScheduleList) {
+                TeacherCourseHisRes res = new TeacherCourseHisRes();
+                res.setCourseId(courseSchedule.getCourseId());
+                res.setStartTime(courseSchedule.getStartTime());
+                res.setEndTime(courseSchedule.getEndTime());
+                res.setFinish(courseSchedule.getFinish());
+                res.setStudyTime(courseSchedule.getStudyTime());
+                setCourseMess(res, courseList, courseSchedule.getId(), gradeList);
+                resultList.add(res);
+            }
+        }
+        return resultList;
+    }
+
+    private void setCourseMess(TeacherCourseHisRes res, List<Course> courseList, String courseId, List<Grade> gradeList) {
+        if (CollectionUtils.isNotEmpty(courseList)) {
+            for (Course course : courseList) {
+                if (course.getId().equals(courseId)) {
+                    res.setCourseName(course.getName());
+                    setGradeMess(res, gradeList, course.getGradeId());
+                    break;
+                }
+            }
+        }
+    }
+
+    private void setGradeMess(TeacherCourseHisRes res, List<Grade> gradeList, String gradeId) {
+        if (CollectionUtils.isNotEmpty(gradeList)) {
+            for (Grade grade : gradeList) {
+                if (grade.getId().equals(gradeId)) {
+                    res.setGradeId(gradeId);
+                    res.setGradeName(grade.getName());
+                    break;
+                }
+            }
+        }
+    }
+
+    public List<StudentScoreRes> getScore4Teacher() {
+        List<StudentScoreRes> resultList = new ArrayList<>();
+        String employeeId = CurrentUserUtil.currentEmployeeId();
+        List<CourseTeacher> courseTeacherList = courseTeacherMapper.getByEmployeeId(employeeId);
+        if (CollectionUtils.isNotEmpty(courseTeacherList)) {
+            Set<String> courseIds = courseTeacherList.stream().map(CourseTeacher::getCourseId).collect(Collectors.toSet());
+            List<CourseStudent> courseStudentList = courseStudentMapper.getByCourseIds(courseIds);
+            List<Course> courseList = courseMapper.getByIds(courseIds);
+            List<Grade> gradeList = null;
+            List<Student> studentList = null;
+            if (CollectionUtils.isNotEmpty(courseList)) {
+                Set<String> gradeIds = courseList.stream().map(Course::getGradeId).collect(Collectors.toSet());
+                gradeList = gradeMapper.getByIds(gradeIds);
+            }
+            if (CollectionUtils.isNotEmpty(courseStudentList)) {
+                Set<String> studentIds = courseStudentList.stream().map(CourseStudent::getStudentId).collect(Collectors.toSet());
+                studentList = studentMapper.getByIds(studentIds);
+            }
+            if (CollectionUtils.isNotEmpty(studentList)) {
+                for (Student student : studentList) {
+                    StudentScoreRes res = new StudentScoreRes();
+                    res.setStudentId(student.getId());
+                    res.setStudentName(student.getName());
+                    setCourse(res, courseStudentList, courseList, gradeList);
+                    resultList.add(res);
+                }
+            }
+        }
+        return resultList;
+    }
+
+    private void setCourse(StudentScoreRes res,
+                           List<CourseStudent> courseStudentList,
+                           List<Course> courseList,
+                           List<Grade> gradeList) {
+        if (CollectionUtils.isNotEmpty(courseStudentList)) {
+            for (CourseStudent courseStudent : courseStudentList) {
+                if (res.getStudentId().equals(courseStudent.getStudentId())) {
+                    res.setHasUsed(courseStudent.getUsedHour());
+                    res.setBuyHour(courseStudent.getBuyHour());
+                    res.setScore(courseStudent.getScore());
+                    for (Course course : courseList) {
+                        if (course.getId().equals(courseStudent.getCourseId())) {
+                            res.setCourseName(course.getName());
+                            res.setStudyHour(course.getStudyHour());
+                            if (CollectionUtils.isNotEmpty(gradeList)) {
+                                for (Grade grade : gradeList) {
+                                    if (grade.getId().equals(course.getGradeId())) {
+                                        res.setGradeName(grade.getName());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }

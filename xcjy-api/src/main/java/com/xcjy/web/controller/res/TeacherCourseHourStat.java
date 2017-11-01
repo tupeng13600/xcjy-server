@@ -10,6 +10,8 @@ public class TeacherCourseHourStat {
 
     private String courseName;
 
+    private Integer studyHour;
+
     private Integer hours = 0;
 
 }

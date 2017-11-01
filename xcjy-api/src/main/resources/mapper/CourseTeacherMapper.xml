@@ -58,4 +58,10 @@
         FROM course_teacher WHERE course_id = #{courseId}
     </select>
 
+    <select id="getByEmployeeId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM course_teacher WHERE teacher_id = #{employeeId};
+    </select>
+
 </mapper>

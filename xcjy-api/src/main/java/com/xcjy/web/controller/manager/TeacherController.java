@@ -1,6 +1,8 @@
 package com.xcjy.web.controller.manager;
 
 import com.xcjy.web.common.util.CommonUtil;
+import com.xcjy.web.controller.res.StudentScoreRes;
+import com.xcjy.web.controller.res.TeacherCourseHisRes;
 import com.xcjy.web.controller.res.TeacherHourStatRes;
 import com.xcjy.web.controller.res.TeacherScheduleRes;
 import com.xcjy.web.service.CourseScheduleService;
@@ -39,6 +41,20 @@ public class TeacherController {
     @GetMapping("/course/stat")
     public TeacherHourStatRes getHourStat(Date startTime, Date endTime){
         return courseScheduleService.statHour4Teacher(startTime, endTime);
+    }
+
+    @RequiresRoles({CommonUtil.TEACHER})
+    @ApiOperation("查看上课历史")
+    @GetMapping("/course/his")
+    public List<TeacherCourseHisRes> getCourseHis(){
+        return courseScheduleService.getHis4Teacher();
+    }
+
+    @RequiresRoles({CommonUtil.TEACHER})
+    @ApiOperation("查看学生成绩")
+    @GetMapping("/course/his")
+    public List<StudentScoreRes> getScore(){
+        return courseScheduleService.getScore4Teacher();
     }
 
 }
