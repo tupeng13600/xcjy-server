@@ -52,7 +52,7 @@ public class TeacherController {
 
     @RequiresRoles({CommonUtil.TEACHER})
     @ApiOperation("查看学生成绩")
-    @GetMapping("/course/his")
+    @GetMapping("/course/score")
     public List<StudentScoreRes> getScore(){
         return courseScheduleService.getScore4Teacher();
     }

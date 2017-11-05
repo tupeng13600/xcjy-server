@@ -366,7 +366,7 @@ public class CourseScheduleService {
                 res.setEndTime(courseSchedule.getEndTime());
                 res.setFinish(courseSchedule.getFinish());
                 res.setStudyTime(courseSchedule.getStudyTime());
-                setCourseMess(res, courseList, courseSchedule.getId(), gradeList);
+                setCourseMess(res, courseList, courseSchedule.getCourseId(), gradeList);
                 resultList.add(res);
             }
         }
