@@ -815,6 +815,11 @@ AppComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_99__consultant_main_drawback_approment_drawback_approment_component__ = __webpack_require__("../../../../../src/app/consultant-main/drawback-approment/drawback-approment.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_100__student_manager_boss_schedule_management_schedule_management_component__ = __webpack_require__("../../../../../src/app/student-manager-boss/schedule-management/schedule-management.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_101__student_manager_boss_teacher_hours_teacher_hours_component__ = __webpack_require__("../../../../../src/app/student-manager-boss/teacher-hours/teacher-hours.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_102__uploader_uploader_component__ = __webpack_require__("../../../../../src/app/uploader/uploader.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_103_ng2_file_upload__ = __webpack_require__("../../../../ng2-file-upload/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_103_ng2_file_upload___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_103_ng2_file_upload__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_104__teacher_teacher_class_history_teacher_class_history_component__ = __webpack_require__("../../../../../src/app/teacher/teacher-class-history/teacher-class-history.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_105__teacher_teacher_stu_score_teacher_stu_score_component__ = __webpack_require__("../../../../../src/app/teacher/teacher-stu-score/teacher-stu-score.component.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -822,6 +827,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
+
+
 
 
 
@@ -932,6 +941,7 @@ var AppModule = (function () {
 AppModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["NgModule"])({
         declarations: [
+            __WEBPACK_IMPORTED_MODULE_103_ng2_file_upload__["FileSelectDirective"],
             __WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* AppComponent */],
             __WEBPACK_IMPORTED_MODULE_7__login_login_component__["a" /* LoginComponent */],
             __WEBPACK_IMPORTED_MODULE_8__dashboard_dashboard_component__["a" /* DashboardComponent */],
@@ -1007,7 +1017,10 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_98__stmanager_drawback_list_drawback_list_component__["a" /* DrawbackListComponent */],
             __WEBPACK_IMPORTED_MODULE_99__consultant_main_drawback_approment_drawback_approment_component__["a" /* DrawbackApprovalComponent */],
             __WEBPACK_IMPORTED_MODULE_100__student_manager_boss_schedule_management_schedule_management_component__["a" /* ScheduleManagementComponent */],
-            __WEBPACK_IMPORTED_MODULE_101__student_manager_boss_teacher_hours_teacher_hours_component__["a" /* TeacherHoursComponent */]
+            __WEBPACK_IMPORTED_MODULE_101__student_manager_boss_teacher_hours_teacher_hours_component__["a" /* TeacherHoursComponent */],
+            __WEBPACK_IMPORTED_MODULE_102__uploader_uploader_component__["a" /* UploaderComponent */],
+            __WEBPACK_IMPORTED_MODULE_104__teacher_teacher_class_history_teacher_class_history_component__["a" /* TeacherClassHistoryComponent */],
+            __WEBPACK_IMPORTED_MODULE_105__teacher_teacher_stu_score_teacher_stu_score_component__["a" /* TeacherStuScoreComponent */]
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_5_ng2_select2__["Select2Module"],
@@ -1035,7 +1048,7 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_75__teacher_teacher_service__["a" /* TeacherService */],
             __WEBPACK_IMPORTED_MODULE_80__finance_finance_service__["a" /* FinanceService */],
             __WEBPACK_IMPORTED_MODULE_83__president_president_service__["a" /* PresidentService */],
-            __WEBPACK_IMPORTED_MODULE_92__student_manager_boss_student_manager_boss_service__["a" /* StudentManagerBossService */]
+            __WEBPACK_IMPORTED_MODULE_92__student_manager_boss_student_manager_boss_service__["a" /* StudentManagerBossService */],
         ],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* AppComponent */]]
     })
@@ -2498,7 +2511,7 @@ var Student = (function () {
 /***/ "../../../../../src/app/consultant-main/unallocated-students/unallocated-students.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-content-header\r\n  [title]=\"'学生列表'\" [menus]=\"contentHeader\"></app-content-header>\r\n<div class=\"content\">\r\n\r\n  <app-collapse-box [collapse]=\"false\" [icon]=\"'filter'\" [boxTitle]=\"'学生过滤'\">\r\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        姓名筛选:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\">\r\n        <input type=\"text\" class=\"form-control input-sm\" placeholder=\"输入学生姓名\" (keypress)=\"curPage = 1;\" [(ngModel)]=\"filterStuName\">\r\n        <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        性别筛选:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\">\r\n        <select2 [cssImport]=\"false\"\r\n                 [options]=\"{minimumResultsForSearch: -1}\"\r\n                 [data]=\"genders\"\r\n                 (valueChanged)=\"switchFilterGender($event)\"\r\n                 [width]=\"'148px'\"></select2>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        电话筛选:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\">\r\n        <input type=\"text\" class=\"form-control input-sm\" placeholder=\"输入电话号码\" (keypress)=\"curPage = 1;\" [(ngModel)]=\"filterPhone\">\r\n        <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n      </div>\r\n    </div>\r\n  </app-collapse-box>\r\n\r\n  <div class=\"box box-primary\">\r\n    <div class=\"box-header\">\r\n      <h3 class=\"box-title\">学生列表</h3>\r\n      <div class=\"box-tools\">\r\n        <div class=\"btn-group btn-group-sm\">\r\n          <button class=\"btn btn-primary\"\r\n            (click)=\"form.reset();resetCurStudent();\r\n              studentModal.showModal({\r\n                modalSize: 'lg',\r\n                title: '添加学生',\r\n                confirm: addStudent\r\n            })\">\r\n            <i class=\"fa fa-plus\"> 添加学生</i>\r\n          </button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div class=\"box-body\" style=\"border-top: 1px solid #dddddd;\">\r\n      <div class=\"dataTables_wrapper form-inline dt-bootstrap\">\r\n        <div class=\"row\">\r\n          <div class=\"col-xs-12\">\r\n            <table class=\"table table-bordered table-hover text-center\">\r\n              <thead>\r\n                <tr role=\"row\">\r\n                  <th>姓名</th>\r\n                  <th>性别</th>\r\n                  <th>电话号码</th>\r\n                  <th>年级</th>\r\n                  <th>就读学校</th>\r\n                  <th>学科</th>\r\n                  <th>备注</th>\r\n                  <th class=\"text-center\">操作</th>\r\n                </tr>\r\n              </thead>\r\n              <tbody>\r\n                <tr *ngFor=\"let student of unAllocatedStudents |\r\n                  matchItem: filterStuName: 'name' |\r\n                  matchItem: filterGender: 'sex' : 'exact'  |\r\n                  matchItem: filterPhone: 'phone' | paging: curPage\"\r\n                  (click)=\"resetCurStudent(student.id);\r\n                  studentModal.showModal({\r\n                    modalSize: 'lg',\r\n                    title: '编辑学生',\r\n                    confirm: updateStuInfo\r\n                   })\">\r\n                  <td>{{ student.name }}</td>\r\n                  <td>{{ student.sex === 'MALE' ? '男' : '女' }}</td>\r\n                  <td>{{ student.phone }}</td>\r\n                  <td>{{ student.grade || '-' }}</td>\r\n                  <td>{{ student.orignSchool || '-' }}</td>\r\n                  <td>{{ student.subject || '-' }}</td>\r\n                  <td>{{ student.remark || '-' }}</td>\r\n                  <td class=\"text-center\">\r\n                    <div class=\"btn-group btn-group-xs\">\r\n                      <button class=\"btn btn-xs btn-danger\" (click)=\"$event.stopPropagation();\r\n                      resetCurStudent(student.id);\r\n                      confirmDelete.showModal({\r\n                        title: '提示',\r\n                        modalType: 'danger',\r\n                        content: '确认删除该学生?',\r\n                        hasCancelBtn: true,\r\n                        confirm: removeStu\r\n                      });\">\r\n                        <i class=\"fa fa-trash\"></i>\r\n                        删除学生\r\n                      </button>\r\n                    </div>\r\n                  </td>\r\n                </tr>\r\n                <tr *ngIf=\"!unAllocatedStudents.length\">\r\n                  <td colspan=\"8\" class=\"text-center\">暂无学生信息</td>\r\n                </tr>\r\n              </tbody>\r\n            </table>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n  <app-pagination (changePage)=\"handlePageChange($event)\"\r\n                     [curPage]=\"curPage\"\r\n                     [totalCount]=\"(unAllocatedStudents |\r\n                  matchItem: filterStuName: 'name' |\r\n                  matchItem: filterGender: 'sex' : 'exact'  |\r\n                  matchItem: filterPhone: 'phone').length\"></app-pagination>\r\n</div>\r\n\r\n<app-modal #studentModal [disabledAcceptBtn]=!stuForm.form.valid>\r\n  <form class=\"form clearfix\" autocomplete=\"off\" #stuForm=\"ngForm\" #form=\"ngForm\">\r\n    <div class=\"col-xs-12\">\r\n      <div class=\"col-sm-5 col-xs-12\">\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"name\" class=\"control-label necessary col-xs-2\">姓名</label>\r\n          <div class=\"col-xs-10\">\r\n            <input class=\"form-control {{ (name.invalid && name.dirty) && 'error' }}\" #name=\"ngModel\" id=\"name\" name=\"name\" placeholder=\"学生姓名\" [(ngModel)]=\"curStudent.name\" [required]=\"true\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"gender\" class=\"control-label necessary col-xs-2\">性别</label>\r\n          <div class=\"col-xs-10\">\r\n            <select2 id=\"gender\"\r\n                     [value]=\"curStudent.sex\"\r\n                     [cssImport]=\"false\"\r\n                     [width]=\"'100%'\"\r\n                     (valueChanged)=\"switchGender($event)\"\r\n                     [options]=\"{minimumResultsForSearch: -1, placeholder: '请选择性别'}\"\r\n                     [data]=\"[{id: 'MALE', text: '男'}, {id: 'FEMALE', text: '女'}]\"></select2>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"phone\" class=\"control-label necessary col-xs-2\">电话</label>\r\n          <div class=\"col-xs-10\">\r\n            <input #phone=\"ngModel\" type=\"tel\" class=\"form-control {{ (phone.dirty && phone.invalid) && 'error' }}\" id=\"phone\" name=\"phone\" placeholder=\"请输入电话号码\" [(ngModel)]=\"curStudent.phone\" pattern=\"^\\d{11}$\" [required]=\"true\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"idCard\" class=\"control-label necessary col-xs-2\">身份证</label>\r\n          <div class=\"col-xs-10\">\r\n            <input #idCard=\"ngModel\"\r\n                   class=\"form-control {{ idCard.dirty && idCard.invalid && 'error' }}\"\r\n                   id=\"idCard\"\r\n                   name=\"idCard\"\r\n                   placeholder=\"请输入18位身份证\"\r\n                   [(ngModel)]=\"curStudent.idCard\"\r\n                   pattern=\"^(\\d{17})(\\d|x|X){1}$\"\r\n                   [required]=\"true\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"grade\" class=\"control-label necessary col-xs-2\">年级</label>\r\n          <div class=\"col-xs-10\">\r\n            <input #grade=\"ngModel\" class=\"form-control {{ grade.invalid && grade.dirty && 'error' }}\" id=\"grade\" name=\"grade\" placeholder=\"请输入年级\" [(ngModel)]=\"curStudent.grade\" [required]=\"true\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"subject\" class=\"control-label col-xs-2\">学科</label>\r\n          <div class=\"col-xs-10\">\r\n            <input class=\"form-control\" id=\"subject\" name=\"subject\" placeholder=\"请输入学科\" [(ngModel)]=\"curStudent.subject\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"orignSchool\" class=\"control-label col-xs-2\">学校</label>\r\n          <div class=\"col-xs-10\">\r\n            <input class=\"form-control\" id=\"orignSchool\" name=\"orignSchool\" placeholder=\"请输入就读学校\" [(ngModel)]=\"curStudent.orignSchool\">\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"col-sm-7 col-xs-12\">\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"address\" class=\"control-label col-xs-3 necessary col-md-2\">家庭地址</label>\r\n          <div class=\"col-xs-9 col-md-10\">\r\n            <input #address=\"ngModel\" class=\"form-control {{ address.invalid && address.dirty && 'error' }}\" id=\"address\" name=\"address\" placeholder=\"请输入家庭地址\" [(ngModel)]=\"curStudent.address\" [required]=\"true\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"source\" class=\"control-label col-xs-3 necessary col-md-2\">学生来源</label>\r\n          <div class=\"col-xs-9 col-md-10\">\r\n            <input #source=\"ngModel\" class=\"form-control {{ source.invalid && source.dirty && 'error' }}\" id=\"source\" name=\"source\" placeholder=\"请输入学生来源\" [(ngModel)]=\"curStudent.source\" [required]=\"true\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"parentName\" class=\"control-label col-xs-3 col-md-2 necessary\">家长姓名</label>\r\n          <div class=\"col-xs-9 col-md-10\">\r\n            <input #parentName=\"ngModel\" class=\"form-control {{parentName.touched && parentName.invalid && 'error'}}\"  id=\"parentName\" name=\"parentName\" placeholder=\"请输入家长姓名\" [(ngModel)]=\"curStudent.parentName\" required>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"parentIdCard\" class=\"control-label col-xs-3 col-md-2 necessary\">家长身份证</label>\r\n          <div class=\"col-xs-9 col-md-10\">\r\n            <input #parentIdCard=\"ngModel\"\r\n                   class=\"form-control {{ parentIdCard.touched && parentIdCard.invalid && 'error' }}\"\r\n                   id=\"parentIdCard\"\r\n                   name=\"parentIdCard\"\r\n                   placeholder=\"请输入家长18位身份证\"\r\n                   pattern=\"^(\\d{17})(\\d|x|X){1}$\"\r\n                   [(ngModel)]=\"curStudent.parentIdCard\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"parentPhone\" class=\"control-label col-xs-3 col-md-2\">家长电话</label>\r\n          <div class=\"col-xs-9 col-md-10\">\r\n            <input type=\"tel\" class=\"form-control\" id=\"parentPhone\" name=\"parentPhone\" placeholder=\"请输入家长电话\" [(ngModel)]=\"curStudent.parentPhone\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"gender\" class=\"control-label col-xs-2\">家长性别</label>\r\n          <div class=\"col-xs-10\">\r\n            <select2\r\n                     [value]=\"curStudent.parentSex\"\r\n                     [cssImport]=\"false\"\r\n                     [width]=\"'100%'\"\r\n                     (valueChanged)=\"switchParentGender($event)\"\r\n                     [options]=\"{minimumResultsForSearch: -1, placeholder: '请输入家长性别'}\"\r\n                     [data]=\"[{id: 'MALE', text: '男'}, {id: 'FEMALE', text: '女'}]\"></select2>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"remark\" class=\"control-label col-xs-3 col-md-2\">备注信息</label>\r\n          <div class=\"col-xs-9 col-md-10\">\r\n            <textarea class=\"form-control\" id=\"remark\" rows=\"1\" name=\"remark\" placeholder=\"请填写备注信息\" [(ngModel)]=\"curStudent.remark\"></textarea>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </form>\r\n</app-modal>\r\n\r\n<app-confirm #confirmDelete></app-confirm>\r\n"
+module.exports = "<app-content-header\r\n  [title]=\"'学生列表'\" [menus]=\"contentHeader\"></app-content-header>\r\n<div class=\"content\">\r\n\r\n  <app-collapse-box [collapse]=\"false\" [icon]=\"'filter'\" [boxTitle]=\"'学生过滤'\">\r\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        姓名筛选:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\">\r\n        <input type=\"text\" class=\"form-control input-sm\" placeholder=\"输入学生姓名\" (keypress)=\"curPage = 1;\" [(ngModel)]=\"filterStuName\">\r\n        <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        性别筛选:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\">\r\n        <select2 [cssImport]=\"false\"\r\n                 [options]=\"{minimumResultsForSearch: -1}\"\r\n                 [data]=\"genders\"\r\n                 (valueChanged)=\"switchFilterGender($event)\"\r\n                 [width]=\"'148px'\"></select2>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        电话筛选:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\">\r\n        <input type=\"text\" class=\"form-control input-sm\" placeholder=\"输入电话号码\" (keypress)=\"curPage = 1;\" [(ngModel)]=\"filterPhone\">\r\n        <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n      </div>\r\n    </div>\r\n  </app-collapse-box>\r\n\r\n  <div class=\"box box-primary\">\r\n    <div class=\"box-header\">\r\n      <h3 class=\"box-title\">学生列表</h3>\r\n      <div class=\"box-tools\">\r\n        <div class=\"btn-group btn-group-sm\">\r\n          <input name=\"file\" type=\"file\" ng2FileSelect [uploader]=\"fileUploader\" />\r\n          <button class=\"btn btn-success\">\r\n            <i class=\"fa fa-upload\"></i>\r\n            导入学生\r\n          </button>\r\n          <button class=\"btn btn-primary\"\r\n            (click)=\"form.reset();resetCurStudent();\r\n              studentModal.showModal({\r\n                modalSize: 'lg',\r\n                title: '添加学生',\r\n                confirm: addStudent\r\n            })\">\r\n            <i class=\"fa fa-plus\"> 添加学生</i>\r\n          </button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div class=\"box-body\" style=\"border-top: 1px solid #dddddd;\">\r\n      <div class=\"dataTables_wrapper form-inline dt-bootstrap\">\r\n        <div class=\"row\">\r\n          <div class=\"col-xs-12\">\r\n            <table class=\"table table-bordered table-hover text-center\">\r\n              <thead>\r\n                <tr role=\"row\">\r\n                  <th>姓名</th>\r\n                  <th>性别</th>\r\n                  <th>电话号码</th>\r\n                  <th>年级</th>\r\n                  <th>就读学校</th>\r\n                  <th>学科</th>\r\n                  <th>备注</th>\r\n                  <th class=\"text-center\">操作</th>\r\n                </tr>\r\n              </thead>\r\n              <tbody>\r\n                <tr *ngFor=\"let student of unAllocatedStudents |\r\n                  matchItem: filterStuName: 'name' |\r\n                  matchItem: filterGender: 'sex' : 'exact'  |\r\n                  matchItem: filterPhone: 'phone' | paging: curPage\"\r\n                  (click)=\"resetCurStudent(student.id);\r\n                  studentModal.showModal({\r\n                    modalSize: 'lg',\r\n                    title: '编辑学生',\r\n                    confirm: updateStuInfo\r\n                   })\">\r\n                  <td>{{ student.name }}</td>\r\n                  <td>{{ student.sex === 'MALE' ? '男' : '女' }}</td>\r\n                  <td>{{ student.phone }}</td>\r\n                  <td>{{ student.grade || '-' }}</td>\r\n                  <td>{{ student.orignSchool || '-' }}</td>\r\n                  <td>{{ student.subject || '-' }}</td>\r\n                  <td>{{ student.remark || '-' }}</td>\r\n                  <td class=\"text-center\">\r\n                    <div class=\"btn-group btn-group-xs\">\r\n                      <button class=\"btn btn-xs btn-danger\" (click)=\"$event.stopPropagation();\r\n                      resetCurStudent(student.id);\r\n                      confirmDelete.showModal({\r\n                        title: '提示',\r\n                        modalType: 'danger',\r\n                        content: '确认删除该学生?',\r\n                        hasCancelBtn: true,\r\n                        confirm: removeStu\r\n                      });\">\r\n                        <i class=\"fa fa-trash\"></i>\r\n                        删除学生\r\n                      </button>\r\n                    </div>\r\n                  </td>\r\n                </tr>\r\n                <tr *ngIf=\"!unAllocatedStudents.length\">\r\n                  <td colspan=\"8\" class=\"text-center\">暂无学生信息</td>\r\n                </tr>\r\n              </tbody>\r\n            </table>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n  <app-pagination (changePage)=\"handlePageChange($event)\"\r\n                     [curPage]=\"curPage\"\r\n                     [totalCount]=\"(unAllocatedStudents |\r\n                  matchItem: filterStuName: 'name' |\r\n                  matchItem: filterGender: 'sex' : 'exact'  |\r\n                  matchItem: filterPhone: 'phone').length\"></app-pagination>\r\n</div>\r\n\r\n<app-modal #studentModal [disabledAcceptBtn]=!stuForm.form.valid>\r\n  <form class=\"form clearfix\" autocomplete=\"off\" #stuForm=\"ngForm\" #form=\"ngForm\">\r\n    <div class=\"col-xs-12\">\r\n      <div class=\"col-sm-5 col-xs-12\">\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"name\" class=\"control-label necessary col-xs-2\">姓名</label>\r\n          <div class=\"col-xs-10\">\r\n            <input class=\"form-control {{ (name.invalid && name.dirty) && 'error' }}\" #name=\"ngModel\" id=\"name\" name=\"name\" placeholder=\"学生姓名\" [(ngModel)]=\"curStudent.name\" [required]=\"true\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"gender\" class=\"control-label necessary col-xs-2\">性别</label>\r\n          <div class=\"col-xs-10\">\r\n            <select2 id=\"gender\"\r\n                     [value]=\"curStudent.sex\"\r\n                     [cssImport]=\"false\"\r\n                     [width]=\"'100%'\"\r\n                     (valueChanged)=\"switchGender($event)\"\r\n                     [options]=\"{minimumResultsForSearch: -1, placeholder: '请选择性别'}\"\r\n                     [data]=\"[{id: 'MALE', text: '男'}, {id: 'FEMALE', text: '女'}]\"></select2>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"phone\" class=\"control-label necessary col-xs-2\">电话</label>\r\n          <div class=\"col-xs-10\">\r\n            <input #phone=\"ngModel\" type=\"tel\" class=\"form-control {{ (phone.dirty && phone.invalid) && 'error' }}\" id=\"phone\" name=\"phone\" placeholder=\"请输入电话号码\" [(ngModel)]=\"curStudent.phone\" pattern=\"^\\d{11}$\" [required]=\"true\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"idCard\" class=\"control-label necessary col-xs-2\">身份证</label>\r\n          <div class=\"col-xs-10\">\r\n            <input #idCard=\"ngModel\"\r\n                   class=\"form-control {{ idCard.dirty && idCard.invalid && 'error' }}\"\r\n                   id=\"idCard\"\r\n                   name=\"idCard\"\r\n                   placeholder=\"请输入18位身份证\"\r\n                   [(ngModel)]=\"curStudent.idCard\"\r\n                   pattern=\"^(\\d{17})(\\d|x|X){1}$\"\r\n                   [required]=\"true\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"grade\" class=\"control-label necessary col-xs-2\">年级</label>\r\n          <div class=\"col-xs-10\">\r\n            <input #grade=\"ngModel\" class=\"form-control {{ grade.invalid && grade.dirty && 'error' }}\" id=\"grade\" name=\"grade\" placeholder=\"请输入年级\" [(ngModel)]=\"curStudent.grade\" [required]=\"true\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"subject\" class=\"control-label col-xs-2\">学科</label>\r\n          <div class=\"col-xs-10\">\r\n            <input class=\"form-control\" id=\"subject\" name=\"subject\" placeholder=\"请输入学科\" [(ngModel)]=\"curStudent.subject\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"orignSchool\" class=\"control-label col-xs-2\">学校</label>\r\n          <div class=\"col-xs-10\">\r\n            <input class=\"form-control\" id=\"orignSchool\" name=\"orignSchool\" placeholder=\"请输入就读学校\" [(ngModel)]=\"curStudent.orignSchool\">\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"col-sm-7 col-xs-12\">\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"address\" class=\"control-label col-xs-3 necessary col-md-2\">家庭地址</label>\r\n          <div class=\"col-xs-9 col-md-10\">\r\n            <input #address=\"ngModel\" class=\"form-control {{ address.invalid && address.dirty && 'error' }}\" id=\"address\" name=\"address\" placeholder=\"请输入家庭地址\" [(ngModel)]=\"curStudent.address\" [required]=\"true\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"source\" class=\"control-label col-xs-3 necessary col-md-2\">学生来源</label>\r\n          <div class=\"col-xs-9 col-md-10\">\r\n            <input #source=\"ngModel\" class=\"form-control {{ source.invalid && source.dirty && 'error' }}\" id=\"source\" name=\"source\" placeholder=\"请输入学生来源\" [(ngModel)]=\"curStudent.source\" [required]=\"true\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"parentName\" class=\"control-label col-xs-3 col-md-2 necessary\">家长姓名</label>\r\n          <div class=\"col-xs-9 col-md-10\">\r\n            <input #parentName=\"ngModel\" class=\"form-control {{parentName.touched && parentName.invalid && 'error'}}\"  id=\"parentName\" name=\"parentName\" placeholder=\"请输入家长姓名\" [(ngModel)]=\"curStudent.parentName\" required>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"parentIdCard\" class=\"control-label col-xs-3 col-md-2 necessary\">家长身份证</label>\r\n          <div class=\"col-xs-9 col-md-10\">\r\n            <input #parentIdCard=\"ngModel\"\r\n                   class=\"form-control {{ parentIdCard.touched && parentIdCard.invalid && 'error' }}\"\r\n                   id=\"parentIdCard\"\r\n                   name=\"parentIdCard\"\r\n                   placeholder=\"请输入家长18位身份证\"\r\n                   pattern=\"^(\\d{17})(\\d|x|X){1}$\"\r\n                   [(ngModel)]=\"curStudent.parentIdCard\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"parentPhone\" class=\"control-label col-xs-3 col-md-2\">家长电话</label>\r\n          <div class=\"col-xs-9 col-md-10\">\r\n            <input type=\"tel\" class=\"form-control\" id=\"parentPhone\" name=\"parentPhone\" placeholder=\"请输入家长电话\" [(ngModel)]=\"curStudent.parentPhone\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"gender\" class=\"control-label col-xs-2\">家长性别</label>\r\n          <div class=\"col-xs-10\">\r\n            <select2\r\n                     [value]=\"curStudent.parentSex\"\r\n                     [cssImport]=\"false\"\r\n                     [width]=\"'100%'\"\r\n                     (valueChanged)=\"switchParentGender($event)\"\r\n                     [options]=\"{minimumResultsForSearch: -1, placeholder: '请输入家长性别'}\"\r\n                     [data]=\"[{id: 'MALE', text: '男'}, {id: 'FEMALE', text: '女'}]\"></select2>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group clearfix\">\r\n          <label for=\"remark\" class=\"control-label col-xs-3 col-md-2\">备注信息</label>\r\n          <div class=\"col-xs-9 col-md-10\">\r\n            <textarea class=\"form-control\" id=\"remark\" rows=\"1\" name=\"remark\" placeholder=\"请填写备注信息\" [(ngModel)]=\"curStudent.remark\"></textarea>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </form>\r\n</app-modal>\r\n\r\n<app-confirm #confirmDelete></app-confirm>\r\n"
 
 /***/ }),
 
@@ -2510,7 +2523,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".form-group label {\n  display: inline-block;\n  line-height: 30px;\n  white-space: nowrap;\n}\n.counselor-info dt,\n.counselor-info dd {\n  line-height: 30px;\n  margin-right: 5px;\n}\n.counselor-info dd {\n  margin-right: 10px;\n}\n.table-add {\n  background: #ecf0f5;\n  border: 1px solid #9e9e9e;\n  border-radius: 4px;\n}\n.table-add thead tr th,\n.table-add tbody tr th,\n.table-add thead tr td,\n.table-add tbody tr td {\n  border-bottom: 1px solid #9e9e9e;\n}\n.table-add thead tr th:not(:last-of-type),\n.table-add tbody tr th:not(:last-of-type),\n.table-add thead tr td:not(:last-of-type),\n.table-add tbody tr td:not(:last-of-type) {\n  border-right: 1px solid #9e9e9e;\n}\ntable.dataTable {\n  cursor: pointer;\n}\n.table-container {\n  max-height: 320px;\n  overflow-y: scroll;\n}\n", ""]);
+exports.push([module.i, ".form-group label {\n  display: inline-block;\n  line-height: 30px;\n  white-space: nowrap;\n}\n.counselor-info dt,\n.counselor-info dd {\n  line-height: 30px;\n  margin-right: 5px;\n}\n.counselor-info dd {\n  margin-right: 10px;\n}\n.table-add {\n  background: #ecf0f5;\n  border: 1px solid #9e9e9e;\n  border-radius: 4px;\n}\n.table-add thead tr th,\n.table-add tbody tr th,\n.table-add thead tr td,\n.table-add tbody tr td {\n  border-bottom: 1px solid #9e9e9e;\n}\n.table-add thead tr th:not(:last-of-type),\n.table-add tbody tr th:not(:last-of-type),\n.table-add thead tr td:not(:last-of-type),\n.table-add tbody tr td:not(:last-of-type) {\n  border-right: 1px solid #9e9e9e;\n}\ntable.dataTable {\n  cursor: pointer;\n}\n.table-container {\n  max-height: 320px;\n  overflow-y: scroll;\n}\ninput[type=\"file\"] {\n  position: absolute;\n  z-index: 10;\n  width: 84px;\n  height: 30px;\n  opacity: 0;\n}\n", ""]);
 
 // exports
 
@@ -2528,6 +2541,9 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__consultant_main_service__ = __webpack_require__("../../../../../src/app/consultant-main/consultant-main.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__student__ = __webpack_require__("../../../../../src/app/consultant-main/student.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_gender__ = __webpack_require__("../../../../../src/app/common/gender.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ng2_file_upload_ng2_file_upload__ = __webpack_require__("../../../../ng2-file-upload/ng2-file-upload.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ng2_file_upload_ng2_file_upload___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_ng2_file_upload_ng2_file_upload__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_settings__ = __webpack_require__("../../../../../src/app/app-settings.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UnallocatedStudentsComponent; });
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -2550,9 +2566,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var UnallocatedStudentsComponent = (function () {
     function UnallocatedStudentsComponent(consultantService) {
         this.consultantService = consultantService;
+        this.fileUploader = new __WEBPACK_IMPORTED_MODULE_4_ng2_file_upload_ng2_file_upload__["FileUploader"]({ url: __WEBPACK_IMPORTED_MODULE_5__app_settings__["a" /* AppSettings */].API_ENDPOINT + 'counselor/student/excel' });
         this.addStudent = this.addStudent.bind(this);
         this.updateStuInfo = this.updateStuInfo.bind(this);
         this.removeStu = this.removeStu.bind(this);
@@ -2639,7 +2658,7 @@ UnallocatedStudentsComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'app-unallocated-students',
         template: __webpack_require__("../../../../../src/app/consultant-main/unallocated-students/unallocated-students.component.html"),
-        styles: [__webpack_require__("../../../../../src/app/consultant-main/unallocated-students/unallocated-students.component.less")]
+        styles: [__webpack_require__("../../../../../src/app/consultant-main/unallocated-students/unallocated-students.component.less")],
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__consultant_main_service__["a" /* ConsultantMainService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__consultant_main_service__["a" /* ConsultantMainService */]) === "function" && _a || Object])
 ], UnallocatedStudentsComponent);
@@ -3769,6 +3788,7 @@ var DateRangerPickerComponent = (function () {
                     firstDay: 1,
                     format: _this.format || 'YYYY-MM-DD'
                 },
+                timePickerIncrement: 30,
                 timePicker: _this.timePicker,
                 ranges: {
                     '今天': [__WEBPACK_IMPORTED_MODULE_1_moment__(), __WEBPACK_IMPORTED_MODULE_1_moment__()],
@@ -4741,7 +4761,6 @@ var HeaderComponent = (function () {
         this.userService.getCurUserInfo()
             .then(function (user) {
             _this.user = user;
-            console.log(_this.user);
             _this.roleService.navigateByRole(user.roleId);
         });
     };
@@ -5329,7 +5348,7 @@ var _a;
 /***/ "../../../../../src/app/personnel-cashier/fees/student-table/student-table.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-collapse-box [collapse]=\"false\" [boxTitle]=\"'学生信息筛选'\">\r\n  <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n    <label class=\"pull-left\">\r\n      姓名:\r\n    </label>\r\n    <div class=\"input-group input-group-sm\">\r\n      <input class=\"form-control input-sm\" (keypress)=\"curPage = 1;\" [(ngModel)]=\"filterStudentName\" placeholder=\"输入学生名称\">\r\n      <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n    <label class=\"pull-left\">\r\n      电话号码:\r\n    </label>\r\n    <div class=\"input-group input-group-sm\">\r\n      <input class=\"form-control input-sm\" (keypress)=\"curPage = 1;\" [(ngModel)]=\"filterStudentPhone\" placeholder=\"输入学生电话号码\">\r\n      <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n    </div>\r\n  </div>\r\n</app-collapse-box>\r\n\r\n<div class=\"box box-primary box-divide\">\r\n  <div class=\"box-header\">\r\n    <h3 class=\"box-title\">\r\n      {{ curSchoolName }}校区学员\r\n    </h3>\r\n    <div class=\"box-tools\">\r\n      <button class=\"btn btn-primary btn-xs\" [routerLink]=\"['../../schools']\">\r\n        <i class=\"fa fa-list\"></i>\r\n        校区列表\r\n      </button>\r\n    </div>\r\n  </div>\r\n  <div class=\"box-body\">\r\n    <table class=\"table table-hovered table-bordered text-center\">\r\n      <thead>\r\n      <tr>\r\n        <th>姓名</th>\r\n        <th>性别</th>\r\n        <th>电话</th>\r\n        <th>学科</th>\r\n        <th>操作</th>\r\n      </tr>\r\n      </thead>\r\n      <tbody>\r\n      <tr *ngFor=\"let student of students | matchItem: filterStudentName: 'name' | matchItem: filterStudentPhone: 'phone' | paging: curPage;\">\r\n        <td>{{ student.name }}</td>\r\n        <td>{{ student.sex === 'MALE' ? '男': '女' }}</td>\r\n        <td>{{ student.phone }}</td>\r\n        <td>{{ student.subject || '-' }}</td>\r\n        <td>\r\n          <div class=\"btn-group btn-group-xs\">\r\n            <button class=\"btn btn-primary btn-xs\" (click)=\"initPaymentEvent(student);\r\n            payModal.showModal({\r\n              title: '请填写缴费信息',\r\n              confirm: pay\r\n            })\">\r\n              <i class=\"fa fa-credit-card\"></i>缴费\r\n            </button>\r\n          </div>\r\n        </td>\r\n      </tr>\r\n      <tr>\r\n        <td *ngIf=\"students.length === 0\" colspan=\"5\">\r\n          <p class=\"text-muted\">该校区下暂无学员信息</p>\r\n        </td>\r\n      </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>\r\n</div>\r\n\r\n<app-pagination (changePage)=\"handlePageChange($event)\"\r\n                [totalCount]=\"(students | matchItem: filterStudentName: 'name' | matchItem: filterStudentPhone: 'phone').length\"></app-pagination>\r\n\r\n\r\n<app-modal #payModal [disabledAcceptBtn]=\"!(payOrRefundEvent.employeeId && payOrRefundEvent.money)\">\r\n  <form class=\"form\">\r\n    <div class=\"form-group clearfix\">\r\n      <label for=\"payType\" class=\"control-label col-xs-3\">缴费类型:</label>\r\n      <div class=\"col-xs-9\">\r\n        <select2 id=\"payType\"\r\n                 [cssImport]=\"false\"\r\n                 [width]=\"'100%'\"\r\n                 [data]=\"payTypeList\"\r\n                 (valueChanged)=\"switchPayType($event)\"\r\n                 [options]=\"{minimumResultsForSearch: -1}\"></select2>\r\n      </div>\r\n    </div>\r\n    <div class=\"form-group clearfix\">\r\n      <label for=\"submitter\" class=\"control-label col-xs-3\">代缴人员</label>\r\n      <div class=\"col-xs-9\">\r\n        <select2 [cssImport]=\"false\"\r\n                 [width]=\"'100%'\"\r\n                 id=\"submitter\"\r\n                 [value]=\"payOrRefundEvent.employeeId\"\r\n                 (valueChanged)=\"handlePayerSwitch($event)\"\r\n                 [data]=\"payer\"\r\n                 [options]=\"select2Options\"\r\n        ></select2>\r\n      </div>\r\n    </div>\r\n    <div class=\"form-group clearfix\">\r\n      <label for=\"payMoney\" class=\"control-label col-xs-3\">代缴金额</label>\r\n      <div class=\"col-xs-9\">\r\n        <input type=\"number\" class=\"form-control\" id=\"payMoney\" name=\"payMoney\" [(ngModel)]=\"payOrRefundEvent.money\" >\r\n      </div>\r\n    </div>\r\n    <div class=\"form-group clearfix\">\r\n      <label for=\"payRemark\" class=\"control-label col-xs-3\">缴费备注</label>\r\n      <div class=\"col-xs-9\">\r\n        <textarea class=\"form-control\" id=\"payRemark\" name=\"payRemark\" [(ngModel)]=\"payOrRefundEvent.remark\" rows=\"2\" placeholder=\"请输入缴费备注\"></textarea>\r\n      </div>\r\n    </div>\r\n  </form>\r\n</app-modal>\r\n"
+module.exports = "<app-collapse-box [collapse]=\"false\" [boxTitle]=\"'学生信息筛选'\">\r\n  <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n    <label class=\"pull-left\">\r\n      姓名:\r\n    </label>\r\n    <div class=\"input-group input-group-sm\">\r\n      <input class=\"form-control input-sm\" (keypress)=\"curPage = 1;\" [(ngModel)]=\"filterStudentName\" placeholder=\"输入学生名称\">\r\n      <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n    <label class=\"pull-left\">\r\n      电话号码:\r\n    </label>\r\n    <div class=\"input-group input-group-sm\">\r\n      <input class=\"form-control input-sm\" (keypress)=\"curPage = 1;\" [(ngModel)]=\"filterStudentPhone\" placeholder=\"输入学生电话号码\">\r\n      <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n    </div>\r\n  </div>\r\n</app-collapse-box>\r\n\r\n<div class=\"box box-primary box-divide\">\r\n  <div class=\"box-header\">\r\n    <h3 class=\"box-title\">\r\n      {{ curSchoolName }}校区学员\r\n    </h3>\r\n    <div class=\"box-tools\">\r\n      <button class=\"btn btn-primary btn-xs\" [routerLink]=\"['../../schools']\">\r\n        <i class=\"fa fa-list\"></i>\r\n        校区列表\r\n      </button>\r\n    </div>\r\n  </div>\r\n  <div class=\"box-body\">\r\n    <table class=\"table table-hovered table-bordered text-center\">\r\n      <thead>\r\n      <tr>\r\n        <th>姓名</th>\r\n        <th>性别</th>\r\n        <th>电话</th>\r\n        <th>学科</th>\r\n        <th>操作</th>\r\n      </tr>\r\n      </thead>\r\n      <tbody>\r\n      <tr *ngFor=\"let student of students | matchItem: filterStudentName: 'name' | matchItem: filterStudentPhone: 'phone' | paging: curPage;\">\r\n        <td>{{ student.name }}</td>\r\n        <td>{{ student.sex === 'MALE' ? '男': '女' }}</td>\r\n        <td>{{ student.phone.slice(0,3) + '****' +  student.phone.slice(7) }}</td>\r\n        <td>{{ student.subject || '-' }}</td>\r\n        <td>\r\n          <div class=\"btn-group btn-group-xs\">\r\n            <button class=\"btn btn-primary btn-xs\" (click)=\"initPaymentEvent(student);\r\n            payModal.showModal({\r\n              title: '请填写缴费信息',\r\n              confirm: pay\r\n            })\">\r\n              <i class=\"fa fa-credit-card\"></i>缴费\r\n            </button>\r\n          </div>\r\n        </td>\r\n      </tr>\r\n      <tr>\r\n        <td *ngIf=\"students.length === 0\" colspan=\"5\">\r\n          <p class=\"text-muted\">该校区下暂无学员信息</p>\r\n        </td>\r\n      </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>\r\n</div>\r\n\r\n<app-pagination (changePage)=\"handlePageChange($event)\"\r\n                [totalCount]=\"(students | matchItem: filterStudentName: 'name' | matchItem: filterStudentPhone: 'phone').length\"></app-pagination>\r\n\r\n\r\n<app-modal #payModal [disabledAcceptBtn]=\"!(payOrRefundEvent.employeeId && payOrRefundEvent.money)\">\r\n  <form class=\"form\">\r\n    <div class=\"form-group clearfix\">\r\n      <label for=\"payType\" class=\"control-label col-xs-3\">缴费类型:</label>\r\n      <div class=\"col-xs-9\">\r\n        <select2 id=\"payType\"\r\n                 [cssImport]=\"false\"\r\n                 [width]=\"'100%'\"\r\n                 [data]=\"payTypeList\"\r\n                 (valueChanged)=\"switchPayType($event)\"\r\n                 [options]=\"{minimumResultsForSearch: -1}\"></select2>\r\n      </div>\r\n    </div>\r\n    <div class=\"form-group clearfix\">\r\n      <label for=\"submitter\" class=\"control-label col-xs-3\">代缴人员</label>\r\n      <div class=\"col-xs-9\">\r\n        <select2 [cssImport]=\"false\"\r\n                 [width]=\"'100%'\"\r\n                 id=\"submitter\"\r\n                 [value]=\"payOrRefundEvent.employeeId\"\r\n                 (valueChanged)=\"handlePayerSwitch($event)\"\r\n                 [data]=\"payer\"\r\n                 [options]=\"select2Options\"\r\n        ></select2>\r\n      </div>\r\n    </div>\r\n    <div class=\"form-group clearfix\">\r\n      <label for=\"payMoney\" class=\"control-label col-xs-3\">代缴金额</label>\r\n      <div class=\"col-xs-9\">\r\n        <input type=\"number\" class=\"form-control\" id=\"payMoney\" name=\"payMoney\" [(ngModel)]=\"payOrRefundEvent.money\" >\r\n      </div>\r\n    </div>\r\n    <div class=\"form-group clearfix\">\r\n      <label for=\"payRemark\" class=\"control-label col-xs-3\">缴费备注</label>\r\n      <div class=\"col-xs-9\">\r\n        <textarea class=\"form-control\" id=\"payRemark\" name=\"payRemark\" [(ngModel)]=\"payOrRefundEvent.remark\" rows=\"2\" placeholder=\"请输入缴费备注\"></textarea>\r\n      </div>\r\n    </div>\r\n  </form>\r\n</app-modal>\r\n"
 
 /***/ }),
 
@@ -6943,7 +6962,11 @@ RoleComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_53__consultant_main_drawback_approment_drawback_approment_component__ = __webpack_require__("../../../../../src/app/consultant-main/drawback-approment/drawback-approment.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_54__student_manager_boss_schedule_management_schedule_management_component__ = __webpack_require__("../../../../../src/app/student-manager-boss/schedule-management/schedule-management.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_55__student_manager_boss_teacher_hours_teacher_hours_component__ = __webpack_require__("../../../../../src/app/student-manager-boss/teacher-hours/teacher-hours.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_56__teacher_teacher_class_history_teacher_class_history_component__ = __webpack_require__("../../../../../src/app/teacher/teacher-class-history/teacher-class-history.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_57__teacher_teacher_stu_score_teacher_stu_score_component__ = __webpack_require__("../../../../../src/app/teacher/teacher-stu-score/teacher-stu-score.component.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return routes; });
+
+
 
 
 
@@ -7155,7 +7178,7 @@ var routes = [
                 children: [
                     {
                         path: '',
-                        redirectTo: 'teacher-schedule',
+                        redirectTo: 'teacher-class-history',
                         pathMatch: 'full'
                     },
                     {
@@ -7165,6 +7188,14 @@ var routes = [
                     {
                         path: 'teacher-class-hour',
                         component: __WEBPACK_IMPORTED_MODULE_34__teacher_teacher_class_hour_teacher_class_hour_component__["a" /* TeacherClassHourComponent */],
+                    },
+                    {
+                        path: 'teacher-class-history',
+                        component: __WEBPACK_IMPORTED_MODULE_56__teacher_teacher_class_history_teacher_class_history_component__["a" /* TeacherClassHistoryComponent */],
+                    },
+                    {
+                        path: 'teacher-stu-score',
+                        component: __WEBPACK_IMPORTED_MODULE_57__teacher_teacher_stu_score_teacher_stu_score_component__["a" /* TeacherStuScoreComponent */],
                     }
                 ]
             },
@@ -7700,7 +7731,10 @@ var CourseComponent = (function () {
                     student.selected = student.inCourse;
                 });
             }
-            _this.students = students;
+            var overrideAllowed = _this.students.every(function (student) { return !student.inCourse; }) || students.some(function (student) { return student.inCourse; });
+            if (overrideAllowed && courseScheduleId) {
+                _this.students = students;
+            }
         });
     };
     // 分配学生的时候
@@ -8465,7 +8499,7 @@ var _a;
 /***/ "../../../../../src/app/stmanager/student-schedule/student-schedule.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-content-header\r\n  [title]=\"'学生课表管理'\" [menus]=\"contentHeader\"></app-content-header>\r\n<div class=\"content\">\r\n\r\n  <app-collapse-box [collapse]=\"false\" [icon]=\"'filter'\" [boxTitle]=\"'学生课表过滤'\">\r\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n      <label class=\"pull-left\">姓名:</label>\r\n      <div class=\"input-group input-group-sm\">\r\n        <input class=\"form-control\" (keypress)=\"curPage = 1;\" [(ngModel)]=\"filterStuName\" placeholder=\"请输入学生名称\">\r\n        <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n      <label class=\"pull-left\">课程名称:</label>\r\n      <div class=\"input-group input-group-sm\">\r\n        <input class=\"form-control\" (keypress)=\"curPage = 1;\" [(ngModel)]=\"filterCourseName\" placeholder=\"请输入课程名称\">\r\n        <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n      <label class=\"pull-left\">完成状态:</label>\r\n      <div class=\"input-group input-group-sm\">\r\n        <select2\r\n          [width]=\"148\"\r\n          [value]=\"filterScheduleState\"\r\n          [cssImport]=\"false\"\r\n          (valueChanged)=\"changeFilterScheduleState($event)\"\r\n          [options]=\"{minimumResultsForSearch: -1, placeholder: '全部'}\"\r\n          [data]=\"[{id: 'ALL',text: '全部'}, {id: true, text: '是'}, {id: false, text: '否'}]\"></select2>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n      <label class=\"pull-left\">上课时间:</label>\r\n      <app-date-ranger-picker\r\n        [timePicker]=\"false\"\r\n        [startTime]=\"filterTimeRange.start\"\r\n        (dateRangeSetEvent)=\"handleTimeRangeChange($event)\">\r\n      </app-date-ranger-picker>\r\n    </div>\r\n  </app-collapse-box>\r\n\r\n  <div class=\"row\">\r\n    <div class=\"col-xs-12\">\r\n      <div class=\"box box-primary\">\r\n        <div class=\"box-header\">\r\n          <h3 class=\"box-title\">\r\n            学生课表\r\n          </h3>\r\n        </div>\r\n        <div class=\"box-body\">\r\n          <table class=\"table table-bordered table-hover\">\r\n            <thead>\r\n              <tr>\r\n                <th>学生姓名</th>\r\n                <th>年级</th>\r\n                <th>课程名称</th>\r\n                <th>开始时间</th>\r\n                <th>结束时间</th>\r\n                <th>是否结课</th>\r\n                <th class=\"text-center\">操作</th>\r\n              </tr>\r\n            </thead>\r\n            <tbody>\r\n              <tr *ngFor=\"let record of schedule |\r\n                matchItem: filterStuName: 'studentName' |\r\n                matchItem: filterCourseName: 'courseName' |\r\n                matchItem: filterScheduleState: 'finish' : 'exact' |\r\n                timeRange: filterTimeRange : 'startTime'|\r\n                timeRange: filterTimeRange : 'endTime' | paging: curPage;\">\r\n                <td>{{ record.studentName }}</td>\r\n                <td>{{ record.gradeName }}</td>\r\n                <td>{{ record.courseName }}</td>\r\n                <td>{{ record.startTime | date: 'yyyy-MM-dd' }}</td>\r\n                <td>{{ record.endTime | date: 'yyyy-MM-dd' }}</td>\r\n                <td>{{ record.finish ? '是': '否' }}</td>\r\n                <td class=\"text-center\">\r\n                  <div class=\"btn-group btn-group-xs\" *ngIf=\"!record.finish\">\r\n                    <button class=\"btn btn-success btn-xs\" (click)=\"curScheduleId = record.courseScheduleStudentId;\r\n                    confirm.showModal({\r\n                      title: '提示',\r\n                      content: '是否确认结束该课程',\r\n                      confirm: finishSchedule\r\n                    })\">确认完成</button>\r\n                    <button class=\"btn btn-warning btn-xs\" (click)=\"curScheduleId = record.courseScheduleStudentId;\r\n                    confirm.showModal({\r\n                      title: '提示',\r\n                      content:'确认取消该课程吗？',\r\n                      confirm: delSchedule\r\n                    })\">取消课程</button>\r\n                  </div>\r\n                  <span *ngIf=\"record.finish\">--</span>\r\n                </td>\r\n              </tr>\r\n              <tr *ngIf=\"!schedule.length\">\r\n                <td colspan=\"7\">\r\n                  <p class=\"text-center\">暂无学生课表信息</p>\r\n                </td>\r\n              </tr>\r\n            </tbody>\r\n          </table>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n  <app-pagination [totalCount]=\"(schedule |\r\n                matchItem: filterStuName: 'studentName' |\r\n                matchItem: filterCourseName: 'courseName' |\r\n                matchItem: filterScheduleState: 'finish' : 'exact' |\r\n                timeRange: filterTimeRange : 'startTime'|\r\n                timeRange: filterTimeRange : 'endTime').length\" (changePage)=\"handlePageChange($event)\"></app-pagination>\r\n</div>\r\n\r\n<app-confirm #confirm></app-confirm>\r\n"
+module.exports = "<app-content-header\r\n  [title]=\"'学生课表管理'\" [menus]=\"contentHeader\"></app-content-header>\r\n<div class=\"content\">\r\n\r\n  <app-collapse-box [collapse]=\"false\" [icon]=\"'filter'\" [boxTitle]=\"'学生课表过滤'\">\r\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n      <label class=\"pull-left\">姓名:</label>\r\n      <div class=\"input-group input-group-sm\">\r\n        <input class=\"form-control\" (keypress)=\"curPage = 1;\" [(ngModel)]=\"filterStuName\" placeholder=\"请输入学生名称\">\r\n        <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n      <label class=\"pull-left\">课程名称:</label>\r\n      <div class=\"input-group input-group-sm\">\r\n        <input class=\"form-control\" (keypress)=\"curPage = 1;\" [(ngModel)]=\"filterCourseName\" placeholder=\"请输入课程名称\">\r\n        <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n      <label class=\"pull-left\">完成状态:</label>\r\n      <div class=\"input-group input-group-sm\">\r\n        <select2\r\n          [width]=\"148\"\r\n          [value]=\"filterScheduleState\"\r\n          [cssImport]=\"false\"\r\n          (valueChanged)=\"changeFilterScheduleState($event)\"\r\n          [options]=\"{minimumResultsForSearch: -1, placeholder: '全部'}\"\r\n          [data]=\"[{id: 'ALL',text: '全部'}, {id: true, text: '是'}, {id: false, text: '否'}]\"></select2>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n      <label class=\"pull-left\">上课时间:</label>\r\n      <app-date-ranger-picker\r\n        [timePicker]=\"false\"\r\n        [startTime]=\"filterTimeRange.start\"\r\n        (dateRangeSetEvent)=\"handleTimeRangeChange($event)\">\r\n      </app-date-ranger-picker>\r\n    </div>\r\n  </app-collapse-box>\r\n\r\n  <div class=\"row\">\r\n    <div class=\"col-xs-12\">\r\n      <div class=\"box box-primary\">\r\n        <div class=\"box-header\">\r\n          <h3 class=\"box-title\">\r\n            学生课表\r\n          </h3>\r\n        </div>\r\n        <div class=\"box-body\">\r\n          <table class=\"table table-bordered table-hover text-center\">\r\n            <thead>\r\n              <tr>\r\n                <th>学生姓名</th>\r\n                <th>年级</th>\r\n                <th>课程名称</th>\r\n                <th>开始时间</th>\r\n                <th>结束时间</th>\r\n                <th>是否完成</th>\r\n                <th class=\"text-center\">操作</th>\r\n              </tr>\r\n            </thead>\r\n            <tbody>\r\n              <tr *ngFor=\"let record of schedule |\r\n                matchItem: filterStuName: 'studentName' |\r\n                matchItem: filterCourseName: 'courseName' |\r\n                matchItem: filterScheduleState: 'finish' : 'exact' |\r\n                timeRange: filterTimeRange : 'startTime'|\r\n                timeRange: filterTimeRange : 'endTime' | paging: curPage;\">\r\n                <td>{{ record.studentName }}</td>\r\n                <td>{{ record.gradeName }}</td>\r\n                <td>{{ record.courseName }}</td>\r\n                <td>{{ record.startTime | date: 'yyyy-MM-dd HH:mm' }}</td>\r\n                <td>{{ record.endTime | date: 'yyyy-MM-dd HH:mm' }}</td>\r\n                <td>{{ record.finish ? '是': '否' }}</td>\r\n                <td class=\"text-center\">\r\n                  <div class=\"btn-group btn-group-xs\" *ngIf=\"!record.finish\">\r\n                    <button class=\"btn btn-success btn-xs\" (click)=\"curScheduleId = record.courseScheduleStudentId;\r\n                    confirm.showModal({\r\n                      title: '提示',\r\n                      content: '是否确认结束该课程',\r\n                      confirm: finishSchedule\r\n                    })\">确认完成</button>\r\n                    <button class=\"btn btn-warning btn-xs\" (click)=\"curScheduleId = record.courseScheduleStudentId;\r\n                    confirm.showModal({\r\n                      title: '提示',\r\n                      content:'确认取消该课程吗？',\r\n                      confirm: delSchedule\r\n                    })\">取消课程</button>\r\n                  </div>\r\n                  <span *ngIf=\"record.finish\">--</span>\r\n                </td>\r\n              </tr>\r\n              <tr *ngIf=\"!schedule.length\">\r\n                <td colspan=\"7\">\r\n                  <p class=\"text-center\">暂无学生课表信息</p>\r\n                </td>\r\n              </tr>\r\n            </tbody>\r\n          </table>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n  <app-pagination [totalCount]=\"(schedule |\r\n                matchItem: filterStuName: 'studentName' |\r\n                matchItem: filterCourseName: 'courseName' |\r\n                matchItem: filterScheduleState: 'finish' : 'exact' |\r\n                timeRange: filterTimeRange : 'startTime'|\r\n                timeRange: filterTimeRange : 'endTime').length\" (changePage)=\"handlePageChange($event)\"></app-pagination>\r\n</div>\r\n\r\n<app-confirm #confirm></app-confirm>\r\n"
 
 /***/ }),
 
@@ -10240,6 +10274,94 @@ var _a, _b;
 
 /***/ }),
 
+/***/ "../../../../../src/app/teacher/teacher-class-history/teacher-class-history.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<app-content-header\n  [title]=\"'教学记录'\" [menus]=\"contentHeader\"></app-content-header>\n\n<div class=\"content\">\n\n  <app-collapse-box [collapse]=\"false\" [icon]=\"'filter'\" [boxTitle]=\"'课表筛选'\">\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\n      <label class=\"pull-left\">课程名称:</label>\n      <div class=\"input-group input-group-sm\">\n        <input class=\"form-control\" (keypress)=\"curPage=1\" [(ngModel)]=\"filterCourseName\" placeholder=\"请输入课程名称\">\n        <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\n      </div>\n    </div>\n\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\n      <label class=\"pull-left\">是否完成:</label>\n      <div class=\"input-group input-group-sm\">\n        <select2 [options]=\"{minimumResultsForSearch: -1}\"\n                 [cssImport]=\"false\"\n                 [data]=\"[{id: 'ALL' ,text: '全部'}, {id: true ,text: '已结课'}, {id: false ,text: '未结课'}]\"\n                 (valueChanged)=\"switchCourseState($event)\"></select2>\n      </div>\n    </div>\n  </app-collapse-box>\n\n  <div class=\"box box-primary box-divide\">\n    <div class=\"box-header\">\n      <div class=\"h3 box-title\">\n        教学记录列表\n      </div>\n    </div>\n    <div class=\"box-content\">\n      <table class=\"table table-hover table-bordered text-center\">\n        <thead>\n          <tr>\n            <th>课程名称</th>\n            <th>课程年级</th>\n            <th>开始时间</th>\n            <th>结束时间</th>\n            <th>课时</th>\n            <th>是否结束</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr *ngFor=\"let record of classRecord | matchItem: filterCourseName: 'courseName' | matchItem: filterCourseState : 'finish' : 'exact' | paging: curPage\">\n            <td>{{ record.courseName }}</td>\n            <td>{{ record.gradeName }}</td>\n            <td>{{ record.startTime | date: 'yyyy-MM-dd HH:mm:ss' }}</td>\n            <td>{{ record.endTime | date: 'yyyy-MM-dd HH:mm:ss' }}</td>\n            <td>{{ record.studyTime }}</td>\n            <td>{{ record.finish ? '是': '否' }}</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n\n  <app-pagination [curPage]=\"curPage\"\n                  (changePage)=\"handlePageChange($event)\"\n                  [totalCount]=\"(classRecord | matchItem: filterCourseName: 'courseName' | matchItem: filterCourseState : 'finish' : 'exact').length\"\n                  *ngIf=\"classRecord.length\"></app-pagination>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/teacher/teacher-class-history/teacher-class-history.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/teacher/teacher-class-history/teacher-class-history.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__teacher_service__ = __webpack_require__("../../../../../src/app/teacher/teacher.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TeacherClassHistoryComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var TeacherClassHistoryComponent = (function () {
+    function TeacherClassHistoryComponent(teacherService) {
+        this.teacherService = teacherService;
+        this.contentHeader = [];
+        this.classRecord = [];
+    }
+    TeacherClassHistoryComponent.prototype.ngOnInit = function () {
+        this.filterCourseName = '';
+        this.curPage = 1;
+        this.contentHeader = [
+            { name: '主页', icon: 'fa-dashboard' },
+            { name: '教学记录', icon: 'fa-list' }
+        ];
+        this.fetchClassRecord();
+    };
+    TeacherClassHistoryComponent.prototype.fetchClassRecord = function () {
+        var _this = this;
+        this.teacherService.fetchClassRecord().then(function (record) {
+            _this.classRecord = record;
+            console.log(_this.classRecord);
+        });
+    };
+    TeacherClassHistoryComponent.prototype.handlePageChange = function (page) {
+        this.curPage = page;
+    };
+    TeacherClassHistoryComponent.prototype.switchCourseState = function ($event) {
+        this.curPage = 1;
+        this.filterCourseState = $event.value === 'ALL' ? '' : $event.value;
+    };
+    return TeacherClassHistoryComponent;
+}());
+TeacherClassHistoryComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-teacher-class-history',
+        template: __webpack_require__("../../../../../src/app/teacher/teacher-class-history/teacher-class-history.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/teacher/teacher-class-history/teacher-class-history.component.less")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__teacher_service__["a" /* TeacherService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__teacher_service__["a" /* TeacherService */]) === "function" && _a || Object])
+], TeacherClassHistoryComponent);
+
+var _a;
+//# sourceMappingURL=teacher-class-history.component.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/teacher/teacher-class-hour/teacher-class-hour.component.html":
 /***/ (function(module, exports) {
 
@@ -10326,7 +10448,7 @@ var _a;
 /***/ "../../../../../src/app/teacher/teacher-schedule/teacher-schedule.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-content-header\r\n  [title]=\"'教学课表'\" [menus]=\"contentHeader\"></app-content-header>\r\n\r\n<div class=\"content\">\r\n  <app-collapse-box [collapse]=\"false\" [icon]=\"'filter'\" [boxTitle]=\"'课表筛选'\">\r\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n      <label class=\"pull-left\">课程名称:</label>\r\n      <div class=\"input-group input-group-sm\">\r\n        <input class=\"form-control\" (keypress)=\"curPage=1\" [(ngModel)]=\"filterCourseName\" placeholder=\"请输入课程名称\">\r\n        <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n      <label class=\"pull-left\">是否结课:</label>\r\n      <div class=\"input-group input-group-sm\">\r\n        <select2 [options]=\"{minimumResultsForSearch: -1}\"\r\n                  [cssImport]=\"false\"\r\n                  [data]=\"[{id: 'ALL' ,text: '全部'}, {id: true ,text: '已结课'}, {id: false ,text: '未结课'}]\"\r\n                  (valueChanged)=\"switchCourseState($event)\"></select2>\r\n      </div>\r\n    </div>\r\n  </app-collapse-box>\r\n\r\n  <div class=\"box box-primary box-divide\">\r\n    <div class=\"box-header\">\r\n      <div class=\"h3 box-title\">\r\n        课表信息\r\n      </div>\r\n    </div>\r\n    <div class=\"box-body\">\r\n      <table class=\"table table-hover table-bordered text-center\">\r\n        <thead>\r\n          <tr>\r\n            <th>课程名称</th>\r\n            <th>开课时间</th>\r\n            <th>结课时间</th>\r\n            <th>是否结课</th>\r\n          </tr>\r\n        </thead>\r\n        <tbody>\r\n          <tr *ngFor=\"let schedule of schedules |\r\n          matchItem: filterCourseName : 'courseName' |\r\n          matchItem: filterCourseState: 'finish': 'exact' |\r\n          paging: curPage \">\r\n            <td>{{ schedule.courseName }}</td>\r\n            <td>{{ schedule.startTime | date: 'yyyy-MM-dd HH:mm:ss' }}</td>\r\n            <td>{{ schedule.endTime | date: 'yyyy-MM-dd HH:mm:ss' }}</td>\r\n            <td>{{ schedule.finish ? '是' : '否' }}</td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n    </div>\r\n  </div>\r\n\r\n  <app-pagination [curPage]=\"curPage\"\r\n                    (changePage)=\"handlePageChange($event)\"\r\n                    [totalCount]=\"(schedules | matchItem: filterCourseName : 'courseName' | matchItem: filterCourseState: 'finish': 'exact' ).length\"\r\n                    *ngIf=\"schedules.length\"></app-pagination>\r\n</div>\r\n"
+module.exports = "<app-content-header\r\n  [title]=\"'教学课表'\" [menus]=\"contentHeader\"></app-content-header>\r\n\r\n<div class=\"content\">\r\n  <app-collapse-box [collapse]=\"false\" [icon]=\"'filter'\" [boxTitle]=\"'课表筛选'\">\r\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n      <label class=\"pull-left\">课程名称:</label>\r\n      <div class=\"input-group input-group-sm\">\r\n        <input class=\"form-control\" (keypress)=\"curPage=1\" [(ngModel)]=\"filterCourseName\" placeholder=\"请输入课程名称\">\r\n        <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n      <label class=\"pull-left\">是否完成:</label>\r\n      <div class=\"input-group input-group-sm\">\r\n        <select2 [options]=\"{minimumResultsForSearch: -1}\"\r\n                  [cssImport]=\"false\"\r\n                  [data]=\"[{id: 'ALL' ,text: '全部'}, {id: true ,text: '已结课'}, {id: false ,text: '未结课'}]\"\r\n                  (valueChanged)=\"switchCourseState($event)\"></select2>\r\n      </div>\r\n    </div>\r\n  </app-collapse-box>\r\n\r\n  <div class=\"box box-primary box-divide\">\r\n    <div class=\"box-header\">\r\n      <div class=\"h3 box-title\">\r\n        课表信息\r\n      </div>\r\n    </div>\r\n    <div class=\"box-body\">\r\n      <table class=\"table table-hover table-bordered text-center\">\r\n        <thead>\r\n          <tr>\r\n            <th>课程名称</th>\r\n            <th>开课时间</th>\r\n            <th>结课时间</th>\r\n            <th>是否完成</th>\r\n          </tr>\r\n        </thead>\r\n        <tbody>\r\n          <tr *ngFor=\"let schedule of schedules |\r\n          matchItem: filterCourseName : 'courseName' |\r\n          matchItem: filterCourseState: 'finish': 'exact' |\r\n          paging: curPage \">\r\n            <td>{{ schedule.courseName }}</td>\r\n            <td>{{ schedule.startTime | date: 'yyyy-MM-dd HH:mm:ss' }}</td>\r\n            <td>{{ schedule.endTime | date: 'yyyy-MM-dd HH:mm:ss' }}</td>\r\n            <td>{{ schedule.finish ? '是' : '否' }}</td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n    </div>\r\n  </div>\r\n\r\n  <app-pagination [curPage]=\"curPage\"\r\n                    (changePage)=\"handlePageChange($event)\"\r\n                    [totalCount]=\"(schedules | matchItem: filterCourseName : 'courseName' | matchItem: filterCourseState: 'finish': 'exact' ).length\"\r\n                    *ngIf=\"schedules.length\"></app-pagination>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -10410,6 +10532,84 @@ var _a;
 
 /***/ }),
 
+/***/ "../../../../../src/app/teacher/teacher-stu-score/teacher-stu-score.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<app-content-header\n  [title]=\"'学生成绩'\" [menus]=\"contentHeader\"></app-content-header>\n\n<div class=\"content\">\n  <app-collapse-box [collapse]=\"false\" [icon]=\"'filter'\" [boxTitle]=\"'学生成绩筛选'\">\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\n      <label class=\"pull-left\">课程名称:</label>\n      <div class=\"input-group input-group-sm\">\n        <input class=\"form-control\" (keypress)=\"curPage=1\" [(ngModel)]=\"filterCourseName\" placeholder=\"请输入课程名称\">\n        <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\n      </div>\n    </div>\n\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\n      <label class=\"pull-left\">学生姓名:</label>\n      <div class=\"input-group input-group-sm\">\n        <input class=\"form-control\" (keypress)=\"curPage=1\" [(ngModel)]=\"filterStuName\" placeholder=\"请输入学生姓名\">\n        <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\n      </div>\n    </div>\n  </app-collapse-box>\n\n  <div class=\"box box-primary box-divide\">\n    <div class=\"box-header\">\n      <div class=\"h3 box-title\">\n        教学记录列表\n      </div>\n    </div>\n    <div class=\"box-content\">\n      <table class=\"table table-hover table-bordered text-center\">\n        <thead>\n        <tr>\n          <th>课程名称</th>\n          <th>课程年级</th>\n          <th>总课时</th>\n          <th>购买课时</th>\n          <th>已用课时</th>\n          <th>学生名称</th>\n          <th>成绩</th>\n        </tr>\n        </thead>\n        <tbody>\n        <tr *ngFor=\"let score of scores | matchItem: filterCourseName : 'courseName' | matchItem: filterStuName : 'studentName' | paging: curPage\">\n          <td>{{ score.courseName }}</td>\n          <td>{{ score.gradeName }}</td>\n          <td>{{ score.studyHour }}</td>\n          <td>{{ score.buyHour }}</td>\n          <td>{{ score.hasUsed }}</td>\n          <td>{{ score.studentName }}</td>\n          <td>{{ score.score }}</td>\n        </tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n\n  <app-pagination [curPage]=\"curPage\"\n                  (changePage)=\"handlePageChange($event)\"\n                  [totalCount]=\"(scores | matchItem: filterCourseName : 'courseName' | matchItem: filterStuName : 'studentName').length\"\n                  *ngIf=\"scores.length\"></app-pagination>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/teacher/teacher-stu-score/teacher-stu-score.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/teacher/teacher-stu-score/teacher-stu-score.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__teacher_service__ = __webpack_require__("../../../../../src/app/teacher/teacher.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TeacherStuScoreComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var TeacherStuScoreComponent = (function () {
+    function TeacherStuScoreComponent(teacherService) {
+        this.teacherService = teacherService;
+        this.scores = [];
+    }
+    TeacherStuScoreComponent.prototype.ngOnInit = function () {
+        this.filterCourseName = '';
+        this.filterStuName = '';
+        this.contentHeader = [];
+        this.curPage = 1;
+        this.fetchStuScores();
+    };
+    TeacherStuScoreComponent.prototype.handlePageChange = function (page) {
+        this.curPage = page;
+    };
+    TeacherStuScoreComponent.prototype.fetchStuScores = function () {
+        var _this = this;
+        this.teacherService.fetchStuScores().then(function (scores) { return _this.scores = scores; });
+    };
+    return TeacherStuScoreComponent;
+}());
+TeacherStuScoreComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-teacher-stu-score',
+        template: __webpack_require__("../../../../../src/app/teacher/teacher-stu-score/teacher-stu-score.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/teacher/teacher-stu-score/teacher-stu-score.component.less")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__teacher_service__["a" /* TeacherService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__teacher_service__["a" /* TeacherService */]) === "function" && _a || Object])
+], TeacherStuScoreComponent);
+
+var _a;
+//# sourceMappingURL=teacher-stu-score.component.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/teacher/teacher.component.html":
 /***/ (function(module, exports) {
 
@@ -10465,6 +10665,16 @@ var TeacherComponent = (function () {
                 name: '教学课时',
                 routerLink: ['teacher-class-hour'],
                 icon: 'fa-th-list'
+            },
+            {
+                name: '教学记录',
+                routerLink: ['teacher-class-history'],
+                icon: 'fa-bars'
+            },
+            {
+                name: '学生成绩',
+                routerLink: ['teacher-stu-score'],
+                icon: 'fa-graduation-cap'
             }
         ];
     };
@@ -10538,6 +10748,36 @@ var TeacherService = (function () {
             }
         });
     };
+    TeacherService.prototype.fetchClassRecord = function () {
+        var _this = this;
+        return this.http.get('teacher/course/his').then(function (results) {
+            if (results.success) {
+                return results.data;
+            }
+            else {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '获取上课记录失败' + results.data,
+                    type: 'danger'
+                });
+            }
+        });
+    };
+    TeacherService.prototype.fetchStuScores = function () {
+        var _this = this;
+        return this.http.get('teacher/course/score').then(function (results) {
+            if (results.success) {
+                return results.data;
+            }
+            else {
+                _this.alertService.alert({
+                    title: '提示',
+                    content: '获取学生成绩失败' + results.data,
+                    type: 'danger'
+                });
+            }
+        });
+    };
     return TeacherService;
 }());
 TeacherService = __decorate([
@@ -10547,6 +10787,67 @@ TeacherService = __decorate([
 
 var _a, _b;
 //# sourceMappingURL=teacher.service.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/uploader/uploader.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  uploader works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/uploader/uploader.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/uploader/uploader.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UploaderComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var UploaderComponent = (function () {
+    function UploaderComponent() {
+    }
+    UploaderComponent.prototype.ngOnInit = function () {
+    };
+    return UploaderComponent;
+}());
+UploaderComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-uploader',
+        template: __webpack_require__("../../../../../src/app/uploader/uploader.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/uploader/uploader.component.less")]
+    }),
+    __metadata("design:paramtypes", [])
+], UploaderComponent);
+
+//# sourceMappingURL=uploader.component.js.map
 
 /***/ }),
 
