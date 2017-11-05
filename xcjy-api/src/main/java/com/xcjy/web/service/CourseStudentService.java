@@ -161,6 +161,7 @@ public class CourseStudentService {
             List<CourseStudent> courseStudents = courseStudentMapper.getByStudentIds(studentIds);
             if (CollectionUtils.isNotEmpty(courseStudents)) {
                 Set<String> courseIds = courseStudents.stream().map(CourseStudent::getCourseId).collect(Collectors.toSet());
+                CurrentThreadLocal.ignoreDeleted();
                 List<Course> courseList = courseMapper.getByIds(courseIds);
                 List<Student> studentList = studentMapper.getByIds(new HashSet<>(studentIds));
                 for (CourseStudent courseStudent : courseStudents) {

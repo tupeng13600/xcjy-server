@@ -105,15 +105,18 @@ public class MybatisQueryInterceptors implements Interceptor {
     }
 
     private String appendDeleted(String sql) {
-        String sqlPrefix = getPrefix(sql);
-        String sqlSuffix = getSuffix(sql);
-        if (!matches(sql)) {
-            StringBuilder builder = new StringBuilder();
-            return sql.toLowerCase().contains("where") ?
-                    builder.append(sqlPrefix).append(andCondition).append(" ").append(sqlSuffix).toString()
-                    : builder.append(sqlPrefix).append(whereCondition).append(" ").append(sqlSuffix).toString();
+        if(CurrentThreadLocal.isDeleted()) {
+            String sqlPrefix = getPrefix(sql);
+            String sqlSuffix = getSuffix(sql);
+            if (!matches(sql)) {
+                StringBuilder builder = new StringBuilder();
+                return sql.toLowerCase().contains("where") ?
+                        builder.append(sqlPrefix).append(andCondition).append(" ").append(sqlSuffix).toString()
+                        : builder.append(sqlPrefix).append(whereCondition).append(" ").append(sqlSuffix).toString();
+            }
+            return appendEndOfSql(sqlPrefix + sqlSuffix);
         }
-        return appendEndOfSql(sqlPrefix + sqlSuffix);
+        return sql;
     }
 
     private String replaceEndOfSql(String sql) {

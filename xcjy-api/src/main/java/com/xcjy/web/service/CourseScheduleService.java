@@ -353,10 +353,12 @@ public class CourseScheduleService {
         List<CourseSchedule> courseScheduleList = courseScheduleMapper.getByEmployeeId(employeeId);
         if (CollectionUtils.isNotEmpty(courseScheduleList)) {
             Set<String> courseIds = courseScheduleList.stream().map(CourseSchedule::getCourseId).collect(Collectors.toSet());
+            CurrentThreadLocal.ignoreDeleted();
             List<Course> courseList = courseMapper.getByIds(courseIds);
             List<Grade> gradeList = null;
             if (CollectionUtils.isNotEmpty(courseList)) {
                 Set<String> gradeIds = courseList.stream().map(Course::getGradeId).collect(Collectors.toSet());
+                CurrentThreadLocal.ignoreDeleted();
                 gradeList = gradeMapper.getByIds(gradeIds);
             }
             for (CourseSchedule courseSchedule : courseScheduleList) {
@@ -404,11 +406,13 @@ public class CourseScheduleService {
         if (CollectionUtils.isNotEmpty(courseTeacherList)) {
             Set<String> courseIds = courseTeacherList.stream().map(CourseTeacher::getCourseId).collect(Collectors.toSet());
             List<CourseStudent> courseStudentList = courseStudentMapper.getByCourseIds(courseIds);
+            CurrentThreadLocal.ignoreDeleted();
             List<Course> courseList = courseMapper.getByIds(courseIds);
             List<Grade> gradeList = null;
             List<Student> studentList = null;
             if (CollectionUtils.isNotEmpty(courseList)) {
                 Set<String> gradeIds = courseList.stream().map(Course::getGradeId).collect(Collectors.toSet());
+                CurrentThreadLocal.ignoreDeleted();
                 gradeList = gradeMapper.getByIds(gradeIds);
             }
             if (CollectionUtils.isNotEmpty(courseStudentList)) {
