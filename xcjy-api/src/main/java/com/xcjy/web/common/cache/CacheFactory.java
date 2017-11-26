@@ -61,20 +61,28 @@ public class CacheFactory {
         nameSchools = schoolList.stream().collect(Collectors.toMap(School::getName, school -> school));
         idSchools = schoolList.stream().collect(Collectors.toMap(School::getId, school -> school));
 
+
+        stmanagerBackMoneyAuditRoleChain.clear();
         stmanagerBackMoneyAuditRoleChain.add(RoleEnum.STUDENTMANAGER_BOSS);
         stmanagerBackMoneyAuditRoleChain.add(RoleEnum.SCHOOLMASTER);
         stmanagerBackMoneyAuditRoleChain.add(RoleEnum.SCHOOLMASTER_BOSS);
         stmanagerBackMoneyAuditRoleChain.add(RoleEnum.FINANCE);
 
+        counselorBackMoneyAuditRoleChain.clear();
         counselorBackMoneyAuditRoleChain.add(RoleEnum.CONSULTANT_BOSS);
         counselorBackMoneyAuditRoleChain.add(RoleEnum.SCHOOLMASTER);
         counselorBackMoneyAuditRoleChain.add(RoleEnum.CONSULTANT_MAIN);
         counselorBackMoneyAuditRoleChain.add(RoleEnum.SCHOOLMASTER_BOSS);
         counselorBackMoneyAuditRoleChain.add(RoleEnum.FINANCE);
 
+        changeSchoolAuditRoleChain.clear();
         changeSchoolAuditRoleChain.add(RoleEnum.SCHOOLMASTER);
 
+
         List<User> users = userService.getAll();
+        empIdUsers.clear();
+        userIdUsers.clear();
+        usernameUsers.clear();
         if(CollectionUtils.isNotEmpty(users)) {
             users.forEach(user -> {
                 cacheIdUsers(user);
@@ -84,6 +92,7 @@ public class CacheFactory {
         }
 
         List<Employee> employeeList = employeeService.list();
+        employeeMap.clear();
         if(CollectionUtils.isNotEmpty(employeeList)) {
             for(Employee employee : employeeList) {
                 employeeMap.put(employee.getId(), employee);
