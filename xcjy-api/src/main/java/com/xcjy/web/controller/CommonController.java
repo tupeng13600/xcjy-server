@@ -12,6 +12,7 @@ import com.xcjy.web.controller.req.UserPwdSelfUpdateReq;
 import com.xcjy.web.controller.res.CourseShowRes;
 import com.xcjy.web.controller.res.ProcessRes;
 import com.xcjy.web.controller.res.RoleRes;
+import com.xcjy.web.controller.res.StudentShowRes;
 import com.xcjy.web.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -128,7 +129,7 @@ public class CommonController {
 
     @ApiOperation("校长获取学生列表")
     @GetMapping("/student/search")
-    public List<Student> getStudent(String name) {
+    public List<StudentShowRes> getStudent(String name) {
         return studentService.search(name);
     }
 

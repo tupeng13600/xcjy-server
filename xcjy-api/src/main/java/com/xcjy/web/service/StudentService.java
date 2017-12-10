@@ -312,7 +312,22 @@ public class StudentService {
         return resultList;
     }
 
-    public List<Student> search(String name) {
-        return studentMapper.searchByName(name);
+    public List<StudentShowRes> search(String name) {
+        List<Student> studentList = studentMapper.searchByName(name);
+        List<StudentShowRes> resultList = new ArrayList<>();
+        if(CollectionUtils.isNotEmpty(studentList)) {
+            for (Student student : studentList) {
+                StudentShowRes showRes = new StudentShowRes();
+                BeanUtils.copyProperties(student, showRes);
+                if (StringUtils.isNotBlank(student.getSchoolId())) {
+                    School school = CacheFactory.idSchools.get(student.getSchoolId());
+                    if (null != school) {
+                        showRes.setSchoolName(school.getName());
+                    }
+                }
+                resultList.add(showRes);
+            }
+        }
+        return resultList;
     }
 }
