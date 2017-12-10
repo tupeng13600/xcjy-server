@@ -24,7 +24,7 @@ public class Schedule {
         AuthCache.update();
     }
 
-    @Scheduled(cron = "0 */1 * * * ?")
+    @Scheduled(cron = "0 */2 * * * ?")
     public void updateBaseCache(){
         cacheFactory.init();
     }

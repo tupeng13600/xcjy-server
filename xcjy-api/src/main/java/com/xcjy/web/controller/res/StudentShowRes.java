@@ -31,4 +31,8 @@ public class StudentShowRes {
 
     private String remark;
 
+    private Boolean isDis = false;
+
+    private String disTeacherName;
+
 }

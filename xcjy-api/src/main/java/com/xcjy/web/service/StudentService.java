@@ -5,6 +5,7 @@ import com.xcjy.web.bean.*;
 import com.xcjy.web.common.cache.CacheFactory;
 import com.xcjy.web.common.enums.*;
 import com.xcjy.web.common.exception.EducationException;
+import com.xcjy.web.common.model.UserModel;
 import com.xcjy.web.common.util.CurrentUserUtil;
 import com.xcjy.web.common.util.DateUtil;
 import com.xcjy.web.controller.req.StudentCreateReq;
@@ -179,7 +180,7 @@ public class StudentService {
         List<StudentShowRes> showResList = new ArrayList<>();
         List<Student> studentList = studentMapper.getByDisType(distributionType);
         if (CollectionUtils.isNotEmpty(studentList)) {
-            if(null != payType) {
+            if (null != payType) {
                 studentList = studentList.stream().filter(student -> payType.equals(student.getAlreadyPaid())).collect(Collectors.toList());
             }
             studentList.forEach(student -> {
@@ -193,6 +194,23 @@ public class StudentService {
                 }
                 showResList.add(showRes);
             });
+
+            if (DistributionTypeEnum.STMANAGER_DISTRIBUTION.equals(distributionType) && CollectionUtils.isNotEmpty(showResList)) {
+                Set<String> studentIds = showResList.stream().map(StudentShowRes::getId).collect(Collectors.toSet());
+                List<StmanagerStudent> ssList = stmanagerStudentMapper.getBySIdAndScIds(CurrentThreadLocal.getSchoolId(), studentIds);
+                if (CollectionUtils.isNotEmpty(ssList)) {
+                    for (StudentShowRes studentShowRes : showResList) {
+                        for (StmanagerStudent stmanagerStudent : ssList) {
+                            if (studentShowRes.getId().equals(stmanagerStudent.getStudentId())) {
+                                UserModel user = CacheFactory.empIdUsers.get(stmanagerStudent.getEmployeeId());
+                                if (user != null) {
+                                    studentShowRes.setDisTeacherName(user.getName());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
         return showResList;
     }
@@ -239,7 +257,7 @@ public class StudentService {
         if (CollectionUtils.isNotEmpty(studentIds)) {
             List<Student> studentList = studentMapper.getByIds(new HashSet<>(studentIds));
             List<StudentMoney> studentMoneyList = studentMoneyMapper.getByStudentIds(new HashSet<>(studentIds));
-            if(CollectionUtils.isNotEmpty(studentMoneyList)) {
+            if (CollectionUtils.isNotEmpty(studentMoneyList)) {
                 List<AplnBackMoney> backMoneyList = aplnBackMoneyMapper.getByStatusAndSIds(ApplicationStatusType.AUDITING, studentIds);
                 studentMoneyList.forEach(studentMoney -> resList.add(getBackRes(studentMoney, studentList, backMoneyList)));
             }
@@ -274,15 +292,15 @@ public class StudentService {
 
     public List<Student> searchByName(String name) {
         List<Student> resultList = new ArrayList<>();
-        if(StringUtils.isNotBlank(name)) {
+        if (StringUtils.isNotBlank(name)) {
             List<Student> studentList = studentMapper.searchByName(name);
-            if(CollectionUtils.isNotEmpty(studentList)) {
+            if (CollectionUtils.isNotEmpty(studentList)) {
                 Set<String> studentIds = studentList.stream().map(Student::getId).collect(Collectors.toSet());
                 CurrentThreadLocal.removeSchoolId(); //该请求无需使用school_id查询
                 List<String> inStudentIds = aplnChangeSchoolMapper.getStudentIds(studentIds);
-                if(CollectionUtils.isNotEmpty(inStudentIds)) {
+                if (CollectionUtils.isNotEmpty(inStudentIds)) {
                     for (Student student : studentList) {
-                        if(!inStudentIds.contains(student.getId())) {
+                        if (!inStudentIds.contains(student.getId())) {
                             resultList.add(student);
                         }
                     }

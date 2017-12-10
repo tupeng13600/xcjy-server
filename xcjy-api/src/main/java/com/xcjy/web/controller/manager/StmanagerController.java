@@ -11,11 +11,13 @@ import com.xcjy.web.controller.res.*;
 import com.xcjy.web.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -175,6 +177,23 @@ public class StmanagerController {
     @GetMapping("/student/distribution/no")
     public List<StudentShowRes> getStudentNoManager() {
         return studentService.getList4ByDisType(DistributionTypeEnum.COUNSELOR_DISTRIBUTION, PayStatusType.YES);
+    }
+
+    @RequiresRoles({CommonUtil.STUDENTMANAGER_BOSS})
+    @ApiOperation("获取学生分配情况")
+    @GetMapping("/student/dis/stat")
+    public List<StudentShowRes> getDisStat() {
+        List<StudentShowRes> noDisList = studentService.getList4ByDisType(DistributionTypeEnum.COUNSELOR_DISTRIBUTION, PayStatusType.YES);
+        List<StudentShowRes> disList = studentService.getList4ByDisType(DistributionTypeEnum.STMANAGER_DISTRIBUTION, PayStatusType.YES);
+        List<StudentShowRes> resList = new ArrayList<>();
+        if(CollectionUtils.isNotEmpty(noDisList)) {
+            resList.addAll(noDisList);
+        }
+        if(CollectionUtils.isNotEmpty(disList)) {
+            disList.forEach(dis -> dis.setIsDis(true));
+            resList.addAll(disList);
+        }
+        return resList;
     }
 
     @RequiresRoles({CommonUtil.STUDENTMANAGER})
