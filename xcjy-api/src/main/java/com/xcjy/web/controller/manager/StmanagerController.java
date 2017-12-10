@@ -1,7 +1,6 @@
 package com.xcjy.web.controller.manager;
 
 import com.xcjy.web.bean.CourseSchedule;
-import com.xcjy.web.bean.Employee;
 import com.xcjy.web.bean.Student;
 import com.xcjy.web.common.enums.DistributionTypeEnum;
 import com.xcjy.web.common.enums.PayStatusType;
@@ -186,10 +185,10 @@ public class StmanagerController {
         List<StudentShowRes> noDisList = studentService.getList4ByDisType(DistributionTypeEnum.COUNSELOR_DISTRIBUTION, PayStatusType.YES);
         List<StudentShowRes> disList = studentService.getList4ByDisType(DistributionTypeEnum.STMANAGER_DISTRIBUTION, PayStatusType.YES);
         List<StudentShowRes> resList = new ArrayList<>();
-        if(CollectionUtils.isNotEmpty(noDisList)) {
+        if (CollectionUtils.isNotEmpty(noDisList)) {
             resList.addAll(noDisList);
         }
-        if(CollectionUtils.isNotEmpty(disList)) {
+        if (CollectionUtils.isNotEmpty(disList)) {
             disList.forEach(dis -> dis.setIsDis(true));
             resList.addAll(disList);
         }
