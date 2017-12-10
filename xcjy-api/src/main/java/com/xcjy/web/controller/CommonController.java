@@ -126,6 +126,11 @@ public class CommonController {
         return studentService.searchByName(name);
     }
 
+    @ApiOperation("校长获取学生列表")
+    @GetMapping("/student/search")
+    public List<Student> getStudent(String name) {
+        return studentService.search(name);
+    }
 
     @ApiOperation("退费申请审核")
     @PutMapping("/money/{handlerStatus}/{processId}")

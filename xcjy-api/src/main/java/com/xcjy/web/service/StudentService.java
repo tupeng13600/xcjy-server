@@ -311,4 +311,8 @@ public class StudentService {
         }
         return resultList;
     }
+
+    public List<Student> search(String name) {
+        return studentMapper.searchByName(name);
+    }
 }
