@@ -122,7 +122,7 @@ public class CommonController {
 
     @ApiOperation("根据学生名称模糊查询学生列表")
     @GetMapping("/student")
-    public List<Student> listEmployeeByRole(String name) {
+    public List<Student> searchStudent(String name) {
         return studentService.searchByName(name);
     }
 

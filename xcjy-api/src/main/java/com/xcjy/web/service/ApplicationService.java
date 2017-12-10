@@ -410,7 +410,7 @@ public class ApplicationService {
         List<User> roleUsers = userMapper.getByRole(roleEnum);
         if (CollectionUtils.isEmpty(roleUsers)) {
             logger.info("学校ID：{} 中未找到对应的角色 {}", schoolId, roleEnum.getName());
-            throw new EducationException("未找到对应的角色");
+            throw new EducationException("请创建角色：" + roleEnum.getName());
         }
         processLog.setHandlerUserId(roleUsers.get(0).getId());
         processLogMapper.insert(processLog);

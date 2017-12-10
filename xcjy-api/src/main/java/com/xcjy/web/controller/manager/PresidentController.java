@@ -34,22 +34,46 @@ public class PresidentController {
     @RequiresRoles({CommonUtil.SCHOOLMASTER, CommonUtil.SCHOOLMASTER_BOSS})
     @ApiOperation("查看咨询师签约金额统计")
     @GetMapping("/stat/pay")
-    public PresidentStatRes payStat(Date startTime, Date endTime) {
-        return presidentService.payStat(startTime, endTime);
+    public PresidentStatRes payStat(Long startTime, Long endTime) {
+        Date start = null;
+        Date end = null;
+        if (null != startTime) {
+            start = new Date(startTime);
+        }
+        if (null != endTime) {
+            end = new Date(endTime);
+        }
+        return presidentService.payStat(start, end);
     }
 
     @RequiresRoles({CommonUtil.SCHOOLMASTER, CommonUtil.SCHOOLMASTER_BOSS})
     @ApiOperation("查看续费金额统计")
     @GetMapping("/stat/renew")
-    public PresidentStatRes renewStat(Date startTime, Date endTime) {
-        return presidentService.renewStat(startTime, endTime);
+    public PresidentStatRes renewStat(Long startTime, Long endTime) {
+        Date start = null;
+        Date end = null;
+        if (null != startTime) {
+            start = new Date(startTime);
+        }
+        if (null != endTime) {
+            end = new Date(endTime);
+        }
+        return presidentService.renewStat(start, end);
     }
 
     @RequiresRoles({CommonUtil.SCHOOLMASTER, CommonUtil.SCHOOLMASTER_BOSS})
     @ApiOperation("查看教师课时量统计")
     @GetMapping("/stat/teacher/hour")
-    public PresidentTeacherStatRes teacherHourStat(Date startTime, Date endTime) {
-        return presidentService.teacherHourStat(startTime, endTime);
+    public PresidentTeacherStatRes teacherHourStat(Long startTime, Long endTime) {
+        Date start = null;
+        Date end = null;
+        if (null != startTime) {
+            start = new Date(startTime);
+        }
+        if (null != endTime) {
+            end = new Date(endTime);
+        }
+        return presidentService.teacherHourStat(start, end);
     }
 
     @RequiresRoles({CommonUtil.SCHOOLMASTER})

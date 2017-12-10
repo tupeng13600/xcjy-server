@@ -79,5 +79,6 @@
         <foreach collection="studentIds" item="studentId" open="(" separator="," close=")">
             #{studentId}
         </foreach>
+        AND application_status = 'AUDITING';
     </select>
 </mapper>
