@@ -313,7 +313,7 @@ public class StudentService {
     }
 
     public List<StudentShowRes> search(String name) {
-        List<Student> studentList = studentMapper.searchByName(name);
+        List<Student> studentList = studentMapper.searchByName(name == null ? "" : name);
         List<StudentShowRes> resultList = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(studentList)) {
             for (Student student : studentList) {
