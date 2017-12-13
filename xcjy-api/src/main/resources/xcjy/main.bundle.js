@@ -820,6 +820,7 @@ AppComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_103_ng2_file_upload___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_103_ng2_file_upload__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_104__teacher_teacher_class_history_teacher_class_history_component__ = __webpack_require__("../../../../../src/app/teacher/teacher-class-history/teacher-class-history.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_105__teacher_teacher_stu_score_teacher_stu_score_component__ = __webpack_require__("../../../../../src/app/teacher/teacher-stu-score/teacher-stu-score.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_106__president_students_students_component__ = __webpack_require__("../../../../../src/app/president/students/students.component.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -827,6 +828,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -1020,7 +1022,8 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_101__student_manager_boss_teacher_hours_teacher_hours_component__["a" /* TeacherHoursComponent */],
             __WEBPACK_IMPORTED_MODULE_102__uploader_uploader_component__["a" /* UploaderComponent */],
             __WEBPACK_IMPORTED_MODULE_104__teacher_teacher_class_history_teacher_class_history_component__["a" /* TeacherClassHistoryComponent */],
-            __WEBPACK_IMPORTED_MODULE_105__teacher_teacher_stu_score_teacher_stu_score_component__["a" /* TeacherStuScoreComponent */]
+            __WEBPACK_IMPORTED_MODULE_105__teacher_teacher_stu_score_teacher_stu_score_component__["a" /* TeacherStuScoreComponent */],
+            __WEBPACK_IMPORTED_MODULE_106__president_students_students_component__["a" /* StudentsComponent */]
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_5_ng2_select2__["Select2Module"],
@@ -3775,8 +3778,10 @@ var DateRangerPickerComponent = (function () {
     }
     DateRangerPickerComponent.prototype.ngOnInit = function () {
         var _this = this;
+        var tag = this.tag;
         setTimeout(function () {
-            $('.date-range-picker').daterangepicker({
+            console.log('.' + tag + ' .date-range-picker');
+            $('.' + tag + ' .date-range-picker').daterangepicker({
                 locale: {
                     applyLabel: '确定',
                     cancelLabel: '取消',
@@ -3805,6 +3810,10 @@ var DateRangerPickerComponent = (function () {
     };
     return DateRangerPickerComponent;
 }());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], DateRangerPickerComponent.prototype, "tag", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
@@ -4694,7 +4703,7 @@ FooterComponent = __decorate([
 /***/ "../../../../../src/app/header/header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<header class=\"main-header\">\r\n\r\n  <a href=\"javascript:void(0)\" class=\"logo\">\r\n    <span class=\"logo-mini\"><b>学</b></span>\r\n    <span class=\"logo-lg\">学成教育</span>\r\n  </a>\r\n\r\n  <nav class=\"navbar navbar-static-top\" role=\"navigation\">\r\n    <a href=\"javascript:void(0)\" class=\"sidebar-toggle\" data-toggle=\"offcanvas\" role=\"button\"></a>\r\n\r\n    <div class=\"navbar-custom-menu\">\r\n      <ul class=\"nav navbar-nav\">\r\n        <li class=\"dropdown user user-menu\">\r\n          <a href=\"javascript:void(0)\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\r\n            <img src=\"/xcjy/assets/image/avatar.jpg\" class=\"user-image\" alt=\"User Image\">\r\n            <span class=\"hidden-xs\">{{ user.username }}&nbsp;</span>\r\n          </a>\r\n          <ul class=\"dropdown-menu\">\r\n            <!-- User image -->\r\n            <li class=\"user-header\">\r\n              <img src=\"/xcjy/assets/image/avatar.jpg\" class=\"img-circle\" alt=\"User Image\">\r\n\r\n              <p>\r\n                {{ user.username }}&nbsp;\r\n              </p>\r\n            </li>\r\n            <!-- Menu Body -->\r\n            <li class=\"user-body\">\r\n              <div class=\"row\">\r\n                <div class=\"col-xs-6 text-center\">\r\n                  <a href=\"#\">职位</a>\r\n                </div>\r\n                <div class=\"col-xs-6 text-center\">\r\n                  <a href=\"#\">姓名</a>\r\n                </div>\r\n                <div class=\"col-xs-6 text-center\">\r\n                  <a href=\"#\">{{ roles[user.roleId] }}</a>\r\n                </div>\r\n                <div class=\"col-xs-6 text-center\">\r\n                  <a href=\"#\">{{ user.name }}</a>\r\n                </div>\r\n              </div>\r\n              <!-- /.row -->\r\n            </li>\r\n            <!-- Menu Footer-->\r\n            <li class=\"user-footer\">\r\n              <div class=\"pull-right\">\r\n                <a href=\"javascript:void(0);\" class=\"btn btn-default btn-flat\" (click)=\"signOut()\">登出</a>\r\n              </div>\r\n            </li>\r\n          </ul>\r\n        </li>\r\n        <li>\r\n          <a href=\"javascript:void(0)\" (click)=\"signOut()\">\r\n            <span class=\"fa fa-sign-out\"></span>\r\n          </a>\r\n        </li>\r\n      </ul>\r\n    </div>\r\n  </nav>\r\n</header>\r\n"
+module.exports = "<header class=\"main-header\">\r\n\r\n  <a href=\"javascript:void(0)\" class=\"logo\">\r\n    <span class=\"logo-mini\"><b>学</b></span>\r\n    <span class=\"logo-lg\">学成教育</span>\r\n  </a>\r\n\r\n  <nav class=\"navbar navbar-static-top\" role=\"navigation\">\r\n    <a href=\"javascript:void(0)\" class=\"sidebar-toggle\" data-toggle=\"offcanvas\" role=\"button\"></a>\r\n\r\n    <div class=\"navbar-custom-menu\">\r\n      <ul class=\"nav navbar-nav\">\r\n        <li class=\"dropdown user user-menu\">\r\n          <a href=\"javascript:void(0)\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\r\n            <img src=\"xcjy/assets/image/avatar.jpg\" class=\"user-image\" alt=\"User Image\">\r\n            <span class=\"hidden-xs\">{{ user.username }}&nbsp;</span>\r\n          </a>\r\n          <ul class=\"dropdown-menu\">\r\n            <!-- User image -->\r\n            <li class=\"user-header\">\r\n              <img src=\"xcjy/assets/image/avatar.jpg\" class=\"img-circle\" alt=\"User Image\">\r\n\r\n              <p>\r\n                {{ user.username }}&nbsp;\r\n              </p>\r\n            </li>\r\n            <!-- Menu Body -->\r\n            <li class=\"user-body\">\r\n              <div class=\"row\">\r\n                <div class=\"col-xs-6 text-center\">\r\n                  <a href=\"#\">职位</a>\r\n                </div>\r\n                <div class=\"col-xs-6 text-center\">\r\n                  <a href=\"#\">姓名</a>\r\n                </div>\r\n                <div class=\"col-xs-6 text-center\">\r\n                  <a href=\"#\">{{ roles[user.roleId] }}</a>\r\n                </div>\r\n                <div class=\"col-xs-6 text-center\">\r\n                  <a href=\"#\">{{ user.name }}</a>\r\n                </div>\r\n              </div>\r\n              <!-- /.row -->\r\n            </li>\r\n            <!-- Menu Footer-->\r\n            <li class=\"user-footer\">\r\n              <div class=\"pull-right\">\r\n                <a href=\"javascript:void(0);\" class=\"btn btn-default btn-flat\" (click)=\"signOut()\">登出</a>\r\n              </div>\r\n            </li>\r\n          </ul>\r\n        </li>\r\n        <li>\r\n          <a href=\"javascript:void(0)\" (click)=\"signOut()\">\r\n            <span class=\"fa fa-sign-out\"></span>\r\n          </a>\r\n        </li>\r\n      </ul>\r\n    </div>\r\n  </nav>\r\n</header>\r\n"
 
 /***/ }),
 
@@ -6214,6 +6223,11 @@ var PresidentComponent = (function () {
                 name: '退费审核管理',
                 routerLink: ['refund'],
                 icon: 'fa-file-excel-o'
+            },
+            {
+                name: '学生信息列表',
+                routerLink: ['students'],
+                icon: 'fa-graduation-cap'
             }
         ];
         this.userService.userInfoChange.subscribe(function (value) {
@@ -6290,8 +6304,12 @@ var PresidentService = (function () {
             return result.success;
         });
     };
-    PresidentService.prototype.fetchSignMoney = function () {
-        return this.http.get('president/stat/pay').then(function (result) {
+    PresidentService.prototype.fetchSignMoney = function (startTime, endTime) {
+        var query = '';
+        if (startTime) {
+            query = "?startTime=" + startTime + "&endTime=" + endTime;
+        }
+        return this.http.get("president/stat/pay" + query).then(function (result) {
             if (result.success) {
                 return result.data;
             }
@@ -6300,8 +6318,12 @@ var PresidentService = (function () {
             }
         });
     };
-    PresidentService.prototype.fetchRenewMoney = function () {
-        return this.http.get('president/stat/renew').then(function (result) {
+    PresidentService.prototype.fetchRenewMoney = function (startTime, endTime) {
+        var query = '';
+        if (startTime) {
+            query = "?startTime=" + startTime + "&endTime=" + endTime;
+        }
+        return this.http.get("president/stat/renew" + query).then(function (result) {
             if (result.success) {
                 return result.data;
             }
@@ -6310,8 +6332,12 @@ var PresidentService = (function () {
             }
         });
     };
-    PresidentService.prototype.fetchClassHour = function () {
-        return this.http.get('president/stat/teacher/hour').then(function (result) {
+    PresidentService.prototype.fetchClassHour = function (startTime, endTime) {
+        var query = '';
+        if (startTime) {
+            query = "?startTime=" + startTime + "&endTime=" + endTime;
+        }
+        return this.http.get("president/stat/teacher/hour" + query).then(function (result) {
             if (result.success) {
                 return result.data;
             }
@@ -6364,6 +6390,17 @@ var PresidentService = (function () {
                 });
             }
             return result.success;
+        });
+    };
+    PresidentService.prototype.fetchStudentsByName = function (name) {
+        var query = '';
+        if (name) {
+            query = "?name=" + name;
+        }
+        return this.http.get("common/student/search" + query).then(function (result) {
+            if (result && result.success) {
+                return result.details;
+            }
         });
     };
     return PresidentService;
@@ -6490,7 +6527,7 @@ var _a, _b;
 /***/ "../../../../../src/app/president/stat/stat.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-content-header\n  [title]=\"'签约/缴费/课时统计'\" [menus]=\"contentHeader\"></app-content-header>\n\n<div class=\"content\">\n\n  <div class=\"nav-tabs-custom\">\n    <ul class=\"nav nav-tabs\">\n      <li class=\"active\" (click)=\"fetchSignRecord();handlePageChangeSignMoney(1)\"><a href=\"#waitAudit\" data-toggle=\"tab\" aria-expanded=\"true\">签约统计</a></li>\n      <li class=\"\" (click)=\"fetchRenewRecord();handlePageChangeRenewMoney(1)\"><a href=\"#auditSuccess\" data-toggle=\"tab\" aria-expanded=\"false\">续约统计</a></li>\n      <li class=\"\" (click)=\"fetchClassHourRecord();handlePageChangeClassHour(1)\"><a href=\"#auditFail\" data-toggle=\"tab\" aria-expanded=\"false\">课时统计</a></li>\n    </ul>\n    <div class=\"tab-content\">\n      <div class=\"tab-pane active\" id=\"waitAudit\">\n        <div class=\"table-title clearfix\">\n          <p class=\"text-muted pull-left\">签约总人数: {{signMoneyRecord.num || 0}}</p>\n          <p class=\"text-muted pull-left\">签约总金额: {{signMoneyRecord.total || 0}}</p>\n        </div>\n        <table class=\"table table-bordered table-hover text-center\">\n          <thead>\n          <tr>\n            <th>咨询师姓名</th>\n            <th>咨询师电话</th>\n            <th>签约个数</th>\n            <th>签约金额</th>\n            <th>所属校区</th>\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let record of signMoneyRecord.details;\">\n            <td>{{ record.name }}</td>\n            <td>{{ record.phone.slice(0, 3) + '****' + record.phone.slice(7) }}</td>\n            <td>{{ record.num }}</td>\n            <td>{{ record.total }}</td>\n            <td>{{ record.schoolName }}</td>\n          </tr>\n          <tr *ngIf=\"!signMoneyRecord.details.length\">\n            <td colspan=\"6\">\n              <p class=\"text-center text-muted\">暂时无统计信息</p>\n            </td>\n          </tr>\n          </tbody>\n        </table>\n\n        <app-pagination *ngIf=\"renewMoneyRecord.details.length\"\n                          [curPage]=\"curPageSignMoney\"\n                          (changePage)=\"handlePageChangeSignMoney($event)\"\n                          [totalCount]=\"renewMoneyRecord.details.length\"></app-pagination>\n      </div>\n\n      <div class=\"tab-pane\" id=\"auditSuccess\">\n        <div class=\"table-title clearfix\">\n          <p class=\"text-muted pull-left\">续约总人数: {{renewMoneyRecord.num || 0}}</p>\n          <p class=\"text-muted pull-left\">续约总金额: {{renewMoneyRecord.total || 0}}</p>\n        </div>\n        <table class=\"table table-bordered table-hover text-center\">\n          <thead>\n          <tr>\n            <th>咨询师姓名</th>\n            <th>咨询师电话</th>\n            <th>签约个数</th>\n            <th>签约金额</th>\n            <th>所属校区</th>\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let record of renewMoneyRecord.details;\">\n            <td>{{ record.name }}</td>\n            <td>{{ record.phone.slice(0, 3) + '****' + record.phone.slice(7) }}</td>\n            <td>{{ record.num }}</td>\n            <td>{{ record.total }}</td>\n            <td>{{ record.schoolName }}</td>\n          </tr>\n          <tr *ngIf=\"!renewMoneyRecord.details.length\">\n            <td colspan=\"6\">\n              <p class=\"text-center text-muted\">暂时无统计信息</p>\n            </td>\n          </tr>\n          </tbody>\n        </table>\n\n        <app-pagination *ngIf=\"renewMoneyRecord.details.length\"\n                        [curPage]=\"curPageRenewMoney\"\n                        (changePage)=\"handlePageChangeRenewMoney($event)\"\n                        [totalCount]=\"renewMoneyRecord.details.length\"></app-pagination>\n      </div>\n\n      <div class=\"tab-pane\" id=\"auditFail\">\n        <div class=\"table-title clearfix\">\n          <p class=\"text-muted pull-left\">总课时: {{classHourRecord.totalHour || 0}}</p>\n          <p class=\"text-muted pull-left\">已完成课时: {{classHourRecord.finishHour || 0}}</p>\n          <p class=\"text-muted pull-left\">未完成课时: {{classHourRecord.unFinishHour || 0}}</p>\n        </div>\n        <table class=\"table table-bordered table-hover text-center\">\n          <thead>\n          <tr>\n            <th>教师姓名</th>\n            <th>教师电话</th>\n            <th>完成课时</th>\n            <th>未完成课时</th>\n            <th>总课时</th>\n            <th>所属校区</th>\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let record of classHourRecord.details;\">\n            <td>{{ record.name }}</td>\n            <td>{{ record.phone.slice(0, 3) + '****' + record.phone.slice(7) }}</td>\n            <td>{{ record.finishHour }}</td>\n            <td>{{ record.unFinishHour }}</td>\n            <td>{{ record.totalHour }}</td>\n            <td>{{record.schoolName}}</td>\n          </tr>\n          <tr *ngIf=\"!classHourRecord.details.length\">\n            <td colspan=\"6\">\n              <p class=\"text-center text-muted\">暂时无统计信息</p>\n            </td>\n          </tr>\n          </tbody>\n        </table>\n\n        <app-pagination *ngIf=\"classHourRecord.details.length\"\n                        [curPage]=\"curPageClassHour\"\n                        (changePage)=\"handlePageChangeClassHour($event)\"\n                        [totalCount]=\"classHourRecord.details.length\"></app-pagination>\n      </div>\n    </div>\n  </div>\n</div>\n\n<app-modal #auditModal>\n  <form class=\"form text-center clearfix\">\n    <div class=\"radio\">\n      <label>\n        <input type=\"radio\" name=\"optionsRadios\" id=\"approve\" (change)=\"approve = 'AUDIT_SUCCESS'\" [checked]=\"approve === 'AUDIT_SUCCESS'\">\n        通过该退费申请\n      </label>\n    </div>\n\n    <div class=\"radio\">\n      <label>\n        <input type=\"radio\" name=\"optionsRadios\" id=\"reject\" value=\"option1\" (change)=\"approve = 'AUDIT_FAIL'\" [checked]=\"approve === 'AUDIT_FAIL'\">\n        拒绝该退费申请\n      </label>\n    </div>\n\n    <div class=\"form-group form-group-sm col-xs-6 col-xs-offset-3\">\n      <div>\n        <textarea name=\"remark\" id=\"remark\" class=\"form-control\" rows=\"2\" placeholder=\"请填写审核备注\" [(ngModel)]=\"approveRemark\"></textarea>\n      </div>\n    </div>\n  </form>\n</app-modal>\n"
+module.exports = "<app-content-header\n  [title]=\"'签约/缴费/课时统计'\" [menus]=\"contentHeader\"></app-content-header>\n\n<div class=\"content\">\n\n  <div class=\"nav-tabs-custom\">\n    <ul class=\"nav nav-tabs\">\n      <li class=\"active\" (click)=\"fetchSignRecord();handlePageChangeSignMoney(1)\"><a href=\"#waitAudit\" data-toggle=\"tab\" aria-expanded=\"true\">签约统计</a></li>\n      <li class=\"\" (click)=\"fetchRenewRecord();handlePageChangeRenewMoney(1)\"><a href=\"#auditSuccess\" data-toggle=\"tab\" aria-expanded=\"false\">续约统计</a></li>\n      <li class=\"\" (click)=\"fetchClassHourRecord();handlePageChangeClassHour(1)\"><a href=\"#auditFail\" data-toggle=\"tab\" aria-expanded=\"false\">课时统计</a></li>\n    </ul>\n    <div class=\"tab-content\">\n      <div class=\"tab-pane active\" id=\"waitAudit\">\n        <div class=\"table-title clearfix\" style=\"line-height: 30px;\">\n          <p class=\"text-muted pull-left\">签约总人数: {{signMoneyRecord.num || 0}}</p>\n          <p class=\"text-muted pull-left\">签约总金额: {{signMoneyRecord.total || 0}}</p>\n          <div class=\"pull-right\" style=\"width: 280px;\">\n            <label style=\"line-height: 30px;height: 30px;margin-right: 10px;\" class=\"pull-left\" for=\"\">时间过滤</label>\n            <app-date-ranger-picker\n              [startTime]=\"startTime\"\n              class=\"picker-1\"\n              [tag]=\"'picker-1'\"\n              (dateRangeSetEvent)=\"handleSignTimeRangeChange($event)\"\n            ></app-date-ranger-picker>\n          </div>\n        </div>\n        <table class=\"table table-bordered table-hover text-center\">\n          <thead>\n          <tr>\n            <th>咨询师姓名</th>\n            <th>咨询师电话</th>\n            <th>签约个数</th>\n            <th>签约金额</th>\n            <th>所属校区</th>\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let record of signMoneyRecord.details;\">\n            <td>{{ record.name }}</td>\n            <td>{{ record.phone.slice(0, 3) + '****' + record.phone.slice(7) }}</td>\n            <td>{{ record.num }}</td>\n            <td>{{ record.total }}</td>\n            <td>{{ record.schoolName }}</td>\n          </tr>\n          <tr *ngIf=\"!signMoneyRecord.details || ( signMoneyRecord.details && !signMoneyRecord.details.length)\">\n            <td colspan=\"6\">\n              <p class=\"text-center text-muted\">暂时无统计信息</p>\n            </td>\n          </tr>\n          </tbody>\n        </table>\n\n        <app-pagination *ngIf=\"renewMoneyRecord.details && renewMoneyRecord.details.length\"\n                          [curPage]=\"curPageSignMoney\"\n                          (changePage)=\"handlePageChangeSignMoney($event)\"\n                          [totalCount]=\"renewMoneyRecord.details.length\"></app-pagination>\n      </div>\n\n      <div class=\"tab-pane\" id=\"auditSuccess\">\n        <div class=\"table-title clearfix\">\n          <p class=\"text-muted pull-left\">续约总人数: {{renewMoneyRecord.num || 0}}</p>\n          <p class=\"text-muted pull-left\">续约总金额: {{renewMoneyRecord.total || 0}}</p>\n          <div class=\"pull-right\" style=\"width: 280px;\">\n            <label style=\"line-height: 30px;height: 30px;margin-right: 10px;\" class=\"pull-left\" for=\"\">时间过滤</label>\n            <app-date-ranger-picker\n              class=\"picker-2\"\n              [tag]=\"'picker-2'\"\n              [startTime]=\"startTime\"\n              (dateRangeSetEvent)=\"handleRenewTimeRangeChange($event)\"\n            ></app-date-ranger-picker>\n          </div>\n        </div>\n        <table class=\"table table-bordered table-hover text-center\">\n          <thead>\n          <tr>\n            <th>咨询师姓名</th>\n            <th>咨询师电话</th>\n            <th>签约个数</th>\n            <th>签约金额</th>\n            <th>所属校区</th>\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let record of renewMoneyRecord.details;\">\n            <td>{{ record.name }}</td>\n            <td>{{ record.phone.slice(0, 3) + '****' + record.phone.slice(7) }}</td>\n            <td>{{ record.num }}</td>\n            <td>{{ record.total }}</td>\n            <td>{{ record.schoolName }}</td>\n          </tr>\n          <tr *ngIf=\"!renewMoneyRecord.details || (!renewMoneyRecord.details.length)\">\n            <td colspan=\"6\">\n              <p class=\"text-center text-muted\">暂时无统计信息</p>\n            </td>\n          </tr>\n          </tbody>\n        </table>\n\n        <app-pagination *ngIf=\"renewMoneyRecord.details && renewMoneyRecord.details.length\"\n                        [curPage]=\"curPageRenewMoney\"\n                        (changePage)=\"handlePageChangeRenewMoney($event)\"\n                        [totalCount]=\"renewMoneyRecord.details.length\"></app-pagination>\n      </div>\n\n      <div class=\"tab-pane\" id=\"auditFail\">\n        <div class=\"table-title clearfix\">\n          <p class=\"text-muted pull-left\">总课时: {{classHourRecord.totalHour || 0}}</p>\n          <p class=\"text-muted pull-left\">已完成课时: {{classHourRecord.finishHour || 0}}</p>\n          <p class=\"text-muted pull-left\">未完成课时: {{classHourRecord.unFinishHour || 0}}</p>\n          <div class=\"pull-right\" style=\"width: 280px;\">\n            <label style=\"line-height: 30px;height: 30px;margin-right: 10px;\" class=\"pull-left\" for=\"\">时间过滤</label>\n            <app-date-ranger-picker\n              class=\"picker-3\"\n              [tag]=\"'picker-3'\"\n              [startTime]=\"startTime\"\n              (dateRangeSetEvent)=\"handleClassHourTimeRangeChange($event)\"\n            ></app-date-ranger-picker>\n          </div>\n        </div>\n        <table class=\"table table-bordered table-hover text-center\">\n          <thead>\n          <tr>\n            <th>教师姓名</th>\n            <th>教师电话</th>\n            <th>完成课时</th>\n            <th>未完成课时</th>\n            <th>总课时</th>\n            <th>所属校区</th>\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let record of (classHourRecord.details || []);\">\n            <td>{{ record.name }}</td>\n            <td>{{ record.phone.slice(0, 3) + '****' + record.phone.slice(7) }}</td>\n            <td>{{ record.finishHour }}</td>\n            <td>{{ record.unFinishHour }}</td>\n            <td>{{ record.totalHour }}</td>\n            <td>{{record.schoolName}}</td>\n          </tr>\n          <tr *ngIf=\"!classHourRecord.details || !classHourRecord.details.length\">\n            <td colspan=\"6\">\n              <p class=\"text-center text-muted\">暂时无统计信息</p>\n            </td>\n          </tr>\n          </tbody>\n        </table>\n\n        <app-pagination *ngIf=\"classHourRecord.details && classHourRecord.details.length\"\n                        [curPage]=\"curPageClassHour\"\n                        (changePage)=\"handlePageChangeClassHour($event)\"\n                        [totalCount]=\"classHourRecord.details.length\"></app-pagination>\n      </div>\n    </div>\n  </div>\n</div>\n\n<app-modal #auditModal>\n  <form class=\"form text-center clearfix\">\n    <div class=\"radio\">\n      <label>\n        <input type=\"radio\" name=\"optionsRadios\" id=\"approve\" (change)=\"approve = 'AUDIT_SUCCESS'\" [checked]=\"approve === 'AUDIT_SUCCESS'\">\n        通过该退费申请\n      </label>\n    </div>\n\n    <div class=\"radio\">\n      <label>\n        <input type=\"radio\" name=\"optionsRadios\" id=\"reject\" value=\"option1\" (change)=\"approve = 'AUDIT_FAIL'\" [checked]=\"approve === 'AUDIT_FAIL'\">\n        拒绝该退费申请\n      </label>\n    </div>\n\n    <div class=\"form-group form-group-sm col-xs-6 col-xs-offset-3\">\n      <div>\n        <textarea name=\"remark\" id=\"remark\" class=\"form-control\" rows=\"2\" placeholder=\"请填写审核备注\" [(ngModel)]=\"approveRemark\"></textarea>\n      </div>\n    </div>\n  </form>\n</app-modal>\n"
 
 /***/ }),
 
@@ -6535,6 +6572,7 @@ var StatComponent = (function () {
         this.presidentService = presidentService;
     }
     StatComponent.prototype.ngOnInit = function () {
+        this.startTime = new Date(1950, 0, 1).getTime();
         this.curPageSignMoney = 1;
         this.curPageRenewMoney = 1;
         this.curPageClassHour = 1;
@@ -6545,25 +6583,25 @@ var StatComponent = (function () {
             { name: '主页', icon: 'fa-dashboard' },
             { name: '签约/缴费/课时统计页', icon: 'fa-th-li' }
         ];
-        this.fetchSignRecord();
-        this.fetchRenewRecord();
-        this.fetchClassHourRecord();
+        this.fetchSignRecord('', '');
+        this.fetchRenewRecord('', '');
+        this.fetchClassHourRecord('', '');
     };
-    StatComponent.prototype.fetchSignRecord = function () {
+    StatComponent.prototype.fetchSignRecord = function (startTime, endTime) {
         var _this = this;
-        this.presidentService.fetchSignMoney().then(function (results) {
+        this.presidentService.fetchSignMoney(startTime, endTime).then(function (results) {
             _this.signMoneyRecord = results;
         });
     };
-    StatComponent.prototype.fetchRenewRecord = function () {
+    StatComponent.prototype.fetchRenewRecord = function (startTime, endTime) {
         var _this = this;
-        this.presidentService.fetchRenewMoney().then(function (results) {
+        this.presidentService.fetchRenewMoney(startTime, endTime).then(function (results) {
             _this.renewMoneyRecord = results;
         });
     };
-    StatComponent.prototype.fetchClassHourRecord = function () {
+    StatComponent.prototype.fetchClassHourRecord = function (startTime, endTime) {
         var _this = this;
-        this.presidentService.fetchClassHour().then(function (results) {
+        this.presidentService.fetchClassHour(startTime, endTime).then(function (results) {
             _this.classHourRecord = results;
         });
     };
@@ -6575,6 +6613,16 @@ var StatComponent = (function () {
     };
     StatComponent.prototype.handlePageChangeClassHour = function (page) {
         this.curPageClassHour = page;
+    };
+    StatComponent.prototype.handleSignTimeRangeChange = function (value) {
+        console.log('triggered');
+        this.fetchSignRecord(value.start, value.end);
+    };
+    StatComponent.prototype.handleRenewTimeRangeChange = function (value) {
+        this.fetchRenewRecord(value.start, value.end);
+    };
+    StatComponent.prototype.handleClassHourTimeRangeChange = function (value) {
+        this.fetchClassHourRecord(value.start, value.end);
     };
     return StatComponent;
 }());
@@ -6589,6 +6637,84 @@ StatComponent = __decorate([
 
 var _a;
 //# sourceMappingURL=stat.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/president/students/students.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<app-content-header\n  [title]=\"'签约/缴费/课时统计'\" [menus]=\"contentHeader\"></app-content-header>\n\n<div class=\"content\">\n  <div class=\"box box-primary box-divider\">\n    <div class=\"box-header\">\n      <h3 class=\"box-title\">学生查询</h3>\n      <div class=\"box-tools form-group form-group-sm form-inline\">\n        <input class=\"form-control\" name=\"student-name\" [(ngModel)]=\"name\" placeholder=\"请输入学生姓名\" [value]=\"name\" style=\"margin-right: 5px;\">\n        <button class=\"btn btn-primary btn-sm pull-right\" (click)=\"fetchStudents(name)\">\n          查询学生\n        </button>\n      </div>\n    </div>\n    <div class=\"box-content\">\n      <table class=\"table table-striped text-center\">\n        <thead>\n          <tr>\n            <th>姓名</th>\n            <th>性别</th>\n            <th>电话</th>\n            <th>年级</th>\n            <th>生日</th>\n            <th>已付款</th>\n            <th>父母姓名</th>\n            <th>父母性别</th>\n            <th>父母电话</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr *ngFor=\"let student of students\">\n            <td>{{ student.name }}</td>\n            <td>{{ student.sex === 'M' ? '男': '女' }}</td>\n            <td>{{ student.phone.slice(0,4) + '****' + student.phone.slice(8,11) }}</td>\n            <td>{{ student.grade }}</td>\n            <td>{{ student.birthday | date: 'YYYY-MM-dd' }}</td>\n            <td>{{ student.alreadyPaid === 'YES' ? '是' : '否' }}</td>\n            <td>{{ student.parentName }}</td>\n            <td>{{ student.parentSex === 'M' ? '男' : '女' }}</td>\n            <td>{{ student.parentPhone.slice(0,4) + '*****' + student.parentPhone.slice(8) }}</td>\n          </tr>\n          <tr *ngIf=\"students && students.length === 0\">\n            <td colspan=\"9\" class=\"text-center text-muted\">暂无学生信息</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/president/students/students.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/president/students/students.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__president_service__ = __webpack_require__("../../../../../src/app/president/president.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return StudentsComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var StudentsComponent = (function () {
+    function StudentsComponent(presidentService) {
+        this.presidentService = presidentService;
+    }
+    StudentsComponent.prototype.ngOnInit = function () {
+        this.name = '';
+        this.students = [];
+        this.contentHeader = [
+            { name: '主页', icon: 'fa-dashboard' },
+            { name: '学生信息列表', icon: 'fa-graduation-cap' }
+        ];
+        this.fetchStudents('');
+    };
+    StudentsComponent.prototype.fetchStudents = function (name) {
+        var _this = this;
+        this.presidentService.fetchStudentsByName(name).then(function (students) {
+            return _this.students = students || [];
+        });
+    };
+    return StudentsComponent;
+}());
+StudentsComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-students',
+        template: __webpack_require__("../../../../../src/app/president/students/students.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/president/students/students.component.less")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__president_service__["a" /* PresidentService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__president_service__["a" /* PresidentService */]) === "function" && _a || Object])
+], StudentsComponent);
+
+var _a;
+//# sourceMappingURL=students.component.js.map
 
 /***/ }),
 
@@ -6964,7 +7090,9 @@ RoleComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_55__student_manager_boss_teacher_hours_teacher_hours_component__ = __webpack_require__("../../../../../src/app/student-manager-boss/teacher-hours/teacher-hours.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_56__teacher_teacher_class_history_teacher_class_history_component__ = __webpack_require__("../../../../../src/app/teacher/teacher-class-history/teacher-class-history.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_57__teacher_teacher_stu_score_teacher_stu_score_component__ = __webpack_require__("../../../../../src/app/teacher/teacher-stu-score/teacher-stu-score.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_58__president_students_students_component__ = __webpack_require__("../../../../../src/app/president/students/students.component.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return routes; });
+
 
 
 
@@ -7223,6 +7351,10 @@ var routes = [
                     {
                         path: 'stats',
                         component: __WEBPACK_IMPORTED_MODULE_39__president_stat_stat_component__["a" /* StatComponent */]
+                    },
+                    {
+                        path: 'students',
+                        component: __WEBPACK_IMPORTED_MODULE_58__president_students_students_component__["a" /* StudentsComponent */]
                     }
                 ]
             },
@@ -7334,7 +7466,7 @@ var routes = [
                 children: [
                     {
                         path: '',
-                        redirectTo: 'teacher-hours',
+                        redirectTo: 'student-assignment',
                         pathMatch: 'full'
                     },
                     {
@@ -8720,7 +8852,7 @@ var _a;
 /***/ "../../../../../src/app/student-manager-boss/assignment/assignment.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-content-header\r\n  [title]=\"'学员信息列表'\" [menus]=\"contentHeader\"></app-content-header>\r\n<div class=\"content\">\r\n  <app-collapse-box [collapse]=\"false\" [boxTitle]=\"'学员筛选'\">\r\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        姓名:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\">\r\n        <input class=\"form-control input-sm\" (keypress)=\"curPage = 1;\" [(ngModel)]=\"studentFilterName\" placeholder=\"输入学员名称\">\r\n        <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        手机号:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\">\r\n        <input class=\"form-control input-sm\" (keypress)=\"curPage = 1;\" [(ngModel)]=\"studentFilterPhone\" placeholder=\"输入学员手机号\">\r\n        <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        性别筛选:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\">\r\n        <select2 [cssImport]=\"false\"\r\n                  [options]=\"{minimumResultsForSearch: -1}\"\r\n                  [data]=\"[{id: 'ALL', text: '全部'}].concat(genders)\"\r\n                  (valueChanged)=\"switchFilterGender($event)\"></select2>\r\n      </div>\r\n    </div>\r\n  </app-collapse-box>\r\n\r\n  <div class=\"box box-primary box-divide\">\r\n    <div class=\"box-header\">\r\n      <div class=\"box-title\">\r\n        学员信息列表\r\n      </div>\r\n    </div>\r\n    <div class=\"box-body\">\r\n      <table class=\"table table-hover table-bordered text-center\">\r\n        <thead>\r\n          <tr>\r\n            <th>姓名</th>\r\n            <th>性别</th>\r\n            <th>手机号</th>\r\n            <th>身份证</th>\r\n            <th>班级</th>\r\n            <th>学科</th>\r\n            <th>住址</th>\r\n            <th>备注</th>\r\n          </tr>\r\n        </thead>\r\n        <tbody>\r\n          <tr *ngFor=\"let student of students |\r\n          matchItem : studentFilterName: 'name' |\r\n          matchItem: studentFilterPhone: 'phone' | matchItem: studentFilterGender : 'sex' : 'exact' | paging: curPage\">\r\n            <td>{{ student.name }}</td>\r\n            <td>{{ student.sex === 'MALE' ? '男' : '女' }}</td>\r\n            <td>{{ student.phone.slice(0, 3) + '****' + student.phone.slice(7)  }}</td>\r\n            <td>{{ student.idCard }}</td>\r\n            <td>{{ student.grade }}</td>\r\n            <td>{{ student.subject || '--' }}</td>\r\n            <td>{{ student.address || '--' }}</td>\r\n            <td>{{ student.remark || '--' }}</td>\r\n          </tr>\r\n          <tr *ngIf=\"!students.length\">\r\n            <td colspan=\"8\" class=\"text-muted\">暂无学员信息</td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n    </div>\r\n  </div>\r\n\r\n  <app-pagination *ngIf=\"students.length\"\r\n                    [curPage]=\"curPage\"\r\n                    [totalCount]=\"(students |\r\n                  matchItem : studentFilterName: 'name' |\r\n                  matchItem: studentFilterPhone: 'phone' | matchItem: studentFilterGender : 'sex' : 'exact').length\"></app-pagination>\r\n</div>\r\n"
+module.exports = "<app-content-header\r\n  [title]=\"'学员信息列表'\" [menus]=\"contentHeader\"></app-content-header>\r\n<div class=\"content\">\r\n  <app-collapse-box [collapse]=\"false\" [boxTitle]=\"'学员筛选'\">\r\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        姓名:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\">\r\n        <input class=\"form-control input-sm\" (keypress)=\"curPage = 1;\" [(ngModel)]=\"studentFilterName\" placeholder=\"输入学员名称\">\r\n        <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        手机号:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\">\r\n        <input class=\"form-control input-sm\" (keypress)=\"curPage = 1;\" [(ngModel)]=\"studentFilterPhone\" placeholder=\"输入学员手机号\">\r\n        <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-12 col-lg-4 input-group-sm\">\r\n      <label class=\"pull-left\">\r\n        性别筛选:\r\n      </label>\r\n      <div class=\"input-group input-group-sm\">\r\n        <select2 [cssImport]=\"false\"\r\n                  [options]=\"{minimumResultsForSearch: -1}\"\r\n                  [data]=\"[{id: 'ALL', text: '全部'}].concat(genders)\"\r\n                  (valueChanged)=\"switchFilterGender($event)\"></select2>\r\n      </div>\r\n    </div>\r\n  </app-collapse-box>\r\n\r\n  <div class=\"box box-primary box-divide\">\r\n    <div class=\"box-header\">\r\n      <div class=\"box-title\">\r\n        学员信息列表\r\n      </div>\r\n    </div>\r\n    <div class=\"box-body\">\r\n      <table class=\"table table-hover table-bordered text-center\">\r\n        <thead>\r\n          <tr>\r\n            <th>姓名</th>\r\n            <th>性别</th>\r\n            <th>手机号</th>\r\n            <th>身份证</th>\r\n            <th>班级</th>\r\n            <th>学科</th>\r\n            <th>住址</th>\r\n            <th>是否分配</th>\r\n            <th>学管师</th>\r\n            <th>备注</th>\r\n          </tr>\r\n        </thead>\r\n        <tbody>\r\n          <tr *ngFor=\"let student of students |\r\n          matchItem : studentFilterName: 'name' |\r\n          matchItem: studentFilterPhone: 'phone' | matchItem: studentFilterGender : 'sex' : 'exact' | paging: curPage\">\r\n            <td>{{ student.name }}</td>\r\n            <td>{{ student.sex === 'MALE' ? '男' : '女' }}</td>\r\n            <td>{{ student.phone.slice(0, 3) + '****' + student.phone.slice(7)  }}</td>\r\n            <td>{{ student.idCard }}</td>\r\n            <td>{{ student.grade }}</td>\r\n            <td>{{ student.subject || '--' }}</td>\r\n            <td>{{ student.address || '--' }}</td>\r\n            <td>{{ student.isDis ? '是' : '否' }}</td>\r\n            <td>{{ student.disTeacherName || '--' }}</td>\r\n            <td>{{ student.remark || '--' }}</td>\r\n          </tr>\r\n          <tr *ngIf=\"!students.length\">\r\n            <td colspan=\"10\" class=\"text-muted\">暂无学员信息</td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n    </div>\r\n  </div>\r\n\r\n  <app-pagination *ngIf=\"students.length\"\r\n                    [curPage]=\"curPage\"\r\n                    [totalCount]=\"(students |\r\n                  matchItem : studentFilterName: 'name' |\r\n                  matchItem: studentFilterPhone: 'phone' | matchItem: studentFilterGender : 'sex' : 'exact').length\"></app-pagination>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -9129,7 +9261,7 @@ var StudentManagerBossService = (function () {
         this.alertService = alertService;
     }
     StudentManagerBossService.prototype.fetchUndistributedStudents = function () {
-        return this.http.get('stmanager/student/distribution/no').then(function (result) {
+        return this.http.get('stmanager/student/dis/stat').then(function (result) {
             if (result.success) {
                 return result.data;
             }
