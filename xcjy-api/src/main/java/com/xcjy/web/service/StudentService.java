@@ -293,7 +293,7 @@ public class StudentService {
     public List<Student> searchByName(String name) {
         List<Student> resultList = new ArrayList<>();
         if (StringUtils.isNotBlank(name)) {
-            List<Student> studentList = studentMapper.searchByName(name);
+            List<Student> studentList = studentMapper.searchByName(name == null ? "" : name);
             if (CollectionUtils.isNotEmpty(studentList)) {
                 Set<String> studentIds = studentList.stream().map(Student::getId).collect(Collectors.toSet());
                 CurrentThreadLocal.removeSchoolId(); //该请求无需使用school_id查询
@@ -315,7 +315,7 @@ public class StudentService {
     public List<StudentShowRes> search(String name) {
         List<Student> studentList = studentMapper.searchByName(name);
         List<StudentShowRes> resultList = new ArrayList<>();
-        if(CollectionUtils.isNotEmpty(studentList)) {
+        if (CollectionUtils.isNotEmpty(studentList)) {
             for (Student student : studentList) {
                 StudentShowRes showRes = new StudentShowRes();
                 BeanUtils.copyProperties(student, showRes);
