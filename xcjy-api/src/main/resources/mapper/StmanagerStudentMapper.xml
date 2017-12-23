@@ -47,6 +47,16 @@
       update_time = #{stmanagerStudent.updateTime}
       WHERE id = #{stmanagerStudent.id} AND update_time = #{infoTime} AND deleted = FALSE;
     </update>
+    <delete id="deleteRelation">
+        UPDATE stmanager_student
+        SET deleted = TRUE,
+        update_time = #{updateTime}
+        WHERE
+        id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 
     <select id="getBySIdAndScIds" resultMap="BaseResultMap">
         SELECT

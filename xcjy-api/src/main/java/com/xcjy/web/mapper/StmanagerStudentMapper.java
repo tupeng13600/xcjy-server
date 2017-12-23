@@ -20,4 +20,6 @@ public interface StmanagerStudentMapper {
 
     List<String> getSIdByEmployeeId(@Param("employeeId") String employeeId);
 
+    void deleteRelation(@Param("ids") List<String> ids, @Param("updateTime") Date updateTime);
+
 }

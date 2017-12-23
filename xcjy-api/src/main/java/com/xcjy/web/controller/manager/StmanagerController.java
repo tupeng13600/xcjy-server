@@ -181,7 +181,7 @@ public class StmanagerController {
     @RequiresRoles({CommonUtil.STUDENTMANAGER_BOSS})
     @ApiOperation("获取学生分配情况")
     @GetMapping("/student/dis/stat")
-    public List<StudentShowRes> getDisStat() {
+    public List<StudentShowRes> getDisStat(String employeeId) {
         List<StudentShowRes> noDisList = studentService.getList4ByDisType(DistributionTypeEnum.COUNSELOR_DISTRIBUTION, PayStatusType.YES);
         List<StudentShowRes> disList = studentService.getList4ByDisType(DistributionTypeEnum.STMANAGER_DISTRIBUTION, PayStatusType.YES);
         List<StudentShowRes> resList = new ArrayList<>();

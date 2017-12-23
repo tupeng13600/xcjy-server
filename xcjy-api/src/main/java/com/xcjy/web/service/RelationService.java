@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by tupeng on 2017/7/25.
@@ -84,7 +85,8 @@ public class RelationService {
         }
         List<StmanagerStudent> stmanagerStudents = stmanagerStudentMapper.getBySIdAndScIds(CurrentThreadLocal.getSchoolId(), req.getStudentId());
         if (CollectionUtils.isNotEmpty(stmanagerStudents)) {
-            throw new EducationException("存在已经被分配的学生");
+            List<String> ssIds = stmanagerStudents.stream().map(StmanagerStudent::getId).collect(Collectors.toList());
+            stmanagerStudentMapper.deleteRelation(ssIds, new Date());
         }
         stmanagerStudents = new ArrayList<>();
         for (String studentId : req.getStudentId()) {
