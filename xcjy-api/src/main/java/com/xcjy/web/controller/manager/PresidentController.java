@@ -86,8 +86,12 @@ public class PresidentController {
     @RequiresRoles({CommonUtil.SCHOOLMASTER})
     @ApiOperation("转校申请审核")
     @PutMapping("/school/{handlerStatus}/{processId}")
-    public void auditChangeSchool(@PathVariable String processId, @PathVariable HandlerStatusType handlerStatus, String remark) {
-        applicationService.auditChangeSchool(processId, handlerStatus, remark);
+    public void auditChangeSchool(@PathVariable String processId,
+                                  @PathVariable HandlerStatusType handlerStatus,
+                                  String managerId,
+                                  String counselorId,
+                                  String remark) {
+        applicationService.auditChangeSchool(processId, handlerStatus, remark, managerId, counselorId);
     }
 
 }

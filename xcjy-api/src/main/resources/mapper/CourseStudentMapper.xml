@@ -55,6 +55,9 @@
         update_time = #{courseStudent.updateTime}
         WHERE student_id = #{courseStudent.studentId} AND course_id = #{courseStudent.courseId};
     </update>
+    <delete id="deleteByStudent">
+        DELETE FROM course_student WHERE student_id = #{studentId};
+    </delete>
 
     <select id="getBySIdAndCId" resultMap="BaseResultMap">
         SELECT
@@ -93,6 +96,11 @@
         <foreach collection="courseIds" item="courseId" open="(" separator="," close=")">
             #{courseId}
         </foreach>
+    </select>
+    <select id="getByStudentId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseSql"/>
+        FROM course_student WHERE student_id = #{studentId}
     </select>
 
 </mapper>

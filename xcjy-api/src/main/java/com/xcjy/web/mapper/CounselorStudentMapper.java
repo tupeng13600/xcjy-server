@@ -46,4 +46,6 @@ public interface CounselorStudentMapper {
     CounselorStudent getByStudentId(@Param("studentId") String studentId);
 
     CounselorStudent getBySES(@Param("schoolId") String schoolId, @Param("employeeId") String employeeId, @Param("studentId") String studentId);
+
+    void deleteByStudentId(@Param("studentId") String studentId);
 }

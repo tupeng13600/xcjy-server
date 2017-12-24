@@ -1,15 +1,14 @@
 package com.xcjy.web.service;
 
-import com.xcjy.web.bean.Course;
-import com.xcjy.web.bean.Grade;
+import com.google.common.collect.Lists;
 import com.xcjy.auth.util.CurrentThreadLocal;
+import com.xcjy.web.bean.*;
 import com.xcjy.web.common.exception.EducationException;
 import com.xcjy.web.controller.req.CourseCreateReq;
 import com.xcjy.web.controller.req.CourseUpdateReq;
 import com.xcjy.web.controller.res.CourseShowRes;
 import com.xcjy.web.controller.res.CreateIdRes;
-import com.xcjy.web.mapper.CourseMapper;
-import com.xcjy.web.mapper.GradeMapper;
+import com.xcjy.web.mapper.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +29,18 @@ public class CourseService {
 
     @Autowired
     private GradeMapper gradeMapper;
+
+    @Autowired
+    private CourseStudentMapper courseStudentMapper;
+
+    @Autowired
+    private StudentMoneyMapper studentMoneyMapper;
+
+    @Autowired
+    private CourseScheduleStudentMapper courseScheduleStudentMapper;
+
+    @Autowired
+    private CourseScheduleMapper courseScheduleMapper;
 
     public CreateIdRes create(CourseCreateReq req) {
         Grade grade = gradeMapper.getById(req.getGradeId());
@@ -57,6 +68,48 @@ public class CourseService {
 
     public void deleteLogic(String id) {
         courseMapper.deleteLogic(id, new Date());
+        List<CourseStudent> courseStudents = courseStudentMapper.getByCourseId(id);
+        backMoney(courseStudents);
+    }
+
+    private void backMoney(List<CourseStudent> courseStudents) {
+        if (CollectionUtils.isNotEmpty(courseStudents)) {
+            Integer needBackMoney = 0;
+            Integer totalBackHour = 0;
+            for (CourseStudent courseStudent : courseStudents) {
+                Integer needBackHours = courseStudent.getBuyHour() - courseStudent.getUsedHour();
+                if (needBackHours > 0) {
+                    totalBackHour += needBackHours;
+                    Course course = courseMapper.getById(courseStudent.getId());
+                    if (null != course) {
+                        needBackMoney += (needBackHours * course.getPrice());
+                    }
+                }
+                StudentMoney studentMoney = studentMoneyMapper.getByStudentId(courseStudent.getStudentId());
+                List<CourseScheduleStudent> courseScheduleStudentList = courseScheduleStudentMapper.getByStudentIds(Lists.newArrayList(courseStudent.getStudentId()));
+                if (CollectionUtils.isNotEmpty(courseScheduleStudentList)) {
+                    for (CourseScheduleStudent courseScheduleStudent : courseScheduleStudentList) {
+                        if (!courseScheduleStudent.getFinish()) {
+                            CourseSchedule courseSchedule = courseScheduleMapper.getById(courseScheduleStudent.getCourseScheduleId());
+                            if (null != courseSchedule) {
+                                Course course = courseMapper.getById(courseSchedule.getId());
+                                if (null != course) {
+                                    needBackMoney += (course.getPrice() * courseSchedule.getStudyTime());
+                                    needBackHours += courseSchedule.getStudyTime();
+                                }
+                            }
+                        }
+                    }
+                }
+                if (null != studentMoney) {
+                    studentMoney.setHasBack(needBackMoney);
+                    studentMoney.setTotalHour(studentMoney.getTotalHour() - totalBackHour);
+                    studentMoneyMapper.updateMoney(studentMoney);
+                }
+
+            }
+
+        }
     }
 
     public List<CourseShowRes> list() {

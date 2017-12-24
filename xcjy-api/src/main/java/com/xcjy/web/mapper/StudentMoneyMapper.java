@@ -25,4 +25,6 @@ public interface StudentMoneyMapper {
     void increaseUsedHour(@Param("studentIds") Set<String> studentIds, @Param("studyTime") Integer studyTime, @Param("updateTime") Date updateTime);
 
     void deleteLogicByStudentId(@Param("studentId") String studentId, @Param("updateTime") Date updateTime);
+
+    void updateSchoolId(@Param("studentId") String studentId, @Param("toSchoolId") String toSchoolId);
 }

@@ -58,6 +58,10 @@
         WHERE id = #{counselorStudent.id} AND deleted = false;
     </update>
 
+    <delete id="deleteByStudentId">
+        DELETE FROM counselor_student WHERE student_id = #{studentId};
+    </delete>
+
     <select id="getByEIdStuIdScId" resultMap="BaseResultMap">
         SELECT
         <include refid="baseSql"/>

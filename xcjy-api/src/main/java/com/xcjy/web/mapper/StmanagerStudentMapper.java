@@ -22,4 +22,7 @@ public interface StmanagerStudentMapper {
 
     void deleteRelation(@Param("ids") List<String> ids, @Param("updateTime") Date updateTime);
 
+    void change(@Param("origin") String origin, @Param("des") String des);
+
+    void deleteRelationByStudentIds(@Param("studentId") String studentId);
 }

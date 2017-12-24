@@ -127,4 +127,7 @@ public class StmanagerStudentService {
         return payLogStat;
     }
 
+    public void changerManager(String originEmployeeId, String desEmployeeId) {
+        stmanagerStudentMapper.change(originEmployeeId, desEmployeeId);
+    }
 }

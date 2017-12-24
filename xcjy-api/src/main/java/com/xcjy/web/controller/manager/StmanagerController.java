@@ -223,4 +223,10 @@ public class StmanagerController {
         courseScheduleService.finish4Teacher(scheduleId);
     }
 
+    @RequiresRoles({CommonUtil.STUDENTMANAGER_BOSS})
+    @ApiOperation("学管师下属学员整体改编")
+    @PostMapping("/change/{originEmployeeId}/{desEmployeeId}")
+    public void changeStmanager(@PathVariable String originEmployeeId, @PathVariable String desEmployeeId){
+        stmanagerStudentService.changerManager(originEmployeeId, desEmployeeId);
+    }
 }

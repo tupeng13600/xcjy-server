@@ -28,4 +28,8 @@ public interface CourseStudentMapper {
     List<CourseStudent> getByCourseId(@Param("courseId") String courseId);
 
     List<CourseStudent> getByCourseIds(@Param("courseIds") Set<String> courseIds);
+
+    List<CourseStudent> getByStudentId(@Param("studentId") String studentId);
+
+    void deleteByStudent(@Param("studentId") String studentId);
 }

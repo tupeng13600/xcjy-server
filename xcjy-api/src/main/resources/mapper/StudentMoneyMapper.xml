@@ -49,6 +49,7 @@
         total_hour = #{studentMoney.totalHour},
         used_hour = #{studentMoney.usedHour},
         update_time = #{studentMoney.updateTime}
+        school_id = #{studentMoney.schoolId}
         WHERE id = #{studentMoney.id} AND deleted = FALSE;
     </update>
 
@@ -70,6 +71,12 @@
         <foreach collection="studentIds" item="studentId" open="(" separator="," close=")">
             #{studentId}
         </foreach>
+    </update>
+
+    <update id="updateSchoolId">
+        UPDATE student_money
+        SET school_id = #{toSchoolId}
+        WHERE student_id = #{studentId};
     </update>
 
     <delete id="deleteLogicByStudentId">

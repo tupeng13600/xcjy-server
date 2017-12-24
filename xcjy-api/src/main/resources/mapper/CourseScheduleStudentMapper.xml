@@ -60,6 +60,10 @@
         DELETE FROM course_schedule_student WHERE course_schedule_id = #{courseScheduleId} AND student_id = #{studentId}
     </delete>
 
+    <delete id="deleteByStudentId">
+        DELETE FROM course_schedule_student WHERE student_id = #{studentId};
+    </delete>
+
     <select id="getByCourseScheduleId" resultMap="BaseResultMap">
         SELECT
         <include refid="baseSql"/>

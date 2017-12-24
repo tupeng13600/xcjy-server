@@ -1,5 +1,6 @@
 package com.xcjy.web.service;
 
+import com.google.common.collect.Lists;
 import com.xcjy.auth.util.CurrentThreadLocal;
 import com.xcjy.web.bean.*;
 import com.xcjy.web.common.cache.CacheFactory;
@@ -58,6 +59,18 @@ public class ApplicationService {
     @Autowired
     private CounselorStudentMapper counselorStudentMapper;
 
+    @Autowired
+    private CourseStudentMapper courseStudentMapper;
+
+    @Autowired
+    private CourseMapper courseMapper;
+
+    @Autowired
+    private CourseScheduleStudentMapper courseScheduleStudentMapper;
+
+    @Autowired
+    private CourseScheduleMapper courseScheduleMapper;
+
     /**
      * 创建退费申请
      *
@@ -66,7 +79,7 @@ public class ApplicationService {
     @Transactional
     public CreateIdRes backMoney(BackMoneyCreateReq req) {
         List<AplnBackMoney> aplnBackMoneyList = aplnBackMoneyMapper.getByStatusAndSId(ApplicationStatusType.AUDITING, req.getStudentId());
-        if(CollectionUtils.isNotEmpty(aplnBackMoneyList)) {
+        if (CollectionUtils.isNotEmpty(aplnBackMoneyList)) {
             throw new EducationException("该学生存在退费申请未完成，无法创建新的退费申请");
         }
         AplnBackMoney aplnBackMoney = new AplnBackMoney();
@@ -90,8 +103,8 @@ public class ApplicationService {
         return new CreateIdRes(aplnBackMoney.getId());
     }
 
-    private BackMoneyType getBackMoneyType(RoleEnum role){
-        if(RoleEnum.CONSULTANT.equals(role) || RoleEnum.CONSULTANT_BOSS.equals(role) ) {
+    private BackMoneyType getBackMoneyType(RoleEnum role) {
+        if (RoleEnum.CONSULTANT.equals(role) || RoleEnum.CONSULTANT_BOSS.equals(role)) {
             return BackMoneyType.COUNSELOR;
         } else if (RoleEnum.STUDENTMANAGER.equals(role)) {
             return BackMoneyType.STMANAGER;
@@ -147,7 +160,6 @@ public class ApplicationService {
      * @param backMoneyType
      * @param aplnBackMoney
      */
-    @Transactional
     private void updateRelationMess(BackMoneyType backMoneyType, AplnBackMoney aplnBackMoney) {
         if (BackMoneyType.COUNSELOR.equals(backMoneyType)) {
             //更新咨询师退费金额
@@ -162,7 +174,6 @@ public class ApplicationService {
         }
     }
 
-    @Transactional
     private void updateCounselorBackMoney(String schoolId, String applicationUserId, String studentId, Integer moneyAmount) {
         UserModel userModel = CacheFactory.userIdUsers.get(applicationUserId);
         if (null == userModel) {
@@ -191,7 +202,7 @@ public class ApplicationService {
             throw new EducationException("无法获取申请人信息");
         }
         Student student = studentMapper.getById(req.getStudentId());
-        if(student.getSchoolId().equals(req.getToSchoolId())) {
+        if (student.getSchoolId().equals(req.getToSchoolId())) {
             throw new EducationException("该学生已经在该校区，无需转校操作");
         }
         if (null == student) {
@@ -215,7 +226,7 @@ public class ApplicationService {
      * @param handlerStatus
      */
     @Transactional
-    public void auditChangeSchool(String processId, HandlerStatusType handlerStatus, String remark) {
+    public void auditChangeSchool(String processId, HandlerStatusType handlerStatus, String remark, String managerId, String counselorId) {
         ProcessLog processLog = updateProcessLog(processId, handlerStatus, ProcessLogType.CHANGE_SCHOOL, remark);
         if (HandlerStatusType.AUDIT_SUCCESS.equals(handlerStatus)) {
             RoleEnum roleEnum = CacheFactory.getNextChangeSchoolProcess(processLog.getProcessNum());
@@ -225,6 +236,12 @@ public class ApplicationService {
                 //更新学生所属学校
                 updateStudentSchool(aplnChangeSchool.getStudentId(),
                         aplnChangeSchool.getFromSchoolId(), aplnChangeSchool.getToSchoolId());
+                stmanagerStudentMapper.deleteRelationByStudentIds(aplnChangeSchool.getStudentId());
+                studentMoneyMapper.updateSchoolId(aplnChangeSchool.getStudentId(), aplnChangeSchool.getToSchoolId());
+                CurrentThreadLocal.removeSchoolId();
+                updateStudentMoney(aplnChangeSchool.getToSchoolId(), aplnChangeSchool.getStudentId());
+                setManager(aplnChangeSchool.getToSchoolId(), managerId, aplnChangeSchool.getStudentId());
+                setCounselor(aplnChangeSchool.getToSchoolId(), counselorId, aplnChangeSchool.getStudentId());
             } else {
                 //创建下一个审核流程
                 createProcessLog(processLog.getApplicationId(), processLog.getSchoolId(), processLog.getStudentId(),
@@ -232,6 +249,71 @@ public class ApplicationService {
             }
         } else {
             updateChangeSchool(processLog.getApplicationId(), ApplicationStatusType.AUDIT_FAIL);
+        }
+    }
+
+    private void setCounselor(String toSchoolId, String counselorId, String studentId) {
+        CounselorStudent counselorStudent = new CounselorStudent();
+        counselorStudent.setEmployeeId(counselorId);
+        counselorStudent.setHasBack(0);
+        counselorStudent.setMoney(0);
+        counselorStudent.setSchoolId(toSchoolId);
+        counselorStudent.setStudentId(studentId);
+        counselorStudentMapper.insert(counselorStudent);
+    }
+
+    private void setManager(String toSchoolId, String managerId, String studentId) {
+        StmanagerStudent stmanagerStudent = new StmanagerStudent();
+        stmanagerStudent.setBackMoney(0);
+        stmanagerStudent.setBackMoney(0);
+        stmanagerStudent.setEmployeeId(managerId);
+        stmanagerStudent.setRenewMoney(0);
+        stmanagerStudent.setSchoolId(toSchoolId);
+        stmanagerStudent.setStudentId(studentId);
+        stmanagerStudentMapper.insert(stmanagerStudent);
+    }
+
+    private void updateStudentMoney(String toSchoolId, String studentId) {
+        List<CourseStudent> courseStudentList = courseStudentMapper.getByStudentId(studentId);
+        if (CollectionUtils.isNotEmpty(courseStudentList)) {
+            Integer needBackMoney = 0;
+            Integer totalBackHour = 0;
+            for (CourseStudent courseStudent : courseStudentList) {
+                Integer needBackHours = courseStudent.getBuyHour() - courseStudent.getUsedHour();
+                if (needBackHours > 0) {
+                    totalBackHour += needBackHours;
+                    Course course = courseMapper.getById(courseStudent.getId());
+                    if (null != course) {
+                        needBackMoney += (needBackHours * course.getPrice());
+                    }
+                }
+            }
+            StudentMoney studentMoney = studentMoneyMapper.getByStudentId(studentId);
+            List<CourseScheduleStudent> courseScheduleStudentList = courseScheduleStudentMapper.getByStudentIds(Lists.newArrayList(studentId));
+            if(CollectionUtils.isNotEmpty(courseScheduleStudentList)) {
+                for (CourseScheduleStudent courseScheduleStudent : courseScheduleStudentList) {
+                    if(!courseScheduleStudent.getFinish()) {
+                        CourseSchedule courseSchedule = courseScheduleMapper.getById(courseScheduleStudent.getCourseScheduleId());
+                        if(null != courseSchedule) {
+                            Course course = courseMapper.getById(courseSchedule.getId());
+                            if(null != course) {
+                                needBackMoney += (course.getPrice() * courseSchedule.getStudyTime());
+                                totalBackHour += courseSchedule.getStudyTime();
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (null != studentMoney) {
+                studentMoney.setHasBack(needBackMoney);
+                studentMoney.setTotalHour(studentMoney.getTotalHour() - totalBackHour);
+                studentMoney.setSchoolId(toSchoolId);
+                studentMoneyMapper.updateMoney(studentMoney);
+            }
+            courseStudentMapper.deleteByStudent(studentId);
+            courseScheduleStudentMapper.deleteByStudentId(studentId);
+            counselorStudentMapper.deleteByStudentId(studentId);
         }
     }
 
@@ -361,7 +443,6 @@ public class ApplicationService {
         studentPayLogMapper.insert(studentPayLog);
     }
 
-    @Transactional
     private void updateStudentSchool(String studentId, String fromSchoolId, String toSchoolId) {
         CurrentThreadLocal.setSchoolId(fromSchoolId);
         Student student = studentMapper.getById(studentId);
@@ -373,7 +454,6 @@ public class ApplicationService {
         studentMapper.updateSchoolId(student);
     }
 
-    @Transactional
     private AplnChangeSchool updateChangeSchool(String applicationId, ApplicationStatusType applicationStatus) {
         String schoolId = CurrentThreadLocal.getSchoolId();
         CurrentThreadLocal.removeSchoolId();
@@ -392,7 +472,6 @@ public class ApplicationService {
 
     }
 
-    @Transactional
     private void createProcessLog(String applicationId, String schoolId, String studentId, Integer processNum, RoleEnum roleEnum, ProcessLogType processLogType) {
         ProcessLog processLog = new ProcessLog();
         processLog.setApplicationId(applicationId);
@@ -416,7 +495,6 @@ public class ApplicationService {
         processLogMapper.insert(processLog);
     }
 
-    @Transactional
     private void updateBackMoney(AplnBackMoney aplnBackMoney, ApplicationStatusType applicationStatus) {
         aplnBackMoney.setApplicationStatus(applicationStatus);
         aplnBackMoney.setApplicationTime(new Date());
@@ -424,7 +502,6 @@ public class ApplicationService {
         aplnBackMoneyMapper.updateStatus(aplnBackMoney, ApplicationStatusType.AUDITING);
     }
 
-    @Transactional
     private ProcessLog updateProcessLog(String processId, HandlerStatusType handlerStatus, ProcessLogType processLogType, String remark) {
         ProcessLog processLog = processLogMapper.getById(processId);
 
@@ -445,7 +522,6 @@ public class ApplicationService {
     }
 
 
-    @Transactional
     private void updateStmanagerBackMoney(String schoolId, String applicationUserId, String studentId, Integer moneyAmount) {
 
         UserModel userModel = CacheFactory.userIdUsers.get(applicationUserId);
@@ -462,7 +538,6 @@ public class ApplicationService {
         stmanagerStudentMapper.updateMoney(stmanagerStudent, infoTime);
     }
 
-    @Transactional
     private void updateStudentMoney(String schoolId, String studentId, Integer moneyAmount) {
         StudentMoney studentMoney = studentMoneyMapper.getBySchoolIdAndStudentId(schoolId, studentId);
         if (null == studentMoney) {
