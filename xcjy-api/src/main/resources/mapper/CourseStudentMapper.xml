@@ -59,7 +59,7 @@
         DELETE FROM course_student WHERE student_id = #{studentId};
     </delete>
     <delete id="deleteByCourseId">
-        DELETE FROM course_student WHERE courseId = #{courseId};
+        DELETE FROM course_student WHERE course_id = #{courseId};
     </delete>
 
     <select id="getBySIdAndCId" resultMap="BaseResultMap">

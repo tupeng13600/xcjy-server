@@ -48,7 +48,7 @@
         has_used = #{studentMoney.hasUsed},
         total_hour = #{studentMoney.totalHour},
         used_hour = #{studentMoney.usedHour},
-        update_time = #{studentMoney.updateTime}
+        update_time = #{studentMoney.updateTime},
         school_id = #{studentMoney.schoolId}
         WHERE id = #{studentMoney.id} AND deleted = FALSE;
     </update>
