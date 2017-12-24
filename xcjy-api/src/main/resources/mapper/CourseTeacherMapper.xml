@@ -45,6 +45,9 @@
             AND school_id = #{schoolId}
         </if>
     </delete>
+    <delete id="deleteByCId">
+        DELETE FROM course_teacher WHERE course_id = #{courseId}
+    </delete>
 
     <select id="getByCIdAndTId" resultMap="BaseResultMap">
         SELECT

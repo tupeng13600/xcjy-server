@@ -32,4 +32,6 @@ public interface CourseStudentMapper {
     List<CourseStudent> getByStudentId(@Param("studentId") String studentId);
 
     void deleteByStudent(@Param("studentId") String studentId);
+
+    void deleteByCourseId(@Param("courseId") String courseId);
 }

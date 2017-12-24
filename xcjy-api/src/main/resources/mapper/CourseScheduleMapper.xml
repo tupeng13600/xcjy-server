@@ -54,6 +54,9 @@
         update_time = #{courseSchedule.updateTime}
         WHERE id = #{courseSchedule.id};
     </update>
+    <delete id="deleteByCourseId">
+        DELETE FROM course_schedule WHERE course_id = #{courseId}
+    </delete>
 
     <select id="getById" resultMap="BaseResultMap">
         SELECT
@@ -154,6 +157,10 @@
             AND end_time &lt;= #{endTime}
         </if>
         GROUP BY employee_id ORDER BY total DESC
+    </select>
+
+    <select id="getByCourseId" resultMap="BaseResultMap">
+      SELECT <include refid="baseSql" /> FROM course_schedule WHERE course_id = #{courseId};
     </select>
 
 </mapper>

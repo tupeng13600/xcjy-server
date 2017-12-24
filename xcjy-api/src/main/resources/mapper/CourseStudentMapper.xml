@@ -58,6 +58,9 @@
     <delete id="deleteByStudent">
         DELETE FROM course_student WHERE student_id = #{studentId};
     </delete>
+    <delete id="deleteByCourseId">
+        DELETE FROM course_student WHERE courseId = #{courseId};
+    </delete>
 
     <select id="getBySIdAndCId" resultMap="BaseResultMap">
         SELECT

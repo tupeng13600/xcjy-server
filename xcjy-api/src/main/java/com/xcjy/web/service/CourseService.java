@@ -14,9 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by tupeng on 2017/7/22.
@@ -41,6 +39,9 @@ public class CourseService {
 
     @Autowired
     private CourseScheduleMapper courseScheduleMapper;
+
+    @Autowired
+    private CourseTeacherMapper courseTeacherMapper;
 
     public CreateIdRes create(CourseCreateReq req) {
         Grade grade = gradeMapper.getById(req.getGradeId());
@@ -67,12 +68,13 @@ public class CourseService {
     }
 
     public void deleteLogic(String id) {
+        backMoney(id);
         courseMapper.deleteLogic(id, new Date());
-        List<CourseStudent> courseStudents = courseStudentMapper.getByCourseId(id);
-        backMoney(courseStudents);
     }
 
-    private void backMoney(List<CourseStudent> courseStudents) {
+    private void backMoney(String courseId) {
+        Set<String> courseScheduleStudentIds = new HashSet<>();
+        List<CourseStudent> courseStudents = courseStudentMapper.getByCourseId(courseId);
         if (CollectionUtils.isNotEmpty(courseStudents)) {
             Integer needBackMoney = 0;
             Integer totalBackHour = 0;
@@ -89,6 +91,7 @@ public class CourseService {
                 List<CourseScheduleStudent> courseScheduleStudentList = courseScheduleStudentMapper.getByStudentIds(Lists.newArrayList(courseStudent.getStudentId()));
                 if (CollectionUtils.isNotEmpty(courseScheduleStudentList)) {
                     for (CourseScheduleStudent courseScheduleStudent : courseScheduleStudentList) {
+                        courseScheduleStudentIds.add(courseScheduleStudent.getId());
                         if (!courseScheduleStudent.getFinish()) {
                             CourseSchedule courseSchedule = courseScheduleMapper.getById(courseScheduleStudent.getCourseScheduleId());
                             if (null != courseSchedule) {
@@ -106,10 +109,14 @@ public class CourseService {
                     studentMoney.setTotalHour(studentMoney.getTotalHour() - totalBackHour);
                     studentMoneyMapper.updateMoney(studentMoney);
                 }
-
             }
-
         }
+        if(CollectionUtils.isNotEmpty(courseScheduleStudentIds)) {
+            courseScheduleStudentMapper.deleteByIds(courseScheduleStudentIds);
+        }
+        courseTeacherMapper.deleteByCId(courseId);
+        courseStudentMapper.deleteByCourseId(courseId);
+        courseScheduleMapper.deleteByCourseId(courseId);
     }
 
     public List<CourseShowRes> list() {

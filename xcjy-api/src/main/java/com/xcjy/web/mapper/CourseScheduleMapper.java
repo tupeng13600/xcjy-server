@@ -17,7 +17,7 @@ public interface CourseScheduleMapper {
 
     List<CourseSchedule> listAll();
 
-    void deleteLogic(@Param("id") String id, @Param("updateTime")Date updateTime);
+    void deleteLogic(@Param("id") String id, @Param("updateTime") Date updateTime);
 
     List<CourseSchedule> getByFinish(@Param("finish") Boolean finish);
 
@@ -25,12 +25,12 @@ public interface CourseScheduleMapper {
                                                       @Param("endTime") Date endTime,
                                                       @Param("finish") Boolean finish);
 
-    List<CourseScheduleStatModel> getByEmployeeIds(@Param("teacherIds") Set<String> teacherIds, @Param("finish")  boolean finish);
+    List<CourseScheduleStatModel> getByEmployeeIds(@Param("teacherIds") Set<String> teacherIds, @Param("finish") boolean finish);
 
     List<CourseScheduleStatModel> getByEmployeeIdsAndTime(@Param("teacherIds") Set<String> teacherIds,
                                                           @Param("startTime") Date startTime,
                                                           @Param("endTime") Date endTime,
-                                                          @Param("finish")  boolean finish);
+                                                          @Param("finish") boolean finish);
 
     List<CourseSchedule> getByIds(@Param("ids") Set<String> ids);
 
@@ -42,4 +42,8 @@ public interface CourseScheduleMapper {
                                                   @Param("finish") Boolean finish);
 
     void updateFinish(@Param("courseSchedule") CourseSchedule courseSchedule);
+
+    List<CourseSchedule> getByCourseId(@Param("courseId") String courseId);
+
+    void deleteByCourseId(@Param("courseId") String courseId);
 }

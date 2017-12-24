@@ -10,6 +10,8 @@ public interface CourseTeacherMapper {
 
     void deleteByCourseId(@Param("schoolId") String schoolId, @Param("courseId") String courseId);
 
+    void deleteByCId(@Param("courseId") String courseId);
+
     void insertBatch(@Param("courseTeachers") List<CourseTeacher> courseTeachers);
 
     CourseTeacher getByCIdAndTId(@Param("courseId") String courseId, @Param("employeeId") String employeeId);
