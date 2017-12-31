@@ -236,7 +236,7 @@ public class ApplicationService {
                 //更新学生所属学校
                 updateStudentSchool(aplnChangeSchool.getStudentId(),
                         aplnChangeSchool.getFromSchoolId(), aplnChangeSchool.getToSchoolId());
-                stmanagerStudentMapper.deleteRelationByStudentIds(aplnChangeSchool.getStudentId());
+                stmanagerStudentMapper.deleteRelationByStudentIds(aplnChangeSchool.getStudentId(), new Date());
                 studentMoneyMapper.updateSchoolId(aplnChangeSchool.getStudentId(), aplnChangeSchool.getToSchoolId());
                 CurrentThreadLocal.removeSchoolId();
                 updateStudentMoney(aplnChangeSchool.getToSchoolId(), aplnChangeSchool.getStudentId());

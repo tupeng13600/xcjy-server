@@ -3641,6 +3641,7 @@ var StudentsComponent = (function () {
             _this.curStudent.status = Object.keys(__WEBPACK_IMPORTED_MODULE_4__common_enum__["j" /* state */])[0];
             _this.students.unshift(_this.curStudent);
             _this.students = _this.students.slice();
+            _this.fetchStudents();
         });
     };
     StudentsComponent.prototype.handlePageChange = function (page) {
@@ -3780,8 +3781,12 @@ var DateRangerPickerComponent = (function () {
         var _this = this;
         var tag = this.tag;
         setTimeout(function () {
-            console.log('.' + tag + ' .date-range-picker');
-            $('.' + tag + ' .date-range-picker').daterangepicker({
+            var selector = '';
+            if (tag) {
+                selector = '.' + tag + ' ';
+            }
+            selector += ' .date-range-picker';
+            $(selector).daterangepicker({
                 locale: {
                     applyLabel: '确定',
                     cancelLabel: '取消',
@@ -6379,9 +6384,10 @@ var PresidentService = (function () {
     /*
      *
      */
-    PresidentService.prototype.checkBackApplication = function (handlerStatus, processId) {
+    PresidentService.prototype.checkBackApplication = function (handlerStatus, processId, remark, managerId, consultId) {
         var _this = this;
-        return this.http.put("president/school/" + handlerStatus + "/" + processId, {}).then(function (result) {
+        return this.http.put("president/school/" + handlerStatus + "/" + processId + "?remark=" + remark + "&managerId=" + managerId + "&counselorId=" + consultId, {})
+            .then(function (result) {
             if (result.success) {
                 _this.alertService.alert({
                     type: 'success',
@@ -6399,7 +6405,19 @@ var PresidentService = (function () {
         }
         return this.http.get("common/student/search" + query).then(function (result) {
             if (result && result.success) {
-                return result.details;
+                return result.data;
+            }
+        });
+    };
+    PresidentService.prototype.fetchRoles = function (role) {
+        return this.http.get('common/employee/' + role).then(function (result) {
+            console.log(result);
+            if (result.success) {
+                result.data = result.data || [];
+                return result.data;
+            }
+            else {
+                return [];
             }
         });
     };
@@ -6643,7 +6661,7 @@ var _a;
 /***/ "../../../../../src/app/president/students/students.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-content-header\n  [title]=\"'签约/缴费/课时统计'\" [menus]=\"contentHeader\"></app-content-header>\n\n<div class=\"content\">\n  <div class=\"box box-primary box-divider\">\n    <div class=\"box-header\">\n      <h3 class=\"box-title\">学生查询</h3>\n      <div class=\"box-tools form-group form-group-sm form-inline\">\n        <input class=\"form-control\" name=\"student-name\" [(ngModel)]=\"name\" placeholder=\"请输入学生姓名\" [value]=\"name\" style=\"margin-right: 5px;\">\n        <button class=\"btn btn-primary btn-sm pull-right\" (click)=\"fetchStudents(name)\">\n          查询学生\n        </button>\n      </div>\n    </div>\n    <div class=\"box-content\">\n      <table class=\"table table-striped text-center\">\n        <thead>\n          <tr>\n            <th>姓名</th>\n            <th>性别</th>\n            <th>电话</th>\n            <th>年级</th>\n            <th>生日</th>\n            <th>已付款</th>\n            <th>父母姓名</th>\n            <th>父母性别</th>\n            <th>父母电话</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr *ngFor=\"let student of students\">\n            <td>{{ student.name }}</td>\n            <td>{{ student.sex === 'M' ? '男': '女' }}</td>\n            <td>{{ student.phone.slice(0,4) + '****' + student.phone.slice(8,11) }}</td>\n            <td>{{ student.grade }}</td>\n            <td>{{ student.birthday | date: 'YYYY-MM-dd' }}</td>\n            <td>{{ student.alreadyPaid === 'YES' ? '是' : '否' }}</td>\n            <td>{{ student.parentName }}</td>\n            <td>{{ student.parentSex === 'M' ? '男' : '女' }}</td>\n            <td>{{ student.parentPhone.slice(0,4) + '*****' + student.parentPhone.slice(8) }}</td>\n          </tr>\n          <tr *ngIf=\"students && students.length === 0\">\n            <td colspan=\"9\" class=\"text-center text-muted\">暂无学生信息</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<app-content-header\n  [title]=\"'签约/缴费/课时统计'\" [menus]=\"contentHeader\"></app-content-header>\n\n<div class=\"content\">\n  <div class=\"box box-primary box-divider\">\n    <div class=\"box-header\">\n      <h3 class=\"box-title\">学生查询</h3>\n      <div class=\"box-tools form-group form-group-sm form-inline\">\n        <input class=\"form-control\" name=\"student-name\" [(ngModel)]=\"name\" placeholder=\"请输入学生姓名\" [value]=\"name\" style=\"margin-right: 5px;\">\n        <button class=\"btn btn-primary btn-sm pull-right\" (click)=\"fetchStudents(name)\">\n          查询学生\n        </button>\n      </div>\n    </div>\n    <div class=\"box-content\">\n      <table class=\"table table-striped text-center\">\n        <thead>\n          <tr>\n            <th>姓名</th>\n            <th>性别</th>\n            <th>电话</th>\n            <th>年级</th>\n            <th>已付款</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr *ngFor=\"let student of students\">\n            <td>{{ student.name }}</td>\n            <td>{{ student.sex === 'M' ? '男': '女' }}</td>\n            <td>{{ student.phone.slice(0,4) + '****' + student.phone.slice(8,11) }}</td>\n            <td>{{ student.grade }}</td>\n            <td>{{ student.alreadyPaid === 'YES' ? '是' : '否' }}</td>\n          </tr>\n          <tr *ngIf=\"students && students.length === 0\">\n            <td colspan=\"9\" class=\"text-center text-muted\">暂无学生信息</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -6699,6 +6717,7 @@ var StudentsComponent = (function () {
     StudentsComponent.prototype.fetchStudents = function (name) {
         var _this = this;
         this.presidentService.fetchStudentsByName(name).then(function (students) {
+            console.log(students);
             return _this.students = students || [];
         });
     };
@@ -6721,7 +6740,7 @@ var _a;
 /***/ "../../../../../src/app/president/transfer-boss/transfer-boss.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-content-header\n  [title]=\"'转校审核页'\" [menus]=\"contentHeader\"></app-content-header>\n\n<div class=\"content\">\n  <div class=\"nav-tabs-custom\">\n    <ul class=\"nav nav-tabs\">\n      <li class=\"active\" (click)=\"fetchAuditPendingRecord()\"><a href=\"#waitAudit\" data-toggle=\"tab\">待审批转校</a></li>\n      <li class=\"\" (click)=\"fetchAuditSuccessRecords()\"><a href=\"#auditSuccess\" data-toggle=\"tab\">已通过转校</a></li>\n      <li class=\"\" (click)=\"fetchAuditFailedRecords()\"><a href=\"#auditFail\" data-toggle=\"tab\">已拒绝转校</a></li>\n    </ul>\n    <div class=\"tab-content\">\n      <div class=\"tab-pane active\" id=\"waitAudit\">\n        <table class=\"table table-bordered table-hover text-center\">\n          <thead>\n          <tr>\n            <th>申请人</th>\n            <th>申请时间</th>\n            <th>原始学校</th>\n            <th>目标学校(本校)</th>\n            <th>转校学生</th>\n            <th>申请备注</th>\n            <th>操作</th>\n          </tr>\n          </thead>\n          <tbody>\n            <tr *ngFor=\"let record of auditPendingRecords;\">\n              <td>{{ record.applicationName}}</td>\n              <td>{{ record.applicationTime | date: 'yyyyMM-dd' }}</td>\n              <td>{{ record.fromSchoolName }}</td>\n              <td>{{ record.toSchoolName }}</td>\n              <td>{{ record.studentName }}</td>\n              <td>{{ record.applicationRemark }}</td>\n              <td>\n                <div class=\"button-group button-group-xs\">\n                  <button class=\"btn btn-xs btn-primary\" (click)=\"approve='AUDIT_SUCCESS';\n                  approveRemark = '';\n                  curAudit = record;\n                  auditModal.showModal({\n                    modalSize: 'sm',\n                    title: '是否通过审核?',\n                    confirm: checkBackApplication\n                  })\">审核</button>\n                </div>\n              </td>\n            </tr>\n          <tr *ngIf=\"!auditPendingRecords.length\">\n            <td colspan=\"7\">\n              <p class=\"text-center text-muted\">暂时无审批项信息</p>\n            </td>\n          </tr>\n          </tbody>\n        </table>\n      </div>\n\n      <div class=\"tab-pane\" id=\"auditSuccess\">\n        <table class=\"table table-bordered table-hover text-center\">\n          <thead>\n          <tr>\n            <th>申请人</th>\n            <th>申请时间</th>\n            <th>原始学校</th>\n            <th>目标学校</th>\n            <th>转校学生</th>\n            <th>申请备注</th>\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let record of auditSuccessRecords;\">\n            <td>{{ record.applicationName }}</td>\n            <td>{{ record.applicationTime | date: 'yyyyMM-dd' }}</td>\n            <td>{{ record.fromSchoolName }}</td>\n            <td>{{ record.toSchoolName }}</td>\n            <td>{{ record.studentName }}</td>\n            <td>{{record.applicationRemark }}</td>\n          </tr>\n          <tr *ngIf=\"!auditSuccessRecords.length\">\n            <td colspan=\"6\">\n              <p class=\"text-center text-muted\">暂时无审批项信息</p>\n            </td>\n          </tr>\n          </tbody>\n        </table>\n      </div>\n\n      <div class=\"tab-pane\" id=\"auditFail\">\n        <table class=\"table table-bordered table-hover text-center\">\n          <thead>\n          <tr>\n            <th>申请人</th>\n            <th>申请时间</th>\n            <th>原始学校</th>\n            <th>目标学校</th>\n            <th>转校学生</th>\n            <th>申请备注</th>\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let record of auditFailedRecords;\">\n            <td>{{ record.applicationName }}</td>\n            <td>{{ record.applicationTime | date: 'yyyy-MM-dd' }}</td>\n            <td>{{ record.fromSchoolName }}</td>\n            <td>{{ record.toSchoolName }}</td>\n            <td>{{ record.studentName }}</td>\n            <td>{{record.applicationRemark}}</td>\n          </tr>\n          <tr *ngIf=\"!auditFailedRecords.length\">\n            <td colspan=\"6\">\n              <p class=\"text-center text-muted\">暂时无审批项信息</p>\n            </td>\n          </tr>\n          </tbody>\n        </table>\n      </div>\n    </div>\n  </div>\n</div>\n\n\n<app-modal #auditModal>\n  <form class=\"form text-center clearfix\">\n    <div class=\"radio\">\n      <label>\n        <input type=\"radio\" name=\"optionsRadios\" id=\"approve\" (change)=\"approve = 'AUDIT_SUCCESS'\" [checked]=\"approve === 'AUDIT_SUCCESS'\">\n        通过该退费申请\n      </label>\n    </div>\n\n    <div class=\"radio\">\n      <label>\n        <input type=\"radio\" name=\"optionsRadios\" id=\"reject\" value=\"option1\" (change)=\"approve = 'AUDIT_FAIL'\" [checked]=\"approve === 'AUDIT_FAIL'\">\n        拒绝该退费申请\n      </label>\n    </div>\n\n    <div class=\"form-group form-group-sm col-xs-6 col-xs-offset-3\">\n      <div>\n        <textarea name=\"remark\" id=\"remark\" class=\"form-control\" rows=\"2\" placeholder=\"请填写审核备注\" [(ngModel)]=\"approveRemark\"></textarea>\n      </div>\n    </div>\n  </form>\n</app-modal>\n"
+module.exports = "<app-content-header\n  [title]=\"'转校审核页'\" [menus]=\"contentHeader\"></app-content-header>\n\n<div class=\"content\">\n  <div class=\"nav-tabs-custom\">\n    <ul class=\"nav nav-tabs\">\n      <li class=\"active\" (click)=\"fetchAuditPendingRecord()\"><a href=\"#waitAudit\" data-toggle=\"tab\">待审批转校</a></li>\n      <li class=\"\" (click)=\"fetchAuditSuccessRecords()\"><a href=\"#auditSuccess\" data-toggle=\"tab\">已通过转校</a></li>\n      <li class=\"\" (click)=\"fetchAuditFailedRecords()\"><a href=\"#auditFail\" data-toggle=\"tab\">已拒绝转校</a></li>\n    </ul>\n    <div class=\"tab-content\">\n      <div class=\"tab-pane active\" id=\"waitAudit\">\n        <table class=\"table table-bordered table-hover text-center\">\n          <thead>\n          <tr>\n            <th>申请人</th>\n            <th>申请时间</th>\n            <th>原始学校</th>\n            <th>目标学校(本校)</th>\n            <th>转校学生</th>\n            <th>申请备注</th>\n            <th>操作</th>\n          </tr>\n          </thead>\n          <tbody>\n            <tr *ngFor=\"let record of auditPendingRecords;\">\n              <td>{{ record.applicationName}}</td>\n              <td>{{ record.applicationTime | date: 'yyyyMM-dd' }}</td>\n              <td>{{ record.fromSchoolName }}</td>\n              <td>{{ record.toSchoolName }}</td>\n              <td>{{ record.studentName }}</td>\n              <td>{{ record.applicationRemark }}</td>\n              <td>\n                <div class=\"button-group button-group-xs\">\n                  <button class=\"btn btn-xs btn-primary\" (click)=\"approve='AUDIT_SUCCESS';\n                  approveRemark = '';\n                  curAudit = record;\n                  auditModal.showModal({\n                    modalSize: 'sm',\n                    title: '是否通过审核?',\n                    confirm: checkBackApplication\n                  })\">审核</button>\n                </div>\n              </td>\n            </tr>\n          <tr *ngIf=\"!auditPendingRecords.length\">\n            <td colspan=\"7\">\n              <p class=\"text-center text-muted\">暂时无审批项信息</p>\n            </td>\n          </tr>\n          </tbody>\n        </table>\n      </div>\n\n      <div class=\"tab-pane\" id=\"auditSuccess\">\n        <table class=\"table table-bordered table-hover text-center\">\n          <thead>\n          <tr>\n            <th>申请人</th>\n            <th>申请时间</th>\n            <th>原始学校</th>\n            <th>目标学校</th>\n            <th>转校学生</th>\n            <th>申请备注</th>\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let record of auditSuccessRecords;\">\n            <td>{{ record.applicationName }}</td>\n            <td>{{ record.applicationTime | date: 'yyyyMM-dd' }}</td>\n            <td>{{ record.fromSchoolName }}</td>\n            <td>{{ record.toSchoolName }}</td>\n            <td>{{ record.studentName }}</td>\n            <td>{{record.applicationRemark }}</td>\n          </tr>\n          <tr *ngIf=\"!auditSuccessRecords.length\">\n            <td colspan=\"6\">\n              <p class=\"text-center text-muted\">暂时无审批项信息</p>\n            </td>\n          </tr>\n          </tbody>\n        </table>\n      </div>\n\n      <div class=\"tab-pane\" id=\"auditFail\">\n        <table class=\"table table-bordered table-hover text-center\">\n          <thead>\n          <tr>\n            <th>申请人</th>\n            <th>申请时间</th>\n            <th>原始学校</th>\n            <th>目标学校</th>\n            <th>转校学生</th>\n            <th>申请备注</th>\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let record of auditFailedRecords;\">\n            <td>{{ record.applicationName }}</td>\n            <td>{{ record.applicationTime | date: 'yyyy-MM-dd' }}</td>\n            <td>{{ record.fromSchoolName }}</td>\n            <td>{{ record.toSchoolName }}</td>\n            <td>{{ record.studentName }}</td>\n            <td>{{record.applicationRemark}}</td>\n          </tr>\n          <tr *ngIf=\"!auditFailedRecords.length\">\n            <td colspan=\"6\">\n              <p class=\"text-center text-muted\">暂时无审批项信息</p>\n            </td>\n          </tr>\n          </tbody>\n        </table>\n      </div>\n    </div>\n  </div>\n</div>\n\n\n<app-modal #auditModal [disabledAcceptBtn]=\"approve == 'AUDIT_SUCCESS' && !(newConsult && newStuManager)\">\n  <form class=\"form text-center clearfix\">\n    <div class=\"radio\">\n      <label>\n        <input type=\"radio\" name=\"optionsRadios\" id=\"approve\" (change)=\"approve = 'AUDIT_SUCCESS'\" [checked]=\"approve === 'AUDIT_SUCCESS'\">\n        通过该转校申请\n      </label>\n    </div>\n\n    <div class=\"radio\">\n      <label>\n        <input type=\"radio\" name=\"optionsRadios\" id=\"reject\" value=\"option1\" (change)=\"approve = 'AUDIT_FAIL'\" [checked]=\"approve === 'AUDIT_FAIL'\">\n        拒绝该转校申请\n      </label>\n    </div>\n\n    <div [hidden]=\"approve === 'AUDIT_FAIL'\">\n      <div style=\"margin-bottom: 10px;\">\n        <p><label for=\"\">新学管师</label></p>\n        <select2 [cssImport]=\"false\"\n                 [options]=\"{minimumResultsForSearch: -1}\"\n                 [data]=\"managers\"\n                 (valueChanged)=\"setNewManager($event)\"\n                 [width]=\"'148px'\"></select2>\n      </div>\n      <div style=\"margin-bottom: 10px;\">\n        <p><label for=\"\">新咨询师</label></p>\n        <select2 [cssImport]=\"false\"\n                 [options]=\"{minimumResultsForSearch: -1}\"\n                 [data]=\"consults\"\n                 (valueChanged)=\"setNewConsult($event)\"\n                 [width]=\"'148px'\"></select2>\n      </div>\n    </div>\n\n    <div class=\"form-group form-group-sm col-xs-6 col-xs-offset-3\">\n      <div>\n        <textarea name=\"remark\" id=\"remark\" class=\"form-control\" rows=\"2\" placeholder=\"请填写审核备注\" [(ngModel)]=\"approveRemark\"></textarea>\n      </div>\n    </div>\n  </form>\n</app-modal>\n"
 
 /***/ }),
 
@@ -6749,6 +6768,7 @@ module.exports = module.exports.toString();
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__president_service__ = __webpack_require__("../../../../../src/app/president/president.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_enum__ = __webpack_require__("../../../../../src/app/common/enum.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TransferBossComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -6761,12 +6781,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 var TransferBossComponent = (function () {
     function TransferBossComponent(presidentService) {
         this.presidentService = presidentService;
         this.checkBackApplication = this.checkBackApplication.bind(this);
     }
     TransferBossComponent.prototype.ngOnInit = function () {
+        var _this = this;
         this.auditPendingRecords = [];
         this.auditSuccessRecords = [];
         this.auditFailedRecords = [];
@@ -6780,6 +6802,18 @@ var TransferBossComponent = (function () {
         this.fetchAuditPendingRecord();
         this.fetchAuditSuccessRecords();
         this.fetchAuditFailedRecords();
+        this.presidentService.fetchRoles(__WEBPACK_IMPORTED_MODULE_2__common_enum__["a" /* roles */].consultant)
+            .then(function (roles) {
+            roles.forEach(function (role) { return role.text = role.name; });
+            _this.consults = roles;
+            _this.newConsult = roles.length ? roles[0].id : '';
+        });
+        this.presidentService.fetchRoles(__WEBPACK_IMPORTED_MODULE_2__common_enum__["a" /* roles */].studentmanager)
+            .then(function (roles) {
+            roles.forEach(function (role) { return role.text = role.name; });
+            _this.managers = roles;
+            _this.newStuManager = roles.length ? roles[0].id : '';
+        });
     };
     TransferBossComponent.prototype.fetchAuditPendingRecord = function () {
         var _this = this;
@@ -6801,12 +6835,18 @@ var TransferBossComponent = (function () {
     };
     TransferBossComponent.prototype.checkBackApplication = function () {
         var _this = this;
-        this.presidentService.checkBackApplication(this.approve, this.curAudit.id).then(function (success) {
+        this.presidentService.checkBackApplication(this.approve, this.curAudit.id, this.approveRemark, this.newStuManager, this.newConsult).then(function (success) {
             if (success) {
                 var toRemoveRecordIndex = _this.auditPendingRecords.indexOf(_this.curAudit);
                 _this.auditPendingRecords.splice(toRemoveRecordIndex, 1);
             }
         });
+    };
+    TransferBossComponent.prototype.setNewConsult = function ($event) {
+        this.newConsult = $event.value;
+    };
+    TransferBossComponent.prototype.setNewManager = function ($event) {
+        this.newStuManager = $event.value;
     };
     return TransferBossComponent;
 }());
@@ -9310,6 +9350,25 @@ var StudentManagerBossService = (function () {
             return [];
         });
     };
+    StudentManagerBossService.prototype.reAssignTeacher = function (oriEmployeeId, newEmployeeId) {
+        var _this = this;
+        return this.http.post('stmanager/change/' + oriEmployeeId + '/' + newEmployeeId).then(function (result) {
+            if (result.success) {
+                _this.alertService.alert({
+                    type: 'success',
+                    content: '学生已改编',
+                    title: '提示'
+                });
+            }
+            else {
+                _this.alertService.alert({
+                    type: 'danger',
+                    content: '学生改编出错',
+                    title: '提示'
+                });
+            }
+        });
+    };
     return StudentManagerBossService;
 }());
 StudentManagerBossService = __decorate([
@@ -9325,7 +9384,7 @@ var _a, _b;
 /***/ "../../../../../src/app/student-manager-boss/student-master-docs/student-master-docs.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-content-header\r\n  [title]=\"'学管师管理'\" [menus]=\"contentHeader\"></app-content-header>\r\n\r\n<div class=\"content\">\r\n\r\n  <div class=\"nav-tabs-custom\">\r\n    <ul class=\"nav nav-tabs\">\r\n      <li class=\"active\"><a href=\"#tab_1\" data-toggle=\"tab\">基本信息</a></li>\r\n      <li><a href=\"#tab_2\" data-toggle=\"tab\">退费/续费</a></li>\r\n    </ul>\r\n    <div class=\"tab-content\">\r\n      <div class=\"tab-pane active\" id=\"tab_1\">\r\n        <table class=\"table table-bordered table-hover text-center\">\r\n          <thead>\r\n            <tr>\r\n              <th>姓名</th>\r\n              <th>性别</th>\r\n              <th>生日</th>\r\n              <th>身份证</th>\r\n              <th>手机</th>\r\n              <th>邮箱</th>\r\n              <th>毕业学校</th>\r\n              <th>学历</th>\r\n              <th>专业</th>\r\n              <th>操作</th>\r\n            </tr>\r\n          </thead>\r\n          <tbody>\r\n            <tr *ngFor=\"let manager of studentManagers | paging: curPageManager\">\r\n              <td>{{ manager.name }}</td>\r\n              <td>{{ manager.sex === 'MALE' ? '男' : '女' }}</td>\r\n              <td>{{ manager.birthday | date: 'yyyy-MM-dd' }}</td>\r\n              <td>{{ manager.idCard }}</td>\r\n              <td>{{ manager.phone.slice(0, 3) + '****' + manager.phone.slice(7) }}</td>\r\n              <td>{{ manager.email || '--' }}</td>\r\n              <td>{{ manager.graduationSchool || '--' }}</td>\r\n              <td>{{ manager.education || '--' }}</td>\r\n              <td>{{ manager.specialty || '--' }}</td>\r\n              <td>\r\n                <div class=\"btn-group btn-group-xs\">\r\n                  <button class=\"btn btn-xs btn-primary\"\r\n                          (click)=\"curStudentManager = manager;\r\n                  assignModal.showModal({\r\n                    title: '分配以下学员给' + curStudentManager.name,\r\n                    modalConfirmText: '确认分配',\r\n                    modalSize: 'md',\r\n                    type: 'default',\r\n                    confirm: assignStudentToManager\r\n                  })\">分配学员</button>\r\n                </div>\r\n              </td>\r\n            </tr>\r\n            <tr *ngIf=\"!studentManagers.length\">\r\n              <td colspan=\"9\">\r\n                <p class=\"text-muted text-center\">\r\n                  暂无学管师信息\r\n                </p>\r\n              </td>\r\n            </tr>\r\n          </tbody>\r\n        </table>\r\n\r\n        <app-pagination *ngIf=\"studentManagers.length\" [totalCount]=\"studentManagers.length\" (pageChange)=\"handleManagerPageChange($event)\"></app-pagination>\r\n      </div>\r\n      <div class=\"tab-pane\" id=\"tab_2\">\r\n        <table class=\"table table-hover table-bordered text-center\">\r\n          <thead>\r\n            <tr>\r\n              <th>姓名</th>\r\n              <th>电话</th>\r\n              <th>续费金额</th>\r\n              <th>退费金额</th>\r\n            </tr>\r\n          </thead>\r\n          <tbody>\r\n            <tr *ngFor=\"let payment of payments | paging: curPageRecord\">\r\n              <td>{{ payment.teacherName }}</td>\r\n              <td>{{ payment.teacherPhone.slice(0, 3) + '****' + payment.teacherPhone.slice(7) }}</td>\r\n              <td>{{ payment.renewMoney || 0 }}</td>\r\n              <td>{{ payment.backMoney || 0 }}</td>\r\n            </tr>\r\n            <tr *ngIf=\"!payments.length\">\r\n              <td class=\"text-muted\" colspan=\"4\">\r\n                暂无学管师退费/续费记录\r\n              </td>\r\n            </tr>\r\n          </tbody>\r\n        </table>\r\n\r\n        <app-pagination *ngIf=\"payments.length\" [totalCount]=\"payments.length\" (pageChange)=\"handleRecordPageChange($event)\"></app-pagination>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n\r\n<app-modal #assignModal [disabledAcceptBtn]=\"ifZeroStudentChosen()\">\r\n  <div class=\"students-container\">\r\n    <table class=\"table table-hover text-center\">\r\n      <thead>\r\n        <tr>\r\n          <th></th>\r\n          <th>姓名</th>\r\n          <th>性别</th>\r\n          <th>手机号</th>\r\n          <th>班级</th>\r\n          <th>学科</th>\r\n        </tr>\r\n      </thead>\r\n      <tbody>\r\n        <tr *ngFor=\"let student of undistributedStudents\">\r\n          <td><input type=\"checkbox\" (change)=\"student.chosen = !student.chosen\"></td>\r\n          <td>{{ student.name }}</td>\r\n          <td>{{ student.sex === 'MALE' ? '男' : '女' }}</td>\r\n          <td>{{ student.phone.slice(0, 3) + '****' + student.phone.slice(7) }}</td>\r\n          <td>{{ student.grade }}</td>\r\n          <td>{{ student.subject || '--' }}</td>\r\n        </tr>\r\n        <tr *ngIf=\"!undistributedStudents.length\">\r\n          <td class=\"text-muted\" colspan=\"6\">暂无可分配学员</td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>\r\n</app-modal>\r\n"
+module.exports = "<app-content-header\r\n  [title]=\"'学管师管理'\" [menus]=\"contentHeader\"></app-content-header>\r\n\r\n<div class=\"content\">\r\n\r\n  <div class=\"nav-tabs-custom\">\r\n    <ul class=\"nav nav-tabs\">\r\n      <li class=\"active\"><a href=\"#tab_1\" data-toggle=\"tab\">基本信息</a></li>\r\n      <li><a href=\"#tab_2\" data-toggle=\"tab\">退费/续费</a></li>\r\n    </ul>\r\n    <div class=\"tab-content\">\r\n      <div class=\"tab-pane active\" id=\"tab_1\">\r\n        <table class=\"table table-bordered table-hover text-center\">\r\n          <thead>\r\n            <tr>\r\n              <th>姓名</th>\r\n              <th>性别</th>\r\n              <th>生日</th>\r\n              <th>身份证</th>\r\n              <th>手机</th>\r\n              <th>邮箱</th>\r\n              <th>毕业学校</th>\r\n              <th>学历</th>\r\n              <th>操作</th>\r\n            </tr>\r\n          </thead>\r\n          <tbody>\r\n            <tr *ngFor=\"let manager of studentManagers | paging: curPageManager\">\r\n              <td>{{ manager.name }}</td>\r\n              <td>{{ manager.sex === 'MALE' ? '男' : '女' }}</td>\r\n              <td>{{ manager.birthday | date: 'yyyy-MM-dd' }}</td>\r\n              <td>{{ manager.idCard }}</td>\r\n              <td>{{ manager.phone.slice(0, 3) + '****' + manager.phone.slice(7) }}</td>\r\n              <td>{{ manager.email || '--' }}</td>\r\n              <td>{{ manager.graduationSchool || '--' }}</td>\r\n              <td>{{ manager.education || '--' }}</td>\r\n              <td>\r\n                <div class=\"btn-group btn-group-xs\">\r\n                  <button\r\n                  class=\"btn btn-xs btn-danger\"\r\n                  (click)=\"changeStuMaster(manager);\r\n                  reAssignModal.showModal({\r\n                    title: '改编' + curStudentManager.name + '的学员至:',\r\n                    modalConfirmText: '确认改编',\r\n                    modalSize: 'sm',\r\n                    type: 'default',\r\n                    confirm: reAssignStuMaster\r\n                  })\">\r\n                    改编学员\r\n                  </button>\r\n                  <button class=\"btn btn-xs btn-primary\"\r\n                  (click)=\"curStudentManager = manager;\r\n                  assignModal.showModal({\r\n                    title: '分配以下学员给' + curStudentManager.name,\r\n                    modalConfirmText: '确认分配',\r\n                    modalSize: 'md',\r\n                    type: 'default',\r\n                    confirm: assignStudentToManager\r\n                  })\">分配学员</button>\r\n                </div>\r\n              </td>\r\n            </tr>\r\n            <tr *ngIf=\"!studentManagers.length\">\r\n              <td colspan=\"9\">\r\n                <p class=\"text-muted text-center\">\r\n                  暂无学管师信息\r\n                </p>\r\n              </td>\r\n            </tr>\r\n          </tbody>\r\n        </table>\r\n\r\n        <app-pagination *ngIf=\"studentManagers.length\" [totalCount]=\"studentManagers.length\" (pageChange)=\"handleManagerPageChange($event)\"></app-pagination>\r\n      </div>\r\n      <div class=\"tab-pane\" id=\"tab_2\">\r\n        <table class=\"table table-hover table-bordered text-center\">\r\n          <thead>\r\n            <tr>\r\n              <th>姓名</th>\r\n              <th>电话</th>\r\n              <th>续费金额</th>\r\n              <th>退费金额</th>\r\n            </tr>\r\n          </thead>\r\n          <tbody>\r\n            <tr *ngFor=\"let payment of payments | paging: curPageRecord\">\r\n              <td>{{ payment.teacherName }}</td>\r\n              <td>{{ payment.teacherPhone.slice(0, 3) + '****' + payment.teacherPhone.slice(7) }}</td>\r\n              <td>{{ payment.renewMoney || 0 }}</td>\r\n              <td>{{ payment.backMoney || 0 }}</td>\r\n            </tr>\r\n            <tr *ngIf=\"!payments.length\">\r\n              <td class=\"text-muted\" colspan=\"4\">\r\n                暂无学管师退费/续费记录\r\n              </td>\r\n            </tr>\r\n          </tbody>\r\n        </table>\r\n\r\n        <app-pagination *ngIf=\"payments.length\" [totalCount]=\"payments.length\" (pageChange)=\"handleRecordPageChange($event)\"></app-pagination>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<app-modal #reAssignModal>\r\n  <div class=\"text-center\r\n\">\r\n    <select2 [cssImport]=\"false\"\r\n             [options]=\"{minimumResultsForSearch: -1}\"\r\n             [data]=\"toChangeToManagers\"\r\n             (valueChanged)=\"setNewStuManager($event)\"\r\n             [width]=\"'148px'\"></select2>\r\n  </div>\r\n</app-modal>\r\n\r\n<app-modal #assignModal [disabledAcceptBtn]=\"ifZeroStudentChosen()\">\r\n  <div class=\"students-container\">\r\n    <table class=\"table table-hover text-center\">\r\n      <thead>\r\n        <tr>\r\n          <th></th>\r\n          <th>姓名</th>\r\n          <th>性别</th>\r\n          <th>手机号</th>\r\n          <th>班级</th>\r\n          <th>学科</th>\r\n        </tr>\r\n      </thead>\r\n      <tbody>\r\n        <tr *ngFor=\"let student of undistributedStudents\">\r\n          <td><input type=\"checkbox\" (value)=\"student.chosen\" (change)=\"student.chosen = !student.chosen\"></td>\r\n          <td>{{ student.name }}</td>\r\n          <td>{{ student.sex === 'MALE' ? '男' : '女' }}</td>\r\n          <td>{{ student.phone.slice(0, 3) + '****' + student.phone.slice(7) }}</td>\r\n          <td>{{ student.grade }}</td>\r\n          <td>{{ student.subject || '--' }}</td>\r\n        </tr>\r\n        <tr *ngIf=\"!undistributedStudents.length\">\r\n          <td class=\"text-muted\" colspan=\"6\">暂无可分配学员</td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>\r\n</app-modal>\r\n"
 
 /***/ }),
 
@@ -9369,6 +9428,7 @@ var StudentMasterDocsComponent = (function () {
     function StudentMasterDocsComponent(studentManagerBossService) {
         this.studentManagerBossService = studentManagerBossService;
         this.assignStudentToManager = this.assignStudentToManager.bind(this);
+        this.reAssignStuMaster = this.reAssignStuMaster.bind(this);
     }
     StudentMasterDocsComponent.prototype.ngOnInit = function () {
         this.curPageManager = 1;
@@ -9379,6 +9439,7 @@ var StudentMasterDocsComponent = (function () {
         ];
         this.payments = [];
         this.studentManagers = [];
+        this.toChangeToManagers = [];
         this.undistributedStudents = [];
         this.curStudentManager = {};
         this.fetchUndistributedStudents();
@@ -9392,8 +9453,7 @@ var StudentMasterDocsComponent = (function () {
     StudentMasterDocsComponent.prototype.fetchUndistributedStudents = function () {
         var _this = this;
         this.studentManagerBossService.fetchUndistributedStudents().then(function (students) {
-            console.log(students);
-            _this.undistributedStudents = students;
+            _this.undistributedStudents = students.filter(function (stu) { return !stu.isDis; });
         });
     };
     StudentMasterDocsComponent.prototype.ifZeroStudentChosen = function () {
@@ -9421,6 +9481,24 @@ var StudentMasterDocsComponent = (function () {
     };
     StudentMasterDocsComponent.prototype.handleRecordPageChange = function (page) {
         this.curPageRecord = 1;
+    };
+    StudentMasterDocsComponent.prototype.changeStuMaster = function (curManager) {
+        this.curStudentManager = curManager;
+        this.toChangeToManagers = this.studentManagers
+            .filter(function (manager) { return manager.id !== curManager.id; })
+            .map(function (manager) { return ({ id: manager.id, text: manager.name }); });
+        this.newAssignEmployeeId = this.toChangeToManagers.length ? this.toChangeToManagers[0].id : '';
+    };
+    StudentMasterDocsComponent.prototype.setNewStuManager = function ($event) {
+        this.newAssignEmployeeId = $event.value;
+    };
+    StudentMasterDocsComponent.prototype.reAssignStuMaster = function () {
+        var _this = this;
+        this.studentManagerBossService.reAssignTeacher(this.curStudentManager.id, this.newAssignEmployeeId)
+            .then(function () {
+            _this.newAssignEmployeeId = '';
+            _this.curStudentManager = {};
+        });
     };
     return StudentMasterDocsComponent;
 }());
